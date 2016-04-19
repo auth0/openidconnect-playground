@@ -2,12 +2,15 @@
 
 let express = require('express')
 let passport = require('passport')
-let Strategy = require('passport-openidconnect')
+let Strategy = require('passport-openidconnect').Strategy
+let dotenv = require('dotenv').config();
 
 passport.use(new Strategy({
+	authorizationURL: 'https://' + process.env.DOMAIN + '/authorize',
+	tokenURL: 'https://' + process.env.DOMAIN + '/oauth/token',
 	clientID: process.env.CLIENT_ID,
 	clientSecret: process.env.CLIENT_SECRET,
-	callbackURL: 'http://localhost:1337/callback'
+	callbackURL: 'http://localhost:3000/callback'
 	},
 	function(accessToken, refreshToken, profile, cb){
 		cb(null, profile)
@@ -40,13 +43,13 @@ app.set('view engine', 'jade')
 
 app.get('/',
   function(req, res){
-    res.render('hello')
+    res.render('index')
   })
 
-app.get('/login', passport.authenticate('github'));
+app.get('/login', passport.authenticate('openidconnect'));
 
 app.get('/callback',
-	passport.authenticate('github', { failureRedirect: '/login'}),
+	passport.authenticate('openidconnect', { failureRedirect: '/login'}),
 	function(req, res){
 		//YAY! we've logged into GitHub
 		res.redirect('/profile')
@@ -63,7 +66,7 @@ app.get('/logout', function(req, res){
 	res.redirect('/')
 })
 
-app.listen(1337)
+app.listen(3000)
 
 
 
