@@ -2,22 +2,11 @@
 
 let express = require('express')
 let passport = require('passport')
-let Strategy = require('passport-openidconnect').Strategy
+let Strategy = require('./passport-user-openidconnect');
 let dotenv = require('dotenv').config();
 
-passport.use(new Strategy({
-	authorizationURL: 'https://' + process.env.DOMAIN + '/authorize',
-	tokenURL: 'https://' + process.env.DOMAIN + '/oauth/token',
-	clientID: process.env.CLIENT_ID,
-	clientSecret: process.env.CLIENT_SECRET,
-	callbackURL: 'http://localhost:3000/callback'
-	},
-	function(accessToken, refreshToken, profile, cb){
-		cb(null, profile)
-	} 
-))
-
 passport.serializeUser(function(user, cb){
+	console.log(user)
 	cb(null, user)
 })
 
@@ -46,14 +35,35 @@ app.get('/',
     res.render('index')
   })
 
-app.get('/login', passport.authenticate('openidconnect'));
+app.get('/login', passport.authenticate('user-oidc'));
 
 app.get('/callback',
-	passport.authenticate('openidconnect', { failureRedirect: '/login'}),
+	passport.authenticate('user-oidc', { failureRedirect: '/login'}),
 	function(req, res){
-		//YAY! we've logged into GitHub
 		res.redirect('/profile')
 	});
+
+app.get('/custom',
+	function(req, res, next){
+		passport.use(new Strategy({
+			authorizationURL: 'https://' + process.env.DOMAIN + '/authorize',
+			tokenURL: 'https://' + process.env.DOMAIN + '/oauth/token',
+			userInfoURL: 'https://' + process.env.DOMAIN + '/userinfo',
+			clientID: process.env.CLIENT_ID,
+			clientSecret: process.env.CLIENT_SECRET,
+			callbackURL: 'http://localhost:3000/callback'
+			},
+			function(accessToken, refreshToken, profile, cb){
+				let token = JSON.parse(profile._raw)
+				console.log('PARSED', token)
+				profile.token = token
+				cb(null, profile)
+			} 
+		))
+		next()
+	},
+	passport.authenticate('user-oidc') 
+)
 
 app.get('/profile',
 	require('connect-ensure-login').ensureLoggedIn(),
@@ -64,7 +74,7 @@ app.get('/profile',
 app.get('/logout', function(req, res){
 	req.logout()
 	res.redirect('/')
-})
+});
 
 app.listen(3000)
 
