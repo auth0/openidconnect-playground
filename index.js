@@ -2,11 +2,10 @@
 
 let express = require('express')
 let passport = require('passport')
-let Strategy = require('./passport-user-openidconnect');
+let Strategy = require('./strategy').Strategy;
 let dotenv = require('dotenv').config();
 
 passport.serializeUser(function(user, cb){
-	console.log(user)
 	cb(null, user)
 })
 
@@ -51,13 +50,15 @@ app.get('/custom',
 			userInfoURL: 'https://' + process.env.DOMAIN + '/userinfo',
 			clientID: process.env.CLIENT_ID,
 			clientSecret: process.env.CLIENT_SECRET,
-			callbackURL: 'http://localhost:3000/callback'
+			callbackURL: 'http://localhost:3000/callback',
+			skipUserProfile: true
 			},
 			function(accessToken, refreshToken, profile, cb){
-				let token = JSON.parse(profile._raw)
-				console.log('PARSED', token)
-				profile.token = token
-				cb(null, profile)
+				// let token = JSON.parse(profile._raw)
+				// console.log('PARSED', token.identities)
+				// profile.token = token
+				console.log('ACCESS', accessToken);
+				cb(null, accessToken)
 			} 
 		))
 		next()

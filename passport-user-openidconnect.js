@@ -1,7 +1,7 @@
 'use strict'
 
 let util = require('util')
-let OpenIDConnectStrategy = require('passport-openidconnect').Strategy;
+let OpenIDConnectStrategy = require('./strategy')
 
 function Strategy(options, verify) { 
   OpenIDConnectStrategy.call(this, options, verify);
