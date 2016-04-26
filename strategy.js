@@ -68,6 +68,8 @@ Strategy.prototype.authenticate = function(req, options) {
   
   if (req.query && req.query.code) {
     var code = req.query.code;
+
+    //BREAK HERE TO SHOW THE USER THE ACCES CODE, SO THEY CAN CONTINUE WITH THE USE FLOW
     
     var oauth2 = new OAuth2(this._clientID,  this._clientSecret,
                             '', this._authorizationURL, this._tokenURL);
@@ -109,7 +111,6 @@ Strategy.prototype.authenticate = function(req, options) {
       
       // TODO: Ensure claims are validated per:
       //       http://openid.net/specs/openid-connect-basic-1_0.html#id_token
-      
 
       //BREAK HERE TO SHOW USER ACCESS TOKEN, THEN THEY CAN CLICK A BUTTON TO ACCESS PROFILE
       

@@ -27,6 +27,8 @@ app.use(require('express-session')(
 app.use(passport.initialize())
 app.use(passport.session())
 
+app.use(express.static('public'));
+
 app.set('view engine', 'jade')
 
 app.get('/',
@@ -34,48 +36,18 @@ app.get('/',
     res.render('index')
   })
 
-app.get('/login', passport.authenticate('user-oidc'));
-
-app.get('/callback',
-	passport.authenticate('user-oidc', { failureRedirect: '/login'}),
-	function(req, res){
-		res.redirect('/profile')
-	});
-
-app.get('/custom',
-	function(req, res, next){
-		passport.use(new Strategy({
-			authorizationURL: 'https://' + process.env.DOMAIN + '/authorize',
-			tokenURL: 'https://' + process.env.DOMAIN + '/oauth/token',
-			userInfoURL: 'https://' + process.env.DOMAIN + '/userinfo',
-			clientID: process.env.CLIENT_ID,
-			clientSecret: process.env.CLIENT_SECRET,
-			callbackURL: 'http://localhost:3000/callback',
-			skipUserProfile: true
-			},
-			function(accessToken, refreshToken, profile, cb){
-				// let token = JSON.parse(profile._raw)
-				// console.log('PARSED', token.identities)
-				// profile.token = token
-				console.log('ACCESS', accessToken);
-				cb(null, accessToken)
-			} 
-		))
-		next()
-	},
-	passport.authenticate('user-oidc') 
-)
-
-app.get('/profile',
-	require('connect-ensure-login').ensureLoggedIn(),
-	function(req, res){
-		res.render('user', { user: req.user })
-	})
-
-app.get('/logout', function(req, res){
-	req.logout()
-	res.redirect('/')
+app.post('code_to_token', function(req, res){
+	//REQUIRED params: code, clientID, clientSecret, tokenEndpoint, serviceURL
+	//step 1: exchange code for token with OIDC server
+	//step 2: send back https response from OIDC server
 });
+
+app.post('validate', function(req, res){
+	//REQUIRED: token, clientSecret
+	//step 1: validate the token
+	//step 2: send back the results.
+})
+
 
 app.listen(3000)
 
