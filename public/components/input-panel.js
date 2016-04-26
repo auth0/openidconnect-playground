@@ -68,12 +68,10 @@ class InputPanel extends React.Component{
 				completeURL: URL + '/' + encodeURIComponent(this.refs.authEndpoint.refs.value.value) +'?client_id='+  encodeURIComponent(this.refs.clientID.refs.value.value) +'&client_secret='+ encodeURIComponent(this.refs.clientSecret.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code'
 			})
 		}
-		console.log(this.state);
 	}
 	authRedirect(){
 		localStorage.setItem('app-state', JSON.stringify(this.state))
-		console.log(this.state.completeURL)
-		// window.location = this.state.completeURL
+		window.location = this.state.completeURL
 	}
 }
 
@@ -136,7 +134,6 @@ const OIDCURL = (props) => {
 			<p>{encodeURIComponent('redirect_uri=https://localhost:5000/auth/callback')}&amp;</p>
 			<p>scope={encodeURIComponent(props.scope)}&amp;</p>
 			<p>response_type=code&amp;</p>
-			<p>state=poifhjoeif2</p>
 		</div>
 	)
 }

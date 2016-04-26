@@ -20129,14 +20129,12 @@
 						completeURL: URL + '/' + encodeURIComponent(this.refs.authEndpoint.refs.value.value) + '?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&client_secret=' + encodeURIComponent(this.refs.clientSecret.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code'
 					});
 				}
-				console.log(this.state);
 			}
 		}, {
 			key: 'authRedirect',
 			value: function authRedirect() {
 				localStorage.setItem('app-state', JSON.stringify(this.state));
-				console.log(this.state.completeURL);
-				// window.location = this.state.completeURL
+				window.location = this.state.completeURL;
 			}
 		}]);
 
@@ -20302,11 +20300,6 @@
 				'p',
 				null,
 				'response_type=code&'
-			),
-			_react2.default.createElement(
-				'p',
-				null,
-				'state=poifhjoeif2'
 			)
 		);
 	};
