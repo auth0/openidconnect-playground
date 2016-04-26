@@ -20063,14 +20063,16 @@
 					_react2.default.createElement(
 						"div",
 						{ "class": "inputs" },
-						_react2.default.createElement(InputValue, { ref: "server", name: "server", label: "OpenID Connect Server", pholder: "https://sample-oidc.auth0.com", update: this.update }),
+						_react2.default.createElement(ServerPicker, { ref: "server", name: "server", label: "OpenID Connect Server", update: this.update }),
+						_react2.default.createElement(ServerURLInput, { ref: "serverURL", update: this.update }),
 						_react2.default.createElement(InputValue, { ref: "authEndpoint", name: "authEndpoint", label: "Authorization Endpoint", pholder: "/authorize", update: this.update }),
 						_react2.default.createElement(InputValue, { ref: "tokenEndpoint", name: "tokenEndpoint", label: "Token Endpoint", pholder: "/token", update: this.update }),
 						_react2.default.createElement(InputValue, { ref: "clientID", name: "clientID", label: "Client ID", update: this.update }),
 						_react2.default.createElement(InputValue, { ref: "clientSecret", name: "clientSecret", label: "Client Secret", update: this.update }),
 						_react2.default.createElement(InputValue, { ref: "scope", name: "scope", label: "Scope", pholder: "openid name email", update: this.update })
 					),
-					_react2.default.createElement(OIDCURL, { server: this.state.server, authEndpoint: this.state.authEndpoint, clientID: this.state.clientID, scope: this.state.scope })
+					_react2.default.createElement(OIDCURL, { server: this.state.serverURL, authEndpoint: this.state.authEndpoint, clientID: this.state.clientID, scope: this.state.scope }),
+					_react2.default.createElement(RedirectButton, { redirect: "{this.authRedirect}" })
 				);
 			}
 		}, {
@@ -20084,6 +20086,30 @@
 					clientSecret: this.refs.clientSecret.refs.value.value,
 					scope: this.refs.scope.refs.value.value
 				});
+
+				this.updateServerURL(this.refs.server.refs.value.value, this.refs.serverURL.refs.value.value);
+			}
+		}, {
+			key: "updateServerURL",
+			value: function updateServerURL(type, URL) {
+				if (type !== 'none') {
+					this.refs.serverURL.refs.value.disabled = false;
+				} else {
+					this.refs.serverURL.refs.value.disabled = true;
+				}
+
+				if (type == 'Auth0') {
+					this.refs.serverURL.updateLabel("Your Auth0 Domain", "domain.auth0.com");
+					this.setState({
+						serverURL: "https://" + URL
+					});
+				} else if (type == 'custom') {
+					this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
+					this.setState({
+						serverURL: URL
+					});
+				}
+				console.log(this.state);
 			}
 		}]);
 
@@ -20117,6 +20143,96 @@
 		}]);
 
 		return InputValue;
+	}(_react2.default.Component);
+
+	var ServerURLInput = function (_React$Component3) {
+		_inherits(ServerURLInput, _React$Component3);
+
+		function ServerURLInput() {
+			_classCallCheck(this, ServerURLInput);
+
+			var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(ServerURLInput).call(this));
+
+			_this3.state = {
+				label: "Server URL",
+				placeholder: "https://sample-oidc.com"
+			};
+			return _this3;
+		}
+
+		_createClass(ServerURLInput, [{
+			key: "render",
+			value: function render() {
+				return _react2.default.createElement(
+					"div",
+					null,
+					_react2.default.createElement(
+						"label",
+						{ "for": "serverUrl" },
+						this.state.label,
+						":"
+					),
+					_react2.default.createElement("input", { disabled: "true", name: "serverUrl", ref: "value", onChange: this.props.update, placeholder: this.state.pholder })
+				);
+			}
+		}, {
+			key: "updateLabel",
+			value: function updateLabel(label, pholder) {
+				this.setState({
+					label: label,
+					pholder: pholder
+				});
+			}
+		}]);
+
+		return ServerURLInput;
+	}(_react2.default.Component);
+
+	var ServerPicker = function (_React$Component4) {
+		_inherits(ServerPicker, _React$Component4);
+
+		function ServerPicker() {
+			_classCallCheck(this, ServerPicker);
+
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(ServerPicker).apply(this, arguments));
+		}
+
+		_createClass(ServerPicker, [{
+			key: "render",
+			value: function render() {
+				return _react2.default.createElement(
+					"div",
+					null,
+					_react2.default.createElement(
+						"label",
+						{ "for": "{this.props.name}" },
+						this.props.label,
+						":"
+					),
+					_react2.default.createElement(
+						"select",
+						{ name: "{this.props.name}", ref: "value", onChange: this.props.update },
+						_react2.default.createElement(
+							"option",
+							{ value: "none" },
+							"SELECT A SERVER"
+						),
+						_react2.default.createElement(
+							"option",
+							{ value: "Auth0" },
+							"Auth0"
+						),
+						_react2.default.createElement(
+							"option",
+							{ value: "custom" },
+							"Custom"
+						)
+					)
+				);
+			}
+		}]);
+
+		return ServerPicker;
 	}(_react2.default.Component);
 
 	var OIDCURL = function OIDCURL(props) {
@@ -20164,6 +20280,14 @@
 				null,
 				"state=poifhjoeif2"
 			)
+		);
+	};
+
+	var RedirectButton = function RedirectButton(props) {
+		return _react2.default.createElement(
+			"button",
+			{ type: "button", onClick: props.redirect },
+			"Redirect to Auth"
 		);
 	};
 

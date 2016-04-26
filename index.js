@@ -1,30 +1,11 @@
 'use strict'
 
 let express = require('express')
-let passport = require('passport')
-let Strategy = require('./strategy').Strategy;
-
-passport.serializeUser(function(user, cb){
-	cb(null, user)
-})
-
-passport.deserializeUser(function(obj, cb){
-	cb(null, obj)
-})
 
 let app = express()
 
 app.use(require('cookie-parser')())
 app.use(require('body-parser').urlencoded({ extended: true }))
-app.use(require('express-session')(
-	{ 
-		secret: 'keyboard cat',
-		resave: true,
-		saveUninitialized: true
-	}))
-
-app.use(passport.initialize())
-app.use(passport.session())
 
 app.use(express.static('public'));
 
@@ -48,7 +29,7 @@ app.post('validate', function(req, res){
 })
 
 
-app.listen(process.env.PORT || 3000)
+app.listen(process.env.PORT || 5000)
 
 
 
