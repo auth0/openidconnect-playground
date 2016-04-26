@@ -20026,7 +20026,7 @@
 /* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -20055,47 +20055,58 @@
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(InputPanel).call(this));
 
 			_this.update = _this.update.bind(_this);
-			_this.state = {};
+			var oldState = localStorage.getItem('app-state');
+			_this.state = JSON.parse(oldState) || {};
 			return _this;
 		}
 
 		_createClass(InputPanel, [{
-			key: "render",
+			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
-					"div",
+					'div',
 					null,
 					_react2.default.createElement(
-						"div",
-						{ "class": "inputs" },
-						_react2.default.createElement(ServerPicker, { ref: "server", name: "server", label: "OpenID Connect Server", update: this.update }),
-						_react2.default.createElement(ServerURLInput, { ref: "serverURL", update: this.update }),
-						_react2.default.createElement(InputValue, { ref: "authEndpoint", name: "authEndpoint", label: "Authorization Endpoint", pholder: "/authorize", update: this.update }),
-						_react2.default.createElement(InputValue, { ref: "tokenEndpoint", name: "tokenEndpoint", label: "Token Endpoint", pholder: "/token", update: this.update }),
-						_react2.default.createElement(InputValue, { ref: "clientID", name: "clientID", label: "Client ID", update: this.update }),
-						_react2.default.createElement(InputValue, { ref: "clientSecret", name: "clientSecret", label: "Client Secret", update: this.update }),
-						_react2.default.createElement(InputValue, { ref: "scope", name: "scope", label: "Scope", pholder: "openid name email", update: this.update })
+						'div',
+						{ 'class': 'inputs' },
+						_react2.default.createElement(ServerPicker, { ref: 'server', name: 'server', label: 'OpenID Connect Server', update: this.update }),
+						_react2.default.createElement(ServerURLInput, { ref: 'serverURL', update: this.update }),
+						_react2.default.createElement(InputValue, { ref: 'authEndpoint', name: 'authEndpoint', label: 'Authorization Endpoint', val: this.state.authEndpoint, pholder: '/authorize', update: this.update }),
+						_react2.default.createElement(InputValue, { ref: 'tokenEndpoint', name: 'tokenEndpoint', label: 'Token Endpoint', pholder: '/token', val: this.state.tokenEndpoint, update: this.update }),
+						_react2.default.createElement(InputValue, { ref: 'clientID', name: 'clientID', label: 'Client ID', val: this.state.clientID, update: this.update }),
+						_react2.default.createElement(InputValue, { ref: 'clientSecret', name: 'clientSecret', label: 'Client Secret', val: this.state.clientSecret, update: this.update }),
+						_react2.default.createElement(InputValue, { ref: 'scope', name: 'scope', label: 'Scope', val: this.state.scope, pholder: 'openid name email', update: this.update })
 					),
 					_react2.default.createElement(OIDCURL, { server: this.state.serverURL, authEndpoint: this.state.authEndpoint, clientID: this.state.clientID, scope: this.state.scope }),
 					_react2.default.createElement(RedirectButton, { redirect: this.authRedirect.bind(this) })
 				);
 			}
 		}, {
-			key: "update",
+			key: 'update',
 			value: function update(e) {
+				if (!localStorage.getItem('app-state')) {
+					this.setState({
+						server: null,
+						authEndpoint: null,
+						tokenEndpoint: null,
+						clientID: null,
+						clientSecret: null,
+						scope: null
+					});
+				}
 				this.setState({
-					server: encodeURIComponent(this.refs.server.refs.value.value),
-					authEndpoint: encodeURIComponent(this.refs.authEndpoint.refs.value.value),
-					tokenEndpoint: encodeURIComponent(this.refs.tokenEndpoint.refs.value.value),
-					clientID: encodeURIComponent(this.refs.clientID.refs.value.value),
-					clientSecret: encodeURIComponent(this.refs.clientSecret.refs.value.value),
-					scope: encodeURIComponent(this.refs.scope.refs.value.value)
+					server: this.refs.server.refs.value.value,
+					authEndpoint: this.refs.authEndpoint.refs.value.value,
+					tokenEndpoint: this.refs.tokenEndpoint.refs.value.value,
+					clientID: this.refs.clientID.refs.value.value,
+					clientSecret: this.refs.clientSecret.refs.value.value,
+					scope: this.refs.scope.refs.value.value
 				});
 
 				this.updateServerURL(this.refs.server.refs.value.value, this.refs.serverURL.refs.value.value);
 			}
 		}, {
-			key: "updateServerURL",
+			key: 'updateServerURL',
 			value: function updateServerURL(type, URL) {
 				if (type !== 'none') {
 					this.refs.serverURL.refs.value.disabled = false;
@@ -20108,20 +20119,24 @@
 					this.setState({
 						serverURL: "https://" + URL,
 						authEndpoint: '/authorize',
-						tokenEndpoint: '/oauth/token'
+						tokenEndpoint: '/oauth/token',
+						completeURL: "https://" + URL + '/authorize?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&client_secret' + encodeURIComponent(this.refs.clientSecret.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code'
 					});
 				} else if (type == 'custom') {
 					this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
 					this.setState({
-						serverURL: URL
+						serverURL: URL,
+						completeURL: URL + '/' + encodeURIComponent(this.refs.authEndpoint.refs.value.value) + '?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&client_secret=' + encodeURIComponent(this.refs.clientSecret.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code'
 					});
 				}
 				console.log(this.state);
 			}
 		}, {
-			key: "authRedirect",
+			key: 'authRedirect',
 			value: function authRedirect() {
-				localStorage.setItem('url-state', JSON.stringify(this.state));
+				localStorage.setItem('app-state', JSON.stringify(this.state));
+				console.log(this.state.completeURL);
+				// window.location = this.state.completeURL
 			}
 		}]);
 
@@ -20138,18 +20153,18 @@
 		}
 
 		_createClass(InputValue, [{
-			key: "render",
+			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
-					"div",
+					'div',
 					null,
 					_react2.default.createElement(
-						"label",
-						{ "for": "{this.props.name}" },
+						'label',
+						{ 'for': '{this.props.name}' },
 						this.props.label,
-						":"
+						':'
 					),
-					_react2.default.createElement("input", { name: "{this.props.name}", ref: "value", onChange: this.props.update, placeholder: this.props.pholder })
+					_react2.default.createElement('input', { name: '{this.props.name}', ref: 'value', value: this.props.val, onChange: this.props.update, placeholder: this.props.pholder })
 				);
 			}
 		}]);
@@ -20173,22 +20188,22 @@
 		}
 
 		_createClass(ServerURLInput, [{
-			key: "render",
+			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
-					"div",
+					'div',
 					null,
 					_react2.default.createElement(
-						"label",
-						{ "for": "serverUrl" },
+						'label',
+						{ 'for': 'serverUrl' },
 						this.state.label,
-						":"
+						':'
 					),
-					_react2.default.createElement("input", { disabled: "true", name: "serverUrl", ref: "value", onChange: this.props.update, placeholder: this.state.pholder })
+					_react2.default.createElement('input', { disabled: 'true', name: 'serverUrl', ref: 'value', onChange: this.props.update, placeholder: this.state.pholder })
 				);
 			}
 		}, {
-			key: "updateLabel",
+			key: 'updateLabel',
 			value: function updateLabel(label, pholder) {
 				this.setState({
 					label: label,
@@ -20210,34 +20225,34 @@
 		}
 
 		_createClass(ServerPicker, [{
-			key: "render",
+			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
-					"div",
+					'div',
 					null,
 					_react2.default.createElement(
-						"label",
-						{ "for": "{this.props.name}" },
+						'label',
+						{ 'for': '{this.props.name}' },
 						this.props.label,
-						":"
+						':'
 					),
 					_react2.default.createElement(
-						"select",
-						{ name: "{this.props.name}", ref: "value", onChange: this.props.update },
+						'select',
+						{ name: '{this.props.name}', ref: 'value', onChange: this.props.update },
 						_react2.default.createElement(
-							"option",
-							{ value: "none" },
-							"SELECT A SERVER"
+							'option',
+							{ value: 'none' },
+							'SELECT A SERVER'
 						),
 						_react2.default.createElement(
-							"option",
-							{ value: "Auth0" },
-							"Auth0"
+							'option',
+							{ value: 'Auth0' },
+							'Auth0'
 						),
 						_react2.default.createElement(
-							"option",
-							{ value: "custom" },
-							"Custom"
+							'option',
+							{ value: 'custom' },
+							'Custom'
 						)
 					)
 				);
@@ -20249,57 +20264,58 @@
 
 	var OIDCURL = function OIDCURL(props) {
 		return _react2.default.createElement(
-			"div",
+			'div',
 			null,
 			_react2.default.createElement(
-				"h2",
+				'h2',
 				null,
-				"Redirect to OpenID Connect Server:"
+				'Redirect to OpenID Connect Server:'
 			),
 			_react2.default.createElement(
-				"p",
+				'p',
 				null,
 				props.server,
 				props.authEndpoint,
-				"?"
+				'?'
 			),
 			_react2.default.createElement(
-				"p",
+				'p',
 				null,
-				"client_id=",
-				props.clientID,
-				"&"
+				'client_id=',
+				encodeURIComponent(props.clientID),
+				'&'
 			),
 			_react2.default.createElement(
-				"p",
+				'p',
 				null,
-				"redirect_uri=https://localhost:5000/auth/callback&"
+				encodeURIComponent('redirect_uri=https://localhost:5000/auth/callback'),
+				'&'
 			),
 			_react2.default.createElement(
-				"p",
+				'p',
 				null,
-				"scope=",
-				props.scope,
-				"&"
+				'scope=',
+				encodeURIComponent(props.scope),
+				'&'
 			),
 			_react2.default.createElement(
-				"p",
+				'p',
 				null,
-				"response_type=code&"
+				'response_type=code&'
 			),
 			_react2.default.createElement(
-				"p",
+				'p',
 				null,
-				"state=poifhjoeif2"
+				'state=poifhjoeif2'
 			)
 		);
 	};
 
 	var RedirectButton = function RedirectButton(props) {
 		return _react2.default.createElement(
-			"button",
-			{ type: "button", onClick: props.redirect },
-			"Redirect to Auth"
+			'button',
+			{ type: 'button', onClick: props.redirect },
+			'Redirect to Auth'
 		);
 	};
 
