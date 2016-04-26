@@ -19,7 +19,7 @@ class InputPanel extends React.Component{
 					<InputValue ref="scope" name="scope" label="Scope" pholder="openid name email" update={this.update} />
 				</div>
 				<OIDCURL server={this.state.serverURL} authEndpoint={this.state.authEndpoint} clientID={this.state.clientID} scope= {this.state.scope} />
-				<RedirectButton redirect="{this.authRedirect}" />
+				<RedirectButton redirect={this.authRedirect.bind(this)} />
 			</div>
 		)
 	}
@@ -56,6 +56,10 @@ class InputPanel extends React.Component{
 			})
 		}
 		console.log(this.state);
+	}
+	authRedirect(){
+		localStorage.setItem('url-state', JSON.stringify(this.state))
+
 	}
 }
 

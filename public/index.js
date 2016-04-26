@@ -20077,7 +20077,7 @@
 						_react2.default.createElement(InputValue, { ref: "scope", name: "scope", label: "Scope", pholder: "openid name email", update: this.update })
 					),
 					_react2.default.createElement(OIDCURL, { server: this.state.serverURL, authEndpoint: this.state.authEndpoint, clientID: this.state.clientID, scope: this.state.scope }),
-					_react2.default.createElement(RedirectButton, { redirect: "{this.authRedirect}" })
+					_react2.default.createElement(RedirectButton, { redirect: this.authRedirect.bind(this) })
 				);
 			}
 		}, {
@@ -20117,6 +20117,11 @@
 					});
 				}
 				console.log(this.state);
+			}
+		}, {
+			key: "authRedirect",
+			value: function authRedirect() {
+				localStorage.setItem('url-state', JSON.stringify(this.state));
 			}
 		}]);
 
