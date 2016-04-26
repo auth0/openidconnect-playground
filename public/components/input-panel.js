@@ -25,12 +25,12 @@ class InputPanel extends React.Component{
 	}
 	update(e){
 		this.setState({
-			server: this.refs.server.refs.value.value,
-			authEndpoint: this.refs.authEndpoint.refs.value.value,
-			tokenEndpoint: this.refs.tokenEndpoint.refs.value.value,
-			clientID: this.refs.clientID.refs.value.value,
-			clientSecret: this.refs.clientSecret.refs.value.value,
-			scope: this.refs.scope.refs.value.value
+			server: encodeURIComponent(this.refs.server.refs.value.value),
+			authEndpoint: encodeURIComponent(this.refs.authEndpoint.refs.value.value),
+			tokenEndpoint: encodeURIComponent(this.refs.tokenEndpoint.refs.value.value),
+			clientID: encodeURIComponent(this.refs.clientID.refs.value.value),
+			clientSecret: encodeURIComponent(this.refs.clientSecret.refs.value.value),
+			scope: encodeURIComponent(this.refs.scope.refs.value.value)
 		})
 
 		this.updateServerURL(this.refs.server.refs.value.value, this.refs.serverURL.refs.value.value);
@@ -45,7 +45,9 @@ class InputPanel extends React.Component{
 		if(type == 'Auth0'){
 			this.refs.serverURL.updateLabel("Your Auth0 Domain", "domain.auth0.com");
 			this.setState({
-				serverURL: "https://" + URL 
+				serverURL: "https://" + URL,
+				authEndpoint: '/authorize',
+				tokenEndpoint: '/oauth/token'
 			})
 		} else if(type == 'custom'){
 			this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
@@ -113,7 +115,7 @@ const OIDCURL = (props) => {
 			<h2>Redirect to OpenID Connect Server:</h2>
 			<p>{props.server}{props.authEndpoint}?</p>
 			<p>client_id={props.clientID}&amp;</p>
-			<p>redirect_uri=https://localhost:3000/callback&amp;</p>
+			<p>redirect_uri=https://localhost:5000/auth/callback&amp;</p>
 			<p>scope={props.scope}&amp;</p>
 			<p>response_type=code&amp;</p>
 			<p>state=poifhjoeif2</p>

@@ -58,8 +58,13 @@
 
 	var _inputPanel2 = _interopRequireDefault(_inputPanel);
 
+	var _clearAllButton = __webpack_require__(167);
+
+	var _clearAllButton2 = _interopRequireDefault(_clearAllButton);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	_reactDom2.default.render(_react2.default.createElement(_clearAllButton2.default, null), document.getElementById('clear-all-button'));
 	_reactDom2.default.render(_react2.default.createElement(_inputPanel2.default, null), document.getElementById('app'));
 
 /***/ },
@@ -20079,12 +20084,12 @@
 			key: "update",
 			value: function update(e) {
 				this.setState({
-					server: this.refs.server.refs.value.value,
-					authEndpoint: this.refs.authEndpoint.refs.value.value,
-					tokenEndpoint: this.refs.tokenEndpoint.refs.value.value,
-					clientID: this.refs.clientID.refs.value.value,
-					clientSecret: this.refs.clientSecret.refs.value.value,
-					scope: this.refs.scope.refs.value.value
+					server: encodeURIComponent(this.refs.server.refs.value.value),
+					authEndpoint: encodeURIComponent(this.refs.authEndpoint.refs.value.value),
+					tokenEndpoint: encodeURIComponent(this.refs.tokenEndpoint.refs.value.value),
+					clientID: encodeURIComponent(this.refs.clientID.refs.value.value),
+					clientSecret: encodeURIComponent(this.refs.clientSecret.refs.value.value),
+					scope: encodeURIComponent(this.refs.scope.refs.value.value)
 				});
 
 				this.updateServerURL(this.refs.server.refs.value.value, this.refs.serverURL.refs.value.value);
@@ -20101,7 +20106,9 @@
 				if (type == 'Auth0') {
 					this.refs.serverURL.updateLabel("Your Auth0 Domain", "domain.auth0.com");
 					this.setState({
-						serverURL: "https://" + URL
+						serverURL: "https://" + URL,
+						authEndpoint: '/authorize',
+						tokenEndpoint: '/oauth/token'
 					});
 				} else if (type == 'custom') {
 					this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
@@ -20261,7 +20268,7 @@
 			_react2.default.createElement(
 				"p",
 				null,
-				"redirect_uri=https://localhost:3000/callback&"
+				"redirect_uri=https://localhost:5000/auth/callback&"
 			),
 			_react2.default.createElement(
 				"p",
@@ -20292,6 +20299,61 @@
 	};
 
 	exports.default = InputPanel;
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ClearAllButton = function (_React$Component) {
+		_inherits(ClearAllButton, _React$Component);
+
+		function ClearAllButton() {
+			_classCallCheck(this, ClearAllButton);
+
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(ClearAllButton).call(this));
+		}
+
+		_createClass(ClearAllButton, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'button',
+					{ type: 'button', onClick: this.clearStorage },
+					'Clear All LocalStorage'
+				);
+			}
+		}, {
+			key: 'clearStorage',
+			value: function clearStorage() {
+				console.log('clearing');
+				localStorage.clear();
+			}
+		}]);
+
+		return ClearAllButton;
+	}(_react2.default.Component);
+
+	exports.default = ClearAllButton;
 
 /***/ }
 /******/ ]);
