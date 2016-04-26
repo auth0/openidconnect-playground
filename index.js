@@ -3,7 +3,6 @@
 let express = require('express')
 let passport = require('passport')
 let Strategy = require('./strategy').Strategy;
-let dotenv = require('dotenv').config();
 
 passport.serializeUser(function(user, cb){
 	cb(null, user)
