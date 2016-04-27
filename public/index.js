@@ -20120,7 +20120,7 @@
 						serverURL: "https://" + URL,
 						authEndpoint: '/authorize',
 						tokenEndpoint: '/oauth/token',
-						completeURL: "https://" + URL + '/authorize?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&client_secret' + encodeURIComponent(this.refs.clientSecret.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code'
+						completeURL: "https://" + URL + '/authorize?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&client_secret' + encodeURIComponent(this.refs.clientSecret.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=http://localhost:5000/callback'
 					});
 				} else if (type == 'custom') {
 					this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
@@ -20286,7 +20286,7 @@
 			_react2.default.createElement(
 				'p',
 				null,
-				encodeURIComponent('redirect_uri=https://localhost:5000/auth/callback'),
+				encodeURIComponent('redirect_uri=https://localhost:5000/callback'),
 				'&'
 			),
 			_react2.default.createElement(
