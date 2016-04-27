@@ -20120,13 +20120,13 @@
 						serverURL: "https://" + URL,
 						authEndpoint: '/authorize',
 						tokenEndpoint: '/oauth/token',
-						completeURL: "https://" + URL + '/authorize?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&client_secret' + encodeURIComponent(this.refs.clientSecret.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=http://localhost:5000/callback'
+						completeURL: "https://" + URL + '/authorize?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&client_secret' + encodeURIComponent(this.refs.clientSecret.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value
 					});
 				} else if (type == 'custom') {
 					this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
 					this.setState({
 						serverURL: URL,
-						completeURL: URL + '/' + encodeURIComponent(this.refs.authEndpoint.refs.value.value) + '?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&client_secret=' + encodeURIComponent(this.refs.clientSecret.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code'
+						completeURL: URL + '/' + encodeURIComponent(this.refs.authEndpoint.refs.value.value) + '?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&client_secret=' + encodeURIComponent(this.refs.clientSecret.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value
 					});
 				}
 			}
@@ -20286,7 +20286,7 @@
 			_react2.default.createElement(
 				'p',
 				null,
-				encodeURIComponent('redirect_uri=https://localhost:5000/callback'),
+				encodeURIComponent('redirect_uri=' + document.querySelector("[name=redirect-uri]").value),
 				'&'
 			),
 			_react2.default.createElement(

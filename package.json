@@ -14,6 +14,7 @@
     "body-parser": "^1.15.0",
     "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.1",
+    "dotenv": "^2.0.0",
     "dotfile": "0.0.2",
     "express": "^4.13.4",
     "express-session": "^1.13.0",

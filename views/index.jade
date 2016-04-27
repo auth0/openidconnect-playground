@@ -15,4 +15,5 @@ body
 		p Now, we need to turn that access code into an access token, by having our server make a request to your token endpoint:
 		p [TODO: Add token request URL]
 		div#code-to-token-button
+	input(type="hidden", name="redirect-uri", value=redirect_uri)
 	script(src='index.js')

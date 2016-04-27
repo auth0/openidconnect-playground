@@ -59,13 +59,13 @@ class InputPanel extends React.Component{
 				serverURL: "https://" + URL,
 				authEndpoint: '/authorize',
 				tokenEndpoint: '/oauth/token',
-				completeURL: "https://" + URL + '/authorize?client_id='+ encodeURIComponent(this.refs.clientID.refs.value.value) +'&client_secret'+ encodeURIComponent(this.refs.clientSecret.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=http://localhost:5000/callback'
+				completeURL: "https://" + URL + '/authorize?client_id='+ encodeURIComponent(this.refs.clientID.refs.value.value) +'&client_secret'+ encodeURIComponent(this.refs.clientSecret.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value
 			})
 		} else if(type == 'custom'){
 			this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
 			this.setState({
 				serverURL: URL,
-				completeURL: URL + '/' + encodeURIComponent(this.refs.authEndpoint.refs.value.value) +'?client_id='+  encodeURIComponent(this.refs.clientID.refs.value.value) +'&client_secret='+ encodeURIComponent(this.refs.clientSecret.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code'
+				completeURL: URL + '/' + encodeURIComponent(this.refs.authEndpoint.refs.value.value) +'?client_id='+  encodeURIComponent(this.refs.clientID.refs.value.value) +'&client_secret='+ encodeURIComponent(this.refs.clientSecret.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value
 			})
 		}
 	}
@@ -131,7 +131,7 @@ const OIDCURL = (props) => {
 			<h2>Redirect to OpenID Connect Server:</h2>
 			<p>{props.server}{props.authEndpoint}?</p>
 			<p>client_id={encodeURIComponent(props.clientID)}&amp;</p>
-			<p>{encodeURIComponent('redirect_uri=https://localhost:5000/callback')}&amp;</p>
+			<p>{encodeURIComponent('redirect_uri=' + document.querySelector("[name=redirect-uri]").value)}&amp;</p>
 			<p>scope={encodeURIComponent(props.scope)}&amp;</p>
 			<p>response_type=code&amp;</p>
 		</div>

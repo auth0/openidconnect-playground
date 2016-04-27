@@ -3,6 +3,7 @@
 let express = require('express')
 let session = require('express-session')
 let genuuid = require('uid-safe')
+let dotenv = require('dotenv').config()
 
 let app = express()
 
@@ -30,7 +31,10 @@ app.get('/',
 	  	code = req.session.authCode
 	  	req.session.refresh = true
 	}
-    res.render('index', { code : code })
+    res.render('index', { 
+    	code,
+    	redirect_uri: process.env.REDIRECT_URI
+    })
   }
 );
 
