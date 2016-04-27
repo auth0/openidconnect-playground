@@ -25,20 +25,20 @@ app.set('view engine', 'jade')
 
 app.get('/',
   function(req, res){
-  	console.log(req.session);
-  	console.log('CODE: ', req.session.authCode)
-    res.render('index', { code : req.session.authCode || null })
+  	let code = null
+  	if(!req.session.refresh && req.session.authCode){
+	  	code = req.session.authCode
+	  	req.session.refresh = true
+	}
+    res.render('index', { code : code })
   }
 );
 
 app.get('/callback', function(req, res){
 	if(req.query.code){
-		req.session.authCode = req.query.code;
-		console.log('ASSIGNED:', req.session);
-		req.session.save(function(){
-			res.redirect('/');
-			res.end();
-		});
+		req.session.refresh = false
+		req.session.authCode = req.query.code
+		res.redirect('/')
 	}
 })
 

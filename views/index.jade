@@ -8,5 +8,11 @@ body
 	p Hey, just a friendly note: we store stuff like your keys in LocalStorage so that when you redirect to authenticate, you don't lose them. You can clear them by clicking on this button: 
 	span#clear-all-button
 	div#app
-	p #{code}
+	if code
+		h2 Step 1 complete!
+		p Your access code is:
+		p #{code}
+		p Now, we need to turn that access code into an access token, by having our server make a request to your token endpoint:
+		p [TODO: Add token request URL]
+		div#code-to-token-button
 	script(src='index.js')
