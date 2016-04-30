@@ -16,4 +16,5 @@ body
 		p [TODO: Add token request URL]
 		div#code-to-token-button
 	input(type="hidden", name="redirect-uri", value=redirect_uri)
+	input(type="hidden", name="stateToken", value=state)
 	script(src='index.js')

@@ -4,12 +4,12 @@ let express = require('express')
 let session = require('express-session')
 let genuuid = require('uid-safe')
 let dotenv = require('dotenv').config()
+let sha1 = require('sha1')
+let crypto = require('crypto')
 
 let app = express()
 
-// app.use(require('cookie-parser')({ secret: 'keyboard-cat'}))
 app.use(require('body-parser').urlencoded({ extended: true }))
-// app.use(require('query-parser'));
 
 app.use(express.static('public'));
 
@@ -33,7 +33,8 @@ app.get('/',
 	}
     res.render('index', { 
     	code,
-    	redirect_uri: process.env.REDIRECT_URI
+    	redirect_uri: process.env.REDIRECT_URI,
+    	state: sha1(crypto.randomBytes(1024).toString())
     })
   }
 );

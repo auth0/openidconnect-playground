@@ -20057,6 +20057,7 @@
 			_this.update = _this.update.bind(_this);
 			var oldState = localStorage.getItem('app-state');
 			_this.state = JSON.parse(oldState) || {};
+			_this.state.warning = false;
 			return _this;
 		}
 
@@ -20069,17 +20070,30 @@
 					_react2.default.createElement(
 						'div',
 						{ 'class': 'inputs' },
-						_react2.default.createElement(ServerPicker, { ref: 'server', name: 'server', label: 'OpenID Connect Server', update: this.update }),
-						_react2.default.createElement(ServerURLInput, { ref: 'serverURL', update: this.update }),
+						_react2.default.createElement(ServerPicker, { ref: 'server', name: 'server', server: this.state.server, label: 'OpenID Connect Server', update: this.update }),
+						_react2.default.createElement(ServerURLInput, { ref: 'serverURL', val: this.state.serverURL, update: this.update }),
+						_react2.default.createElement(
+							'p',
+							{ id: 'warning', style: { display: this.state.warning ? 'block' : 'none' } },
+							'Remember to set ',
+							this.state.serverURL,
+							'/callback as an allowed callback with your application!'
+						),
 						_react2.default.createElement(InputValue, { ref: 'authEndpoint', name: 'authEndpoint', label: 'Authorization Endpoint', val: this.state.authEndpoint, pholder: '/authorize', update: this.update }),
 						_react2.default.createElement(InputValue, { ref: 'tokenEndpoint', name: 'tokenEndpoint', label: 'Token Endpoint', pholder: '/token', val: this.state.tokenEndpoint, update: this.update }),
 						_react2.default.createElement(InputValue, { ref: 'clientID', name: 'clientID', label: 'Client ID', val: this.state.clientID, update: this.update }),
 						_react2.default.createElement(InputValue, { ref: 'clientSecret', name: 'clientSecret', label: 'Client Secret', val: this.state.clientSecret, update: this.update }),
 						_react2.default.createElement(InputValue, { ref: 'scope', name: 'scope', label: 'Scope', val: this.state.scope, pholder: 'openid name email', update: this.update })
 					),
-					_react2.default.createElement(OIDCURL, { server: this.state.serverURL, authEndpoint: this.state.authEndpoint, clientID: this.state.clientID, scope: this.state.scope }),
+					_react2.default.createElement(OIDCURL, { server: this.state.serverURL, authEndpoint: this.state.authEndpoint, clientID: this.state.clientID, scope: this.state.scope, stateToken: this.state.stateToken }),
 					_react2.default.createElement(RedirectButton, { redirect: this.authRedirect.bind(this) })
 				);
+			}
+		}, {
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				this.updateServerURL(this.refs.server.refs.value.value, this.refs.serverURL.refs.value.value);
+				this.updateStateToken();
 			}
 		}, {
 			key: 'update',
@@ -20094,13 +20108,18 @@
 						scope: null
 					});
 				}
+				this.updateServerURL(this.refs.server.refs.value.value, this.refs.serverURL.refs.value.value);
+
+				document.querySelector("select[name=server]").removeAttribute('value');
+
 				this.setState({
 					server: this.refs.server.refs.value.value,
 					authEndpoint: this.refs.authEndpoint.refs.value.value,
 					tokenEndpoint: this.refs.tokenEndpoint.refs.value.value,
 					clientID: this.refs.clientID.refs.value.value,
 					clientSecret: this.refs.clientSecret.refs.value.value,
-					scope: this.refs.scope.refs.value.value
+					scope: this.refs.scope.refs.value.value,
+					stateToken: document.querySelector('input[name=stateToken]').value
 				});
 
 				this.updateServerURL(this.refs.server.refs.value.value, this.refs.serverURL.refs.value.value);
@@ -20114,25 +20133,58 @@
 					this.refs.serverURL.refs.value.disabled = true;
 				}
 
+				var changed = !(type == this.state.server);
+
 				if (type == 'Auth0') {
-					this.refs.serverURL.updateLabel("Your Auth0 Domain", "domain.auth0.com");
+					this.refs.serverURL.updateLabel("Your Auth0 Domain", "https://domain.auth0.com");
 					this.setState({
-						serverURL: "https://" + URL,
+						serverURL: changed ? 'https://' : URL || 'https://',
+						clientID: this.refs.clientID.refs.value.value || this.state.savedClientID || 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC',
+						clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || 'Secret',
 						authEndpoint: '/authorize',
 						tokenEndpoint: '/oauth/token',
-						completeURL: "https://" + URL + '/authorize?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&client_secret' + encodeURIComponent(this.refs.clientSecret.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value
+						completeURL: URL + '/authorize?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
+						warning: !this.state.clientID || this.state.clientID == 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC' ? false : true
 					});
 				} else if (type == 'custom') {
 					this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
 					this.setState({
-						serverURL: URL,
-						completeURL: URL + '/' + encodeURIComponent(this.refs.authEndpoint.refs.value.value) + '?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&client_secret=' + encodeURIComponent(this.refs.clientSecret.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value
+						serverURL: changed ? 'https://' : URL || 'https://',
+						clientID: this.refs.clientID.refs.value.value || this.state.savedClientID || '',
+						clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || '',
+						authEndpoint: '/authorize',
+						tokenEndpoint: '/oauth/token',
+						completeURL: URL + '/' + encodeURIComponent(this.refs.authEndpoint.refs.value.value) + '?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
+						warning: true
+					});
+				} else if (type == 'google') {
+					this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
+					this.setState({
+						serverURL: "https://accounts.google.com/o/oauth2/v2",
+						authEndpoint: "/auth",
+						clientID: changed ? this.state.savedClientID || '' : this.refs.clientID.refs.value.value || this.state.savedClientID || '',
+						clientSecret: changed ? this.state.savedClientID || '' : this.refs.clientSecret.refs.value.value || this.state.savedSecret || '',
+						completeURL: 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
+						warning: true
+					});
+				}
+			}
+		}, {
+			key: 'updateStateToken',
+			value: function updateStateToken() {
+				if (!this.state.stateToken) {
+					this.setState({
+						stateToken: document.querySelector('input[name=stateToken]').value
 					});
 				}
 			}
 		}, {
 			key: 'authRedirect',
 			value: function authRedirect() {
+				this.setState({
+					savedClientID: this.state.clientID,
+					savedClientSecret: this.state.clientSecret
+				});
 				localStorage.setItem('app-state', JSON.stringify(this.state));
 				window.location = this.state.completeURL;
 			}
@@ -20158,11 +20210,11 @@
 					null,
 					_react2.default.createElement(
 						'label',
-						{ 'for': '{this.props.name}' },
+						{ 'for': this.props.name },
 						this.props.label,
 						':'
 					),
-					_react2.default.createElement('input', { name: '{this.props.name}', ref: 'value', value: this.props.val, onChange: this.props.update, placeholder: this.props.pholder })
+					_react2.default.createElement('input', { name: this.props.name, ref: 'value', value: this.props.val, onChange: this.props.update, placeholder: this.props.pholder })
 				);
 			}
 		}]);
@@ -20197,7 +20249,7 @@
 						this.state.label,
 						':'
 					),
-					_react2.default.createElement('input', { disabled: 'true', name: 'serverUrl', ref: 'value', onChange: this.props.update, placeholder: this.state.pholder })
+					_react2.default.createElement('input', { name: 'serverUrl', ref: 'value', value: this.props.val, onChange: this.props.update, placeholder: this.state.pholder })
 				);
 			}
 		}, {
@@ -20230,13 +20282,13 @@
 					null,
 					_react2.default.createElement(
 						'label',
-						{ 'for': '{this.props.name}' },
+						{ 'for': this.props.name },
 						this.props.label,
 						':'
 					),
 					_react2.default.createElement(
 						'select',
-						{ name: '{this.props.name}', ref: 'value', onChange: this.props.update },
+						{ name: this.props.name, value: this.props.server, ref: 'value', onChange: this.props.update },
 						_react2.default.createElement(
 							'option',
 							{ value: 'none' },
@@ -20246,6 +20298,11 @@
 							'option',
 							{ value: 'Auth0' },
 							'Auth0'
+						),
+						_react2.default.createElement(
+							'option',
+							{ value: 'google' },
+							'Google'
 						),
 						_react2.default.createElement(
 							'option',
@@ -20300,6 +20357,12 @@
 				'p',
 				null,
 				'response_type=code&'
+			),
+			_react2.default.createElement(
+				'p',
+				null,
+				'state=',
+				encodeURIComponent(props.stateToken)
 			)
 		);
 	};
