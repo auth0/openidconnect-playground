@@ -53,6 +53,7 @@ app.post('/code_to_token', function(req, res){
 	//REQUIRED params: code, clientID, clientSecret, tokenEndpoint, serviceURL
 	//step 1: exchange code for token with OIDC server
 	//step 2: send back https response from OIDC server
+	let result = {};
 	console.log('body', req.body)
 	if(req.body.server == 'Auth0'){
 		console.log('Auth0 token request...')
@@ -68,7 +69,20 @@ app.post('/code_to_token', function(req, res){
 		}, function(err, response, body){
 			console.log(err, response.statusCode, body)
 		})
-
+	} else if (req.body.server == 'google'){
+		console.log('Google token request...')
+		request.post('https://www.googleapis.com/oauth2/v4/token', 
+		{
+			form: {
+				code: req.body.code,
+				client_id: req.body.clientID,
+				client_secret: req.body.clientSecret,
+				grant_type: 'authorization_code',
+				redirect_uri: process.env.REDIRECT_URI
+			}
+		}, function(err, response, body){
+			console.log(err, response.statusCode, body)
+		})
 	}
 	res.end();
 });
