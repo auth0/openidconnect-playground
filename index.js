@@ -6,10 +6,12 @@ let genuuid = require('uid-safe')
 let dotenv = require('dotenv').config()
 let sha1 = require('sha1')
 let crypto = require('crypto')
+let request = require('request')
 
 let app = express()
 
-app.use(require('body-parser').urlencoded({ extended: true }))
+// app.use(require('body-parser').urlencoded({ extended: true }))
+app.use(require('body-parser').json())
 
 app.use(express.static('public'));
 
@@ -47,13 +49,35 @@ app.get('/callback', function(req, res){
 	}
 })
 
-app.post('code_to_token', function(req, res){
+app.post('/code_to_token', function(req, res){
 	//REQUIRED params: code, clientID, clientSecret, tokenEndpoint, serviceURL
 	//step 1: exchange code for token with OIDC server
 	//step 2: send back https response from OIDC server
+	console.log('body', req.body)
+	if(req.body.server == 'Auth0'){
+		console.log('Auth0 token request...')
+		let reqData = {
+				code: req.body.code,
+				client_id: req.body.clientID,
+				client_secret: req.body.clientSecret,
+				grant_type: 'authorization_code'
+			}
+		console.log(reqData)
+		request.post(req.body.serverURL + req.body.tokenEndpoint, {
+			form: reqData
+		}, function(err, response, body){
+			console.log(err, response.statusCode, body)
+		})
+
+	}
+	res.end();
 });
 
-app.post('validate', function(req, res){
+app.get('/token/callback', function(req,res){
+
+})
+
+app.post('/validate', function(req, res){
 	//REQUIRED: token, clientSecret
 	//step 1: validate the token
 	//step 2: send back the results.
