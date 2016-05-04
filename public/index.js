@@ -20145,7 +20145,7 @@
 				if (type == 'Auth0') {
 					this.refs.serverURL.updateLabel("Your Auth0 Domain", "https://domain.auth0.com");
 					this.setState({
-						serverURL: changed ? 'https://' : URL || 'https://',
+						serverURL: changed ? 'https://samples.auth0.com' : URL || 'https://',
 						clientID: this.refs.clientID.refs.value.value || this.state.savedClientID || 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC',
 						clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || 'gcyGiDHsIE6bUT9oAs6ghuynjt8usUqTRglg8n8eWqw9SgnGJ5cRLCUz03gJ_s_X',
 						authEndpoint: '/authorize',

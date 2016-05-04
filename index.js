@@ -61,7 +61,7 @@ app.post('/code_to_token', function(req, res){
 				code: req.body.code,
 				client_id: req.body.clientID,
 				client_secret: req.body.clientSecret,
-				grant_type: 'authorization_code'
+				grant_type: 'authorization_code',
 				redirect_uri: process.env.REDIRECT_URI
 			}
 		request.post(req.body.serverURL + req.body.tokenEndpoint, {
