@@ -28,7 +28,7 @@ app.set('view engine', 'jade')
 
 app.get('/',
   function(req, res){
-  	let code = null
+  	let code = null, tokenInfo = null, tokenResponse = null
   	if(!req.session.refresh && req.session.authCode){
 	  	code = req.session.authCode
 	  	req.session.refresh = true
@@ -63,11 +63,13 @@ app.post('/code_to_token', function(req, res){
 				client_secret: req.body.clientSecret,
 				grant_type: 'authorization_code'
 			}
-		console.log(reqData)
 		request.post(req.body.serverURL + req.body.tokenEndpoint, {
 			form: reqData
 		}, function(err, response, body){
 			console.log(err, response.statusCode, body)
+			result.body = body
+			result.response = response
+			res.end(JSON.stringify(result))
 		})
 	} else if (req.body.server == 'google'){
 		console.log('Google token request...')
@@ -82,14 +84,12 @@ app.post('/code_to_token', function(req, res){
 			}
 		}, function(err, response, body){
 			console.log(err, response.statusCode, body)
+			result.body = body
+			result.response = response	
+			res.end(JSON.stringify(result))
 		})
 	}
-	res.end();
 });
-
-app.get('/token/callback', function(req,res){
-
-})
 
 app.post('/validate', function(req, res){
 	//REQUIRED: token, clientSecret

@@ -20147,7 +20147,7 @@
 					this.setState({
 						serverURL: changed ? 'https://' : URL || 'https://',
 						clientID: this.refs.clientID.refs.value.value || this.state.savedClientID || 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC',
-						clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || 'Secret',
+						clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || 'gcyGiDHsIE6bUT9oAs6ghuynjt8usUqTRglg8n8eWqw9SgnGJ5cRLCUz03gJ_s_X',
 						authEndpoint: '/authorize',
 						tokenEndpoint: '/oauth/token',
 						completeURL: URL + '/authorize?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
@@ -20166,9 +20166,13 @@
 					});
 				} else if (type == 'google') {
 					this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
+					this.refs.serverURL.refs.value.disabled = true;
+					this.refs.authEndpoint.refs.value.disabled = true;
+					this.refs.tokenEndpoint.refs.value.disabled = true;
 					this.setState({
 						serverURL: "https://accounts.google.com/o/oauth2/v2",
-						authEndpoint: "/auth",
+						authEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
+						tokenEndpoint: "https://www.googleapis.com/oauth2/v4/token",
 						clientID: changed ? this.state.savedClientID || '' : this.refs.clientID.refs.value.value || this.state.savedClientID || '',
 						clientSecret: changed ? this.state.savedClientID || '' : this.refs.clientSecret.refs.value.value || this.state.savedSecret || '',
 						completeURL: 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
@@ -20507,7 +20511,8 @@
 						null,
 						'Now, we need to turn that access code into an access token, by having our server make a request to your token endpoint:'
 					),
-					_react2.default.createElement(GetTokenButton, { getToken: this.getToken.bind(this) })
+					_react2.default.createElement(GetTokenButton, { getToken: this.getToken.bind(this) }),
+					_react2.default.createElement(TokenResponse, { token: this.state.tokenResponse })
 				);
 			}
 		}, {
@@ -20518,7 +20523,16 @@
 					url: '/code_to_token',
 					method: 'POST',
 					data: JSON.stringify(panel.state)
-				}).send();
+				});
+
+				tokenRequest.on('success', function (event) {
+					panel.setState({
+						tokenResponse: event.currentTarget.response
+					});
+					panel.update();
+				});
+
+				tokenRequest.send();
 			}
 		}, {
 			key: 'update',
@@ -20533,6 +20547,14 @@
 			'button',
 			{ type: 'button', onClick: props.getToken },
 			'Get Token'
+		);
+	};
+
+	var TokenResponse = function TokenResponse(props) {
+		return _react2.default.createElement(
+			'div',
+			null,
+			props.token
 		);
 	};
 

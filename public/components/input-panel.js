@@ -71,7 +71,7 @@ class InputPanel extends React.Component{
 			this.setState({
 				serverURL: changed ? 'https://' : (URL || 'https://'),
 				clientID:  this.refs.clientID.refs.value.value || this.state.savedClientID || 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC',
-				clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || 'Secret',
+				clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || 'gcyGiDHsIE6bUT9oAs6ghuynjt8usUqTRglg8n8eWqw9SgnGJ5cRLCUz03gJ_s_X',
 				authEndpoint: '/authorize',
 				tokenEndpoint: '/oauth/token',
 				completeURL: URL + '/authorize?client_id='+ encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value  + '&state=' + this.state.stateToken,
@@ -90,9 +90,13 @@ class InputPanel extends React.Component{
 			})
 		} else if(type == 'google'){
 			this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
+			this.refs.serverURL.refs.value.disabled = true
+			this.refs.authEndpoint.refs.value.disabled = true
+			this.refs.tokenEndpoint.refs.value.disabled = true
 			this.setState({
 				serverURL: "https://accounts.google.com/o/oauth2/v2",
-				authEndpoint: "/auth",
+				authEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
+				tokenEndpoint: "https://www.googleapis.com/oauth2/v4/token",
 				clientID: changed ? (this.state.savedClientID || '') : (this.refs.clientID.refs.value.value || this.state.savedClientID || ''),
 				clientSecret: changed ? (this.state.savedClientID || '') : (this.refs.clientSecret.refs.value.value || this.state.savedSecret || ''),
 				completeURL: 'https://accounts.google.com/o/oauth2/v2/auth?client_id='+  encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,

@@ -17,6 +17,7 @@ class TokenPanel extends React.Component{
 				<p>#{this.state.code}</p>
 				<p>Now, we need to turn that access code into an access token, by having our server make a request to your token endpoint:</p>
 				<GetTokenButton getToken={this.getToken.bind(this)} />
+				<TokenResponse token={this.state.tokenResponse} />
 			</div>
 		)
 	}
@@ -26,7 +27,16 @@ class TokenPanel extends React.Component{
 			url: '/code_to_token',
 			method: 'POST',
 			data: JSON.stringify(panel.state)
-		}).send();
+		})
+
+		tokenRequest.on('success', function(event){
+			panel.setState({
+				tokenResponse: event.currentTarget.response
+			})
+			panel.update();
+		})
+
+		tokenRequest.send()
 	}
 	update(){
 
@@ -36,6 +46,12 @@ class TokenPanel extends React.Component{
 const GetTokenButton = (props) => {
 	return (
 		<button type="button" onClick={props.getToken}>Get Token</button>
+	)
+}
+
+const TokenResponse = (props) => {
+	return (
+		<div>{props.token}</div>
 	)
 }
 
