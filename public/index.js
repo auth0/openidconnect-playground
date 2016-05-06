@@ -20092,9 +20092,7 @@
 						_react2.default.createElement(
 							'p',
 							{ id: 'warning', style: { display: this.state.warning ? 'block' : 'none' } },
-							'Remember to set ',
-							this.state.serverURL,
-							'/callback as an allowed callback with your application!'
+							'Remember to set https://openidconnect.net/callback as an allowed callback with your application!'
 						),
 						_react2.default.createElement(InputValue, { ref: 'authEndpoint', name: 'authEndpoint', label: 'Authorization Endpoint', val: this.state.authEndpoint, pholder: '/authorize', update: this.update }),
 						_react2.default.createElement(InputValue, { ref: 'tokenEndpoint', name: 'tokenEndpoint', label: 'Token Endpoint', pholder: '/token', val: this.state.tokenEndpoint, update: this.update }),
@@ -20176,11 +20174,15 @@
 					});
 				} else if (type == 'google') {
 					var googleDiscovery = new _simpleAjax2.default({
-						url: 'https://accounts.google.com/.well-known/openid-configuration'
+						url: '/discover',
+						method: 'GET',
+						data: {
+							'service': 'google'
+						}
 					});
 
 					googleDiscovery.on('success', function (event) {
-						console.log(event.currentTarget);
+						var discovered = JSON.parse(event.currentTarget.response);
 						this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
 						this.refs.serverURL.refs.value.disabled = true;
 						this.refs.authEndpoint.refs.value.disabled = true;
@@ -20188,15 +20190,15 @@
 						this.setState({
 							discovery: true,
 							discoveryURL: 'https://accounts.google.com/.well-known/openid-configuration',
-							serverURL: "https://accounts.google.com/o/oauth2/v2",
-							authEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
-							tokenEndpoint: "https://www.googleapis.com/oauth2/v4/token",
+							serverURL: discovered.authorization_endpoint,
+							authEndpoint: discovered.authorization_endpoint,
+							tokenEndpoint: discovered.token_endpoint,
 							clientID: changed ? this.state.savedClientID || '' : this.refs.clientID.refs.value.value || this.state.savedClientID || '',
 							clientSecret: changed ? this.state.savedClientID || '' : this.refs.clientSecret.refs.value.value || this.state.savedSecret || '',
-							completeURL: 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
+							completeURL: discovered.auth_endpoint + '?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
 							warning: true
 						});
-					});
+					}.bind(this));
 
 					googleDiscovery.send();
 				}

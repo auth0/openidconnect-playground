@@ -41,6 +41,15 @@ app.get('/',
   }
 );
 
+app.get('/discover', function(req, res){
+	if(req.query.service == 'google'){
+		request.get('https://accounts.google.com/.well-known/openid-configuration', function(err, resp, body){
+			console.log(body);
+			res.send(body);
+		})
+	}
+})
+
 app.get('/callback', function(req, res){
 	if(req.query.code){
 		req.session.refresh = false

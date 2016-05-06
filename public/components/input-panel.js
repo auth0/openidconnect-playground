@@ -16,7 +16,7 @@ class InputPanel extends React.Component{
 					<ServerPicker ref="server" name="server" server={this.state.server} label="OpenID Connect Server" update={this.update} />
 					<p id="discovery" style={{display:(this.state.discovery ? 'block' : 'none')}}>Using the discovery document at: {this.state.discoveryURL}</p>
 					<ServerURLInput ref="serverURL" val={this.state.serverURL} update={this.update} />
-					<p id="warning" style={{display:(this.state.warning ? 'block' : 'none')}}>Remember to set {this.state.serverURL}/callback as an allowed callback with your application!</p>
+					<p id="warning" style={{display:(this.state.warning ? 'block' : 'none')}}>Remember to set https://openidconnect.net/callback as an allowed callback with your application!</p>
 					<InputValue ref="authEndpoint" name="authEndpoint" label="Authorization Endpoint" val={this.state.authEndpoint} pholder="/authorize" update={this.update} />
 					<InputValue ref="tokenEndpoint" name="tokenEndpoint" label="Token Endpoint" pholder="/token" val={this.state.tokenEndpoint} update={this.update} />
 					<InputValue ref="clientID" name="clientID" label="Client ID" val={this.state.clientID} update={this.update} />
@@ -92,11 +92,15 @@ class InputPanel extends React.Component{
 			})
 		} else if(type == 'google'){
 			let googleDiscovery = new Ajax({
-				url: 'https://accounts.google.com/.well-known/openid-configuration',
+				url: '/discover',
+				method: 'GET',
+				data: {
+					'service': 'google'
+				}
 			});
 
 			googleDiscovery.on('success', function(event){
-				console.log(event.currentTarget);
+				let discovered = JSON.parse(event.currentTarget.response);
 				this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
 				this.refs.serverURL.refs.value.disabled = true
 				this.refs.authEndpoint.refs.value.disabled = true
@@ -104,15 +108,15 @@ class InputPanel extends React.Component{
 				this.setState({
 					discovery: true,
 					discoveryURL: 'https://accounts.google.com/.well-known/openid-configuration',
-					serverURL: "https://accounts.google.com/o/oauth2/v2",
-					authEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
-					tokenEndpoint: "https://www.googleapis.com/oauth2/v4/token",
+					serverURL: discovered.authorization_endpoint,
+					authEndpoint:  discovered.authorization_endpoint,
+					tokenEndpoint:  discovered.token_endpoint,
 					clientID: changed ? (this.state.savedClientID || '') : (this.refs.clientID.refs.value.value || this.state.savedClientID || ''),
 					clientSecret: changed ? (this.state.savedClientID || '') : (this.refs.clientSecret.refs.value.value || this.state.savedSecret || ''),
-					completeURL: 'https://accounts.google.com/o/oauth2/v2/auth?client_id='+  encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
+					completeURL: discovered.auth_endpoint + '?client_id='+  encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
 					warning: true
 				})			
-			})
+			}.bind(this));
 
 			googleDiscovery.send();
 		}
