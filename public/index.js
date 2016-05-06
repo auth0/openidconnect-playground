@@ -54,9 +54,9 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _inputPanel = __webpack_require__(166);
+	var _serverUrls = __webpack_require__(166);
 
-	var _inputPanel2 = _interopRequireDefault(_inputPanel);
+	var _serverUrls2 = _interopRequireDefault(_serverUrls);
 
 	var _clearAllButton = __webpack_require__(167);
 
@@ -69,7 +69,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	_reactDom2.default.render(_react2.default.createElement(_clearAllButton2.default, null), document.getElementById('clear-all-button'));
-	_reactDom2.default.render(_react2.default.createElement(_inputPanel2.default, null), document.getElementById('app'));
+	_reactDom2.default.render(_react2.default.createElement(_serverUrls2.default, null), document.getElementById('server-urls'));
 	if (document.querySelector('input[name=code]').value) {
 		_reactDom2.default.render(_react2.default.createElement(_tokenPanel2.default, null), document.getElementById('token-panel'));
 	}
@@ -20057,186 +20057,27 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var InputPanel = function (_React$Component) {
-		_inherits(InputPanel, _React$Component);
+	var ServerURLs = function (_React$Component) {
+		_inherits(ServerURLs, _React$Component);
 
-		function InputPanel() {
-			_classCallCheck(this, InputPanel);
+		function ServerURLs() {
+			_classCallCheck(this, ServerURLs);
 
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(InputPanel).call(this));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ServerURLs).call(this));
 
 			_this.update = _this.update.bind(_this);
-			var oldState = localStorage.getItem('app-state');
-			_this.state = JSON.parse(oldState) || {};
-			_this.state.warning = false;
+			var savedState = localStorage.getItem('app-state') || '{}';
+			savedState = JSON.parse(savedState);
+			_this.state = {
+				domain: 'samples.auth0.com',
+				authEndpoint: '',
+				tokenEndpoint: '',
+				savedState: savedState
+			};
 			return _this;
 		}
 
-		_createClass(InputPanel, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'div',
-						{ 'class': 'inputs' },
-						_react2.default.createElement(ServerPicker, { ref: 'server', name: 'server', server: this.state.server, label: 'OpenID Connect Server', update: this.update }),
-						_react2.default.createElement(
-							'p',
-							{ id: 'discovery', style: { display: this.state.discovery ? 'block' : 'none' } },
-							'Using the discovery document at: ',
-							this.state.discoveryURL
-						),
-						_react2.default.createElement(ServerURLInput, { ref: 'serverURL', val: this.state.serverURL, update: this.update }),
-						_react2.default.createElement(
-							'p',
-							{ id: 'warning', style: { display: this.state.warning ? 'block' : 'none' } },
-							'Remember to set https://openidconnect.net/callback as an allowed callback with your application!'
-						),
-						_react2.default.createElement(InputValue, { ref: 'authEndpoint', name: 'authEndpoint', label: 'Authorization Endpoint', val: this.state.authEndpoint, pholder: '/authorize', update: this.update }),
-						_react2.default.createElement(InputValue, { ref: 'tokenEndpoint', name: 'tokenEndpoint', label: 'Token Endpoint', pholder: '/token', val: this.state.tokenEndpoint, update: this.update }),
-						_react2.default.createElement(InputValue, { ref: 'clientID', name: 'clientID', label: 'Client ID', val: this.state.clientID, update: this.update }),
-						_react2.default.createElement(InputValue, { ref: 'clientSecret', name: 'clientSecret', label: 'Client Secret', val: this.state.clientSecret, update: this.update }),
-						_react2.default.createElement(InputValue, { ref: 'scope', name: 'scope', label: 'Scope', val: this.state.scope, pholder: 'openid name email', update: this.update })
-					),
-					_react2.default.createElement(OIDCURL, { server: this.state.serverURL, authEndpoint: this.state.authEndpoint, clientID: this.state.clientID, scope: this.state.scope, stateToken: this.state.stateToken }),
-					_react2.default.createElement(RedirectButton, { redirect: this.authRedirect.bind(this) })
-				);
-			}
-		}, {
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				this.updateServerURL(this.refs.server.refs.value.value, this.refs.serverURL.refs.value.value);
-				this.updateStateToken();
-			}
-		}, {
-			key: 'update',
-			value: function update(e) {
-				if (!localStorage.getItem('app-state')) {
-					this.setState({
-						server: null,
-						authEndpoint: null,
-						tokenEndpoint: null,
-						clientID: null,
-						clientSecret: null,
-						scope: null
-					});
-				}
-				this.updateServerURL(this.refs.server.refs.value.value, this.refs.serverURL.refs.value.value);
-
-				document.querySelector("select[name=server]").removeAttribute('value');
-
-				this.setState({
-					server: this.refs.server.refs.value.value,
-					authEndpoint: this.refs.authEndpoint.refs.value.value,
-					tokenEndpoint: this.refs.tokenEndpoint.refs.value.value,
-					clientID: this.refs.clientID.refs.value.value,
-					clientSecret: this.refs.clientSecret.refs.value.value,
-					scope: this.refs.scope.refs.value.value,
-					stateToken: document.querySelector('input[name=stateToken]').value
-				});
-
-				this.updateServerURL(this.refs.server.refs.value.value, this.refs.serverURL.refs.value.value);
-			}
-		}, {
-			key: 'updateServerURL',
-			value: function updateServerURL(type, URL) {
-				if (type !== 'none') {
-					this.refs.serverURL.refs.value.disabled = false;
-				} else {
-					this.refs.serverURL.refs.value.disabled = true;
-				}
-
-				var changed = !(type == this.state.server);
-
-				if (type == 'Auth0') {
-					this.refs.serverURL.updateLabel("Your Auth0 Domain", "https://domain.auth0.com");
-					this.setState({
-						serverURL: changed ? 'https://samples.auth0.com' : URL || 'https://',
-						clientID: this.refs.clientID.refs.value.value || this.state.savedClientID || 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC',
-						clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || 'gcyGiDHsIE6bUT9oAs6ghuynjt8usUqTRglg8n8eWqw9SgnGJ5cRLCUz03gJ_s_X',
-						authEndpoint: '/authorize',
-						tokenEndpoint: '/oauth/token',
-						completeURL: URL + '/authorize?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
-						warning: !this.state.clientID || this.state.clientID == 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC' ? false : true
-					});
-				} else if (type == 'custom') {
-					this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
-					this.setState({
-						serverURL: changed ? 'https://' : URL || 'https://',
-						clientID: this.refs.clientID.refs.value.value || this.state.savedClientID || '',
-						clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || '',
-						authEndpoint: '/authorize',
-						tokenEndpoint: '/oauth/token',
-						completeURL: URL + '/' + encodeURIComponent(this.refs.authEndpoint.refs.value.value) + '?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
-						warning: true
-					});
-				} else if (type == 'google') {
-					var googleDiscovery = new _simpleAjax2.default({
-						url: '/discover',
-						method: 'GET',
-						data: {
-							'service': 'google'
-						}
-					});
-
-					googleDiscovery.on('success', function (event) {
-						var discovered = JSON.parse(event.currentTarget.response);
-						this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
-						this.refs.serverURL.refs.value.disabled = true;
-						this.refs.authEndpoint.refs.value.disabled = true;
-						this.refs.tokenEndpoint.refs.value.disabled = true;
-						this.setState({
-							discovery: true,
-							discoveryURL: 'https://accounts.google.com/.well-known/openid-configuration',
-							serverURL: discovered.authorization_endpoint,
-							authEndpoint: discovered.authorization_endpoint,
-							tokenEndpoint: discovered.token_endpoint,
-							clientID: changed ? this.state.savedClientID || '' : this.refs.clientID.refs.value.value || this.state.savedClientID || '',
-							clientSecret: changed ? this.state.savedClientID || '' : this.refs.clientSecret.refs.value.value || this.state.savedSecret || '',
-							completeURL: discovered.auth_endpoint + '?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
-							warning: true
-						});
-					}.bind(this));
-
-					googleDiscovery.send();
-				}
-			}
-		}, {
-			key: 'updateStateToken',
-			value: function updateStateToken() {
-				if (!this.state.stateToken) {
-					this.setState({
-						stateToken: document.querySelector('input[name=stateToken]').value
-					});
-				}
-			}
-		}, {
-			key: 'authRedirect',
-			value: function authRedirect() {
-				this.setState({
-					savedClientID: this.state.clientID,
-					savedClientSecret: this.state.clientSecret
-				});
-				localStorage.setItem('app-state', JSON.stringify(this.state));
-				window.location = this.state.completeURL;
-			}
-		}]);
-
-		return InputPanel;
-	}(_react2.default.Component);
-
-	var InputValue = function (_React$Component2) {
-		_inherits(InputValue, _React$Component2);
-
-		function InputValue() {
-			_classCallCheck(this, InputValue);
-
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(InputValue).apply(this, arguments));
-		}
-
-		_createClass(InputValue, [{
+		_createClass(ServerURLs, [{
 			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
@@ -20244,89 +20085,16 @@
 					null,
 					_react2.default.createElement(
 						'label',
-						{ 'for': this.props.name },
-						this.props.label,
-						':'
-					),
-					_react2.default.createElement('input', { name: this.props.name, ref: 'value', value: this.props.val, onChange: this.props.update, placeholder: this.props.pholder })
-				);
-			}
-		}]);
-
-		return InputValue;
-	}(_react2.default.Component);
-
-	var ServerURLInput = function (_React$Component3) {
-		_inherits(ServerURLInput, _React$Component3);
-
-		function ServerURLInput() {
-			_classCallCheck(this, ServerURLInput);
-
-			var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(ServerURLInput).call(this));
-
-			_this3.state = {
-				label: "Server URL",
-				placeholder: "https://sample-oidc.com"
-			};
-			return _this3;
-		}
-
-		_createClass(ServerURLInput, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'label',
-						{ 'for': 'serverUrl' },
-						this.state.label,
-						':'
-					),
-					_react2.default.createElement('input', { name: 'serverUrl', ref: 'value', value: this.props.val, onChange: this.props.update, placeholder: this.state.pholder })
-				);
-			}
-		}, {
-			key: 'updateLabel',
-			value: function updateLabel(label, pholder) {
-				this.setState({
-					label: label,
-					pholder: pholder
-				});
-			}
-		}]);
-
-		return ServerURLInput;
-	}(_react2.default.Component);
-
-	var ServerPicker = function (_React$Component4) {
-		_inherits(ServerPicker, _React$Component4);
-
-		function ServerPicker() {
-			_classCallCheck(this, ServerPicker);
-
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(ServerPicker).apply(this, arguments));
-		}
-
-		_createClass(ServerPicker, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'label',
-						{ 'for': this.props.name },
-						this.props.label,
-						':'
+						{ 'for': 'server' },
+						'Server Template:'
 					),
 					_react2.default.createElement(
 						'select',
-						{ name: this.props.name, value: this.props.server, ref: 'value', onChange: this.props.update },
+						{ name: 'server', ref: 'server', onChange: this.updateServerURL.bind(this) },
 						_react2.default.createElement(
 							'option',
 							{ value: 'none' },
-							'SELECT A SERVER'
+							'SELECT A SERVER TEMPLATE'
 						),
 						_react2.default.createElement(
 							'option',
@@ -20343,73 +20111,176 @@
 							{ value: 'custom' },
 							'Custom'
 						)
-					)
+					),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(
+						'p',
+						{ style: { display: this.state.server == 'Auth0' ? 'block' : 'none' } },
+						_react2.default.createElement(
+							'label',
+							{ 'for': 'domain' },
+							'Auth0 domain: '
+						),
+						_react2.default.createElement('input', { name: 'domain', onChange: this.update, ref: 'domain', placeholder: 'mydomain.auth0.com' }),
+						_react2.default.createElement(
+							'button',
+							{ onClick: this.updateAuth0.bind(this) },
+							'Use Auth0 Discovery Document'
+						),
+						_react2.default.createElement('p', { ref: 'Auth0DiscoveryDocumentURL' })
+					),
+					_react2.default.createElement(
+						'p',
+						{ style: { display: this.state.server == 'custom' ? 'block' : 'none' } },
+						_react2.default.createElement(
+							'label',
+							{ 'for': 'discoveryURL' },
+							'Discovery Document URL: '
+						),
+						_react2.default.createElement('input', { name: 'discoveryURL', value: this.state.discoveryURL, ref: 'discoveryURL', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' }),
+						_react2.default.createElement(
+							'button',
+							{ style: { display: this.state.server != 'google' ? 'inline-block' : 'none' }, onClick: this.updateDiscovery.bind(this) },
+							'Use Discovery Document'
+						),
+						_react2.default.createElement('span', { ref: 'DiscoveryDocumentURL' })
+					),
+					_react2.default.createElement(
+						'p',
+						{ style: { display: this.state.server == 'google' ? 'block' : 'none' } },
+						_react2.default.createElement(
+							'span',
+							null,
+							'Discovery Document: ',
+							this.state.discoveryURL
+						),
+						_react2.default.createElement('br', null)
+					),
+					_react2.default.createElement(
+						'p',
+						{ id: 'warning', style: { display: this.state.warning ? 'block' : 'none' } },
+						'Remember to set https://openidconnect.net/callback as an allowed callback with your application!'
+					),
+					_react2.default.createElement(
+						'span',
+						null,
+						'Authorization Endpoint:  ',
+						_react2.default.createElement(
+							'span',
+							{ ref: 'authEndpoint' },
+							this.state.authEndpoint
+						)
+					),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(
+						'span',
+						null,
+						'Token Endpoint:  ',
+						_react2.default.createElement(
+							'span',
+							{ ref: 'tokenEndpoint' },
+							this.state.tokenEndpoint
+						)
+					),
+					_react2.default.createElement('br', null)
 				);
+			}
+		}, {
+			key: 'update',
+			value: function update() {}
+		}, {
+			key: 'updateServerURL',
+			value: function updateServerURL() {
+				var type = this.refs.server.value;
+
+				if (type == 'Auth0') {
+					this.setState({
+						server: type,
+						domain: 'samples.auth0.com',
+						authEndpoint: this.state.savedAuthEndpoint || '',
+						tokenEndpoint: this.state.savedTokenEndpoint || '',
+						clientID: this.state.savedState.ClientID || 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC',
+						clientSecret: this.state.savedState.ClientSecret || 'gcyGiDHsIE6bUT9oAs6ghuynjt8usUqTRglg8n8eWqw9SgnGJ5cRLCUz03gJ_s_X',
+						warning: !this.state.clientID || this.state.clientID == 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC' ? false : true
+					});
+					this.refs.domain.value = this.state.savedState.domain || 'samples.auth0.com';
+				} else if (type == 'custom') {
+					this.setState({
+						server: type,
+						warning: true,
+						authEndpoint: this.state.savedAuthEndpoint || '',
+						tokenEndpoint: this.state.savedTokenEndpoint || ''
+					});
+				} else if (type == 'google') {
+					this.refs.discoveryURL.disabled = true;
+					this.discover(null, 'google', function (discovered) {
+						this.setState({
+							server: type,
+							discovery: true,
+							discoveryURL: 'https://accounts.google.com/.well-known/openid-configuration',
+							warning: true,
+							authEndpoint: discovered.authorization_endpoint,
+							tokenEndpoint: discovered.token_endpoint
+						});
+						this.update();
+					}.bind(this));
+				}
+			}
+		}, {
+			key: 'updateAuth0',
+			value: function updateAuth0() {
+				var documentURL = 'https://' + this.refs.domain.value + '/.well-known/openid-configuration';
+				this.discover(documentURL, 'auth0', function (discovered) {
+					this.setState({
+						discovery: true,
+						discoveryURL: documentURL,
+						authEndpoint: discovered.authorization_endpoint,
+						tokenEndpoint: discovered.token_endpoint
+					});
+					this.update();
+				}.bind(this));
+			}
+		}, {
+			key: 'updateDiscovery',
+			value: function updateDiscovery() {
+				var documentURL = this.refs.discoveryURL.value;
+				this.discover(documentURL, false, function (discovered) {
+					this.setState({
+						discovery: true,
+						discoveryURL: documentURL,
+						authEndpoint: discovered.authorization_endpoint,
+						tokenEndpoint: discovered.token_endpoint
+					});
+					this.update();
+				}.bind(this));
+			}
+		}, {
+			key: 'discover',
+			value: function discover(url) {
+				var service = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+				var callback = arguments[2];
+
+				var serviceDiscovery = new _simpleAjax2.default({
+					url: '/discover',
+					method: 'GET',
+					data: {
+						service: service,
+						url: url
+					}
+				});
+
+				serviceDiscovery.on('success', function (event) {
+					callback(JSON.parse(event.currentTarget.response));
+				});
+
+				serviceDiscovery.send();
 			}
 		}]);
 
-		return ServerPicker;
+		return ServerURLs;
 	}(_react2.default.Component);
 
-	var OIDCURL = function OIDCURL(props) {
-		return _react2.default.createElement(
-			'div',
-			null,
-			_react2.default.createElement(
-				'h2',
-				null,
-				'Redirect to OpenID Connect Server:'
-			),
-			_react2.default.createElement(
-				'p',
-				null,
-				props.server,
-				props.authEndpoint,
-				'?'
-			),
-			_react2.default.createElement(
-				'p',
-				null,
-				'client_id=',
-				encodeURIComponent(props.clientID),
-				'&'
-			),
-			_react2.default.createElement(
-				'p',
-				null,
-				encodeURIComponent('redirect_uri=' + document.querySelector("[name=redirect-uri]").value),
-				'&'
-			),
-			_react2.default.createElement(
-				'p',
-				null,
-				'scope=',
-				encodeURIComponent(props.scope),
-				'&'
-			),
-			_react2.default.createElement(
-				'p',
-				null,
-				'response_type=code&'
-			),
-			_react2.default.createElement(
-				'p',
-				null,
-				'state=',
-				encodeURIComponent(props.stateToken)
-			)
-		);
-	};
-
-	var RedirectButton = function RedirectButton(props) {
-		return _react2.default.createElement(
-			'button',
-			{ type: 'button', onClick: props.redirect },
-			'Redirect to Auth'
-		);
-	};
-
-	exports.default = InputPanel;
+	exports.default = ServerURLs;
 
 /***/ },
 /* 167 */

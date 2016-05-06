@@ -1,12 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import InputPanel from './components/input-panel'
+import ServerURLs from './components/server-urls'
 import ClearAllButton from './components/clear-all-button'
 import TokenPanel from './components/token-panel'
 
 ReactDOM.render(<ClearAllButton />, document.getElementById('clear-all-button'))
-ReactDOM.render(<InputPanel />, document.getElementById('app'))
+ReactDOM.render(<ServerURLs />, document.getElementById('server-urls'))
 if(document.querySelector('input[name=code]').value){
 	ReactDOM.render(<TokenPanel />, document.getElementById('token-panel'))
 }

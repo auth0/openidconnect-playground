@@ -47,6 +47,11 @@ app.get('/discover', function(req, res){
 			console.log(body);
 			res.send(body);
 		})
+	} else{
+		request.get(req.query.url, function(err, resp, body){
+			if(err) res.send(err)
+			else res.send(body)
+		})
 	}
 })
 

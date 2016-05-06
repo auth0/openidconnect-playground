@@ -13,12 +13,6 @@ class InputPanel extends React.Component{
 		return (
 			<div>
 				<div class="inputs">
-					<ServerPicker ref="server" name="server" server={this.state.server} label="OpenID Connect Server" update={this.update} />
-					<p id="discovery" style={{display:(this.state.discovery ? 'block' : 'none')}}>Using the discovery document at: {this.state.discoveryURL}</p>
-					<ServerURLInput ref="serverURL" val={this.state.serverURL} update={this.update} />
-					<p id="warning" style={{display:(this.state.warning ? 'block' : 'none')}}>Remember to set https://openidconnect.net/callback as an allowed callback with your application!</p>
-					<InputValue ref="authEndpoint" name="authEndpoint" label="Authorization Endpoint" val={this.state.authEndpoint} pholder="/authorize" update={this.update} />
-					<InputValue ref="tokenEndpoint" name="tokenEndpoint" label="Token Endpoint" pholder="/token" val={this.state.tokenEndpoint} update={this.update} />
 					<InputValue ref="clientID" name="clientID" label="Client ID" val={this.state.clientID} update={this.update} />
 					<InputValue ref="clientSecret" name="clientSecret" label="Client Secret" val={this.state.clientSecret} update={this.update} />
 					<InputValue ref="scope" name="scope" label="Scope" val={this.state.scope} pholder="openid name email" update={this.update} />
@@ -35,9 +29,6 @@ class InputPanel extends React.Component{
 	update(e){
 		if(!localStorage.getItem('app-state')){
 			this.setState({
-				server: null,
-				authEndpoint: null,
-				tokenEndpoint: null,
 				clientID: null,
 				clientSecret: null,
 				scope: null
@@ -57,7 +48,6 @@ class InputPanel extends React.Component{
 			stateToken: document.querySelector('input[name=stateToken]').value	
 		})
 
-		this.updateServerURL(this.refs.server.refs.value.value, this.refs.serverURL.refs.value.value);
 	}
 	updateServerURL(type, URL){
 		if(type !== 'none'){
