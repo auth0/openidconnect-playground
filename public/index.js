@@ -20186,51 +20186,67 @@
 				);
 			}
 		}, {
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				this.updateServerURL();
+			}
+		}, {
 			key: 'update',
 			value: function update() {}
 		}, {
 			key: 'updateServerURL',
 			value: function updateServerURL() {
+				var _this2 = this;
+
+				if (this.state.savedState.server) {
+					this.refs.server.value = this.state.savedState.server;
+					this.setState({
+						savedState: {
+							server: false
+						}
+					});
+				}
+
 				var type = this.refs.server.value;
 
 				if (type == 'Auth0') {
 					this.setState({
 						server: type,
 						domain: 'samples.auth0.com',
-						authEndpoint: this.state.savedAuthEndpoint || '',
-						tokenEndpoint: this.state.savedTokenEndpoint || '',
-						clientID: this.state.savedState.ClientID || 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC',
-						clientSecret: this.state.savedState.ClientSecret || 'gcyGiDHsIE6bUT9oAs6ghuynjt8usUqTRglg8n8eWqw9SgnGJ5cRLCUz03gJ_s_X',
-						warning: !this.state.clientID || this.state.clientID == 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC' ? false : true
+						authEndpoint: this.state.savedState.authEndpoint || '',
+						tokenEndpoint: this.state.savedState.tokenEndpoint || '',
+						warning: this.state.domain == 'samples.auth0.com' ? false : true
 					});
 					this.refs.domain.value = this.state.savedState.domain || 'samples.auth0.com';
 				} else if (type == 'custom') {
 					this.setState({
 						server: type,
 						warning: true,
-						authEndpoint: this.state.savedAuthEndpoint || '',
-						tokenEndpoint: this.state.savedTokenEndpoint || ''
+						authEndpoint: this.state.savedState.authEndpoint || '',
+						tokenEndpoint: this.state.savedState.tokenEndpoint || '',
+						discoveryURL: this.state.savedState.discoveryURL || ''
 					});
 				} else if (type == 'google') {
-					this.refs.discoveryURL.disabled = true;
-					this.discover(null, 'google', function (discovered) {
-						this.setState({
-							server: type,
-							discovery: true,
-							discoveryURL: 'https://accounts.google.com/.well-known/openid-configuration',
-							warning: true,
-							authEndpoint: discovered.authorization_endpoint,
-							tokenEndpoint: discovered.token_endpoint
-						});
-						this.update();
-					}.bind(this));
+					(function () {
+						var googleDiscoveryURL = 'https://accounts.google.com/.well-known/openid-configuration';
+						_this2.discover('https://accounts.google.com/.well-known/openid-configuration', function (discovered) {
+							this.setState({
+								server: type,
+								discovery: true,
+								discoveryURL: googleDiscoveryURL,
+								warning: true,
+								authEndpoint: discovered.authorization_endpoint,
+								tokenEndpoint: discovered.token_endpoint
+							});
+						}.bind(_this2));
+					})();
 				}
 			}
 		}, {
 			key: 'updateAuth0',
 			value: function updateAuth0() {
 				var documentURL = 'https://' + this.refs.domain.value + '/.well-known/openid-configuration';
-				this.discover(documentURL, 'auth0', function (discovered) {
+				this.discover(documentURL, function (discovered) {
 					this.setState({
 						discovery: true,
 						discoveryURL: documentURL,
@@ -20244,27 +20260,23 @@
 			key: 'updateDiscovery',
 			value: function updateDiscovery() {
 				var documentURL = this.refs.discoveryURL.value;
-				this.discover(documentURL, false, function (discovered) {
+				this.discover(documentURL, function (discovered) {
 					this.setState({
 						discovery: true,
 						discoveryURL: documentURL,
 						authEndpoint: discovered.authorization_endpoint,
 						tokenEndpoint: discovered.token_endpoint
 					});
-					this.update();
 				}.bind(this));
 			}
 		}, {
 			key: 'discover',
-			value: function discover(url) {
-				var service = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
-				var callback = arguments[2];
+			value: function discover(url, callback) {
 
 				var serviceDiscovery = new _simpleAjax2.default({
 					url: '/discover',
 					method: 'GET',
 					data: {
-						service: service,
 						url: url
 					}
 				});
