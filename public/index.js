@@ -20045,6 +20045,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _simpleAjax = __webpack_require__(169);
+
+	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -20078,6 +20082,12 @@
 						'div',
 						{ 'class': 'inputs' },
 						_react2.default.createElement(ServerPicker, { ref: 'server', name: 'server', server: this.state.server, label: 'OpenID Connect Server', update: this.update }),
+						_react2.default.createElement(
+							'p',
+							{ id: 'discovery', style: { display: this.state.discovery ? 'block' : 'none' } },
+							'Using the discovery document at: ',
+							this.state.discoveryURL
+						),
 						_react2.default.createElement(ServerURLInput, { ref: 'serverURL', val: this.state.serverURL, update: this.update }),
 						_react2.default.createElement(
 							'p',
@@ -20165,19 +20175,30 @@
 						warning: true
 					});
 				} else if (type == 'google') {
-					this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
-					this.refs.serverURL.refs.value.disabled = true;
-					this.refs.authEndpoint.refs.value.disabled = true;
-					this.refs.tokenEndpoint.refs.value.disabled = true;
-					this.setState({
-						serverURL: "https://accounts.google.com/o/oauth2/v2",
-						authEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
-						tokenEndpoint: "https://www.googleapis.com/oauth2/v4/token",
-						clientID: changed ? this.state.savedClientID || '' : this.refs.clientID.refs.value.value || this.state.savedClientID || '',
-						clientSecret: changed ? this.state.savedClientID || '' : this.refs.clientSecret.refs.value.value || this.state.savedSecret || '',
-						completeURL: 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
-						warning: true
+					var googleDiscovery = new _simpleAjax2.default({
+						url: 'https://accounts.google.com/.well-known/openid-configuration'
 					});
+
+					googleDiscovery.on('success', function (event) {
+						console.log(event.currentTarget);
+						this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
+						this.refs.serverURL.refs.value.disabled = true;
+						this.refs.authEndpoint.refs.value.disabled = true;
+						this.refs.tokenEndpoint.refs.value.disabled = true;
+						this.setState({
+							discovery: true,
+							discoveryURL: 'https://accounts.google.com/.well-known/openid-configuration',
+							serverURL: "https://accounts.google.com/o/oauth2/v2",
+							authEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
+							tokenEndpoint: "https://www.googleapis.com/oauth2/v4/token",
+							clientID: changed ? this.state.savedClientID || '' : this.refs.clientID.refs.value.value || this.state.savedClientID || '',
+							clientSecret: changed ? this.state.savedClientID || '' : this.refs.clientSecret.refs.value.value || this.state.savedSecret || '',
+							completeURL: 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' + encodeURIComponent(this.refs.clientID.refs.value.value) + '&scope=' + encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
+							warning: true
+						});
+					});
+
+					googleDiscovery.send();
 				}
 			}
 		}, {
