@@ -1,0 +1,324 @@
+@import '../node_modules/auth0-styleguide/lib/vars/index'
+@import '../node_modules/auth0-styleguide/lib/mixins/index'
+
+orange-color = #F8931D
+main-background-color = #F9F9F9
+main-color = orange-color
+
+// Header styles
+
+.main-header
+  background-color main-background-color
+
+  .main-navigation
+    border-bottom 1px solid rgba(black, 0.05)
+
+    > .container
+      position relative
+      height 115px
+
+  .openid-logo
+    display inline-block
+    position absolute
+    left 15px
+    top 50%
+    transform translateY(-50%)
+    width 135px
+    height 42px
+    background-image url('/images/openid-logo.svg')
+
+    // Hide logo text
+    > .logo-text
+      color rgba(black, 0)
+      font-size 0
+
+  .navigation
+    display inline-block
+    position absolute
+    left 50%
+    top 50%
+    transform translate(-50%, -50%)
+    list-style none
+    padding 0
+    margin 0
+
+    .navigation-item
+      display inline-block
+      font-size 14px
+      margin-right 20px
+
+      > a
+        color black
+        padding 10px
+
+      &:last-child
+        margin-right 0
+
+  .social-icons
+    position absolute
+    right 15px
+    top 50%
+    transform translateY(-50%)
+    line-height 0
+
+    .auth0-icon
+      display inline-block
+      width 23px
+      height 26px
+      background-image url('/images/auth0-badge.svg')
+
+    .twitter-icon
+      display inline-block
+      width 26px
+      height 26px
+      background-image url('/images/twitter-badge.svg')
+      margin-left 10px
+
+  .hero
+    text-align center
+    padding 55px 0
+
+    .hero-title
+      margin 0
+      margin-bottom 25px
+      font-size 32px
+      color main-color
+
+    .hero-subtitle
+      max-width 700px
+      margin 0 auto
+      font-size 16px
+      line-height 2
+      color $color-text-light
+
+// end header styles
+
+
+
+// Playground styles
+
+.playground
+
+  .playground-header
+    position relative
+    margin-top 20px
+    padding 25px 0
+    border-bottom 1px solid rgba(black, 0.10)
+
+    +breakpoint("tablet")
+      text-align center
+
+  .playground-header-title
+    display inline-block
+    font-size 26px
+    line-height 39px
+    margin 0
+
+  .playground-header-config
+    font-size 12px
+    text-transform uppercase
+    line-height 39px
+    vertical-align middle
+    position absolute
+    right 15px
+    top 50%
+    transform translateY(-50%)
+
+    > i
+      margin-right 5px
+      font-size 16px
+      line-height 39px
+      vertical-align middle
+
+  .playground-content
+    width 600px
+    max-width 100%
+    margin 40px auto 0 auto
+
+  .playground-step
+    position relative
+    padding-bottom 55px
+
+    +breakpoint("tablet")
+      left (-65px / 2)
+
+    &.active .step-number
+      color white
+      background-color main-color
+
+    &.last-step
+
+      .step-number
+        color white
+        background-color #7ED321
+        border-color #7ED321
+
+      &:before
+        display none !important
+
+
+    &:not(.active):before
+      content ''
+      display inline-block
+      height 100%
+      width 1px
+      background-color main-color
+      position absolute
+      left 20px
+      top 0
+
+      +breakpoint("tablet", "max")
+        display none
+
+    .step-number
+      display inline-block
+      width 40px
+      height 40px
+      border-radius 50%
+      border 2px solid main-color
+      background-color white
+      text-align center
+      line-height 40px
+      font-size 18px
+      color main-color
+
+      +breakpoint("tablet", "max")
+        margin-bottom 15px
+        margin-right 15px
+
+      +breakpoint("tablet")
+        position absolute
+        top 0
+        left 0
+
+    p
+      margin-bottom 20px
+
+    .step-content
+
+      +breakpoint("tablet", "max")
+        display inline
+
+      +breakpoint("tablet")
+        padding-left 65px
+
+    .step-title
+      font-size 24px
+      line-height 40px
+      margin 0
+      margin-bottom 20px
+      text-align left
+
+      +breakpoint("tablet", "max")
+        display inline-block
+
+    .snippet-description
+      font-family 'Inconsolata', monospace // @todo: change font
+      margin-bottom 5px
+      color main-color
+
+    .code-snippet
+      display block
+      width 100%
+      border-radius 3px
+      color white
+      background-color $bg-color-dark
+      padding 10px 20px
+      margin-bottom 14px
+      overflow-x scroll
+
+    .skip-tutorial
+      display block
+      margin 0 auto
+      position relative
+      font-size 12px
+      text-transform uppercase
+      letter-spacing 1px
+      margin 40px auto 20px auto
+
+    .btn-view-jwt
+      float right
+      position relative
+      bottom 6px
+      margin-bottom 8px
+      border-radius 50px
+      padding 8px 10px
+      padding-left 38px
+      font-size 12px
+      font-weight bold
+      text-transform uppercase
+      background-color black
+      color white
+      background-image url('/images/jwt-badge.svg')
+      background-position 10px center
+      background-repeat no-repeat
+      background-size 19px 19px
+
+
+    // Code box styles
+
+    .code-box-title
+      border 1px solid $bg-color-dark
+      border-bottom 0
+      font-size 18px
+      padding-left 20px
+      line-height 65px
+      border-radius 3px 3px 0 0
+
+    .code-box-content
+      background-color $bg-color-dark
+      color white
+      border-top none
+      border-radius 0 0 3px 3px
+      padding 25px 20px
+      overflow scroll
+
+    .code-block
+      font-family 'Inconsolata', monospace // @todo: change font
+      font-size 14px
+      padding-right 20px
+      margin-bottom 15px
+
+    hr
+      border-top 1px solid rgba(white, 0.10)
+      margin 20px 0
+
+    .code-box-btn
+      display block
+      margin 0 auto
+      font-size 12px
+      text-transform uppercase
+      padding 15px 20px
+      border-radius 3px
+      color $bg-color-dark
+      border 0
+      background-color white
+      letter-spacing 1px
+
+    // end code box styles
+
+// end playground styles
+
+
+
+// Footer styles
+
+.main-footer
+  text-align center
+  background-color main-background-color
+  font-size 15px
+  color $color-text-light
+  padding 30px 0
+
+  .auth0-badge
+    display inline-block
+    background-size contain
+    background-repeat no-repeat
+    width 22px
+    height 25px
+    background-image url('/images/auth0-badge.svg')
+    vertical-align middle
+    margin-left 5px
+    margin-right 10px
+
+// end footer styles

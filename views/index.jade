@@ -2,9 +2,130 @@
 html(lang="en")
 head
 	meta(charset="UTF-8")
+	meta(name="viewport", content="width=device-width, initial-scale=1.0")
+	link(rel="stylesheet", href="https://cdn.auth0.com/styleguide/4.7.5/index.min.css")
 	title OpenID Connect Playground
+	
 body
-	h1 OpenID Connect Playground [BETA]
+	header.main-header
+		nav.main-navigation
+			.container
+				a.openid-logo(href="")
+					h1.logo-text OpenID
+				//- ul.navigation
+				//-	 li.navigation-item
+				//-		 a(href="") Debugger
+				//-	 li.navigation-item
+				//-		 a(href="") Libraries
+				//-	 li.navigation-item
+				//-		 a(href="") Introduction
+				//-	 li.navigation-item
+				//-		 a(href="") Ask
+				//-	 li.navigation-item
+				//-		 a(href="") Get a T-shirt!
+				.social-icons
+					a.auth0-icon(href="")
+					a.twitter-icon(href="")
+					
+		section.hero
+			.container
+				h1.hero-title OpenID Connect Playground
+				h2.hero-subtitle
+					| The OIDC playground is so developers can test and work with OpenID
+					| Connect calls step-by-step, giving them more insight into how OpenID Connect works.
+	
+	main.playground
+		.container
+			.playground-header
+				h2.playground-header-title Debugger
+				a.playground-header-config(href="") 
+					i.icon-budicon-329
+					| Configuration
+			.playground-content
+			
+				.playground-step.active
+					span.step-number 1
+					.step-content
+						h2.step-title Redirect to OpenID Connector Server
+						.code-box
+							.code-box-title Request
+							.code-box-content
+								.code-block
+									a(href="") https://sample-oidc.auth0.com/authorize?
+									br
+									| cliend_id=
+									a(href="") 7eruHypvzyvEjF5dNt2TN4tzKBE98PTc
+									br
+									| redirect_uri=https://openidconnect.net/callback 
+									br
+									| scope=
+									a(href="") openid name email response_type=code
+									br
+									| state=poifhjoeif2
+								hr
+								.code-block
+									| https://openidconnect.net/callback?code=#4/SXjuF3gzD04Oouq
+								button.code-box-btn Start
+						button.skip-tutorial.btn-link Skip this tutorial. Show me the complete flow.
+
+				.playground-step
+					span.step-number 2
+					.step-content
+						h2.step-title Exchange Code from Token
+						p.snippet-description Your Code is
+						.code-snippet
+							| #4/SXjuF3gzD04OouqY_6-mfKyqV2VqoXF717ASRBTtL8w
+						p
+							| Now, we need to turn that access code into an access token, by having our server
+							| make a request to your token endpoint
+						.code-box
+							.code-box-title Request
+							.code-box-content
+								.code-block
+									| POST https://sample-oidc.auth0.com/oauth/token HTTP/1.1 
+									| grant_type=authorization_code&
+									| client_id=7eruHypvzyvEjF5dNt2TN4tzKBE98PTc&
+									| client_secret=1fGXdsJnPfhodhwWCNQ_W7HpwrGGz
+									| redirect_url=https://openidconnect.net/callback&
+									| code=XXXXX
+								hr
+								button.code-box-btn Exchange
+								
+				.playground-step
+					span.step-number 3
+					.step-content
+						h2.step-title Validate the ID Token for User Profile
+						div
+							p.snippet-description.pull-left Your “id_token” is
+							btn.btn-view-jwt View on JWT.io
+							.code-snippet
+								| “hjvcbhvbjvchbjcvhbjcvhbjvchbjcvhbjcvbhcjvxcvcvcvcvcvcvcvcvcc
+						p Now, we need to turn that access code into an access token, by having our server make a request to your token endpoint
+						p Your “access_token” is
+						.code-snippet
+							| “SIAV32hkKG”
+						.code-box
+							.code-box-title Request
+							.code-box-content
+								.code-block
+									| GET https://sample-oidc.auth0.com/userinfo 
+									| ? access_token= “SIAV32hkKG”
+								hr
+								button.code-box-btn Exchange
+								
+				.playground-step.last-step
+					step.step-number
+						i.icon-budicon-470
+					.step-content
+						h2.step-title Congrats! You are a OpenID expert!
+					
+	
+	footer.main-footer
+		.container
+			span Crafted by
+			span.auth0-badge
+			span © 2013-2016 Auth0 Inc. All Rights Reserved.
+			
 	p Hey, just a friendly note: we store stuff like your keys in LocalStorage so that when you redirect to authenticate, you don't lose them. You can clear them by clicking on this button: 
 	span#clear-all-button
 	div#server-urls

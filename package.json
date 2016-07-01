@@ -27,10 +27,20 @@
     "uid-safe": "^2.1.0"
   },
   "devDependencies": {
+    "auth0-styleguide": "auth0/styleguide",
     "babel-core": "^6.4.5",
     "babel-loader": "^6.2.1",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
-    "webpack": "^1.12.12"
+    "css-loader": "^0.23.1",
+    "file-loader": "^0.9.0",
+    "pug-loader": "^1.0.2",
+    "style-loader": "^0.13.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^2.1.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.12.12",
+    "webpack-dev-server": "^1.14.1",
+    "webpack-notifier": "^1.3.0"
   }
 }
