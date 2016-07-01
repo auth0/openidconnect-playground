@@ -126,15 +126,17 @@ body
 			span.auth0-badge
 			span © 2013-2016 Auth0 Inc. All Rights Reserved.
 			
-	p Hey, just a friendly note: we store stuff like your keys in LocalStorage so that when you redirect to authenticate, you don't lose them. You can clear them by clicking on this button: 
-	span#clear-all-button
-	div#server-urls
-	div#token-panel
+			
+	.modal
+		p Hey, just a friendly note: we store stuff like your keys in LocalStorage so that when you redirect to authenticate, you don't lose them. You can clear them by clicking on this button: 
+		span#clear-all-button
+		div#server-urls
+		div#token-panel
 
-	input(type="hidden", name="redirect-uri", value=redirect_uri)
-	input(type="hidden", name="stateToken", value=state)
-	input(type="hidden", name="code", value=code)
-	input(type="hidden", name="auth0ClientID", value="BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC")
-	input(type="hidden", name="auth0ClientSecret", value="gcyGiDHsIE6bUT9oAs6ghuynjt8usUqTRglg8n8eWqw9SgnGJ5cRLCUz03gJ_s_X")
+		input(type="hidden", name="redirect-uri", value=redirect_uri)
+		input(type="hidden", name="stateToken", value=state)
+		input(type="hidden", name="code", value=code)
+		input(type="hidden", name="auth0ClientID", value="BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC")
+		input(type="hidden", name="auth0ClientSecret", value="gcyGiDHsIE6bUT9oAs6ghuynjt8usUqTRglg8n8eWqw9SgnGJ5cRLCUz03gJ_s_X")
 
 	script(src='index.js')
