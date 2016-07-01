@@ -54,27 +54,15 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _serverUrls = __webpack_require__(168);
+	var _openIdPage = __webpack_require__(168);
 
-	var _serverUrls2 = _interopRequireDefault(_serverUrls);
-
-	var _clearAllButton = __webpack_require__(172);
-
-	var _clearAllButton2 = _interopRequireDefault(_clearAllButton);
-
-	var _tokenPanel = __webpack_require__(173);
-
-	var _tokenPanel2 = _interopRequireDefault(_tokenPanel);
+	var _openIdPage2 = _interopRequireDefault(_openIdPage);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var css = __webpack_require__(174);
+	__webpack_require__(173);
 
-	_reactDom2.default.render(_react2.default.createElement(_clearAllButton2.default, null), document.getElementById('clear-all-button'));
-	_reactDom2.default.render(_react2.default.createElement(_serverUrls2.default, null), document.getElementById('server-urls'));
-	if (document.querySelector('input[name=code]').value) {
-		_reactDom2.default.render(_react2.default.createElement(_tokenPanel2.default, null), document.getElementById('token-panel'));
-	}
+	_reactDom2.default.render(_react2.default.createElement(_openIdPage2.default, null), document.getElementById('content'));
 
 /***/ },
 /* 1 */
@@ -20376,7 +20364,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20385,9 +20373,21 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _simpleAjax = __webpack_require__(169);
+	var _stepOne = __webpack_require__(169);
 
-	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
+	var _stepOne2 = _interopRequireDefault(_stepOne);
+
+	var _stepTwo = __webpack_require__(170);
+
+	var _stepTwo2 = _interopRequireDefault(_stepTwo);
+
+	var _stepThree = __webpack_require__(171);
+
+	var _stepThree2 = _interopRequireDefault(_stepThree);
+
+	var _stepFour = __webpack_require__(172);
+
+	var _stepFour2 = _interopRequireDefault(_stepFour);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20397,778 +20397,523 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var ServerURLs = function (_React$Component) {
-		_inherits(ServerURLs, _React$Component);
+	var OpenIDPage = function (_React$Component) {
+	  _inherits(OpenIDPage, _React$Component);
 
-		function ServerURLs() {
-			_classCallCheck(this, ServerURLs);
+	  function OpenIDPage() {
+	    _classCallCheck(this, OpenIDPage);
 
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ServerURLs).call(this));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(OpenIDPage).apply(this, arguments));
+	  }
 
-			_this.update = _this.update.bind(_this);
-			var savedState = localStorage.getItem('app-state') || '{}';
-			savedState = JSON.parse(savedState);
-			_this.state = {
-				domain: 'samples.auth0.com',
-				authEndpoint: '',
-				tokenEndpoint: '',
-				savedState: savedState
-			};
-			return _this;
-		}
+	  _createClass(OpenIDPage, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'openid-page' },
+	        _react2.default.createElement(
+	          'header',
+	          { className: 'main-header' },
+	          _react2.default.createElement(
+	            'nav',
+	            { className: 'main-navigation' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'container' },
+	              _react2.default.createElement(
+	                'a',
+	                { href: '', className: 'openid-logo' },
+	                _react2.default.createElement(
+	                  'h1',
+	                  { className: 'logo-text' },
+	                  'OpenID'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'ul',
+	                { className: 'navigation' },
+	                _react2.default.createElement(
+	                  'li',
+	                  { className: 'navigation-item' },
+	                  _react2.default.createElement(
+	                    'a',
+	                    { href: '' },
+	                    'Debugger'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'li',
+	                  { className: 'navigation-item' },
+	                  _react2.default.createElement(
+	                    'a',
+	                    { href: '' },
+	                    'Libraries'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'li',
+	                  { className: 'navigation-item' },
+	                  _react2.default.createElement(
+	                    'a',
+	                    { href: '' },
+	                    'Introduction'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'li',
+	                  { className: 'navigation-item' },
+	                  _react2.default.createElement(
+	                    'a',
+	                    { href: '' },
+	                    'Ask'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'li',
+	                  { className: 'navigation-item' },
+	                  _react2.default.createElement(
+	                    'a',
+	                    { href: '' },
+	                    'Get a T-shirt!'
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'social-icons' },
+	                _react2.default.createElement('a', { href: '', className: 'auth0-icon' }),
+	                _react2.default.createElement('a', { href: '', className: 'twitter-icon' })
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'section',
+	            { className: 'hero' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'container' },
+	              _react2.default.createElement(
+	                'h1',
+	                { className: 'hero-title' },
+	                'OpenID Connect Playground'
+	              ),
+	              _react2.default.createElement(
+	                'h2',
+	                { className: 'hero-subtitle' },
+	                'The OIDC playground is so developers can test and work with OpenID Connect calls step-by-step, giving them more insight into how OpenID Connect works.'
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'main',
+	          { className: 'playground' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'container' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'playground-header' },
+	              _react2.default.createElement(
+	                'h2',
+	                { className: 'playground-header-title' },
+	                'Debugger'
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: '', className: 'playground-header-config' },
+	                _react2.default.createElement('i', { className: 'icon-budicon-329' }),
+	                'Configuration'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'playground-content' },
+	              _react2.default.createElement(_stepOne2.default, null),
+	              _react2.default.createElement(_stepTwo2.default, null),
+	              _react2.default.createElement(_stepThree2.default, null),
+	              _react2.default.createElement(_stepFour2.default, null)
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'footer',
+	          { className: 'main-footer' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'container' },
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              'Crafted by'
+	            ),
+	            _react2.default.createElement('span', { className: 'auth0-badge' }),
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              '© 2013-2016 Auth0 Inc. All Rights Reserved.'
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
 
-		_createClass(ServerURLs, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'label',
-						{ 'for': 'server' },
-						'Server Template:'
-					),
-					_react2.default.createElement(
-						'select',
-						{ name: 'server', ref: 'server', onChange: this.updateServerURL.bind(this) },
-						_react2.default.createElement(
-							'option',
-							{ value: 'none' },
-							'SELECT A SERVER TEMPLATE'
-						),
-						_react2.default.createElement(
-							'option',
-							{ value: 'Auth0' },
-							'Auth0'
-						),
-						_react2.default.createElement(
-							'option',
-							{ value: 'google' },
-							'Google'
-						),
-						_react2.default.createElement(
-							'option',
-							{ value: 'custom' },
-							'Custom'
-						)
-					),
-					_react2.default.createElement('br', null),
-					_react2.default.createElement(
-						'p',
-						{ style: { display: this.state.server == 'Auth0' ? 'block' : 'none' } },
-						_react2.default.createElement(
-							'label',
-							{ 'for': 'domain' },
-							'Auth0 domain: '
-						),
-						_react2.default.createElement('input', { name: 'domain', onChange: this.update, ref: 'domain', placeholder: 'mydomain.auth0.com' }),
-						_react2.default.createElement(
-							'button',
-							{ onClick: this.updateAuth0.bind(this) },
-							'Use Auth0 Discovery Document'
-						),
-						_react2.default.createElement('p', { ref: 'Auth0DiscoveryDocumentURL' })
-					),
-					_react2.default.createElement(
-						'p',
-						{ style: { display: this.state.server == 'custom' ? 'block' : 'none' } },
-						_react2.default.createElement(
-							'label',
-							{ 'for': 'discoveryURL' },
-							'Discovery Document URL: '
-						),
-						_react2.default.createElement('input', { name: 'discoveryURL', value: this.state.discoveryURL, ref: 'discoveryURL', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' }),
-						_react2.default.createElement(
-							'button',
-							{ style: { display: this.state.server != 'google' ? 'inline-block' : 'none' }, onClick: this.updateDiscovery.bind(this) },
-							'Use Discovery Document'
-						),
-						_react2.default.createElement('span', { ref: 'DiscoveryDocumentURL' })
-					),
-					_react2.default.createElement(
-						'p',
-						{ style: { display: this.state.server == 'google' ? 'block' : 'none' } },
-						_react2.default.createElement(
-							'span',
-							null,
-							'Discovery Document: ',
-							this.state.discoveryURL
-						),
-						_react2.default.createElement('br', null)
-					),
-					_react2.default.createElement(
-						'p',
-						{ id: 'warning', style: { display: this.state.warning ? 'block' : 'none' } },
-						'Remember to set https://openidconnect.net/callback as an allowed callback with your application!'
-					),
-					_react2.default.createElement(
-						'span',
-						null,
-						'Authorization Endpoint:  ',
-						_react2.default.createElement(
-							'span',
-							{ ref: 'authEndpoint' },
-							this.state.authEndpoint
-						)
-					),
-					_react2.default.createElement('br', null),
-					_react2.default.createElement(
-						'span',
-						null,
-						'Token Endpoint:  ',
-						_react2.default.createElement(
-							'span',
-							{ ref: 'tokenEndpoint' },
-							this.state.tokenEndpoint
-						)
-					),
-					_react2.default.createElement('br', null)
-				);
-			}
-		}, {
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				this.updateServerURL();
-			}
-		}, {
-			key: 'update',
-			value: function update() {}
-		}, {
-			key: 'updateServerURL',
-			value: function updateServerURL() {
-				var _this2 = this;
-
-				if (this.state.savedState.server) {
-					this.refs.server.value = this.state.savedState.server;
-					this.setState({
-						savedState: {
-							server: false
-						}
-					});
-				}
-
-				var type = this.refs.server.value;
-
-				if (type == 'Auth0') {
-					this.setState({
-						server: type,
-						domain: 'samples.auth0.com',
-						authEndpoint: this.state.savedState.authEndpoint || '',
-						tokenEndpoint: this.state.savedState.tokenEndpoint || '',
-						warning: this.state.domain == 'samples.auth0.com' ? false : true
-					});
-					this.refs.domain.value = this.state.savedState.domain || 'samples.auth0.com';
-				} else if (type == 'custom') {
-					this.setState({
-						server: type,
-						warning: true,
-						authEndpoint: this.state.savedState.authEndpoint || '',
-						tokenEndpoint: this.state.savedState.tokenEndpoint || '',
-						discoveryURL: this.state.savedState.discoveryURL || ''
-					});
-				} else if (type == 'google') {
-					(function () {
-						var googleDiscoveryURL = 'https://accounts.google.com/.well-known/openid-configuration';
-						_this2.discover('https://accounts.google.com/.well-known/openid-configuration', function (discovered) {
-							this.setState({
-								server: type,
-								discovery: true,
-								discoveryURL: googleDiscoveryURL,
-								warning: true,
-								authEndpoint: discovered.authorization_endpoint,
-								tokenEndpoint: discovered.token_endpoint
-							});
-						}.bind(_this2));
-					})();
-				}
-			}
-		}, {
-			key: 'updateAuth0',
-			value: function updateAuth0() {
-				var documentURL = 'https://' + this.refs.domain.value + '/.well-known/openid-configuration';
-				this.discover(documentURL, function (discovered) {
-					this.setState({
-						discovery: true,
-						discoveryURL: documentURL,
-						authEndpoint: discovered.authorization_endpoint,
-						tokenEndpoint: discovered.token_endpoint
-					});
-					this.update();
-				}.bind(this));
-			}
-		}, {
-			key: 'updateDiscovery',
-			value: function updateDiscovery() {
-				var documentURL = this.refs.discoveryURL.value;
-				this.discover(documentURL, function (discovered) {
-					this.setState({
-						discovery: true,
-						discoveryURL: documentURL,
-						authEndpoint: discovered.authorization_endpoint,
-						tokenEndpoint: discovered.token_endpoint
-					});
-				}.bind(this));
-			}
-		}, {
-			key: 'discover',
-			value: function discover(url, callback) {
-
-				var serviceDiscovery = new _simpleAjax2.default({
-					url: '/discover',
-					method: 'GET',
-					data: {
-						url: url
-					}
-				});
-
-				serviceDiscovery.on('success', function (event) {
-					callback(JSON.parse(event.currentTarget.response));
-				});
-
-				serviceDiscovery.send();
-			}
-		}]);
-
-		return ServerURLs;
+	  return OpenIDPage;
 	}(_react2.default.Component);
 
-	exports.default = ServerURLs;
+	exports.default = OpenIDPage;
 
 /***/ },
 /* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventEmitter = __webpack_require__(170).EventEmitter,
-	    queryString = __webpack_require__(171);
+	"use strict";
 
-	function tryParseJson(data){
-	    try{
-	        return JSON.parse(data);
-	    }catch(error){
-	        return error;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StepOne = function (_React$Component) {
+	  _inherits(StepOne, _React$Component);
+
+	  function StepOne() {
+	    _classCallCheck(this, StepOne);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StepOne).apply(this, arguments));
+	  }
+
+	  _createClass(StepOne, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "playground-step active" },
+	        _react2.default.createElement(
+	          "span",
+	          { className: "step-number" },
+	          "1"
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "step-content" },
+	          _react2.default.createElement(
+	            "h2",
+	            { className: "step-title" },
+	            "Redirect to OpenID Connector Server"
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            { className: "code-box" },
+	            _react2.default.createElement(
+	              "h3",
+	              { className: "code-box-title" },
+	              "Request"
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              { className: "code-box-content" },
+	              _react2.default.createElement(
+	                "div",
+	                { className: "code-block" },
+	                _react2.default.createElement(
+	                  "a",
+	                  { href: "" },
+	                  " https://sample-oidc.auth0.com/authorize? "
+	                ),
+	                _react2.default.createElement("br", null),
+	                "client_id=",
+	                _react2.default.createElement(
+	                  "a",
+	                  { href: "" },
+	                  " ",
+	                  "7eruHypvzyvEjF5dNt2TN4tzKBE98PTc",
+	                  " "
+	                ),
+	                _react2.default.createElement("br", null),
+	                "redirect_uri=https://openidconnect.net/callback\u2028",
+	                _react2.default.createElement("br", null),
+	                "scope=",
+	                _react2.default.createElement(
+	                  "a",
+	                  { href: "" },
+	                  " openid name email\u2028response_type=code "
+	                ),
+	                _react2.default.createElement("br", null),
+	                "state=poifhjoeif2"
+	              ),
+	              _react2.default.createElement("hr", null),
+	              _react2.default.createElement(
+	                "div",
+	                { className: "code-block" },
+	                "https://openidconnect.net/callback?code=#4/SXjuF3gzD04Oouq"
+	              ),
+	              _react2.default.createElement(
+	                "button",
+	                { className: "code-box-btn" },
+	                "Start"
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "button",
+	          { className: "skip-tutorial btn-link" },
+	          "Skip this tutorial. Show me the complete flow."
+	        )
+	      );
 	    }
-	}
+	  }]);
 
-	function timeout(){
-	   this.request.abort();
-	   this.emit('timeout');
-	}
+	  return StepOne;
+	}(_react2.default.Component);
 
-	function Ajax(settings){
-	    var queryStringData,
-	        ajax = this;
-
-	    if(typeof settings === 'string'){
-	        settings = {
-	            url: settings
-	        };
-	    }
-
-	    if(typeof settings !== 'object'){
-	        settings = {};
-	    }
-
-	    ajax.settings = settings;
-	    ajax.request = new XMLHttpRequest();
-	    ajax.settings.method = ajax.settings.method || 'get';
-
-	    if(ajax.settings.cors){
-	        if ('withCredentials' in ajax.request) {
-	            ajax.request.withCredentials = !!settings.withCredentials;
-	        } else if (typeof XDomainRequest !== 'undefined') {
-	            // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
-	            ajax.request = new XDomainRequest();
-	        } else {
-	            // Otherwise, CORS is not supported by the browser.
-	            ajax.emit('error', new Error('Cors is not supported by this browser'));
-	        }
-	    }
-
-	    if(ajax.settings.cache === false){
-	        ajax.settings.data = ajax.settings.data || {};
-	        ajax.settings.data._ = new Date().getTime();
-	    }
-
-	    if(ajax.settings.method.toLowerCase() === 'get' && typeof ajax.settings.data === 'object'){
-	        var urlParts = ajax.settings.url.split('?');
-
-	        queryStringData = queryString.parse(urlParts[1]);
-
-	        for(var key in ajax.settings.data){
-	            queryStringData[key] = ajax.settings.data[key];
-	        }
-
-	        var parsedQueryStringData = queryString.stringify(queryStringData);
-
-	        ajax.settings.url = urlParts[0] + (parsedQueryStringData ? '?' + parsedQueryStringData : '');
-	        ajax.settings.data = null;
-	    }
-
-	    ajax.request.addEventListener('progress', function(event){
-	        ajax.emit('progress', event);
-	    }, false);
-
-	    ajax.request.addEventListener('load', function(event){
-	        var data = event.target.responseText;
-
-	        if(ajax.settings.dataType && ajax.settings.dataType.toLowerCase() === 'json'){
-	            if(data === ''){
-	                data = undefined;
-	            }else{
-	                data = tryParseJson(data);
-	                if(data instanceof Error){
-	                    ajax.emit('error', event, data);
-	                    return;
-	                }
-	            }
-	        }
-
-	        if(event.target.status >= 400){
-	            ajax.emit('error', event, data);
-	        } else {
-	            ajax.emit('success', event, data);
-	        }
-
-	    }, false);
-
-	    ajax.request.addEventListener('error', function(event){
-	        ajax.emit('error', event);
-	    }, false);
-
-	    ajax.request.addEventListener('abort', function(event){
-	        ajax.emit('error', event, new Error('Connection Aborted'));
-	        ajax.emit('abort', event);
-	    }, false);
-
-	    ajax.request.addEventListener('loadend', function(event){
-	        clearTimeout(ajax._requestTimeout);
-	        ajax.emit('complete', event);
-	    }, false);
-
-	    ajax.request.open(ajax.settings.method || 'get', ajax.settings.url, true);
-
-	    // Set default headers
-	    if(ajax.settings.contentType !== false){
-	        ajax.request.setRequestHeader('Content-Type', ajax.settings.contentType || 'application/json; charset=utf-8');
-	    }
-	    if(ajax.settings.requestedWith !== false) {
-	        ajax.request.setRequestHeader('X-Requested-With', ajax.settings.requestedWith || 'XMLHttpRequest');
-	    }
-	    if(ajax.settings.auth){
-	        ajax.request.setRequestHeader('Authorization', ajax.settings.auth);
-	    }
-
-	    // Set custom headers
-	    for(var headerKey in ajax.settings.headers){
-	        ajax.request.setRequestHeader(headerKey, ajax.settings.headers[headerKey]);
-	    }
-
-	    if(ajax.settings.processData !== false && ajax.settings.dataType === 'json'){
-	        ajax.settings.data = JSON.stringify(ajax.settings.data);
-	    }
-	}
-
-	Ajax.prototype = Object.create(EventEmitter.prototype);
-
-	Ajax.prototype.send = function(){
-	    this._requestTimeout = setTimeout(
-	        timeout.bind(this),
-	        this.settings.timeout || 120000
-	    );
-	    this.request.send(this.settings.data && this.settings.data);
-	};
-
-	module.exports = Ajax;
-
+	exports.default = StepOne;
 
 /***/ },
 /* 170 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
+	"use strict";
 
-	function EventEmitter() {
-	  this._events = this._events || {};
-	  this._maxListeners = this._maxListeners || undefined;
-	}
-	module.exports = EventEmitter;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
-	// Backwards-compat with node 0.10.x
-	EventEmitter.EventEmitter = EventEmitter;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	EventEmitter.prototype._events = undefined;
-	EventEmitter.prototype._maxListeners = undefined;
+	var _react = __webpack_require__(1);
 
-	// By default EventEmitters will print a warning if more than 10 listeners are
-	// added to it. This is a useful default which helps finding memory leaks.
-	EventEmitter.defaultMaxListeners = 10;
+	var _react2 = _interopRequireDefault(_react);
 
-	// Obviously not all Emitters should be limited to 10. This function allows
-	// that to be increased. Set to zero for unlimited.
-	EventEmitter.prototype.setMaxListeners = function(n) {
-	  if (!isNumber(n) || n < 0 || isNaN(n))
-	    throw TypeError('n must be a positive number');
-	  this._maxListeners = n;
-	  return this;
-	};
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	EventEmitter.prototype.emit = function(type) {
-	  var er, handler, len, args, i, listeners;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  if (!this._events)
-	    this._events = {};
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	  // If there is no 'error' event listener then throw.
-	  if (type === 'error') {
-	    if (!this._events.error ||
-	        (isObject(this._events.error) && !this._events.error.length)) {
-	      er = arguments[1];
-	      if (er instanceof Error) {
-	        throw er; // Unhandled 'error' event
-	      } else {
-	        // At least give some kind of context to the user
-	        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
-	        err.context = er;
-	        throw err;
-	      }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StepTwo = function (_React$Component) {
+	  _inherits(StepTwo, _React$Component);
+
+	  function StepTwo() {
+	    _classCallCheck(this, StepTwo);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StepTwo).apply(this, arguments));
+	  }
+
+	  _createClass(StepTwo, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "playground-step" },
+	        _react2.default.createElement(
+	          "span",
+	          { className: "step-number" },
+	          "2"
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "step-content" },
+	          _react2.default.createElement(
+	            "h2",
+	            { className: "step-title" },
+	            "Exchange Code from Token"
+	          ),
+	          _react2.default.createElement(
+	            "p",
+	            { className: "snippet-description" },
+	            "Your Code is "
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            { className: "code-snippet" },
+	            "#4/SXjuF3gzD04OouqY_6-mfKyqV2VqoXF717ASRBTtL8w"
+	          ),
+	          _react2.default.createElement(
+	            "p",
+	            null,
+	            "Now, we need to turn that access code into an access token, by having our server make a request to your token endpoint"
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            { className: "code-box" },
+	            _react2.default.createElement(
+	              "div",
+	              { className: "code-box-title" },
+	              "Request"
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              { className: "code-box-content" },
+	              _react2.default.createElement(
+	                "div",
+	                { className: "code-block" },
+	                "POST https://sample-oidc.auth0.com/oauth/token HTTP/1.1 grant_type=authorization_code& client_id=7eruHypvzyvEjF5dNt2TN4tzKBE98PTc& client_secret=1fGXdsJnPfhodhwWCNQ_W7HpwrGGz redirect_url=https://openidconnect.net/callback& code=XXXXX"
+	              ),
+	              _react2.default.createElement("hr", null),
+	              _react2.default.createElement(
+	                "button",
+	                { className: "code-box-btn" },
+	                "Exchange"
+	              )
+	            )
+	          )
+	        )
+	      );
 	    }
-	  }
+	  }]);
 
-	  handler = this._events[type];
+	  return StepTwo;
+	}(_react2.default.Component);
 
-	  if (isUndefined(handler))
-	    return false;
-
-	  if (isFunction(handler)) {
-	    switch (arguments.length) {
-	      // fast cases
-	      case 1:
-	        handler.call(this);
-	        break;
-	      case 2:
-	        handler.call(this, arguments[1]);
-	        break;
-	      case 3:
-	        handler.call(this, arguments[1], arguments[2]);
-	        break;
-	      // slower
-	      default:
-	        args = Array.prototype.slice.call(arguments, 1);
-	        handler.apply(this, args);
-	    }
-	  } else if (isObject(handler)) {
-	    args = Array.prototype.slice.call(arguments, 1);
-	    listeners = handler.slice();
-	    len = listeners.length;
-	    for (i = 0; i < len; i++)
-	      listeners[i].apply(this, args);
-	  }
-
-	  return true;
-	};
-
-	EventEmitter.prototype.addListener = function(type, listener) {
-	  var m;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events)
-	    this._events = {};
-
-	  // To avoid recursion in the case that type === "newListener"! Before
-	  // adding it to the listeners, first emit "newListener".
-	  if (this._events.newListener)
-	    this.emit('newListener', type,
-	              isFunction(listener.listener) ?
-	              listener.listener : listener);
-
-	  if (!this._events[type])
-	    // Optimize the case of one listener. Don't need the extra array object.
-	    this._events[type] = listener;
-	  else if (isObject(this._events[type]))
-	    // If we've already got an array, just append.
-	    this._events[type].push(listener);
-	  else
-	    // Adding the second element, need to change to array.
-	    this._events[type] = [this._events[type], listener];
-
-	  // Check for listener leak
-	  if (isObject(this._events[type]) && !this._events[type].warned) {
-	    if (!isUndefined(this._maxListeners)) {
-	      m = this._maxListeners;
-	    } else {
-	      m = EventEmitter.defaultMaxListeners;
-	    }
-
-	    if (m && m > 0 && this._events[type].length > m) {
-	      this._events[type].warned = true;
-	      console.error('(node) warning: possible EventEmitter memory ' +
-	                    'leak detected. %d listeners added. ' +
-	                    'Use emitter.setMaxListeners() to increase limit.',
-	                    this._events[type].length);
-	      if (typeof console.trace === 'function') {
-	        // not supported in IE 10
-	        console.trace();
-	      }
-	    }
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-	EventEmitter.prototype.once = function(type, listener) {
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  var fired = false;
-
-	  function g() {
-	    this.removeListener(type, g);
-
-	    if (!fired) {
-	      fired = true;
-	      listener.apply(this, arguments);
-	    }
-	  }
-
-	  g.listener = listener;
-	  this.on(type, g);
-
-	  return this;
-	};
-
-	// emits a 'removeListener' event iff the listener was removed
-	EventEmitter.prototype.removeListener = function(type, listener) {
-	  var list, position, length, i;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events || !this._events[type])
-	    return this;
-
-	  list = this._events[type];
-	  length = list.length;
-	  position = -1;
-
-	  if (list === listener ||
-	      (isFunction(list.listener) && list.listener === listener)) {
-	    delete this._events[type];
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-
-	  } else if (isObject(list)) {
-	    for (i = length; i-- > 0;) {
-	      if (list[i] === listener ||
-	          (list[i].listener && list[i].listener === listener)) {
-	        position = i;
-	        break;
-	      }
-	    }
-
-	    if (position < 0)
-	      return this;
-
-	    if (list.length === 1) {
-	      list.length = 0;
-	      delete this._events[type];
-	    } else {
-	      list.splice(position, 1);
-	    }
-
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.removeAllListeners = function(type) {
-	  var key, listeners;
-
-	  if (!this._events)
-	    return this;
-
-	  // not listening for removeListener, no need to emit
-	  if (!this._events.removeListener) {
-	    if (arguments.length === 0)
-	      this._events = {};
-	    else if (this._events[type])
-	      delete this._events[type];
-	    return this;
-	  }
-
-	  // emit removeListener for all listeners on all events
-	  if (arguments.length === 0) {
-	    for (key in this._events) {
-	      if (key === 'removeListener') continue;
-	      this.removeAllListeners(key);
-	    }
-	    this.removeAllListeners('removeListener');
-	    this._events = {};
-	    return this;
-	  }
-
-	  listeners = this._events[type];
-
-	  if (isFunction(listeners)) {
-	    this.removeListener(type, listeners);
-	  } else if (listeners) {
-	    // LIFO order
-	    while (listeners.length)
-	      this.removeListener(type, listeners[listeners.length - 1]);
-	  }
-	  delete this._events[type];
-
-	  return this;
-	};
-
-	EventEmitter.prototype.listeners = function(type) {
-	  var ret;
-	  if (!this._events || !this._events[type])
-	    ret = [];
-	  else if (isFunction(this._events[type]))
-	    ret = [this._events[type]];
-	  else
-	    ret = this._events[type].slice();
-	  return ret;
-	};
-
-	EventEmitter.prototype.listenerCount = function(type) {
-	  if (this._events) {
-	    var evlistener = this._events[type];
-
-	    if (isFunction(evlistener))
-	      return 1;
-	    else if (evlistener)
-	      return evlistener.length;
-	  }
-	  return 0;
-	};
-
-	EventEmitter.listenerCount = function(emitter, type) {
-	  return emitter.listenerCount(type);
-	};
-
-	function isFunction(arg) {
-	  return typeof arg === 'function';
-	}
-
-	function isNumber(arg) {
-	  return typeof arg === 'number';
-	}
-
-	function isObject(arg) {
-	  return typeof arg === 'object' && arg !== null;
-	}
-
-	function isUndefined(arg) {
-	  return arg === void 0;
-	}
-
+	exports.default = StepTwo;
 
 /***/ },
 /* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
-		query-string
-		Parse and stringify URL query strings
-		https://github.com/sindresorhus/query-string
-		by Sindre Sorhus
-		MIT License
-	*/
-	(function () {
-		'use strict';
-		var queryString = {};
+	"use strict";
 
-		queryString.parse = function (str) {
-			if (typeof str !== 'string') {
-				return {};
-			}
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
-			str = str.trim().replace(/^(\?|#)/, '');
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-			if (!str) {
-				return {};
-			}
+	var _react = __webpack_require__(1);
 
-			return str.trim().split('&').reduce(function (ret, param) {
-				var parts = param.replace(/\+/g, ' ').split('=');
-				var key = parts[0];
-				var val = parts[1];
+	var _react2 = _interopRequireDefault(_react);
 
-				key = decodeURIComponent(key);
-				// missing `=` should be `null`:
-				// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-				val = val === undefined ? null : decodeURIComponent(val);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-				if (!ret.hasOwnProperty(key)) {
-					ret[key] = val;
-				} else if (Array.isArray(ret[key])) {
-					ret[key].push(val);
-				} else {
-					ret[key] = [ret[key], val];
-				}
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-				return ret;
-			}, {});
-		};
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-		queryString.stringify = function (obj) {
-			return obj ? Object.keys(obj).map(function (key) {
-				var val = obj[key];
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-				if (Array.isArray(val)) {
-					return val.map(function (val2) {
-						return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
-					}).join('&');
-				}
+	var StepThree = function (_React$Component) {
+	  _inherits(StepThree, _React$Component);
 
-				return encodeURIComponent(key) + '=' + encodeURIComponent(val);
-			}).join('&') : '';
-		};
+	  function StepThree() {
+	    _classCallCheck(this, StepThree);
 
-		if (true) {
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return queryString; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else if (typeof module !== 'undefined' && module.exports) {
-			module.exports = queryString;
-		} else {
-			self.queryString = queryString;
-		}
-	})();
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StepThree).apply(this, arguments));
+	  }
 
+	  _createClass(StepThree, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "playground-step" },
+	        _react2.default.createElement(
+	          "span",
+	          { className: "step-number" },
+	          "3"
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "step-content" },
+	          _react2.default.createElement(
+	            "h2",
+	            { className: "step-title" },
+	            "Exchange Code from Token"
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            null,
+	            _react2.default.createElement(
+	              "div",
+	              { className: "snippet-description pull-left" },
+	              "Your “id_token” is"
+	            ),
+	            _react2.default.createElement(
+	              "button",
+	              { className: "btn-view-jwt" },
+	              "View on JWT.io"
+	            )
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            { className: "code-snippet" },
+	            "“hjvcbhvbjvchbjcvhbjcvhbjvchbjcvhbjcvbhcjvxcvcvcvcvcvcvcvcvcc"
+	          ),
+	          _react2.default.createElement(
+	            "p",
+	            null,
+	            "Now, we need to turn that access code into an access token, by having our server make a request to your token endpoint"
+	          ),
+	          _react2.default.createElement(
+	            "p",
+	            null,
+	            "Your “access_token” is"
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            { className: "code-snippet" },
+	            "“SIAV32hkKG”"
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            { className: "code-box" },
+	            _react2.default.createElement(
+	              "div",
+	              { className: "code-box-title" },
+	              "Request"
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              { className: "code-box-content" },
+	              _react2.default.createElement(
+	                "div",
+	                { className: "code-block" },
+	                "GET https://sample-oidc.auth0.com/userinfo ? access_token= “SIAV32hkKG”"
+	              ),
+	              _react2.default.createElement("hr", null),
+	              _react2.default.createElement(
+	                "button",
+	                { className: "code-box-btn" },
+	                "Exchange"
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return StepThree;
+	}(_react2.default.Component);
+
+	exports.default = StepThree;
 
 /***/ },
 /* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -21185,172 +20930,62 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var ClearAllButton = function (_React$Component) {
-		_inherits(ClearAllButton, _React$Component);
+	var StepFour = function (_React$Component) {
+	  _inherits(StepFour, _React$Component);
 
-		function ClearAllButton() {
-			_classCallCheck(this, ClearAllButton);
+	  function StepFour() {
+	    _classCallCheck(this, StepFour);
 
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(ClearAllButton).call(this));
-		}
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StepFour).apply(this, arguments));
+	  }
 
-		_createClass(ClearAllButton, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'button',
-					{ type: 'button', onClick: this.clearStorage },
-					'Clear All LocalStorage'
-				);
-			}
-		}, {
-			key: 'clearStorage',
-			value: function clearStorage() {
-				console.log('clearing');
-				localStorage.clear();
-			}
-		}]);
+	  _createClass(StepFour, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "playground-step last-step" },
+	        _react2.default.createElement(
+	          "span",
+	          { className: "step-number" },
+	          _react2.default.createElement("i", { className: "icon-budicon-470" })
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "step-content" },
+	          _react2.default.createElement(
+	            "h2",
+	            { className: "step-title" },
+	            "Congrats! You are a OpenID expert!"
+	          )
+	        )
+	      );
+	    }
+	  }]);
 
-		return ClearAllButton;
+	  return StepFour;
 	}(_react2.default.Component);
 
-	exports.default = ClearAllButton;
+	exports.default = StepFour;
 
 /***/ },
 /* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Ajax = __webpack_require__(169);
-
-	var TokenPanel = function (_React$Component) {
-		_inherits(TokenPanel, _React$Component);
-
-		function TokenPanel() {
-			_classCallCheck(this, TokenPanel);
-
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TokenPanel).call(this));
-
-			_this.update = _this.update.bind(_this);
-			var oldState = localStorage.getItem('app-state');
-			_this.state = JSON.parse(oldState) || {};
-			_this.state.code = document.querySelector('input[name=code]').value;
-			return _this;
-		}
-
-		_createClass(TokenPanel, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'h2',
-						null,
-						'Step 1 complete!'
-					),
-					_react2.default.createElement(
-						'p',
-						null,
-						'Your access code is:'
-					),
-					_react2.default.createElement(
-						'p',
-						null,
-						'#',
-						this.state.code
-					),
-					_react2.default.createElement(
-						'p',
-						null,
-						'Now, we need to turn that access code into an access token, by having our server make a request to your token endpoint:'
-					),
-					_react2.default.createElement(GetTokenButton, { getToken: this.getToken.bind(this) }),
-					_react2.default.createElement(TokenResponse, { token: this.state.tokenResponse })
-				);
-			}
-		}, {
-			key: 'getToken',
-			value: function getToken() {
-				var panel = this;
-				var tokenRequest = new Ajax({
-					url: '/code_to_token',
-					method: 'POST',
-					data: JSON.stringify(panel.state)
-				});
-
-				tokenRequest.on('success', function (event) {
-					panel.setState({
-						tokenResponse: event.currentTarget.response
-					});
-					panel.update();
-				});
-
-				tokenRequest.send();
-			}
-		}, {
-			key: 'update',
-			value: function update() {}
-		}]);
-
-		return TokenPanel;
-	}(_react2.default.Component);
-
-	var GetTokenButton = function GetTokenButton(props) {
-		return _react2.default.createElement(
-			'button',
-			{ type: 'button', onClick: props.getToken },
-			'Get Token'
-		);
-	};
-
-	var TokenResponse = function TokenResponse(props) {
-		return _react2.default.createElement(
-			'div',
-			null,
-			props.token
-		);
-	};
-
-	exports.default = TokenPanel;
-
-/***/ },
-/* 174 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(175);
+	var content = __webpack_require__(174);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(177)(content, {});
+	var update = __webpack_require__(176)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/stylus-loader/index.js!./file.styl", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/stylus-loader/index.js!./file.styl");
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/stylus-loader/index.js!./styles.styl", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/stylus-loader/index.js!./styles.styl");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -21360,21 +20995,21 @@
 	}
 
 /***/ },
-/* 175 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(176)();
+	exports = module.exports = __webpack_require__(175)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".main-header {\n  background-color: #f9f9f9;\n}\n.main-header .main-navigation {\n  border-bottom: 1px solid rgba(0,0,0,0.05);\n}\n.main-header .main-navigation > .container {\n  position: relative;\n  height: 115px;\n}\n.main-header .openid-logo {\n  display: inline-block;\n  position: absolute;\n  left: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n  width: 135px;\n  height: 42px;\n  background-image: url(\"/images/openid-logo.svg\");\n}\n.main-header .openid-logo > .logo-text {\n  color: rgba(0,0,0,0);\n  font-size: 0;\n}\n.main-header .navigation {\n  display: inline-block;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n.main-header .navigation .navigation-item {\n  display: inline-block;\n  font-size: 14px;\n  margin-right: 20px;\n}\n.main-header .navigation .navigation-item > a {\n  color: #000;\n  padding: 10px;\n}\n.main-header .navigation .navigation-item:last-child {\n  margin-right: 0;\n}\n.main-header .social-icons {\n  position: absolute;\n  right: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n  line-height: 0;\n}\n.main-header .social-icons .auth0-icon {\n  display: inline-block;\n  width: 23px;\n  height: 26px;\n  background-image: url(\"/images/auth0-badge.svg\");\n}\n.main-header .social-icons .twitter-icon {\n  display: inline-block;\n  width: 26px;\n  height: 26px;\n  background-image: url(\"/images/twitter-badge.svg\");\n  margin-left: 10px;\n}\n.main-header .hero {\n  text-align: center;\n  padding: 55px 0;\n}\n.main-header .hero .hero-title {\n  margin: 0;\n  margin-bottom: 25px;\n  font-size: 32px;\n  color: #f8931d;\n}\n.main-header .hero .hero-subtitle {\n  max-width: 700px;\n  margin: 0 auto;\n  font-size: 16px;\n  line-height: 2;\n  color: rgba(0,0,0,0.54);\n}\n.playground .playground-header {\n  position: relative;\n  margin-top: 20px;\n  padding: 25px 0;\n  border-bottom: 1px solid rgba(0,0,0,0.1);\n}\n@media (min-width: 768px) {\n  .playground .playground-header {\n    text-align: center;\n  }\n}\n.playground .playground-header-title {\n  display: inline-block;\n  font-size: 26px;\n  line-height: 39px;\n  margin: 0;\n}\n.playground .playground-header-config {\n  font-size: 12px;\n  text-transform: uppercase;\n  line-height: 39px;\n  vertical-align: middle;\n  position: absolute;\n  right: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n}\n.playground .playground-header-config > i {\n  margin-right: 5px;\n  font-size: 16px;\n  line-height: 39px;\n  vertical-align: middle;\n}\n.playground .playground-content {\n  width: 600px;\n  max-width: 100%;\n  margin: 40px auto 0 auto;\n}\n.playground .playground-step {\n  position: relative;\n  padding-bottom: 55px;\n}\n@media (min-width: 768px) {\n  .playground .playground-step {\n    left: -32.5px;\n  }\n}\n.playground .playground-step.active .step-number {\n  color: #fff;\n  background-color: #f8931d;\n}\n.playground .playground-step.last-step .step-number {\n  color: #fff;\n  background-color: #7ed321;\n  border-color: #7ed321;\n}\n.playground .playground-step.last-step:before {\n  display: none !important;\n}\n.playground .playground-step:not(.active):before {\n  content: '';\n  display: inline-block;\n  height: 100%;\n  width: 1px;\n  background-color: #f8931d;\n  position: absolute;\n  left: 20px;\n  top: 0;\n}\n@media (max-width: 767px) {\n  .playground .playground-step:not(.active):before {\n    display: none;\n  }\n}\n.playground .playground-step .step-number {\n  display: inline-block;\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  border: 2px solid #f8931d;\n  background-color: #fff;\n  text-align: center;\n  line-height: 40px;\n  font-size: 18px;\n  color: #f8931d;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-number {\n    margin-bottom: 15px;\n    margin-right: 15px;\n  }\n}\n@media (min-width: 768px) {\n  .playground .playground-step .step-number {\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n}\n.playground .playground-step p {\n  margin-bottom: 20px;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-content {\n    display: inline;\n  }\n}\n@media (min-width: 768px) {\n  .playground .playground-step .step-content {\n    padding-left: 65px;\n  }\n}\n.playground .playground-step .step-title {\n  font-size: 24px;\n  line-height: 40px;\n  margin: 0;\n  margin-bottom: 20px;\n  text-align: left;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-title {\n    display: inline-block;\n  }\n}\n.playground .playground-step .snippet-description {\n  font-family: 'Inconsolata', monospace;\n  margin-bottom: 5px;\n  color: #f8931d;\n}\n.playground .playground-step .code-snippet {\n  display: block;\n  width: 100%;\n  border-radius: 3px;\n  color: #fff;\n  background-color: #222228;\n  padding: 10px 20px;\n  margin-bottom: 14px;\n  overflow-x: scroll;\n}\n.playground .playground-step .skip-tutorial {\n  display: block;\n  margin: 0 auto;\n  position: relative;\n  font-size: 12px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin: 40px auto 20px auto;\n}\n.playground .playground-step .btn-view-jwt {\n  float: right;\n  position: relative;\n  bottom: 6px;\n  margin-bottom: 8px;\n  border-radius: 50px;\n  padding: 8px 10px;\n  padding-left: 38px;\n  font-size: 12px;\n  font-weight: bold;\n  text-transform: uppercase;\n  background-color: #000;\n  color: #fff;\n  background-image: url(\"/images/jwt-badge.svg\");\n  background-position: 10px center;\n  background-repeat: no-repeat;\n  background-size: 19px 19px;\n}\n.playground .playground-step .code-box-title {\n  border: 1px solid #222228;\n  border-bottom: 0;\n  font-size: 18px;\n  padding-left: 20px;\n  line-height: 65px;\n  border-radius: 3px 3px 0 0;\n}\n.playground .playground-step .code-box-content {\n  background-color: #222228;\n  color: #fff;\n  border-top: none;\n  border-radius: 0 0 3px 3px;\n  padding: 25px 20px;\n  overflow: scroll;\n}\n.playground .playground-step .code-block {\n  font-family: 'Inconsolata', monospace;\n  font-size: 14px;\n  padding-right: 20px;\n  margin-bottom: 15px;\n}\n.playground .playground-step hr {\n  border-top: 1px solid rgba(255,255,255,0.1);\n  margin: 20px 0;\n}\n.playground .playground-step .code-box-btn {\n  display: block;\n  margin: 0 auto;\n  font-size: 12px;\n  text-transform: uppercase;\n  padding: 15px 20px;\n  border-radius: 3px;\n  color: #222228;\n  border: 0;\n  background-color: #fff;\n  letter-spacing: 1px;\n}\n.main-footer {\n  text-align: center;\n  background-color: #f9f9f9;\n  font-size: 15px;\n  color: rgba(0,0,0,0.54);\n  padding: 30px 0;\n}\n.main-footer .auth0-badge {\n  display: inline-block;\n  background-size: contain;\n  background-repeat: no-repeat;\n  width: 22px;\n  height: 25px;\n  background-image: url(\"/images/auth0-badge.svg\");\n  vertical-align: middle;\n  margin-left: 5px;\n  margin-right: 10px;\n}\n", ""]);
+	exports.push([module.id, ".main-header {\n  background-color: #f9f9f9;\n}\n.main-header .main-navigation {\n  border-bottom: 1px solid rgba(0,0,0,0.05);\n}\n.main-header .main-navigation > .container {\n  position: relative;\n  height: 115px;\n}\n.main-header .openid-logo {\n  display: inline-block;\n  position: absolute;\n  left: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n  width: 135px;\n  height: 42px;\n  background-image: url(\"/images/openid-logo.svg\");\n}\n.main-header .openid-logo > .logo-text {\n  color: rgba(0,0,0,0);\n  font-size: 0;\n}\n.main-header .navigation {\n  display: inline-block;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n.main-header .navigation .navigation-item {\n  display: inline-block;\n  font-size: 14px;\n  margin-right: 20px;\n}\n.main-header .navigation .navigation-item > a {\n  color: #000;\n  padding: 10px;\n}\n.main-header .navigation .navigation-item:last-child {\n  margin-right: 0;\n}\n.main-header .social-icons {\n  position: absolute;\n  right: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n  line-height: 0;\n}\n.main-header .social-icons .auth0-icon {\n  display: inline-block;\n  width: 23px;\n  height: 26px;\n  background-image: url(\"/images/auth0-badge.svg\");\n}\n.main-header .social-icons .twitter-icon {\n  display: inline-block;\n  width: 26px;\n  height: 26px;\n  background-image: url(\"/images/twitter-badge.svg\");\n  margin-left: 10px;\n}\n.main-header .hero {\n  text-align: center;\n  padding: 55px 0;\n}\n.main-header .hero .hero-title {\n  margin: 0;\n  margin-bottom: 25px;\n  font-size: 32px;\n  color: #f8931d;\n}\n.main-header .hero .hero-subtitle {\n  max-width: 700px;\n  margin: 0 auto;\n  font-size: 16px;\n  line-height: 2;\n  color: rgba(0,0,0,0.54);\n}\n.playground .playground-header {\n  position: relative;\n  margin-top: 20px;\n  padding: 25px 0;\n  border-bottom: 1px solid rgba(0,0,0,0.1);\n}\n@media (min-width: 768px) {\n  .playground .playground-header {\n    text-align: center;\n  }\n}\n.playground .playground-header-title {\n  display: inline-block;\n  font-size: 26px;\n  line-height: 39px;\n  margin: 0;\n}\n.playground .playground-header-config {\n  font-size: 12px;\n  text-transform: uppercase;\n  line-height: 39px;\n  vertical-align: middle;\n  position: absolute;\n  right: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n}\n.playground .playground-header-config > i {\n  margin-right: 5px;\n  font-size: 16px;\n  line-height: 39px;\n  vertical-align: middle;\n}\n.playground .playground-content {\n  width: 600px;\n  max-width: 100%;\n  margin: 40px auto 0 auto;\n}\n.playground .playground-step {\n  position: relative;\n  padding-bottom: 55px;\n}\n@media (min-width: 768px) {\n  .playground .playground-step {\n    left: -32.5px;\n  }\n}\n.playground .playground-step.active .step-number {\n  color: #fff;\n  background-color: #f8931d;\n}\n.playground .playground-step.last-step .step-number {\n  color: #fff;\n  background-color: #7ed321;\n  border-color: #7ed321;\n}\n.playground .playground-step.last-step:before {\n  display: none !important;\n}\n.playground .playground-step:not(.active):before {\n  content: '';\n  display: inline-block;\n  height: 100%;\n  width: 1px;\n  background-color: #f8931d;\n  position: absolute;\n  left: 20px;\n  top: 0;\n}\n@media (max-width: 767px) {\n  .playground .playground-step:not(.active):before {\n    display: none;\n  }\n}\n.playground .playground-step .step-number {\n  display: inline-block;\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  border: 2px solid #f8931d;\n  background-color: #fff;\n  text-align: center;\n  line-height: 40px;\n  font-size: 18px;\n  color: #f8931d;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-number {\n    margin-bottom: 15px;\n    margin-right: 15px;\n  }\n}\n@media (min-width: 768px) {\n  .playground .playground-step .step-number {\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n}\n.playground .playground-step p {\n  margin-bottom: 20px;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-content {\n    display: inline;\n  }\n}\n@media (min-width: 768px) {\n  .playground .playground-step .step-content {\n    padding-left: 65px;\n  }\n}\n.playground .playground-step .step-title {\n  font-size: 24px;\n  line-height: 40px;\n  margin: 0;\n  margin-bottom: 20px;\n  text-align: left;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-title {\n    display: inline-block;\n  }\n}\n.playground .playground-step .snippet-description {\n  font-family: 'Inconsolata', monospace;\n  margin-bottom: 5px;\n  color: #f8931d;\n}\n.playground .playground-step .code-snippet {\n  display: block;\n  width: 100%;\n  border-radius: 3px;\n  color: #fff;\n  background-color: #222228;\n  padding: 10px 20px;\n  margin-bottom: 14px;\n  overflow-x: scroll;\n}\n.playground .playground-step .skip-tutorial {\n  display: block;\n  margin: 0 auto;\n  position: relative;\n  font-size: 12px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin: 40px auto 20px auto;\n}\n.playground .playground-step .btn-view-jwt {\n  float: right;\n  position: relative;\n  border: none;\n  bottom: 6px;\n  margin-bottom: 8px;\n  border-radius: 50px;\n  padding: 8px 10px;\n  padding-left: 38px;\n  font-size: 12px;\n  font-weight: bold;\n  text-transform: uppercase;\n  background-color: #000;\n  color: #fff;\n  background-image: url(\"/images/jwt-badge.svg\");\n  background-position: 10px center;\n  background-repeat: no-repeat;\n  background-size: 19px 19px;\n}\n.playground .playground-step .code-box-title {\n  border: 1px solid #222228;\n  border-bottom: 0;\n  font-size: 18px;\n  padding-left: 20px;\n  line-height: 65px;\n  border-radius: 3px 3px 0 0;\n  margin: 0;\n}\n.playground .playground-step .code-box-content {\n  background-color: #222228;\n  color: #fff;\n  border-top: none;\n  border-radius: 0 0 3px 3px;\n  padding: 25px 20px;\n  overflow: scroll;\n}\n.playground .playground-step .code-block {\n  font-family: 'Inconsolata', monospace;\n  font-size: 14px;\n  padding-right: 20px;\n  margin-bottom: 15px;\n}\n.playground .playground-step hr {\n  border-top: 1px solid rgba(255,255,255,0.1);\n  margin: 20px 0;\n}\n.playground .playground-step .code-box-btn {\n  display: block;\n  margin: 0 auto;\n  font-size: 12px;\n  text-transform: uppercase;\n  padding: 15px 20px;\n  border-radius: 3px;\n  color: #222228;\n  border: 0;\n  background-color: #fff;\n  letter-spacing: 1px;\n}\n.main-footer {\n  text-align: center;\n  background-color: #f9f9f9;\n  font-size: 15px;\n  color: rgba(0,0,0,0.54);\n  padding: 30px 0;\n}\n.main-footer .auth0-badge {\n  display: inline-block;\n  background-size: contain;\n  background-repeat: no-repeat;\n  width: 22px;\n  height: 25px;\n  background-image: url(\"/images/auth0-badge.svg\");\n  vertical-align: middle;\n  margin-left: 5px;\n  margin-right: 10px;\n}\n.configuration-modal {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  overflow-x: hidden;\n  overflow-y: auto;\n  pointer-events: auto;\n}\n.configuration-modal .configuration-modal-dialog {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  padding: 25px;\n  padding-top: 50px;\n  background-color: #fff;\n  width: 100%;\n  max-width: 1000px;\n  border-radius: 3px;\n}\n.configuration-modal .configuration-modal-close {\n  position: absolute;\n  top: 30px;\n  right: 30px;\n  font-size: 24px;\n  line-height: 1;\n}\n.configuration-modal .configuration-modal-title {\n  font-size: 26px;\n  text-align: center;\n  margin: 0 0 30px 0;\n}\n.configuration-modal .clear-storage-container {\n  background-color: #222228;\n  border-radius: 3px;\n  color: #fff;\n  font-size: 13px;\n  position: relative;\n}\n.configuration-modal .clear-storage-container > p {\n  padding: 20px;\n  padding-right: 240px;\n  font-size: 13px;\n}\n.configuration-modal .clear-storage-container > .clear-storage-btn {\n  position: absolute;\n  right: 20px;\n  top: 50%;\n  transform: translateY(-50%);\n  background-color: #fff;\n  border: none;\n  border-radius: 3px;\n  letter-spacing: 1px;\n  color: #222228;\n  text-transform: uppercase;\n  font-size: 12px;\n  padding: 10px 20px;\n}\n.configuration-modal .configuration-modal-backdrop {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  height: 100%;\n  width: 100%;\n  background-color: rgba(34,34,40,0.75);\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 176 */
+/* 175 */
 /***/ function(module, exports) {
 
 	/*
@@ -21430,7 +21065,7 @@
 
 
 /***/ },
-/* 177 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
