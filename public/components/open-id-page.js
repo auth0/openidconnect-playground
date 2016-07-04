@@ -3,8 +3,26 @@ import StepOne from './step-one';
 import StepTwo from './step-two';
 import StepThree from './step-three';
 import StepFour from './step-four';
+import ConfigurationModal from './configuration-modal';
 
 class OpenIDPage extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {
+      currentStep: 1,
+      configurationModalOpen: false
+    };
+  }
+
+  setConfigurationModalVisibility(v) {
+    this.setState({ configurationModalOpen: v });
+  }
+
+  setStep(step) {
+    this.setState({ currentStep: step });
+  }
+
   render() {
     return (
       <div className="openid-page">
@@ -53,20 +71,52 @@ class OpenIDPage extends React.Component {
           <div className="container">
             <div className="playground-header">
               <h2 className="playground-header-title">Debugger</h2>
-              <a href="" className="playground-header-config">
+              <button
+                onClick={ () => { this.setConfigurationModalVisibility(true); } }
+                className="playground-header-config btn btn-link"
+                href=""
+              >
                 <i className="icon-budicon-329"></i>
                 Configuration
-              </a>
+              </button>
             </div>
             <div className="playground-content">
-              <StepOne />
-              <StepTwo />
-              <StepThree />
-              <StepFour />
+              { this.state.currentStep >= 1 ?
+                <StepOne
+                  openModal={ () => { this.setConfigurationModalVisibility(true); } }
+                  nextStep={ () => { this.setStep(2); } }
+                  skipTutorial={ () => { this.setStep(4); }}
+                  isActive={ this.state.currentStep === 1 }
+                />
+                : null
+              }
+              { this.state.currentStep >= 2 ?
+                <StepTwo
+                  nextStep={ () => { this.setStep(3); } }
+                  isActive={ this.state.currentStep === 2 }
+                />
+                : null
+              }
+              { this.state.currentStep >= 3 ?
+                <StepThree
+                  isActive={ this.state.currentStep === 3 }
+                />
+                : null
+              }
+              { this.state.currentStep >= 4 ?
+                <StepFour
+                  isActive={ this.state.currentStep === 4 }
+                />
+                : null
+              }
             </div>
           </div>
         </main>
-
+        {this.state.configurationModalOpen ?
+          <ConfigurationModal
+            closeModal={ () => { this.setConfigurationModalVisibility(false); } }
+          />
+          : null }
         <footer className="main-footer">
           <div className="container">
             <span>Crafted by</span>

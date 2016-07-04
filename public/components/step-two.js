@@ -3,7 +3,7 @@ import React from 'react';
 class StepTwo extends React.Component {
   render() {
     return (
-      <div className="playground-step">
+      <div className={`playground-step ${this.props.isActive ? 'active' : '' }`} >
         <span className="step-number">2</span>
         <div className="step-content">
           <h2 className="step-title">Exchange Code from Token</h2>
