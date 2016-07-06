@@ -1,5 +1,6 @@
 import React from 'react'
 import Ajax from 'simple-ajax'
+import _ from 'lodash'
 
 class ServerURLs extends React.Component{
 	constructor(){
@@ -7,18 +8,13 @@ class ServerURLs extends React.Component{
 		this.update = this.update.bind(this)
 		let savedState = localStorage.getItem('app-state') || '{}'
 		savedState = JSON.parse(savedState)
-		this.state = {
-			domain: 'samples.auth0.com',
-			authEndpoint: '',
-			tokenEndpoint: '',
-			savedState
-		}
+		this.state = savedState
 	}
 	render(){
 		return (
 			<div>
 				<label for="server">Server Template:</label>
-				<select name="server" ref="server" onChange={this.updateServerURL.bind(this)}>
+				<select name="server" ref="server" onChange={this.update}>
 					<option value="none">SELECT A SERVER TEMPLATE</option>
 					<option value="Auth0">Auth0</option>
 					<option value="google">Google</option>
@@ -30,92 +26,133 @@ class ServerURLs extends React.Component{
 					<input name="domain" onChange={this.update}ref="domain" placeholder="mydomain.auth0.com" />
 					<button onClick={this.updateAuth0.bind(this)}>Use Auth0 Discovery Document</button>
 					<p ref="Auth0DiscoveryDocumentURL"></p>
+					<span>Authorization Endpoint:&nbsp; <span ref="authEndpoint">{this.state.authEndpoint}</span></span><br/>
+					<span>Token Endpoint:&nbsp; <span ref="tokenEndpoint">{this.state.tokenEndpoint}</span></span><br/>
 				</p>
-				<p style={{display:(this.state.server == 'custom' ? 'block' : 'none')}}>
+				<p style={{display:(this.state.server != 'Auth0' ? 'block' : 'none')}}>
 					<label for="discoveryURL">Discovery Document URL:&nbsp;</label>
-					<input name="discoveryURL" value={this.state.discoveryURL} ref="discoveryURL" placeholder="https://my-oidc.com/.well-known/oidc-configuration" />
+					<input name="discoveryURL" onChange={this.update} disabled={this.state.server == 'google' ? 'disabled' : ''} value={this.state.discoveryURL} ref="discoveryURL" placeholder="https://my-oidc.com/.well-known/oidc-configuration" />
 					<button style={{display:(this.state.server != 'google' ? 'inline-block' : 'none')}} onClick={this.updateDiscovery.bind(this)}>Use Discovery Document</button>
-					<span ref="DiscoveryDocumentURL"></span>
+					<br/>
+					<label for="authEndpoint">Authorization Endpoint:&nbsp;</label>
+					<input name="authEndpoint" onChange={this.update} disabled={this.state.server == 'google' ? 'disabled' : ''} value={this.state.authEndpoint} ref="authEndpoint" placeholder="https://my-oidc.com/.well-known/oidc-configuration" />
+					<br/>
+					<label for="Token Endpoint">Token Endpoint:&nbsp;</label>
+					<input name="tokenEndpoint" onChange={this.update} disabled={this.state.server == 'google' ? 'disabled' : ''} value={this.state.tokenEndpoint} ref="tokenEndpoint" placeholder="https://my-oidc.com/.well-known/oidc-configuration" />
 				</p>
-				<p style={{display:(this.state.server == 'google' ? 'block' : 'none')}}>
-					<span>Discovery Document:&nbsp;{this.state.discoveryURL}</span><br/>
-				</p>
-				<p id="warning" style={{display:(this.state.warning ? 'block' : 'none')}}>Remember to set https://openidconnect.net/callback as an allowed callback with your application!</p>
-				<span>Authorization Endpoint:&nbsp; <span ref="authEndpoint">{this.state.authEndpoint}</span></span><br/>
-				<span>Token Endpoint:&nbsp; <span ref="tokenEndpoint">{this.state.tokenEndpoint}</span></span><br/>
+				<p id="warning" style={{display:(this.state.server != 'Auth0' ? 'block' : 'none')}}>Remember to set https://openidconnect.net/callback as an allowed callback with your application!</p>
+
 			</div>
 		)
 	}
 	componentDidMount(){
-		this.updateServerURL()
+		this.updateServerURL(true)
+		this.update()
 	}
 	update(){
-	}
-	updateServerURL(){
-		if(this.state.savedState.server){
-			this.refs.server.value = this.state.savedState.server
+		const oldState = JSON.parse(localStorage.getItem('app-state')) || {};
+		if (!oldState) {
 			this.setState({
-				savedState: {
-					server: false
-				}
+				clientID: null,
+				clientSecret: null,
+				scope: null
 			})
+		} else {
+			this.setState(oldState)
 		}
+		this.updateServerURL(false, function(){
 
-		let type = this.refs.server.value
+			document.querySelector('select[name=server]').removeAttribute('value');
 
-		if(type == 'Auth0'){
-			this.setState({
-				server: type,
-				domain: 'samples.auth0.com',
-				authEndpoint: this.state.savedState.authEndpoint || '',
-				tokenEndpoint: this.state.savedState.tokenEndpoint || '',
-				warning: this.state.domain == 'samples.auth0.com' ? false : true
-			})
-			this.refs.domain.value = this.state.savedState.domain || 'samples.auth0.com'
+			let newState = oldState
 
-		} else if(type == 'custom'){
-			this.setState({
-				server: type,	
-				warning: true,
-				authEndpoint: this.state.savedState.authEndpoint || '',
-				tokenEndpoint: this.state.savedState.tokenEndpoint || '',
-				discoveryURL: this.state.savedState.discoveryURL || ''
-			})
-		} else if(type == 'google'){
+			newState.server =  this.refs.server.value
+			newState.authEndpoint =  this.refs.authEndpoint.value
+			newState.tokenEndpoint =  this.refs.tokenEndpoint.value
+			newState.domain = this.refs.domain.value
+			newState.discoveryURL = this.refs.discoveryURL.value
+
+			localStorage.setItem('app-state', JSON.stringify(newState))
+
+			this.setState(newState);
+		}.bind(this))
+	}
+	updateServerURL(load, callback){
+		console.log(this.state)
+		let type = this.refs.server.value, domain, authEndpoint, tokenEndpoint, warning, discoveryURL
+
+		console.log('update', load)
+
+		if(type == 'google'){
 			let googleDiscoveryURL = 'https://accounts.google.com/.well-known/openid-configuration';
 			this.discover('https://accounts.google.com/.well-known/openid-configuration', function(discovered){
 				this.setState({
 					server: type,
-					discovery: true,
 					discoveryURL: googleDiscoveryURL,
 					warning: true,
 					authEndpoint: discovered.authorization_endpoint,
-					tokenEndpoint: discovered.token_endpoint
+					tokenEndpoint: discovered.token_endpoint,
+					domain: null
 				})
 			}.bind(this))
+		} else if(load) {
+			document.querySelector('option[value=' + (this.state.server || 'Auth0' )+ ']').setAttribute('selected', 'true')
+			domain = this.state.domain || ''
+			authEndpoint = this.state.authEndpoint || ''
+			tokenEndpoint = this.state.tokenEndpoint || ''
+			discoveryURL = this.state.discoveryURL || ''
+			warning = (type === 'Auth0' && domain === 'samples.auth0.com') ? false : true
+
+			this.setState({
+				server: type,
+				discoveryURL,
+				warning,
+				authEndpoint,
+				tokenEndpoint
+			})
+		} else {
+			domain = this.refs.domain.value || ''
+			authEndpoint = this.refs.authEndpoint.value || ''
+			tokenEndpoint = this.refs.tokenEndpoint.value || ''
+			discoveryURL = this.refs.discoveryURL.value || ''
+			warning = (type === 'Auth0' && domain === 'samples.auth0.com') ? false : true
+			this.setState({
+				server: type,
+				domain,
+				discoveryURL,
+				warning,
+				authEndpoint,
+				tokenEndpoint
+			})	
 		}
+		if(callback) callback()
 	}
 	updateAuth0(){
+		console.log('updating auth0')
 		let documentURL = 'https://' + this.refs.domain.value + '/.well-known/openid-configuration'
 		this.discover(documentURL, function(discovered){
+				console.log(discovered)
 				this.setState({
-					discovery: true,
 					discoveryURL: documentURL,
 					authEndpoint: discovered.authorization_endpoint,
 					tokenEndpoint: discovered.token_endpoint
 				})
-				this.update()		
+				localStorage.setItem('app-state', JSON.stringify(this.state))
+				this.updateServerURL(true)
 			}.bind(this))
 	}
 	updateDiscovery(){
+		console.log('updating discovery')
 		let documentURL = this.refs.discoveryURL.value
 		this.discover(documentURL, function(discovered){
+				console.log(discovered)
 				this.setState({
-					discovery: true,
 					discoveryURL: documentURL,
 					authEndpoint: discovered.authorization_endpoint,
 					tokenEndpoint: discovered.token_endpoint
 				})
+				localStorage.setItem('app-state', JSON.stringify(this.state))
+				this.updateServerURL(true)
 			}.bind(this))
 	}
 	discover(url, callback){
