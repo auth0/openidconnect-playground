@@ -46,47 +46,27 @@ class ServerURLs extends React.Component{
 		)
 	}
 	componentDidMount(){
-		this.updateServerURL(true)
-		this.update()
-	}
-	update(){
-		const oldState = JSON.parse(localStorage.getItem('app-state')) || {};
-		if (!oldState) {
-			this.setState({
-				clientID: null,
-				clientSecret: null,
-				scope: null
-			})
-		} else {
-			this.setState(oldState)
-		}
-		this.updateServerURL(false, function(){
-
-			document.querySelector('select[name=server]').removeAttribute('value');
-
-			let newState = oldState
-
-			newState.server =  this.refs.server.value
-			newState.authEndpoint =  this.refs.authEndpoint.value
-			newState.tokenEndpoint =  this.refs.tokenEndpoint.value
-			newState.domain = this.refs.domain.value
-			newState.discoveryURL = this.refs.discoveryURL.value
-
-			localStorage.setItem('app-state', JSON.stringify(newState))
-
-			this.setState(newState);
+		this.updateServerURL(true, function(){
+			this.update()
 		}.bind(this))
 	}
+	update(){
+		this.setState({
+			server: this.refs.server.value,
+			authEndpoint: this.refs.authEndpoint.value,
+			tokenEndpoint: this.refs.tokenEndpoint.value,
+			domain: this.refs.domain.value,
+			discoveryURL: this.refs.discoveryURL.value
+		});
+		this.updateServerURL(true)
+	}
 	updateServerURL(load, callback){
-		console.log(this.state)
 		let type = this.refs.server.value, domain, authEndpoint, tokenEndpoint, warning, discoveryURL
-
-		console.log('update', load)
 
 		if(type == 'google'){
 			let googleDiscoveryURL = 'https://accounts.google.com/.well-known/openid-configuration';
 			this.discover('https://accounts.google.com/.well-known/openid-configuration', function(discovered){
-				this.setState({
+				this.setNewState({
 					server: type,
 					discoveryURL: googleDiscoveryURL,
 					warning: true,
@@ -103,7 +83,7 @@ class ServerURLs extends React.Component{
 			discoveryURL = this.state.discoveryURL || ''
 			warning = (type === 'Auth0' && domain === 'samples.auth0.com') ? false : true
 
-			this.setState({
+			this.setNewState({
 				server: type,
 				discoveryURL,
 				warning,
@@ -116,7 +96,7 @@ class ServerURLs extends React.Component{
 			tokenEndpoint = this.refs.tokenEndpoint.value || ''
 			discoveryURL = this.refs.discoveryURL.value || ''
 			warning = (type === 'Auth0' && domain === 'samples.auth0.com') ? false : true
-			this.setState({
+			this.setNewState({
 				server: type,
 				domain,
 				discoveryURL,
@@ -128,32 +108,24 @@ class ServerURLs extends React.Component{
 		if(callback) callback()
 	}
 	updateAuth0(){
-		console.log('updating auth0')
 		let documentURL = 'https://' + this.refs.domain.value + '/.well-known/openid-configuration'
 		this.discover(documentURL, function(discovered){
-				console.log(discovered)
-				this.setState({
-					discoveryURL: documentURL,
-					authEndpoint: discovered.authorization_endpoint,
-					tokenEndpoint: discovered.token_endpoint
-				})
-				localStorage.setItem('app-state', JSON.stringify(this.state))
-				this.updateServerURL(true)
-			}.bind(this))
+			this.setNewState({
+				discoveryURL: documentURL,
+				authEndpoint: discovered.authorization_endpoint,
+				tokenEndpoint: discovered.token_endpoint
+			})
+		}.bind(this))
 	}
 	updateDiscovery(){
-		console.log('updating discovery')
 		let documentURL = this.refs.discoveryURL.value
 		this.discover(documentURL, function(discovered){
-				console.log(discovered)
-				this.setState({
-					discoveryURL: documentURL,
-					authEndpoint: discovered.authorization_endpoint,
-					tokenEndpoint: discovered.token_endpoint
-				})
-				localStorage.setItem('app-state', JSON.stringify(this.state))
-				this.updateServerURL(true)
-			}.bind(this))
+			this.setNewState({
+				discoveryURL: documentURL,
+				authEndpoint: discovered.authorization_endpoint,
+				tokenEndpoint: discovered.token_endpoint
+			})
+		}.bind(this))
 	}
 	discover(url, callback){
 
@@ -170,6 +142,17 @@ class ServerURLs extends React.Component{
 		})
 
 		serviceDiscovery.send()
+	}
+	setNewState(changes, reload){
+		this.setState(changes)
+		this.dispatchChangeEvent(this.state)
+		this.saveState()	
+	}
+	dispatchChangeEvent(config){
+		window.dispatchEvent(new CustomEvent('configChange', { detail: config || this.state }))
+	}
+	saveState(){
+		localStorage.setItem('app-state', JSON.stringify(this.state))
 	}
 
 }

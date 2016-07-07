@@ -9,10 +9,24 @@ class OpenIDPage extends React.Component {
 
   constructor() {
     super();
-    this.state = {
-      currentStep: 1,
-      configurationModalOpen: false
-    };
+		let savedState = localStorage.getItem('app-state') || '{}'
+		savedState = JSON.parse(savedState)
+		this.state = savedState
+    this.state.currentStep = this.state.currentStep || 1
+    this.state.configurationModalOpen = false
+    this.updateConfigs(null, this.state)
+  }
+
+  componentDidMount(){
+    //listen for config changes
+    window.addEventListener('configChange', this.updateConfigs.bind(this))
+  }
+
+  updateConfigs(event){
+    if(event && event.detail){
+      console.log(event.detail)
+      this.setState(event.detail)
+    }
   }
 
   setConfigurationModalVisibility(v) {
@@ -83,6 +97,7 @@ class OpenIDPage extends React.Component {
             <div className="playground-content">
               { this.state.currentStep >= 1 ?
                 <StepOne
+                  authURL = {this.state.authEndpoint}
                   openModal={ () => { this.setConfigurationModalVisibility(true); } }
                   nextStep={ () => { this.setStep(2); } }
                   skipTutorial={ () => { this.setStep(4); }}
@@ -113,7 +128,7 @@ class OpenIDPage extends React.Component {
           </div>
         </main>
         {this.state.configurationModalOpen ?
-          <ConfigurationModal
+          <ConfigurationModal ref="config"
             closeModal={ () => { this.setConfigurationModalVisibility(false); } }
           />
           : null }

@@ -5,9 +5,11 @@ class StepOne extends React.Component {
   constructor() {
     super();
     this.start = this.start.bind(this);
-    this.state = {
-      stepState: 'initial'
-    };
+    let savedState = localStorage.getItem('app-state') || '{}'
+    savedState = JSON.parse(savedState)
+
+    this.state = savedState
+    this.state.stepState = 'initial'
   }
 
   start() {
@@ -32,7 +34,7 @@ class StepOne extends React.Component {
             </h3>
             <div className="code-box-content">
               <div className="code-block">
-                <a onClick={this.props.openModal} href="#"> { "https://sample-oidc.auth0.com/authorize?" } </a>
+                <a onClick={this.props.openModal} href="#"> { this.state.authEndpoint || "https://sample-oidc.auth0.com/authorize?" } </a>
                 <br />
                 client_id=
                 <a
