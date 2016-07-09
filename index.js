@@ -7,6 +7,7 @@ let dotenv = require('dotenv').config()
 let sha1 = require('sha1')
 let crypto = require('crypto')
 let request = require('request')
+const jwt = require('jsonwebtoken')
 
 let app = express()
 
@@ -61,51 +62,52 @@ app.post('/code_to_token', function(req, res){
 	//step 2: send back https response from OIDC server
 	let result = {};
 	console.log('body', req.body)
-	if(req.body.server == 'Auth0'){
-		console.log('Auth0 token request...')
-		let reqData = {
-				code: req.body.code,
-				client_id: req.body.clientID,
-				client_secret: req.body.clientSecret,
-				grant_type: 'authorization_code',
-				redirect_uri: process.env.REDIRECT_URI
-			}
-		request.post(req.body.serverURL + req.body.tokenEndpoint, {
-			form: reqData
-		}, function(err, response, body){
-			console.log(err, response.statusCode, body)
-			result.body = body
-			result.response = response
-			res.end(JSON.stringify(result))
-		})
-	} else if (req.body.server == 'google'){
-		console.log('Google token request...')
-		request.post('https://www.googleapis.com/oauth2/v4/token', 
-		{
-			form: {
-				code: req.body.code,
-				client_id: req.body.clientID,
-				client_secret: req.body.clientSecret,
-				grant_type: 'authorization_code',
-				redirect_uri: process.env.REDIRECT_URI
-			}
-		}, function(err, response, body){
-			console.log(err, response.statusCode, body)
-			result.body = body
-			result.response = response	
-			res.end(JSON.stringify(result))
-		})
-	}
+	let reqData = {
+			code: req.body.code,
+			client_id: req.body.clientID,
+			client_secret: req.body.clientSecret,
+			grant_type: 'authorization_code',
+			redirect_uri: process.env.REDIRECT_URI
+		}
+	request.post(req.body.tokenEndpoint, {
+		form: reqData
+	}, function(err, response, body){
+		console.log(err, response.statusCode, body)
+		result.body = body
+		result.response = response
+		//and add the decoded token
+		result.decodedToken = JSON.stringify(jwt.decode(result.id_token, {complete: true}))
+		res.end(JSON.stringify(result))
+	})
 });
 
 app.post('/validate', function(req, res){
-	//REQUIRED: token, clientSecret
+	//REQUIRED: token, clientSecret, server
+	// server is because we need to know what to do with/to/where to get the key
+	let secret;
+
+	if(req.body.server == 'Auth0'){
+		// Auth0 base64 encodes its secrets
+		secret = new Buffer(req.body.clientSecret, 'base64')
+	} else if(req.body.server == 'Google'){
+		//TODO: go get the RSA key
+	}
+	jwt.verify(req.body.idToken, secret, { algorithims: ['HS256', 'RS256'] },function(err, decoded){
+		if (err){
+			console.log(err)
+			res.status(401)
+			res.end(JSON.stringify(err))
+		} else {
+			res.status(200)
+			res.end(JSON.stringify(decoded))
+		}
+	})
 	//step 1: validate the token
 	//step 2: send back the results.
 })
 
 
-app.listen(process.env.PORT || 5000)
+app.listen(process.env.PORT || 3000)
 
 
 

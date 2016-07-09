@@ -1,6 +1,43 @@
-import React from 'react';
+import React from 'react'
+import Ajax from 'simple-ajax'
 
 class StepTwo extends React.Component {
+  constructor(){
+    super()
+    this.start = this.start.bind(this)
+  }
+  start(){
+    this.setState({ stepState: 'wait' })
+		let serviceDiscovery = new Ajax({
+			url: '/code_to_token',
+			method: 'POST',
+			data: JSON.stringify({
+				code: this.props.authCode,
+        clientID: this.props.clientID,
+        clientSecret: this.props.clientSecret,
+        server: this.props.server,
+        tokenEndpoint: this.props.tokenEndpoint
+			})
+		})
+
+		serviceDiscovery.on('success', function(event){
+      this.setState({ stepState: 'initial'})
+			let result = JSON.parse(event.currentTarget.response)
+      result = JSON.parse(result.body)
+      console.log(result)
+      window.dispatchEvent(new CustomEvent('configChange', {
+        detail: {
+          accessToken: result.access_token,
+          idToken: result.id_token,
+          currentStep: 3
+        }
+      }))
+		}.bind(this))
+
+    // TODO: Add error case
+
+		serviceDiscovery.send()
+  }
   render() {
     return (
       <div className={`playground-step ${this.props.isActive ? 'active' : '' }`} >
@@ -8,7 +45,7 @@ class StepTwo extends React.Component {
         <div className="step-content">
           <h2 className="step-title">Exchange Code from Token</h2>
           <p className="snippet-description">Your Code is </p>
-          <div className="code-snippet">#4/SXjuF3gzD04OouqY_6-mfKyqV2VqoXF717ASRBTtL8w</div>
+        <div className="code-snippet">{this.props.authCode}</div>
           <p>
             Now, we need to turn that access code into an access token,
             by having our server make a request to your token endpoint
@@ -19,15 +56,15 @@ class StepTwo extends React.Component {
             </div>
             <div className="code-box-content">
               <div className="code-block">
-                POST https://sample-oidc.auth0.com/oauth/token HTTP/1.1
-                grant_type=authorization_code&
-                client_id=7eruHypvzyvEjF5dNt2TN4tzKBE98PTc&
-                client_secret=1fGXdsJnPfhodhwWCNQ_W7HpwrGGz
-                redirect_url=https://openidconnect.net/callback&
-                code=XXXXX
+                POST {this.props.tokenEndpoint} HTTP/1.1
+                grant_type=authorization_code&amp;
+                client_id={this.props.clientID}&amp;
+                client_secret={this.props.clientSecret}
+                redirect_url=https://openidconnect.net/callback&amp;
+                code={this.props.authCode}
               </div>
               <hr />
-              <button className="code-box-btn">Exchange</button>
+              <button onClick={this.start} className="code-box-btn">Exchange</button>
             </div>
           </div>
         </div>

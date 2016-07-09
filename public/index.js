@@ -60,7 +60,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(185);
+	__webpack_require__(367);
 
 	_reactDom2.default.render(_react2.default.createElement(_openIdPage2.default, null), document.getElementById('content'));
 
@@ -20995,23 +20995,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _stepOne = __webpack_require__(171);
+	var _simpleAjax = __webpack_require__(171);
+
+	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
+
+	var _stepOne = __webpack_require__(174);
 
 	var _stepOne2 = _interopRequireDefault(_stepOne);
 
-	var _stepTwo = __webpack_require__(172);
+	var _stepTwo = __webpack_require__(175);
 
 	var _stepTwo2 = _interopRequireDefault(_stepTwo);
 
-	var _stepThree = __webpack_require__(173);
+	var _stepThree = __webpack_require__(176);
 
 	var _stepThree2 = _interopRequireDefault(_stepThree);
 
-	var _stepFour = __webpack_require__(174);
+	var _stepFour = __webpack_require__(360);
 
 	var _stepFour2 = _interopRequireDefault(_stepFour);
 
-	var _configurationModal = __webpack_require__(175);
+	var _configurationModal = __webpack_require__(361);
 
 	var _configurationModal2 = _interopRequireDefault(_configurationModal);
 
@@ -21031,28 +21035,123 @@
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(OpenIDPage).call(this));
 
+	    _this.update = _this.update.bind(_this);
 	    var savedState = localStorage.getItem('app-state') || '{}';
 	    savedState = JSON.parse(savedState);
 	    _this.state = savedState;
 	    _this.state.currentStep = _this.state.currentStep || 1;
+	    _this.state.server = _this.state.server || 'Auth0';
+	    _this.state.domain = _this.state.domain || 'samples.auth0.com';
+	    _this.state.authEndpoint = _this.state.authEndpoint || 'https://samples.auth0.com/authorize';
+	    _this.state.tokenEndpoint = _this.state.tokenEndpoint || 'https://samples.auth0.com/token';
+	    _this.state.userInfoEndpoint = _this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo';
+	    _this.state.scopes = _this.state.scopes || 'openid profile email';
+	    _this.state.stateToken = _this.state.stateToken || document.querySelector('input[name=stateToken]').value;
+	    _this.state.redirect_uri = _this.state.redirectURI || document.querySelector('input[name=redirect-uri]').value;
+	    _this.state.clientID = _this.state.clientID || document.querySelector('input[name=auth0ClientID]').value;
+	    _this.state.clientSecret = _this.state.clientSecret || document.querySelector('input[name=auth0ClientSecret]').value;
 	    _this.state.configurationModalOpen = false;
-	    _this.updateConfigs(null, _this.state);
 	    return _this;
 	  }
 
 	  _createClass(OpenIDPage, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      // figure out what step we're on
+	      this.configureStep();
 	      //listen for config changes
-	      window.addEventListener('configChange', this.updateConfigs.bind(this));
+	      window.addEventListener('configChange', this.update.bind(this));
+	      window.addEventListener('discovery', this.updateURLs.bind(this));
 	    }
 	  }, {
-	    key: 'updateConfigs',
-	    value: function updateConfigs(event) {
-	      if (event && event.detail) {
-	        console.log(event.detail);
-	        this.setState(event.detail);
+	    key: 'configureStep',
+	    value: function configureStep() {
+	      var code = document.querySelector('input[name=code]').value;
+	      var token = this.state.idToken;
+	      if (code) {
+	        this.setState({
+	          currentStep: 2,
+	          authCode: code
+	        });
 	      }
+	      if (token) {
+	        this.setState({
+	          currentStep: 3
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'update',
+	    value: function update(event) {
+	      if (event && event.detail) {
+	        this.setState(event.detail);
+	        if (event.detail.server == 'custom' && this.state.server !== 'custom') {
+	          this.setState({
+	            discoveryURL: '',
+	            authEndpoint: '',
+	            tokenEndpoint: '',
+	            userInfoEndpoint: ''
+	          });
+	        } else if (event.detail.server == 'Auth0' && this.state.server !== 'Auth0') {
+	          this.setState({
+	            domain: 'samples.auth0.com'
+	          });
+	        }
+	      }
+	      setTimeout(this.saveState.bind(this), 250);
+	    }
+	  }, {
+	    key: 'updateURLs',
+	    value: function updateURLs() {
+	      console.log(this.state.server);
+	      if (this.state.server == 'google') {
+	        this.updateDiscovery('https://accounts.google.com/.well-known/openid-configuration');
+	      } else if (this.state.server == 'Auth0') {
+	        this.updateDiscovery('https://' + this.state.domain + '/.well-known/openid-configuration');
+	      } else {
+	        this.updateDiscovery(this.state.discoveryURL);
+	      }
+	    }
+	  }, {
+	    key: 'updateDiscovery',
+	    value: function updateDiscovery(documentURL) {
+	      documentURL = documentURL || this.state.discoveryURL;
+	      console.log('discovering...', documentURL);
+	      this.discover(documentURL, function (discovered) {
+	        this.setState({
+	          discoveryURL: documentURL,
+	          authEndpoint: discovered.authorization_endpoint,
+	          tokenEndpoint: discovered.token_endpoint,
+	          userInfoEndpoint: discovered.userinfo_endpoint
+	        });
+	        this.saveState();
+	      }.bind(this));
+	    }
+	  }, {
+	    key: 'discover',
+	    value: function discover(url) {
+	      var serviceDiscovery = new _simpleAjax2.default({
+	        url: '/discover',
+	        method: 'GET',
+	        data: {
+	          url: url
+	        }
+	      });
+
+	      serviceDiscovery.on('success', function (event) {
+	        var discovered = JSON.parse(event.currentTarget.response);
+	        this.setState({
+	          discoveryURL: url,
+	          authEndpoint: discovered.authorization_endpoint,
+	          tokenEndpoint: discovered.token_endpoint,
+	          domain: null
+	        });
+	        this.saveState();
+	      }.bind(this));
+
+	      // TODO: Add error case
+
+	      serviceDiscovery.send();
 	    }
 	  }, {
 	    key: 'setConfigurationModalVisibility',
@@ -21197,7 +21296,10 @@
 	              'div',
 	              { className: 'playground-content' },
 	              this.state.currentStep >= 1 ? _react2.default.createElement(_stepOne2.default, {
-	                authURL: this.state.authEndpoint,
+	                authEndpoint: this.state.authEndpoint,
+	                clientID: this.state.clientID,
+	                scopes: this.state.scopes,
+	                stateToken: this.state.stateToken,
 	                openModal: function openModal() {
 	                  _this2.setConfigurationModalVisibility(true);
 	                },
@@ -21210,12 +21312,21 @@
 	                isActive: this.state.currentStep === 1
 	              }) : null,
 	              this.state.currentStep >= 2 ? _react2.default.createElement(_stepTwo2.default, {
+	                tokenEndpoint: this.state.tokenEndpoint,
+	                authCode: this.state.authCode,
+	                clientID: this.state.clientID,
+	                clientSecret: this.state.clientSecret,
+	                server: this.state.server,
 	                nextStep: function nextStep() {
 	                  _this2.setStep(3);
 	                },
 	                isActive: this.state.currentStep === 2
 	              }) : null,
 	              this.state.currentStep >= 3 ? _react2.default.createElement(_stepThree2.default, {
+	                idToken: this.state.idToken,
+	                accessToken: this.state.accessToken,
+	                clientSecret: this.state.clientSecret,
+	                server: this.state.server,
 	                isActive: this.state.currentStep === 3
 	              }) : null,
 	              this.state.currentStep >= 4 ? _react2.default.createElement(_stepFour2.default, {
@@ -21227,7 +21338,15 @@
 	        this.state.configurationModalOpen ? _react2.default.createElement(_configurationModal2.default, { ref: 'config',
 	          closeModal: function closeModal() {
 	            _this2.setConfigurationModalVisibility(false);
-	          }
+	          },
+	          discoveryURL: this.state.discoveryURL,
+	          authEndpoint: this.state.authEndpoint,
+	          tokenEndpoint: this.state.tokenEndpoint,
+	          domain: this.state.domain,
+	          server: this.state.server,
+	          clientID: this.state.clientID,
+	          clientSecret: this.state.clientSecret,
+	          scopes: this.state.scopes
 	        }) : null,
 	        _react2.default.createElement(
 	          'footer',
@@ -21250,6 +21369,12 @@
 	        )
 	      );
 	    }
+	  }, {
+	    key: 'saveState',
+	    value: function saveState() {
+	      console.log(this.state);
+	      localStorage.setItem('app-state', JSON.stringify(this.state));
+	    }
 	  }]);
 
 	  return OpenIDPage;
@@ -21261,839 +21386,8 @@
 /* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var StepOne = function (_React$Component) {
-	  _inherits(StepOne, _React$Component);
-
-	  function StepOne() {
-	    _classCallCheck(this, StepOne);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StepOne).call(this));
-
-	    _this.start = _this.start.bind(_this);
-	    var savedState = localStorage.getItem('app-state') || '{}';
-	    savedState = JSON.parse(savedState);
-
-	    _this.state = savedState;
-	    _this.state.stepState = 'initial';
-	    return _this;
-	  }
-
-	  _createClass(StepOne, [{
-	    key: 'start',
-	    value: function start() {
-	      var _this2 = this;
-
-	      this.setState({ stepState: 'wait' });
-
-	      setTimeout(function () {
-	        _this2.setState({ stepState: 'response' });
-	        _this2.props.nextStep();
-	      }, 500);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'playground-step ' + (this.props.isActive ? 'active' : '') },
-	        _react2.default.createElement(
-	          'span',
-	          { className: 'step-number' },
-	          '1'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'step-content' },
-	          _react2.default.createElement(
-	            'h2',
-	            { className: 'step-title' },
-	            'Redirect to OpenID Connector Server'
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'code-box' },
-	            _react2.default.createElement(
-	              'h3',
-	              { className: 'code-box-title' },
-	              'Request',
-	              this.state.showResponse === 'response' ? ' / Response' : null
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'code-box-content' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'code-block' },
-	                _react2.default.createElement(
-	                  'a',
-	                  { onClick: this.props.openModal, href: '#' },
-	                  ' ',
-	                  this.state.authEndpoint || "https://sample-oidc.auth0.com/authorize?",
-	                  ' '
-	                ),
-	                _react2.default.createElement('br', null),
-	                'client_id=',
-	                _react2.default.createElement(
-	                  'a',
-	                  {
-	                    onClick: this.props.openModal,
-	                    href: '#'
-	                  },
-	                  "7eruHypvzyvEjF5dNt2TN4tzKBE98PTc"
-	                ),
-	                _react2.default.createElement('br', null),
-	                'redirect_uri=https://openidconnect.net/callback\u2028',
-	                _react2.default.createElement('br', null),
-	                'scope=',
-	                _react2.default.createElement(
-	                  'a',
-	                  { onClick: this.props.openModal, href: '#' },
-	                  ' openid name email\u2028response_type=code '
-	                ),
-	                _react2.default.createElement('br', null),
-	                'state=poifhjoeif2'
-	              ),
-	              _react2.default.createElement('hr', null),
-	              this.state.stepState === 'wait' ? _react2.default.createElement(
-	                'div',
-	                { className: 'theme-dark' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'spinner spinner-md step-spinner' },
-	                  _react2.default.createElement('div', { className: 'circle' })
-	                )
-	              ) : null,
-	              this.state.stepState === 'response' ? _react2.default.createElement(
-	                'div',
-	                { className: 'code-block' },
-	                'https://openidconnect.net/callback?code=#4/SXjuF3gzD04Oouq'
-	              ) : null,
-	              this.state.stepState !== 'wait' ? _react2.default.createElement(
-	                'button',
-	                { onClick: this.start, className: 'code-box-btn' },
-	                'Start'
-	              ) : null
-	            )
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'button',
-	          { onClick: this.props.skipTutorial, className: 'skip-tutorial btn-link' },
-	          'Skip this tutorial. Show me the complete flow.'
-	        )
-	      );
-	    }
-	  }]);
-
-	  return StepOne;
-	}(_react2.default.Component);
-
-	exports.default = StepOne;
-
-/***/ },
-/* 172 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var StepTwo = function (_React$Component) {
-	  _inherits(StepTwo, _React$Component);
-
-	  function StepTwo() {
-	    _classCallCheck(this, StepTwo);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StepTwo).apply(this, arguments));
-	  }
-
-	  _createClass(StepTwo, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'playground-step ' + (this.props.isActive ? 'active' : '') },
-	        _react2.default.createElement(
-	          'span',
-	          { className: 'step-number' },
-	          '2'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'step-content' },
-	          _react2.default.createElement(
-	            'h2',
-	            { className: 'step-title' },
-	            'Exchange Code from Token'
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            { className: 'snippet-description' },
-	            'Your Code is '
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'code-snippet' },
-	            '#4/SXjuF3gzD04OouqY_6-mfKyqV2VqoXF717ASRBTtL8w'
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            'Now, we need to turn that access code into an access token, by having our server make a request to your token endpoint'
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'code-box' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'code-box-title' },
-	              'Request'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'code-box-content' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'code-block' },
-	                'POST https://sample-oidc.auth0.com/oauth/token HTTP/1.1 grant_type=authorization_code& client_id=7eruHypvzyvEjF5dNt2TN4tzKBE98PTc& client_secret=1fGXdsJnPfhodhwWCNQ_W7HpwrGGz redirect_url=https://openidconnect.net/callback& code=XXXXX'
-	              ),
-	              _react2.default.createElement('hr', null),
-	              _react2.default.createElement(
-	                'button',
-	                { className: 'code-box-btn' },
-	                'Exchange'
-	              )
-	            )
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return StepTwo;
-	}(_react2.default.Component);
-
-	exports.default = StepTwo;
-
-/***/ },
-/* 173 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var StepThree = function (_React$Component) {
-	  _inherits(StepThree, _React$Component);
-
-	  function StepThree() {
-	    _classCallCheck(this, StepThree);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StepThree).apply(this, arguments));
-	  }
-
-	  _createClass(StepThree, [{
-	    key: "render",
-	    value: function render() {
-	      return _react2.default.createElement(
-	        "div",
-	        { className: "playground-step" },
-	        _react2.default.createElement(
-	          "span",
-	          { className: "step-number" },
-	          "3"
-	        ),
-	        _react2.default.createElement(
-	          "div",
-	          { className: "step-content" },
-	          _react2.default.createElement(
-	            "h2",
-	            { className: "step-title" },
-	            "Exchange Code from Token"
-	          ),
-	          _react2.default.createElement(
-	            "div",
-	            null,
-	            _react2.default.createElement(
-	              "div",
-	              { className: "snippet-description pull-left" },
-	              "Your “id_token” is"
-	            ),
-	            _react2.default.createElement(
-	              "button",
-	              { className: "btn-view-jwt" },
-	              "View on JWT.io"
-	            )
-	          ),
-	          _react2.default.createElement(
-	            "div",
-	            { className: "code-snippet" },
-	            "“hjvcbhvbjvchbjcvhbjcvhbjvchbjcvhbjcvbhcjvxcvcvcvcvcvcvcvcvcc"
-	          ),
-	          _react2.default.createElement(
-	            "p",
-	            null,
-	            "Now, we need to turn that access code into an access token, by having our server make a request to your token endpoint"
-	          ),
-	          _react2.default.createElement(
-	            "p",
-	            null,
-	            "Your “access_token” is"
-	          ),
-	          _react2.default.createElement(
-	            "div",
-	            { className: "code-snippet" },
-	            "“SIAV32hkKG”"
-	          ),
-	          _react2.default.createElement(
-	            "div",
-	            { className: "code-box" },
-	            _react2.default.createElement(
-	              "div",
-	              { className: "code-box-title" },
-	              "Request"
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "code-box-content" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "code-block" },
-	                "GET https://sample-oidc.auth0.com/userinfo ? access_token= “SIAV32hkKG”"
-	              ),
-	              _react2.default.createElement("hr", null),
-	              _react2.default.createElement(
-	                "button",
-	                { className: "code-box-btn" },
-	                "Exchange"
-	              )
-	            )
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return StepThree;
-	}(_react2.default.Component);
-
-	exports.default = StepThree;
-
-/***/ },
-/* 174 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var StepFour = function (_React$Component) {
-	  _inherits(StepFour, _React$Component);
-
-	  function StepFour() {
-	    _classCallCheck(this, StepFour);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StepFour).apply(this, arguments));
-	  }
-
-	  _createClass(StepFour, [{
-	    key: "render",
-	    value: function render() {
-	      return _react2.default.createElement(
-	        "div",
-	        { className: "playground-step last-step" },
-	        _react2.default.createElement(
-	          "span",
-	          { className: "step-number" },
-	          _react2.default.createElement("i", { className: "icon-budicon-470" })
-	        ),
-	        _react2.default.createElement(
-	          "div",
-	          { className: "step-content" },
-	          _react2.default.createElement(
-	            "h2",
-	            { className: "step-title" },
-	            "Congrats! You are a OpenID expert!"
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return StepFour;
-	}(_react2.default.Component);
-
-	exports.default = StepFour;
-
-/***/ },
-/* 175 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _serverUrls = __webpack_require__(176);
-
-	var _serverUrls2 = _interopRequireDefault(_serverUrls);
-
-	var _clearAllButton = __webpack_require__(183);
-
-	var _clearAllButton2 = _interopRequireDefault(_clearAllButton);
-
-	var _tokenPanel = __webpack_require__(184);
-
-	var _tokenPanel2 = _interopRequireDefault(_tokenPanel);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ConfigurationModal = function (_React$Component) {
-	  _inherits(ConfigurationModal, _React$Component);
-
-	  function ConfigurationModal() {
-	    _classCallCheck(this, ConfigurationModal);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ConfigurationModal).apply(this, arguments));
-	  }
-
-	  _createClass(ConfigurationModal, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'configuration-modal', id: 'configuration-modal' },
-	        _react2.default.createElement('div', { className: 'configuration-modal-backdrop' }),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'configuration-modal-dialog' },
-	          _react2.default.createElement('span', {
-	            onClick: this.props.closeModal,
-	            className: 'configuration-modal-close icon-budicon-501'
-	          }),
-	          _react2.default.createElement(
-	            'h2',
-	            { className: 'configuration-modal-title' },
-	            'OpenID Connect Configuration'
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'row' },
-	            _react2.default.createElement('div', { className: 'col-xs-6' }),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-xs-6' },
-	              document.querySelector('input[name=code]').value ? _react2.default.createElement(_tokenPanel2.default, null) : null
-	            )
-	          ),
-	          _react2.default.createElement(_serverUrls2.default, null),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'clear-storage-container' },
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Hey, just a friendly note: we store stuff like your keys in LocalStorage so that when you redirect to authenticate, you don/t lose them. You can clear them by clicking on this button:'
-	            ),
-	            _react2.default.createElement(_clearAllButton2.default, null)
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return ConfigurationModal;
-	}(_react2.default.Component);
-
-	exports.default = ConfigurationModal;
-
-/***/ },
-/* 176 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _simpleAjax = __webpack_require__(177);
-
-	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
-
-	var _lodash = __webpack_require__(180);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ServerURLs = function (_React$Component) {
-		_inherits(ServerURLs, _React$Component);
-
-		function ServerURLs() {
-			_classCallCheck(this, ServerURLs);
-
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ServerURLs).call(this));
-
-			_this.update = _this.update.bind(_this);
-			var savedState = localStorage.getItem('app-state') || '{}';
-			savedState = JSON.parse(savedState);
-			_this.state = savedState;
-			return _this;
-		}
-
-		_createClass(ServerURLs, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'label',
-						{ 'for': 'server' },
-						'Server Template:'
-					),
-					_react2.default.createElement(
-						'select',
-						{ name: 'server', ref: 'server', onChange: this.update },
-						_react2.default.createElement(
-							'option',
-							{ value: 'none' },
-							'SELECT A SERVER TEMPLATE'
-						),
-						_react2.default.createElement(
-							'option',
-							{ value: 'Auth0' },
-							'Auth0'
-						),
-						_react2.default.createElement(
-							'option',
-							{ value: 'google' },
-							'Google'
-						),
-						_react2.default.createElement(
-							'option',
-							{ value: 'custom' },
-							'Custom'
-						)
-					),
-					_react2.default.createElement('br', null),
-					_react2.default.createElement(
-						'p',
-						{ style: { display: this.state.server == 'Auth0' ? 'block' : 'none' } },
-						_react2.default.createElement(
-							'label',
-							{ 'for': 'domain' },
-							'Auth0 domain: '
-						),
-						_react2.default.createElement('input', { name: 'domain', onChange: this.update, ref: 'domain', placeholder: 'mydomain.auth0.com' }),
-						_react2.default.createElement(
-							'button',
-							{ onClick: this.updateAuth0.bind(this) },
-							'Use Auth0 Discovery Document'
-						),
-						_react2.default.createElement('p', { ref: 'Auth0DiscoveryDocumentURL' }),
-						_react2.default.createElement(
-							'span',
-							null,
-							'Authorization Endpoint:  ',
-							_react2.default.createElement(
-								'span',
-								{ ref: 'authEndpoint' },
-								this.state.authEndpoint
-							)
-						),
-						_react2.default.createElement('br', null),
-						_react2.default.createElement(
-							'span',
-							null,
-							'Token Endpoint:  ',
-							_react2.default.createElement(
-								'span',
-								{ ref: 'tokenEndpoint' },
-								this.state.tokenEndpoint
-							)
-						),
-						_react2.default.createElement('br', null)
-					),
-					_react2.default.createElement(
-						'p',
-						{ style: { display: this.state.server != 'Auth0' ? 'block' : 'none' } },
-						_react2.default.createElement(
-							'label',
-							{ 'for': 'discoveryURL' },
-							'Discovery Document URL: '
-						),
-						_react2.default.createElement('input', { name: 'discoveryURL', onChange: this.update, disabled: this.state.server == 'google' ? 'disabled' : '', value: this.state.discoveryURL, ref: 'discoveryURL', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' }),
-						_react2.default.createElement(
-							'button',
-							{ style: { display: this.state.server != 'google' ? 'inline-block' : 'none' }, onClick: this.updateDiscovery.bind(this) },
-							'Use Discovery Document'
-						),
-						_react2.default.createElement('br', null),
-						_react2.default.createElement(
-							'label',
-							{ 'for': 'authEndpoint' },
-							'Authorization Endpoint: '
-						),
-						_react2.default.createElement('input', { name: 'authEndpoint', onChange: this.update, disabled: this.state.server == 'google' ? 'disabled' : '', value: this.state.authEndpoint, ref: 'authEndpoint', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' }),
-						_react2.default.createElement('br', null),
-						_react2.default.createElement(
-							'label',
-							{ 'for': 'Token Endpoint' },
-							'Token Endpoint: '
-						),
-						_react2.default.createElement('input', { name: 'tokenEndpoint', onChange: this.update, disabled: this.state.server == 'google' ? 'disabled' : '', value: this.state.tokenEndpoint, ref: 'tokenEndpoint', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' })
-					),
-					_react2.default.createElement(
-						'p',
-						{ id: 'warning', style: { display: this.state.server != 'Auth0' ? 'block' : 'none' } },
-						'Remember to set https://openidconnect.net/callback as an allowed callback with your application!'
-					)
-				);
-			}
-		}, {
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				this.updateServerURL(true, function () {
-					this.update();
-				}.bind(this));
-			}
-		}, {
-			key: 'update',
-			value: function update() {
-				this.setState({
-					server: this.refs.server.value,
-					authEndpoint: this.refs.authEndpoint.value,
-					tokenEndpoint: this.refs.tokenEndpoint.value,
-					domain: this.refs.domain.value,
-					discoveryURL: this.refs.discoveryURL.value
-				});
-				this.updateServerURL(true);
-			}
-		}, {
-			key: 'updateServerURL',
-			value: function updateServerURL(load, callback) {
-				var _this2 = this;
-
-				var type = this.refs.server.value,
-				    domain = void 0,
-				    authEndpoint = void 0,
-				    tokenEndpoint = void 0,
-				    warning = void 0,
-				    discoveryURL = void 0;
-
-				if (type == 'google') {
-					(function () {
-						var googleDiscoveryURL = 'https://accounts.google.com/.well-known/openid-configuration';
-						_this2.discover('https://accounts.google.com/.well-known/openid-configuration', function (discovered) {
-							this.setNewState({
-								server: type,
-								discoveryURL: googleDiscoveryURL,
-								warning: true,
-								authEndpoint: discovered.authorization_endpoint,
-								tokenEndpoint: discovered.token_endpoint,
-								domain: null
-							});
-						}.bind(_this2));
-					})();
-				} else if (load) {
-					document.querySelector('option[value=' + (this.state.server || 'Auth0') + ']').setAttribute('selected', 'true');
-					domain = this.state.domain || '';
-					authEndpoint = this.state.authEndpoint || '';
-					tokenEndpoint = this.state.tokenEndpoint || '';
-					discoveryURL = this.state.discoveryURL || '';
-					warning = type === 'Auth0' && domain === 'samples.auth0.com' ? false : true;
-
-					this.setNewState({
-						server: type,
-						discoveryURL: discoveryURL,
-						warning: warning,
-						authEndpoint: authEndpoint,
-						tokenEndpoint: tokenEndpoint
-					});
-				} else {
-					domain = this.refs.domain.value || '';
-					authEndpoint = this.refs.authEndpoint.value || '';
-					tokenEndpoint = this.refs.tokenEndpoint.value || '';
-					discoveryURL = this.refs.discoveryURL.value || '';
-					warning = type === 'Auth0' && domain === 'samples.auth0.com' ? false : true;
-					this.setNewState({
-						server: type,
-						domain: domain,
-						discoveryURL: discoveryURL,
-						warning: warning,
-						authEndpoint: authEndpoint,
-						tokenEndpoint: tokenEndpoint
-					});
-				}
-				if (callback) callback();
-			}
-		}, {
-			key: 'updateAuth0',
-			value: function updateAuth0() {
-				var documentURL = 'https://' + this.refs.domain.value + '/.well-known/openid-configuration';
-				this.discover(documentURL, function (discovered) {
-					this.setNewState({
-						discoveryURL: documentURL,
-						authEndpoint: discovered.authorization_endpoint,
-						tokenEndpoint: discovered.token_endpoint
-					});
-				}.bind(this));
-			}
-		}, {
-			key: 'updateDiscovery',
-			value: function updateDiscovery() {
-				var documentURL = this.refs.discoveryURL.value;
-				this.discover(documentURL, function (discovered) {
-					this.setNewState({
-						discoveryURL: documentURL,
-						authEndpoint: discovered.authorization_endpoint,
-						tokenEndpoint: discovered.token_endpoint
-					});
-				}.bind(this));
-			}
-		}, {
-			key: 'discover',
-			value: function discover(url, callback) {
-
-				var serviceDiscovery = new _simpleAjax2.default({
-					url: '/discover',
-					method: 'GET',
-					data: {
-						url: url
-					}
-				});
-
-				serviceDiscovery.on('success', function (event) {
-					callback(JSON.parse(event.currentTarget.response));
-				});
-
-				serviceDiscovery.send();
-			}
-		}, {
-			key: 'setNewState',
-			value: function setNewState(changes, reload) {
-				this.setState(changes);
-				this.dispatchChangeEvent(this.state);
-				this.saveState();
-			}
-		}, {
-			key: 'dispatchChangeEvent',
-			value: function dispatchChangeEvent(config) {
-				window.dispatchEvent(new CustomEvent('configChange', { detail: config || this.state }));
-			}
-		}, {
-			key: 'saveState',
-			value: function saveState() {
-				localStorage.setItem('app-state', JSON.stringify(this.state));
-			}
-		}]);
-
-		return ServerURLs;
-	}(_react2.default.Component);
-
-	exports.default = ServerURLs;
-
-/***/ },
-/* 177 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var EventEmitter = __webpack_require__(178).EventEmitter,
-	    queryString = __webpack_require__(179);
+	var EventEmitter = __webpack_require__(172).EventEmitter,
+	    queryString = __webpack_require__(173);
 
 	function tryParseJson(data){
 	    try{
@@ -22236,7 +21530,7 @@
 
 
 /***/ },
-/* 178 */
+/* 172 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -22544,7 +21838,7 @@
 
 
 /***/ },
-/* 179 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -22616,7 +21910,1028 @@
 
 
 /***/ },
-/* 180 */
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StepOne = function (_React$Component) {
+	  _inherits(StepOne, _React$Component);
+
+	  function StepOne() {
+	    _classCallCheck(this, StepOne);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StepOne).call(this));
+
+	    _this.start = _this.start.bind(_this);
+	    _this.update = _this.update.bind(_this);
+	    var savedState = localStorage.getItem('app-state') || '{}';
+	    savedState = JSON.parse(savedState);
+
+	    _this.state = savedState;
+	    _this.state.stepState = 'initial';
+	    return _this;
+	  }
+
+	  _createClass(StepOne, [{
+	    key: 'update',
+	    value: function update() {}
+	  }, {
+	    key: 'start',
+	    value: function start() {
+	      this.setState({ stepState: 'wait' });
+
+	      var completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=http://localhost:3000/callback&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken;
+
+	      window.location = completeURL;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'playground-step ' + (this.props.isActive ? 'active' : '') },
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'step-number' },
+	          '1'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'step-content' },
+	          _react2.default.createElement(
+	            'h2',
+	            { className: 'step-title' },
+	            'Redirect to OpenID Connector Server'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'code-box' },
+	            _react2.default.createElement(
+	              'h3',
+	              { className: 'code-box-title' },
+	              'Request',
+	              this.state.showResponse === 'response' ? ' / Response' : null
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'code-box-content' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'code-block' },
+	                _react2.default.createElement(
+	                  'a',
+	                  { onClick: this.props.openModal, href: '#' },
+	                  ' ',
+	                  this.props.authEndpoint || "Enter an authorization endpoint in the setting dialog!",
+	                  ' '
+	                ),
+	                _react2.default.createElement('br', null),
+	                'client_id=',
+	                _react2.default.createElement(
+	                  'span',
+	                  null,
+	                  this.props.clientID
+	                ),
+	                _react2.default.createElement('br', null),
+	                'redirect_uri=https://openidconnect.net/callback\u2028',
+	                _react2.default.createElement('br', null),
+	                '?scope=',
+	                _react2.default.createElement(
+	                  'span',
+	                  null,
+	                  encodeURI(this.props.scopes)
+	                ),
+	                _react2.default.createElement('br', null),
+	                _react2.default.createElement(
+	                  'span',
+	                  null,
+	                  '&response_type=code'
+	                ),
+	                _react2.default.createElement('br', null),
+	                _react2.default.createElement(
+	                  'span',
+	                  null,
+	                  '&state=',
+	                  this.props.stateToken
+	                )
+	              ),
+	              _react2.default.createElement('hr', null),
+	              this.state.stepState === 'wait' ? _react2.default.createElement(
+	                'div',
+	                { className: 'theme-dark' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'spinner spinner-md step-spinner' },
+	                  _react2.default.createElement('div', { className: 'circle' })
+	                )
+	              ) : null,
+	              this.state.stepState === 'response' ? _react2.default.createElement(
+	                'div',
+	                { className: 'code-block' },
+	                'https://openidconnect.net/callback?code=#4/SXjuF3gzD04Oouq'
+	              ) : null,
+	              this.state.stepState !== 'wait' ? _react2.default.createElement(
+	                'button',
+	                { onClick: this.start, className: 'code-box-btn' },
+	                'Start'
+	              ) : null
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: this.props.skipTutorial, className: 'skip-tutorial btn-link' },
+	          'Skip this tutorial. Show me the complete flow.'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return StepOne;
+	}(_react2.default.Component);
+
+	exports.default = StepOne;
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _simpleAjax = __webpack_require__(171);
+
+	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StepTwo = function (_React$Component) {
+	  _inherits(StepTwo, _React$Component);
+
+	  function StepTwo() {
+	    _classCallCheck(this, StepTwo);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StepTwo).call(this));
+
+	    _this.start = _this.start.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(StepTwo, [{
+	    key: 'start',
+	    value: function start() {
+	      this.setState({ stepState: 'wait' });
+	      var serviceDiscovery = new _simpleAjax2.default({
+	        url: '/code_to_token',
+	        method: 'POST',
+	        data: JSON.stringify({
+	          code: this.props.authCode,
+	          clientID: this.props.clientID,
+	          clientSecret: this.props.clientSecret,
+	          server: this.props.server,
+	          tokenEndpoint: this.props.tokenEndpoint
+	        })
+	      });
+
+	      serviceDiscovery.on('success', function (event) {
+	        this.setState({ stepState: 'initial' });
+	        var result = JSON.parse(event.currentTarget.response);
+	        result = JSON.parse(result.body);
+	        console.log(result);
+	        window.dispatchEvent(new CustomEvent('configChange', {
+	          detail: {
+	            accessToken: result.access_token,
+	            idToken: result.id_token,
+	            currentStep: 3
+	          }
+	        }));
+	      }.bind(this));
+
+	      // TODO: Add error case
+
+	      serviceDiscovery.send();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'playground-step ' + (this.props.isActive ? 'active' : '') },
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'step-number' },
+	          '2'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'step-content' },
+	          _react2.default.createElement(
+	            'h2',
+	            { className: 'step-title' },
+	            'Exchange Code from Token'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            { className: 'snippet-description' },
+	            'Your Code is '
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'code-snippet' },
+	            this.props.authCode
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            'Now, we need to turn that access code into an access token, by having our server make a request to your token endpoint'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'code-box' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'code-box-title' },
+	              'Request'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'code-box-content' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'code-block' },
+	                'POST ',
+	                this.props.tokenEndpoint,
+	                ' HTTP/1.1 grant_type=authorization_code& client_id=',
+	                this.props.clientID,
+	                '& client_secret=',
+	                this.props.clientSecret,
+	                'redirect_url=https://openidconnect.net/callback& code=',
+	                this.props.authCode
+	              ),
+	              _react2.default.createElement('hr', null),
+	              _react2.default.createElement(
+	                'button',
+	                { onClick: this.start, className: 'code-box-btn' },
+	                'Exchange'
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return StepTwo;
+	}(_react2.default.Component);
+
+	exports.default = StepTwo;
+
+/***/ },
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _simpleAjax = __webpack_require__(171);
+
+	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StepThree = function (_React$Component) {
+	  _inherits(StepThree, _React$Component);
+
+	  function StepThree() {
+	    _classCallCheck(this, StepThree);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StepThree).call(this));
+
+	    _this.verify = _this.verify.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(StepThree, [{
+	    key: 'verify',
+	    value: function verify() {
+	      this.setState({ stepState: 'wait' });
+	      var serviceDiscovery = new _simpleAjax2.default({
+	        url: '/validate',
+	        method: 'POST',
+	        data: JSON.stringify({
+	          clientSecret: this.props.clientSecret,
+	          idToken: this.props.idToken,
+	          server: this.props.server
+	        })
+	      });
+
+	      serviceDiscovery.on('success', function (event) {
+	        this.setState({ stepState: 'initial' });
+	        var result = JSON.parse(event.currentTarget.response);
+	        result = JSON.parse(result.body);
+	        console.log(result);
+	        window.dispatchEvent(new CustomEvent('configChange', {
+	          detail: {
+	            validated: true,
+	            decodedId: result
+	          }
+	        }));
+	      }.bind(this));
+
+	      // TODO: Add error case
+
+	      serviceDiscovery.send();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'playground-step' },
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'step-number' },
+	          '3'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'step-content' },
+	          _react2.default.createElement(
+	            'h2',
+	            { className: 'step-title' },
+	            'Verify User Token'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            'Now, we need to verify that the ID Token sent was from the correct place by validating the JWT\'s signature\''
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'snippet-description pull-left' },
+	              'Your “id_token” is'
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { className: 'btn-view-jwt' },
+	              'View on JWT.io'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'code-snippet' },
+	            this.props.idToken
+	          ),
+	          '// ',
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'snippet-description pull-left' },
+	            'Your “access_token” is'
+	          ),
+	          '// ',
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'code-snippet' },
+	            this.props.accessToken
+	          ),
+	          '// ',
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'code-box' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'code-box-title' },
+	              'Validate'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'code-box-content' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'code-block' },
+	                'POST ',
+	                this.props.userInfoEndpoint,
+	                _react2.default.createElement('br', null),
+	                'Authorization: Bearer ',
+	                this.props.accessToken
+	              ),
+	              _react2.default.createElement('hr', null),
+	              _react2.default.createElement(
+	                'button',
+	                { onClick: this.verify, className: 'code-box-btn' },
+	                'Verify'
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return StepThree;
+	}(_react2.default.Component);
+
+	exports.default = StepThree;
+
+/***/ },
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */
+/***/ function(module, exports) {
+
+	module.exports = function(module) {
+		if(!module.webpackPolyfill) {
+			module.deprecate = function() {};
+			module.paths = [];
+			// module.parent = undefined by default
+			module.children = [];
+			module.webpackPolyfill = 1;
+		}
+		return module;
+	}
+
+
+/***/ },
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */,
+/* 314 */,
+/* 315 */,
+/* 316 */,
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */,
+/* 342 */,
+/* 343 */,
+/* 344 */,
+/* 345 */,
+/* 346 */,
+/* 347 */,
+/* 348 */,
+/* 349 */,
+/* 350 */,
+/* 351 */,
+/* 352 */,
+/* 353 */,
+/* 354 */,
+/* 355 */,
+/* 356 */,
+/* 357 */,
+/* 358 */,
+/* 359 */,
+/* 360 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StepFour = function (_React$Component) {
+	  _inherits(StepFour, _React$Component);
+
+	  function StepFour() {
+	    _classCallCheck(this, StepFour);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StepFour).apply(this, arguments));
+	  }
+
+	  _createClass(StepFour, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "playground-step last-step" },
+	        _react2.default.createElement(
+	          "span",
+	          { className: "step-number" },
+	          _react2.default.createElement("i", { className: "icon-budicon-470" })
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "step-content" },
+	          _react2.default.createElement(
+	            "h2",
+	            { className: "step-title" },
+	            "Congrats! You are a OpenID expert!"
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return StepFour;
+	}(_react2.default.Component);
+
+	exports.default = StepFour;
+
+/***/ },
+/* 361 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _serverUrls = __webpack_require__(362);
+
+	var _serverUrls2 = _interopRequireDefault(_serverUrls);
+
+	var _clearAllButton = __webpack_require__(365);
+
+	var _clearAllButton2 = _interopRequireDefault(_clearAllButton);
+
+	var _clientInfo = __webpack_require__(366);
+
+	var _clientInfo2 = _interopRequireDefault(_clientInfo);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ConfigurationModal = function (_React$Component) {
+	  _inherits(ConfigurationModal, _React$Component);
+
+	  function ConfigurationModal() {
+	    _classCallCheck(this, ConfigurationModal);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ConfigurationModal).apply(this, arguments));
+	  }
+
+	  _createClass(ConfigurationModal, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'configuration-modal', id: 'configuration-modal' },
+	        _react2.default.createElement('div', { className: 'configuration-modal-backdrop' }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'configuration-modal-dialog' },
+	          _react2.default.createElement('span', {
+	            onClick: this.props.closeModal,
+	            className: 'configuration-modal-close icon-budicon-501'
+	          }),
+	          _react2.default.createElement(
+	            'h2',
+	            { className: 'configuration-modal-title' },
+	            'OpenID Connect Configuration'
+	          ),
+	          _react2.default.createElement(_serverUrls2.default, {
+	            discoveryURL: this.props.discoveryURL,
+	            authEndpoint: this.props.authEndpoint,
+	            tokenEndpoint: this.props.tokenEndpoint,
+	            domain: this.props.domain,
+	            server: this.props.server
+	          }),
+	          _react2.default.createElement(_clientInfo2.default, {
+	            clientID: this.props.clientID,
+	            clientSecret: this.props.clientSecret,
+	            scopes: this.props.scopes
+	          }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'clear-storage-container' },
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Hey, just a friendly note: we store stuff like your keys in LocalStorage so that when you redirect to authenticate, you don/t lose them. You can clear them by clicking on this button:'
+	            ),
+	            _react2.default.createElement(_clearAllButton2.default, null)
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ConfigurationModal;
+	}(_react2.default.Component);
+
+	exports.default = ConfigurationModal;
+
+/***/ },
+/* 362 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _lodash = __webpack_require__(363);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ServerURLs = function (_React$Component) {
+		_inherits(ServerURLs, _React$Component);
+
+		function ServerURLs() {
+			_classCallCheck(this, ServerURLs);
+
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ServerURLs).call(this));
+
+			_this.update = _this.update.bind(_this);
+			return _this;
+		}
+
+		_createClass(ServerURLs, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				document.querySelector('option[value=' + (this.props.server || 'Auth0') + ']').setAttribute('selected', 'true');
+			}
+		}, {
+			key: 'update',
+			value: function update(event) {
+				var changed = {
+					server: this.refs.server.value,
+					authEndpoint: this.refs.authEndpoint.value,
+					tokenEndpoint: this.refs.tokenEndpoint.value,
+					domain: this.refs.domain.value,
+					discoveryURL: this.refs.discoveryURL.value
+				};
+				changed[event.target.name] = event.target.value;
+				window.dispatchEvent(new CustomEvent('configChange', {
+					detail: changed
+				}));
+			}
+		}, {
+			key: 'updateDiscovery',
+			value: function updateDiscovery() {
+				setTimeout(function () {
+					window.dispatchEvent(new CustomEvent('discovery'));
+				}, 250);
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _this2 = this;
+
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'label',
+						{ 'for': 'server' },
+						'Server Template:'
+					),
+					_react2.default.createElement(
+						'select',
+						{ name: 'server', ref: 'server', onChange: function onChange(event) {
+								_this2.update(event);_this2.updateDiscovery();
+							} },
+						_react2.default.createElement(
+							'option',
+							{ value: 'none' },
+							'SELECT A SERVER TEMPLATE'
+						),
+						_react2.default.createElement(
+							'option',
+							{ value: 'Auth0' },
+							'Auth0'
+						),
+						_react2.default.createElement(
+							'option',
+							{ value: 'google' },
+							'Google'
+						),
+						_react2.default.createElement(
+							'option',
+							{ value: 'custom' },
+							'Custom'
+						)
+					),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(
+						'p',
+						{ style: { display: this.props.server == 'Auth0' ? 'block' : 'none' } },
+						_react2.default.createElement(
+							'label',
+							{ 'for': 'domain' },
+							'Auth0 domain: '
+						),
+						_react2.default.createElement('input', { name: 'domain', onChange: this.update, ref: 'domain', value: this.props.domain, placeholder: 'mydomain.auth0.com' }),
+						_react2.default.createElement(
+							'button',
+							{ onClick: this.updateDiscovery },
+							'Use Auth0 Discovery Document'
+						),
+						_react2.default.createElement('br', null),
+						_react2.default.createElement('span', { ref: 'Auth0DiscoveryDocumentURL' }),
+						_react2.default.createElement(
+							'span',
+							null,
+							'Authorization Endpoint:  ',
+							_react2.default.createElement(
+								'span',
+								{ ref: 'authEndpoint' },
+								this.props.authEndpoint
+							)
+						),
+						_react2.default.createElement('br', null),
+						_react2.default.createElement(
+							'span',
+							null,
+							'Token Endpoint:  ',
+							_react2.default.createElement(
+								'span',
+								{ ref: 'tokenEndpoint' },
+								this.props.tokenEndpoint
+							)
+						),
+						_react2.default.createElement('br', null)
+					),
+					_react2.default.createElement(
+						'p',
+						{ style: { display: this.props.server != 'Auth0' ? 'block' : 'none' } },
+						_react2.default.createElement(
+							'label',
+							{ 'for': 'discoveryURL' },
+							'Discovery Document URL: '
+						),
+						_react2.default.createElement('input', { name: 'discoveryURL', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.discoveryURL, ref: 'discoveryURL', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' }),
+						_react2.default.createElement(
+							'button',
+							{ style: { display: this.props.server != 'google' ? 'inline-block' : 'none' }, onClick: this.updateDiscovery },
+							'Use Discovery Document'
+						),
+						_react2.default.createElement('br', null),
+						_react2.default.createElement(
+							'label',
+							{ 'for': 'authEndpoint' },
+							'Authorization Endpoint: '
+						),
+						_react2.default.createElement('input', { name: 'authEndpoint', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.authEndpoint, ref: 'authEndpoint', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' }),
+						_react2.default.createElement('br', null),
+						_react2.default.createElement(
+							'label',
+							{ 'for': 'Token Endpoint' },
+							'Token Endpoint: '
+						),
+						_react2.default.createElement('input', { name: 'tokenEndpoint', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.tokenEndpoint, ref: 'tokenEndpoint', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' })
+					),
+					_react2.default.createElement(
+						'p',
+						{ id: 'warning', style: { display: this.props.server != 'Auth0' || this.props.server == 'Auth0' && this.props.domain != 'samples.auth0.com' ? 'block' : 'none' } },
+						'Remember to set https://openidconnect.net/callback as an allowed callback with your application!'
+					)
+				);
+			}
+		}]);
+
+		return ServerURLs;
+	}(_react2.default.Component);
+
+	exports.default = ServerURLs;
+
+/***/ },
+/* 363 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global, setImmediate) {/**
@@ -27772,26 +28087,10 @@
 	  }
 	}(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(181)(module), (function() { return this; }()), __webpack_require__(182).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(242)(module), (function() { return this; }()), __webpack_require__(364).setImmediate))
 
 /***/ },
-/* 181 */
-/***/ function(module, exports) {
-
-	module.exports = function(module) {
-		if(!module.webpackPolyfill) {
-			module.deprecate = function() {};
-			module.paths = [];
-			// module.parent = undefined by default
-			module.children = [];
-			module.webpackPolyfill = 1;
-		}
-		return module;
-	}
-
-
-/***/ },
-/* 182 */
+/* 364 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(3).nextTick;
@@ -27870,10 +28169,10 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(182).setImmediate, __webpack_require__(182).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(364).setImmediate, __webpack_require__(364).clearImmediate))
 
 /***/ },
-/* 183 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27931,13 +28230,13 @@
 	exports.default = ClearAllButton;
 
 /***/ },
-/* 184 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+		value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -27954,110 +28253,78 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Ajax = __webpack_require__(177);
+	var ClientInfo = function (_React$Component) {
+		_inherits(ClientInfo, _React$Component);
 
-	var TokenPanel = function (_React$Component) {
-	  _inherits(TokenPanel, _React$Component);
+		function ClientInfo() {
+			_classCallCheck(this, ClientInfo);
 
-	  function TokenPanel() {
-	    _classCallCheck(this, TokenPanel);
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ClientInfo).call(this));
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TokenPanel).call(this));
+			_this.update = _this.update.bind(_this);
+			var savedState = localStorage.getItem('app-state') || '{}';
+			savedState = JSON.parse(savedState);
+			_this.state = savedState;
+			return _this;
+		}
 
-	    _this.update = _this.update.bind(_this);
-	    var oldState = localStorage.getItem('app-state');
-	    _this.state = JSON.parse(oldState) || {};
-	    _this.state.code = document.querySelector('input[name=code]').value;
-	    return _this;
-	  }
+		_createClass(ClientInfo, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'label',
+						{ 'for': 'clientID' },
+						'OIDC Client ID:'
+					),
+					_react2.default.createElement('input', { name: 'clientID', onChange: this.update, value: this.props.clientID, ref: 'clientID' }),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(
+						'label',
+						{ 'for': 'clientSecret' },
+						'OIDC Client Secret:'
+					),
+					_react2.default.createElement('input', { name: 'clientSecret', onChange: this.update, value: this.props.clientSecret, ref: 'clientSecret' }),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(
+						'label',
+						{ 'for': 'scopes' },
+						'Scope:'
+					),
+					_react2.default.createElement('input', { name: 'scopes', onChange: this.update, value: this.props.scopes, ref: 'scopes' })
+				);
+			}
+		}, {
+			key: 'update',
+			value: function update() {
+				window.dispatchEvent(new CustomEvent('configChange', {
+					detail: {
+						clientID: this.refs.clientID.value,
+						clientSecret: this.refs.clientSecret.value,
+						scopes: this.refs.scopes.value
+					}
+				}));
+			}
+		}]);
 
-	  _createClass(TokenPanel, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'h2',
-	          null,
-	          'Step 1 complete!'
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Your access code is:'
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          '#',
-	          this.state.code
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Now, we need to turn that access code into an access token, by having our server make a request to your token endpoint:'
-	        ),
-	        _react2.default.createElement(GetTokenButton, { getToken: this.getToken.bind(this) }),
-	        _react2.default.createElement(TokenResponse, { token: this.state.tokenResponse })
-	      );
-	    }
-	  }, {
-	    key: 'getToken',
-	    value: function getToken() {
-	      var panel = this;
-	      var tokenRequest = new Ajax({
-	        url: '/code_to_token',
-	        method: 'POST',
-	        data: JSON.stringify(panel.state)
-	      });
-
-	      tokenRequest.on('success', function (event) {
-	        panel.setState({
-	          tokenResponse: event.currentTarget.response
-	        });
-	        panel.update();
-	      });
-
-	      tokenRequest.send();
-	    }
-	  }, {
-	    key: 'update',
-	    value: function update() {}
-	  }]);
-
-	  return TokenPanel;
+		return ClientInfo;
 	}(_react2.default.Component);
 
-	var GetTokenButton = function GetTokenButton(props) {
-	  return _react2.default.createElement(
-	    'button',
-	    { type: 'button', onClick: props.getToken },
-	    'Get Token'
-	  );
-	};
-
-	var TokenResponse = function TokenResponse(props) {
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    props.token
-	  );
-	};
-
-	exports.default = TokenPanel;
+	exports.default = ClientInfo;
 
 /***/ },
-/* 185 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(186);
+	var content = __webpack_require__(368);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(188)(content, {});
+	var update = __webpack_require__(370)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -28074,10 +28341,10 @@
 	}
 
 /***/ },
-/* 186 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(187)();
+	exports = module.exports = __webpack_require__(369)();
 	// imports
 
 
@@ -28088,7 +28355,7 @@
 
 
 /***/ },
-/* 187 */
+/* 369 */
 /***/ function(module, exports) {
 
 	/*
@@ -28144,7 +28411,7 @@
 
 
 /***/ },
-/* 188 */
+/* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

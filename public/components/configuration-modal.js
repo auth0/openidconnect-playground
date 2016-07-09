@@ -1,7 +1,7 @@
 import React from 'react';
 import ServerURLs from './server-urls';
 import ClearAllButton from './clear-all-button';
-import TokenPanel from './token-panel';
+import ClientInfo from './client-info';
 
 class ConfigurationModal extends React.Component {
 
@@ -16,15 +16,19 @@ class ConfigurationModal extends React.Component {
           >
           </span>
           <h2 className="configuration-modal-title">OpenID Connect Configuration</h2>
-          <div className="row">
-            <div className="col-xs-6">
+          <ServerURLs 
+            discoveryURL={this.props.discoveryURL}
+            authEndpoint={this.props.authEndpoint}
+            tokenEndpoint={this.props.tokenEndpoint}
+            domain={this.props.domain}
+            server={this.props.server}  
+          />
 
-            </div>
-            <div className="col-xs-6">
-              { document.querySelector('input[name=code]').value ? <TokenPanel /> : null }
-            </div>
-          </div>
-          <ServerURLs />
+          <ClientInfo 
+            clientID={this.props.clientID}
+            clientSecret={this.props.clientSecret}
+            scopes={this.props.scopes}
+          />
           <div className="clear-storage-container">
             <p>
               Hey, just a friendly note: we store stuff like your keys in

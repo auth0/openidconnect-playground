@@ -5,6 +5,7 @@ class StepOne extends React.Component {
   constructor() {
     super();
     this.start = this.start.bind(this);
+    this.update = this.update.bind(this);
     let savedState = localStorage.getItem('app-state') || '{}'
     savedState = JSON.parse(savedState)
 
@@ -12,13 +13,15 @@ class StepOne extends React.Component {
     this.state.stepState = 'initial'
   }
 
+  update(){
+  }
+
   start() {
     this.setState({ stepState: 'wait' });
 
-    setTimeout(() => {
-      this.setState({ stepState: 'response' });
-      this.props.nextStep();
-    }, 500);
+    let completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=http://localhost:3000/callback&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken
+
+    window.location = completeURL
   }
 
   render() {
@@ -34,22 +37,19 @@ class StepOne extends React.Component {
             </h3>
             <div className="code-box-content">
               <div className="code-block">
-                <a onClick={this.props.openModal} href="#"> { this.state.authEndpoint || "https://sample-oidc.auth0.com/authorize?" } </a>
+                <a onClick={this.props.openModal} href="#"> { this.props.authEndpoint || "Enter an authorization endpoint in the setting dialog!"} </a>
                 <br />
                 client_id=
-                <a
-                  onClick={this.props.openModal}
-                  href="#"
-                >
-                {"7eruHypvzyvEjF5dNt2TN4tzKBE98PTc"}
-                </a>
+                <span>{this.props.clientID}</span>
                 <br />
                 redirect_uri=https://openidconnect.net/callback 
                 <br />
-                scope=
-                <a onClick={this.props.openModal} href="#"> openid name email response_type=code </a>
+                ?scope=
+                <span>{encodeURI(this.props.scopes)}</span>
+                <br/>
+                <span>&amp;response_type=code</span>
                 <br />
-                state=poifhjoeif2
+                <span>&amp;state={this.props.stateToken}</span>
               </div>
               <hr />
               { this.state.stepState === 'wait' ?

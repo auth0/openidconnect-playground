@@ -1,4 +1,5 @@
 import React from 'react';
+import Ajax from 'simple-ajax'
 import StepOne from './step-one';
 import StepTwo from './step-two';
 import StepThree from './step-three';
@@ -9,25 +10,114 @@ class OpenIDPage extends React.Component {
 
   constructor() {
     super();
+    this.update = this.update.bind(this)
 		let savedState = localStorage.getItem('app-state') || '{}'
 		savedState = JSON.parse(savedState)
 		this.state = savedState
     this.state.currentStep = this.state.currentStep || 1
+    this.state.server = this.state.server || 'Auth0'
+    this.state.domain = this.state.domain || 'samples.auth0.com'
+    this.state.authEndpoint = this.state.authEndpoint || 'https://samples.auth0.com/authorize'
+    this.state.tokenEndpoint = this.state.tokenEndpoint || 'https://samples.auth0.com/token'
+    this.state.userInfoEndpoint = this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo'
+    this.state.scopes = this.state.scopes || 'openid profile email'
+    this.state.stateToken = this.state.stateToken || document.querySelector('input[name=stateToken]').value
+    this.state.redirect_uri = this.state.redirectURI ||  document.querySelector('input[name=redirect-uri]').value
+    this.state.clientID = this.state.clientID ||  document.querySelector('input[name=auth0ClientID]').value
+    this.state.clientSecret = this.state.clientSecret ||  document.querySelector('input[name=auth0ClientSecret]').value 
     this.state.configurationModalOpen = false
-    this.updateConfigs(null, this.state)
   }
 
   componentDidMount(){
+    // figure out what step we're on
+    this.configureStep()
     //listen for config changes
-    window.addEventListener('configChange', this.updateConfigs.bind(this))
+    window.addEventListener('configChange', this.update.bind(this))
+    window.addEventListener('discovery', this.updateURLs.bind(this))
   }
 
-  updateConfigs(event){
+  configureStep(){
+      let code = document.querySelector('input[name=code]').value
+      let token = this.state.idToken
+      if(code){
+        this.setState({
+          currentStep: 2,
+          authCode: code
+        })
+      }
+      if(token){
+        this.setState({
+          currentStep: 3
+        })
+      }
+  }
+
+  update(event){
     if(event && event.detail){
-      console.log(event.detail)
       this.setState(event.detail)
+      if(event.detail.server == 'custom' && this.state.server !== 'custom'){
+        this.setState({
+          discoveryURL: '',
+          authEndpoint: '',
+          tokenEndpoint: '',
+          userInfoEndpoint: ''
+        })
+      } else if(event.detail.server == 'Auth0' && this.state.server !== 'Auth0'){
+        this.setState({
+          domain: 'samples.auth0.com'
+        })
+      }
+    }
+    setTimeout(this.saveState.bind(this), 250)
+  }
+
+  updateURLs(){
+    console.log(this.state.server)
+    if(this.state.server == 'google'){
+      this.updateDiscovery('https://accounts.google.com/.well-known/openid-configuration')
+    } else if (this.state.server == 'Auth0'){
+      this.updateDiscovery('https://' + this.state.domain + '/.well-known/openid-configuration')
+    } else {
+      this.updateDiscovery(this.state.discoveryURL)
     }
   }
+	updateDiscovery(documentURL){
+    documentURL = documentURL || this.state.discoveryURL
+    console.log('discovering...', documentURL)
+		this.discover(documentURL, function(discovered){
+			this.setState({
+				discoveryURL: documentURL,
+				authEndpoint: discovered.authorization_endpoint,
+				tokenEndpoint: discovered.token_endpoint,
+        userInfoEndpoint: discovered.userinfo_endpoint
+			})
+      this.saveState()
+		}.bind(this))
+	}
+	discover(url){
+		let serviceDiscovery = new Ajax({
+			url: '/discover',
+			method: 'GET',
+			data: {
+				url
+			}
+		})
+
+		serviceDiscovery.on('success', function(event){
+			let discovered = JSON.parse(event.currentTarget.response)
+      this.setState({
+        discoveryURL: url,
+        authEndpoint: discovered.authorization_endpoint,
+        tokenEndpoint: discovered.token_endpoint,
+        domain: null
+      })
+      this.saveState()
+		}.bind(this))
+
+    // TODO: Add error case
+
+		serviceDiscovery.send()
+	}
 
   setConfigurationModalVisibility(v) {
     this.setState({ configurationModalOpen: v });
@@ -97,7 +187,10 @@ class OpenIDPage extends React.Component {
             <div className="playground-content">
               { this.state.currentStep >= 1 ?
                 <StepOne
-                  authURL = {this.state.authEndpoint}
+                  authEndpoint = {this.state.authEndpoint}
+                  clientID = {this.state.clientID}
+                  scopes = {this.state.scopes}
+                  stateToken = {this.state.stateToken}
                   openModal={ () => { this.setConfigurationModalVisibility(true); } }
                   nextStep={ () => { this.setStep(2); } }
                   skipTutorial={ () => { this.setStep(4); }}
@@ -107,6 +200,11 @@ class OpenIDPage extends React.Component {
               }
               { this.state.currentStep >= 2 ?
                 <StepTwo
+                  tokenEndpoint= {this.state.tokenEndpoint}
+                  authCode= {this.state.authCode}
+                  clientID= {this.state.clientID}
+                  clientSecret= {this.state.clientSecret}
+                  server={this.state.server}
                   nextStep={ () => { this.setStep(3); } }
                   isActive={ this.state.currentStep === 2 }
                 />
@@ -114,6 +212,10 @@ class OpenIDPage extends React.Component {
               }
               { this.state.currentStep >= 3 ?
                 <StepThree
+                  idToken= {this.state.idToken}
+                  accessToken= {this.state.accessToken}
+                  clientSecret= {this.state.clientSecret}
+                  server= {this.state.server}
                   isActive={ this.state.currentStep === 3 }
                 />
                 : null
@@ -130,6 +232,14 @@ class OpenIDPage extends React.Component {
         {this.state.configurationModalOpen ?
           <ConfigurationModal ref="config"
             closeModal={ () => { this.setConfigurationModalVisibility(false); } }
+            discoveryURL={this.state.discoveryURL}
+            authEndpoint= {this.state.authEndpoint}
+            tokenEndpoint= {this.state.tokenEndpoint}
+            domain= {this.state.domain}
+            server = {this.state.server}
+            clientID= {this.state.clientID}
+            clientSecret= {this.state.clientSecret}
+            scopes = {this.state.scopes}
           />
           : null }
         <footer className="main-footer">
@@ -143,6 +253,11 @@ class OpenIDPage extends React.Component {
       </div>
     );
   }
+	saveState(){
+    console.log(this.state)
+		localStorage.setItem('app-state', JSON.stringify(this.state))
+	}
 }
+	
 
 export default OpenIDPage;
