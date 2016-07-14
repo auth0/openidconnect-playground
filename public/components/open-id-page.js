@@ -18,7 +18,7 @@ class OpenIDPage extends React.Component {
     this.state.server = this.state.server || 'Auth0'
     this.state.domain = this.state.domain || 'samples.auth0.com'
     this.state.authEndpoint = this.state.authEndpoint || 'https://samples.auth0.com/authorize'
-    this.state.tokenEndpoint = this.state.tokenEndpoint || 'https://samples.auth0.com/token'
+    this.state.tokenEndpoint = this.state.tokenEndpoint || 'https://samples.auth0.com/oauth/token'
     this.state.userInfoEndpoint = this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo'
     this.state.scopes = this.state.scopes || 'openid profile email'
     this.state.stateToken = this.state.stateToken || document.querySelector('input[name=stateToken]').value
