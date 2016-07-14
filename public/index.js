@@ -21300,6 +21300,7 @@
 	                clientID: this.state.clientID,
 	                scopes: this.state.scopes,
 	                stateToken: this.state.stateToken,
+	                redirectURI: this.state.redirectURI,
 	                openModal: function openModal() {
 	                  _this2.setConfigurationModalVisibility(true);
 	                },
@@ -21959,7 +21960,7 @@
 	    value: function start() {
 	      this.setState({ stepState: 'wait' });
 
-	      var completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=http://localhost:3000/callback&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken;
+	      var completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI + '&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken;
 
 	      window.location = completeURL;
 	    }

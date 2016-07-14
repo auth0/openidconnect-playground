@@ -19,7 +19,7 @@ class StepOne extends React.Component {
   start() {
     this.setState({ stepState: 'wait' });
 
-    let completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=http://localhost:3000/callback&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken
+    let completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI +'&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken
 
     window.location = completeURL
   }

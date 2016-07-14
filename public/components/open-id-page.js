@@ -191,6 +191,7 @@ class OpenIDPage extends React.Component {
                   clientID = {this.state.clientID}
                   scopes = {this.state.scopes}
                   stateToken = {this.state.stateToken}
+                  redirectURI = {this.state.redirectURI}
                   openModal={ () => { this.setConfigurationModalVisibility(true); } }
                   nextStep={ () => { this.setStep(2); } }
                   skipTutorial={ () => { this.setStep(4); }}
