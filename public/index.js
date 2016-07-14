@@ -21962,9 +21962,9 @@
 
 	      var completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI + '&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken;
 
-	      console.log(completeURL);
+	      // console.log(completeURL)
 
-	      // window.location = completeURL
+	      window.location = completeURL;
 	    }
 	  }, {
 	    key: 'render',
