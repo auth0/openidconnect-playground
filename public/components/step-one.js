@@ -21,7 +21,9 @@ class StepOne extends React.Component {
 
     let completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI +'&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken
 
-    window.location = completeURL
+    console.log(completeURL)
+
+    // window.location = completeURL
   }
 
   render() {

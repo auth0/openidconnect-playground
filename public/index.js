@@ -21047,7 +21047,7 @@
 	    _this.state.userInfoEndpoint = _this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo';
 	    _this.state.scopes = _this.state.scopes || 'openid profile email';
 	    _this.state.stateToken = _this.state.stateToken || document.querySelector('input[name=stateToken]').value;
-	    _this.state.redirect_uri = _this.state.redirectURI || document.querySelector('input[name=redirect-uri]').value;
+	    _this.state.redirectURI = _this.state.redirectURI || document.querySelector('input[name=redirect-uri]').value;
 	    _this.state.clientID = _this.state.clientID || document.querySelector('input[name=auth0ClientID]').value;
 	    _this.state.clientSecret = _this.state.clientSecret || document.querySelector('input[name=auth0ClientSecret]').value;
 	    _this.state.configurationModalOpen = false;
@@ -21962,7 +21962,9 @@
 
 	      var completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI + '&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken;
 
-	      window.location = completeURL;
+	      console.log(completeURL);
+
+	      // window.location = completeURL
 	    }
 	  }, {
 	    key: 'render',

@@ -22,7 +22,7 @@ class OpenIDPage extends React.Component {
     this.state.userInfoEndpoint = this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo'
     this.state.scopes = this.state.scopes || 'openid profile email'
     this.state.stateToken = this.state.stateToken || document.querySelector('input[name=stateToken]').value
-    this.state.redirect_uri = this.state.redirectURI ||  document.querySelector('input[name=redirect-uri]').value
+    this.state.redirectURI = this.state.redirectURI ||  document.querySelector('input[name=redirect-uri]').value
     this.state.clientID = this.state.clientID ||  document.querySelector('input[name=auth0ClientID]').value
     this.state.clientSecret = this.state.clientSecret ||  document.querySelector('input[name=auth0ClientSecret]').value 
     this.state.configurationModalOpen = false
