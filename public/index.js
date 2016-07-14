@@ -22280,8 +22280,6 @@
 	      serviceDiscovery.on('success', function (event) {
 	        this.setState({ stepState: 'initial' });
 	        var result = JSON.parse(event.currentTarget.response);
-	        result = JSON.parse(result.body);
-	        console.log(result);
 	        window.dispatchEvent(new CustomEvent('configChange', {
 	          detail: {
 	            validated: true,
