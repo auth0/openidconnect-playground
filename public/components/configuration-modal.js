@@ -16,15 +16,15 @@ class ConfigurationModal extends React.Component {
           >
           </span>
           <h2 className="configuration-modal-title">OpenID Connect Configuration</h2>
-          <ServerURLs 
+          <ServerURLs
             discoveryURL={this.props.discoveryURL}
             authEndpoint={this.props.authEndpoint}
             tokenEndpoint={this.props.tokenEndpoint}
             domain={this.props.domain}
-            server={this.props.server}  
+            server={this.props.server}
           />
 
-          <ClientInfo 
+          <ClientInfo
             clientID={this.props.clientID}
             clientSecret={this.props.clientSecret}
             scopes={this.props.scopes}

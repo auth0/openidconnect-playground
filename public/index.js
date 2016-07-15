@@ -21931,7 +21931,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -21953,162 +21953,208 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var ServerURLs = function (_React$Component) {
-		_inherits(ServerURLs, _React$Component);
+	  _inherits(ServerURLs, _React$Component);
 
-		function ServerURLs() {
-			_classCallCheck(this, ServerURLs);
+	  function ServerURLs() {
+	    _classCallCheck(this, ServerURLs);
 
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ServerURLs).call(this));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ServerURLs).call(this));
 
-			_this.update = _this.update.bind(_this);
-			return _this;
-		}
+	    _this.update = _this.update.bind(_this);
+	    return _this;
+	  }
 
-		_createClass(ServerURLs, [{
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				document.querySelector('option[value=' + (this.props.server || 'Auth0') + ']').setAttribute('selected', 'true');
-			}
-		}, {
-			key: 'update',
-			value: function update(event) {
-				var changed = {
-					server: this.refs.server.value,
-					authEndpoint: this.refs.authEndpoint.value,
-					tokenEndpoint: this.refs.tokenEndpoint.value,
-					domain: this.refs.domain.value,
-					discoveryURL: this.refs.discoveryURL.value
-				};
-				changed[event.target.name] = event.target.value;
-				window.dispatchEvent(new CustomEvent('configChange', {
-					detail: changed
-				}));
-			}
-		}, {
-			key: 'updateDiscovery',
-			value: function updateDiscovery() {
-				setTimeout(function () {
-					window.dispatchEvent(new CustomEvent('discovery'));
-				}, 250);
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				var _this2 = this;
+	  _createClass(ServerURLs, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      document.querySelector('option[value=' + (this.props.server || 'Auth0') + ']').setAttribute('selected', 'true');
+	    }
+	  }, {
+	    key: 'update',
+	    value: function update(event) {
+	      var changed = {
+	        server: this.refs.server.value,
+	        authEndpoint: this.refs.authEndpoint.value,
+	        tokenEndpoint: this.refs.tokenEndpoint.value,
+	        domain: this.refs.domain.value,
+	        discoveryURL: this.refs.discoveryURL.value
+	      };
+	      changed[event.target.name] = event.target.value;
+	      window.dispatchEvent(new CustomEvent('configChange', {
+	        detail: changed
+	      }));
+	    }
+	  }, {
+	    key: 'updateDiscovery',
+	    value: function updateDiscovery() {
+	      setTimeout(function () {
+	        window.dispatchEvent(new CustomEvent('discovery'));
+	      }, 250);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
 
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'label',
-						{ 'for': 'server' },
-						'Server Template:'
-					),
-					_react2.default.createElement(
-						'select',
-						{ name: 'server', ref: 'server', onChange: function onChange(event) {
-								_this2.update(event);_this2.updateDiscovery();
-							} },
-						_react2.default.createElement(
-							'option',
-							{ value: 'none' },
-							'SELECT A SERVER TEMPLATE'
-						),
-						_react2.default.createElement(
-							'option',
-							{ value: 'Auth0' },
-							'Auth0'
-						),
-						_react2.default.createElement(
-							'option',
-							{ value: 'google' },
-							'Google'
-						),
-						_react2.default.createElement(
-							'option',
-							{ value: 'custom' },
-							'Custom'
-						)
-					),
-					_react2.default.createElement('br', null),
-					_react2.default.createElement(
-						'p',
-						{ style: { display: this.props.server == 'Auth0' ? 'block' : 'none' } },
-						_react2.default.createElement(
-							'label',
-							{ 'for': 'domain' },
-							'Auth0 domain: '
-						),
-						_react2.default.createElement('input', { name: 'domain', onChange: this.update, ref: 'domain', value: this.props.domain, placeholder: 'mydomain.auth0.com' }),
-						_react2.default.createElement(
-							'button',
-							{ onClick: this.updateDiscovery },
-							'Use Auth0 Discovery Document'
-						),
-						_react2.default.createElement('br', null),
-						_react2.default.createElement('span', { ref: 'Auth0DiscoveryDocumentURL' }),
-						_react2.default.createElement(
-							'span',
-							null,
-							'Authorization Endpoint:  ',
-							_react2.default.createElement(
-								'span',
-								{ ref: 'authEndpoint' },
-								this.props.authEndpoint
-							)
-						),
-						_react2.default.createElement('br', null),
-						_react2.default.createElement(
-							'span',
-							null,
-							'Token Endpoint:  ',
-							_react2.default.createElement(
-								'span',
-								{ ref: 'tokenEndpoint' },
-								this.props.tokenEndpoint
-							)
-						),
-						_react2.default.createElement('br', null)
-					),
-					_react2.default.createElement(
-						'p',
-						{ style: { display: this.props.server != 'Auth0' ? 'block' : 'none' } },
-						_react2.default.createElement(
-							'label',
-							{ 'for': 'discoveryURL' },
-							'Discovery Document URL: '
-						),
-						_react2.default.createElement('input', { name: 'discoveryURL', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.discoveryURL, ref: 'discoveryURL', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' }),
-						_react2.default.createElement(
-							'button',
-							{ style: { display: this.props.server != 'google' ? 'inline-block' : 'none' }, onClick: this.updateDiscovery },
-							'Use Discovery Document'
-						),
-						_react2.default.createElement('br', null),
-						_react2.default.createElement(
-							'label',
-							{ 'for': 'authEndpoint' },
-							'Authorization Endpoint: '
-						),
-						_react2.default.createElement('input', { name: 'authEndpoint', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.authEndpoint, ref: 'authEndpoint', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' }),
-						_react2.default.createElement('br', null),
-						_react2.default.createElement(
-							'label',
-							{ 'for': 'Token Endpoint' },
-							'Token Endpoint: '
-						),
-						_react2.default.createElement('input', { name: 'tokenEndpoint', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.tokenEndpoint, ref: 'tokenEndpoint', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' })
-					),
-					_react2.default.createElement(
-						'p',
-						{ id: 'warning', style: { display: this.props.server != 'Auth0' || this.props.server == 'Auth0' && this.props.domain != 'samples.auth0.com' ? 'block' : 'none' } },
-						'Remember to set https://openidconnect.net/callback as an allowed callback with your application!'
-					)
-				);
-			}
-		}]);
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'form-horizontal' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'server', className: 'col-xs-2 control-label' },
+	            'Server Template:'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-xs-10' },
+	            _react2.default.createElement(
+	              'select',
+	              {
+	                className: 'form-control',
+	                name: 'server',
+	                ref: 'server',
+	                onChange: function onChange(event) {
+	                  _this2.update(event);_this2.updateDiscovery();
+	                }
+	              },
+	              _react2.default.createElement(
+	                'option',
+	                { value: 'none' },
+	                'SELECT A SERVER TEMPLATE'
+	              ),
+	              _react2.default.createElement(
+	                'option',
+	                { value: 'Auth0' },
+	                'Auth0'
+	              ),
+	              _react2.default.createElement(
+	                'option',
+	                { value: 'google' },
+	                'Google'
+	              ),
+	              _react2.default.createElement(
+	                'option',
+	                { value: 'custom' },
+	                'Custom'
+	              )
+	            )
+	          )
+	        ),
+	        this.props.server === 'Auth0' ? _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'form-group' },
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'domain', className: 'col-xs-2 control-label' },
+	              'Auth0 domain: '
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-10' },
+	              _react2.default.createElement('input', { className: 'form-control', name: 'domain', onChange: this.update, ref: 'domain', value: this.props.domain, placeholder: 'mydomain.auth0.com' }),
+	              _react2.default.createElement(
+	                'button',
+	                { onClick: this.updateDiscovery, 'class': 'btn btn-transparent btn-md' },
+	                'Use Auth0 Discovery Document'
+	              )
+	            )
+	          ),
+	          _react2.default.createElement('span', { ref: 'Auth0DiscoveryDocumentURL' }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'form-group' },
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'authEndpoint', className: 'col-xs-2 control-label' },
+	              'Authorization Endpoint:'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-10' },
+	              _react2.default.createElement('input', { className: 'form-control', readOnly: true, ref: 'authEndpoint', value: this.props.authEndpoint })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'form-group' },
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'tokenEndpoint', className: 'col-xs-2 control-label' },
+	              'Token Endpoint:'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-10' },
+	              _react2.default.createElement('input', { className: 'form-control', readOnly: true, ref: 'tokenEndpoint', value: this.props.tokenEndpoint })
+	            )
+	          )
+	        ) : _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'form-group' },
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'discoveryURL', className: 'col-xs-2 control-label' },
+	              'Discovery Document URL: '
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-10' },
+	              _react2.default.createElement('input', { className: 'form-control', name: 'discoveryURL', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.discoveryURL, ref: 'discoveryURL', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' }),
+	              _react2.default.createElement(
+	                'button',
+	                { style: { display: this.props.server != 'google' ? 'inline-block' : 'none' }, onClick: this.updateDiscovery },
+	                'Use Discovery Document'
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'form-group' },
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'authEndpoint', className: 'col-xs-2 control-label' },
+	              'Authorization Endpoint: '
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-10' },
+	              _react2.default.createElement('input', { className: 'form-control', name: 'authEndpoint', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.authEndpoint, ref: 'authEndpoint', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'form-group' },
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'Token Endpoint', className: 'col-xs-2 control-label' },
+	              'Token Endpoint: '
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-10' },
+	              _react2.default.createElement('input', { className: 'form-control', name: 'tokenEndpoint', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.tokenEndpoint, ref: 'tokenEndpoint', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' })
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          { id: 'warning', style: { display: this.props.server != 'Auth0' || this.props.server == 'Auth0' && this.props.domain != 'samples.auth0.com' ? 'block' : 'none' } },
+	          'Remember to set https://openidconnect.net/callback as an allowed callback with your application!'
+	        )
+	      );
+	    }
+	  }]);
 
-		return ServerURLs;
+	  return ServerURLs;
 	}(_react2.default.Component);
 
 	exports.default = ServerURLs;
