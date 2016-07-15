@@ -29,7 +29,7 @@ class ServerURLs extends React.Component{
     return (
       <div className="form-horizontal">
         <div className="form-group">
-          <label htmlFor="server" className="col-xs-2 control-label">Server Template:</label>
+          <label htmlFor="server" className="col-xs-2 control-label">Server Template</label>
           <div className="col-xs-10">
             <select
               className="form-control"
@@ -47,24 +47,31 @@ class ServerURLs extends React.Component{
 
         <div style={ { display: this.props.server == 'Auth0' ? 'block' : 'none' } }>
 					<div className="form-group">
-						<label htmlFor="domain" className="col-xs-2 control-label">Auth0 domain:&nbsp;</label>
+						<label htmlFor="domain" className="col-xs-2 control-label">Auth0 domain</label>
 						<div className="col-xs-10">
-							<input className="form-control" name="domain" onChange={this.update} ref="domain" value={this.props.domain} placeholder="mydomain.auth0.com" />
-							<button onClick={this.updateDiscovery} class="btn btn-transparent btn-md">Use Auth0 Discovery Document</button>
+              <button
+                onClick={this.updateDiscovery}
+                className="btn btn-transparent btn-md button-float-right"
+              >
+                Use Auth0 Discovery Document
+              </button>
+              <div style={ { overflow: 'hidden' } }>
+                <input className="form-control input-with-button" name="domain" onChange={this.update} ref="domain" value={this.props.domain} placeholder="mydomain.auth0.com" />
+              </div>
 						</div>
 					</div>
 
 					<span ref="Auth0DiscoveryDocumentURL"></span>
 
 					<div className="form-group">
-						<label htmlFor="authEndpoint" className="col-xs-2 control-label">Authorization Endpoint:</label>
+						<label htmlFor="authEndpoint" className="col-xs-2 control-label">Authorization Endpoint</label>
 						<div className="col-xs-10">
 							<input className="form-control" readOnly ref="authEndpoint" value={this.props.authEndpoint} />
 						</div>
 					</div>
 
 					<div className="form-group">
-						<label htmlFor="tokenEndpoint" className="col-xs-2 control-label">Token Endpoint:</label>
+						<label htmlFor="tokenEndpoint" className="col-xs-2 control-label">Token Endpoint</label>
 						<div className="col-xs-10">
 							<input className="form-control" readOnly ref="tokenEndpoint" value={this.props.tokenEndpoint} />
 						</div>
@@ -73,22 +80,24 @@ class ServerURLs extends React.Component{
 
         <div style={ { display: this.props.server != 'Auth0' ? 'block' : 'none' } }>
 					<div className="form-group">
-						<label htmlFor="discoveryURL" className="col-xs-2 control-label">Discovery Document URL:&nbsp;</label>
+						<label htmlFor="discoveryURL" className="col-xs-2 control-label">Discovery Document URL</label>
 						<div className="col-xs-10">
-	            <input className="form-control" name="discoveryURL" onChange={this.update} disabled={this.props.server == 'google' ? 'disabled' : ''} value={this.props.discoveryURL} ref="discoveryURL" placeholder="https://my-oidc.com/.well-known/oidc-configuration" />
-	            <button style={{display:(this.props.server != 'google' ? 'inline-block' : 'none')}} onClick={this.updateDiscovery}>Use Discovery Document</button>
+              <button className="btn btn-transparent btn-md button-float-right"style={{display:(this.props.server != 'google' ? 'inline-block' : 'none')}} onClick={this.updateDiscovery}>Use Discovery Document</button>
+              <div style={ { overflow: 'hidden' } }>
+	               <input className="form-control input-with-button" name="discoveryURL" onChange={this.update} disabled={this.props.server == 'google' ? 'disabled' : ''} value={this.props.discoveryURL} ref="discoveryURL" placeholder="https://my-oidc.com/.well-known/oidc-configuration" />
+              </div>
 						</div>
 					</div>
 
 					<div className="form-group">
-            <label htmlFor="authEndpoint" className="col-xs-2 control-label">Authorization Endpoint:&nbsp;</label>
+            <label htmlFor="authEndpoint" className="col-xs-2 control-label">Authorization Endpoint</label>
 						<div className="col-xs-10">
             	<input className="form-control" name="authEndpoint" onChange={this.update} disabled={this.props.server == 'google' ? 'disabled' : ''} value={this.props.authEndpoint} ref="authEndpoint" placeholder="https://my-oidc.com/.well-known/oidc-configuration" />
 						</div>
 					</div>
 
 					<div className="form-group">
-            <label htmlFor="Token Endpoint" className="col-xs-2 control-label">Token Endpoint:&nbsp;</label>
+            <label htmlFor="Token Endpoint" className="col-xs-2 control-label">Token Endpoint</label>
 						<div className="col-xs-10">
             	<input className="form-control" name="tokenEndpoint" onChange={this.update} disabled={this.props.server == 'google' ? 'disabled' : ''} value={this.props.tokenEndpoint} ref="tokenEndpoint" placeholder="https://my-oidc.com/.well-known/oidc-configuration" />
 						</div>

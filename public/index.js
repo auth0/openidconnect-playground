@@ -22005,7 +22005,7 @@
 	          _react2.default.createElement(
 	            'label',
 	            { htmlFor: 'server', className: 'col-xs-2 control-label' },
-	            'Server Template:'
+	            'Server Template'
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -22052,16 +22052,23 @@
 	            _react2.default.createElement(
 	              'label',
 	              { htmlFor: 'domain', className: 'col-xs-2 control-label' },
-	              'Auth0 domain: '
+	              'Auth0 domain'
 	            ),
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-xs-10' },
-	              _react2.default.createElement('input', { className: 'form-control', name: 'domain', onChange: this.update, ref: 'domain', value: this.props.domain, placeholder: 'mydomain.auth0.com' }),
 	              _react2.default.createElement(
 	                'button',
-	                { onClick: this.updateDiscovery, 'class': 'btn btn-transparent btn-md' },
+	                {
+	                  onClick: this.updateDiscovery,
+	                  className: 'btn btn-transparent btn-md button-float-right'
+	                },
 	                'Use Auth0 Discovery Document'
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { style: { overflow: 'hidden' } },
+	                _react2.default.createElement('input', { className: 'form-control input-with-button', name: 'domain', onChange: this.update, ref: 'domain', value: this.props.domain, placeholder: 'mydomain.auth0.com' })
 	              )
 	            )
 	          ),
@@ -22072,7 +22079,7 @@
 	            _react2.default.createElement(
 	              'label',
 	              { htmlFor: 'authEndpoint', className: 'col-xs-2 control-label' },
-	              'Authorization Endpoint:'
+	              'Authorization Endpoint'
 	            ),
 	            _react2.default.createElement(
 	              'div',
@@ -22086,7 +22093,7 @@
 	            _react2.default.createElement(
 	              'label',
 	              { htmlFor: 'tokenEndpoint', className: 'col-xs-2 control-label' },
-	              'Token Endpoint:'
+	              'Token Endpoint'
 	            ),
 	            _react2.default.createElement(
 	              'div',
@@ -22104,16 +22111,20 @@
 	            _react2.default.createElement(
 	              'label',
 	              { htmlFor: 'discoveryURL', className: 'col-xs-2 control-label' },
-	              'Discovery Document URL: '
+	              'Discovery Document URL'
 	            ),
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-xs-10' },
-	              _react2.default.createElement('input', { className: 'form-control', name: 'discoveryURL', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.discoveryURL, ref: 'discoveryURL', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' }),
 	              _react2.default.createElement(
 	                'button',
-	                { style: { display: this.props.server != 'google' ? 'inline-block' : 'none' }, onClick: this.updateDiscovery },
+	                { className: 'btn btn-transparent btn-md button-float-right', style: { display: this.props.server != 'google' ? 'inline-block' : 'none' }, onClick: this.updateDiscovery },
 	                'Use Discovery Document'
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { style: { overflow: 'hidden' } },
+	                _react2.default.createElement('input', { className: 'form-control input-with-button', name: 'discoveryURL', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.discoveryURL, ref: 'discoveryURL', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' })
 	              )
 	            )
 	          ),
@@ -22123,7 +22134,7 @@
 	            _react2.default.createElement(
 	              'label',
 	              { htmlFor: 'authEndpoint', className: 'col-xs-2 control-label' },
-	              'Authorization Endpoint: '
+	              'Authorization Endpoint'
 	            ),
 	            _react2.default.createElement(
 	              'div',
@@ -22137,7 +22148,7 @@
 	            _react2.default.createElement(
 	              'label',
 	              { htmlFor: 'Token Endpoint', className: 'col-xs-2 control-label' },
-	              'Token Endpoint: '
+	              'Token Endpoint'
 	            ),
 	            _react2.default.createElement(
 	              'div',
@@ -38696,7 +38707,7 @@
 						_react2.default.createElement(
 							'label',
 							{ className: 'col-xs-2 control-label', htmlFor: 'clientID' },
-							'OIDC Client ID:'
+							'OIDC Client ID'
 						),
 						_react2.default.createElement(
 							'div',
@@ -38710,7 +38721,7 @@
 						_react2.default.createElement(
 							'label',
 							{ className: 'col-xs-2 control-label', htmlFor: 'clientSecret' },
-							'OIDC Client Secret:'
+							'OIDC Client Secret'
 						),
 						_react2.default.createElement(
 							'div',
@@ -38724,7 +38735,7 @@
 						_react2.default.createElement(
 							'label',
 							{ className: 'col-xs-2 control-label', htmlFor: 'scopes' },
-							'Scope:'
+							'Scope'
 						),
 						_react2.default.createElement(
 							'div',
@@ -38787,7 +38798,7 @@
 
 
 	// module
-	exports.push([module.id, ".main-header {\n  background-color: #f9f9f9;\n}\n.main-header .main-navigation {\n  border-bottom: 1px solid rgba(0,0,0,0.05);\n}\n.main-header .main-navigation > .container {\n  position: relative;\n  height: 115px;\n}\n.main-header .openid-logo {\n  display: inline-block;\n  position: absolute;\n  left: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n  width: 135px;\n  height: 42px;\n  background-image: url(\"/images/openid-logo.svg\");\n}\n.main-header .openid-logo > .logo-text {\n  color: rgba(0,0,0,0);\n  font-size: 0;\n}\n.main-header .navigation {\n  display: inline-block;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n.main-header .navigation .navigation-item {\n  display: inline-block;\n  font-size: 14px;\n  margin-right: 20px;\n}\n.main-header .navigation .navigation-item > a {\n  color: #000;\n  padding: 10px;\n}\n.main-header .navigation .navigation-item:last-child {\n  margin-right: 0;\n}\n.main-header .social-icons {\n  position: absolute;\n  right: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n  line-height: 0;\n}\n.main-header .social-icons .auth0-icon {\n  display: inline-block;\n  width: 23px;\n  height: 26px;\n  background-image: url(\"/images/auth0-badge.svg\");\n}\n.main-header .social-icons .twitter-icon {\n  display: inline-block;\n  width: 26px;\n  height: 26px;\n  background-image: url(\"/images/twitter-badge.svg\");\n  margin-left: 10px;\n}\n.main-header .hero {\n  text-align: center;\n  padding: 55px 0;\n}\n.main-header .hero .hero-title {\n  margin: 0;\n  margin-bottom: 25px;\n  font-size: 32px;\n  color: #f8931d;\n}\n.main-header .hero .hero-subtitle {\n  max-width: 700px;\n  margin: 0 auto;\n  font-size: 16px;\n  line-height: 2;\n  color: rgba(0,0,0,0.54);\n}\n.playground .playground-header {\n  position: relative;\n  margin-top: 20px;\n  padding: 25px 0;\n  border-bottom: 1px solid rgba(0,0,0,0.1);\n}\n@media (min-width: 768px) {\n  .playground .playground-header {\n    text-align: center;\n  }\n}\n.playground .playground-header-title {\n  display: inline-block;\n  font-size: 26px;\n  line-height: 39px;\n  margin: 0;\n}\n.playground .playground-header-config {\n  font-size: 12px;\n  text-transform: uppercase;\n  line-height: 39px;\n  vertical-align: middle;\n  position: absolute;\n  right: -16px;\n  top: 50%;\n  transform: translateY(-50%);\n  background-color: transparent;\n  border: none;\n}\n.playground .playground-header-config > i {\n  margin-right: 5px;\n  font-size: 16px;\n  line-height: 39px;\n  vertical-align: middle;\n}\n.playground .playground-content {\n  width: 600px;\n  max-width: 100%;\n  margin: 40px auto 0 auto;\n}\n.playground .playground-content.skip-tutorial .playground-step:before {\n  transition: none;\n}\n.playground .playground-step {\n  position: relative;\n  padding-bottom: 55px;\n}\n@media (min-width: 768px) {\n  .playground .playground-step {\n    left: -32.5px;\n  }\n}\n.playground .playground-step.active .step-number {\n  color: #fff;\n  background-color: #f8931d;\n}\n.playground .playground-step.last-step .step-number {\n  color: #fff;\n  background-color: #7ed321;\n  border-color: #7ed321;\n}\n.playground .playground-step.last-step:before {\n  display: none !important;\n}\n.playground .playground-step:before {\n  content: '';\n  display: inline-block;\n  height: 100%;\n  width: 1px;\n  background-color: #f8931d;\n  position: absolute;\n  left: 20px;\n  top: 0;\n  transition: all 2s;\n}\n@media (max-width: 767px) {\n  .playground .playground-step:before {\n    display: none;\n  }\n}\n.playground .playground-step.active:before {\n  height: 0%;\n}\n.playground .playground-step .step-number {\n  display: inline-block;\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  border: 2px solid #f8931d;\n  background-color: #fff;\n  text-align: center;\n  line-height: 40px;\n  font-size: 18px;\n  color: #f8931d;\n  transition: all 1s;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-number {\n    margin-bottom: 15px;\n    margin-right: 15px;\n  }\n}\n@media (min-width: 768px) {\n  .playground .playground-step .step-number {\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n}\n.playground .playground-step p {\n  margin-bottom: 20px;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-content {\n    display: inline;\n  }\n}\n@media (min-width: 768px) {\n  .playground .playground-step .step-content {\n    padding-left: 65px;\n  }\n}\n.playground .playground-step .step-title {\n  font-size: 24px;\n  line-height: 40px;\n  margin: 0;\n  margin-bottom: 20px;\n  text-align: left;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-title {\n    display: inline-block;\n  }\n}\n.playground .playground-step .step-spinner-container {\n  text-align: center;\n  padding: 7px 0;\n}\n.playground .playground-step .step-spinner-container .step-spinner {\n  display: inline-block;\n  margin: 0;\n  vertical-align: middle;\n}\n.playground .playground-step .snippet-description {\n  font-family: 'Inconsolata', monospace;\n  margin-bottom: 5px;\n  color: #f8931d;\n}\n.playground .playground-step .code-snippet {\n  display: block;\n  width: 100%;\n  border-radius: 3px;\n  color: #fff;\n  background-color: #222228;\n  padding: 10px 20px;\n  margin-bottom: 14px;\n  overflow-x: auto;\n}\n.playground .playground-step .skip-tutorial {\n  display: block;\n  margin: 0 auto;\n  position: relative;\n  left: 32.5px;\n  font-size: 12px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin: 40px auto 20px auto;\n}\n.playground .playground-step .btn-view-jwt {\n  float: right;\n  position: relative;\n  border: none;\n  bottom: 6px;\n  margin-bottom: 8px;\n  border-radius: 50px;\n  padding: 8px 10px;\n  padding-left: 38px;\n  font-size: 12px;\n  font-weight: bold;\n  text-transform: uppercase;\n  background-color: #000;\n  color: #fff;\n  background-image: url(\"/images/jwt-badge.svg\");\n  background-position: 10px center;\n  background-repeat: no-repeat;\n  background-size: 19px 19px;\n}\n.playground .playground-step .code-box-title {\n  border: 1px solid #222228;\n  border-bottom: 0;\n  font-size: 18px;\n  padding-left: 20px;\n  line-height: 65px;\n  border-radius: 3px 3px 0 0;\n  margin: 0;\n}\n.playground .playground-step .code-box-content {\n  background-color: #222228;\n  color: #fff;\n  border-top: none;\n  border-radius: 0 0 3px 3px;\n  padding: 25px 20px;\n  overflow-x: auto;\n}\n.playground .playground-step .code-block {\n  font-family: 'Inconsolata', monospace;\n  font-size: 14px;\n  padding-right: 20px;\n  margin-bottom: 15px;\n}\n.playground .playground-step hr {\n  border-top: 1px solid rgba(255,255,255,0.1);\n  margin: 20px 0;\n}\n.playground .playground-step .code-box-btn {\n  display: block;\n  margin: 0 auto;\n  font-size: 12px;\n  text-transform: uppercase;\n  padding: 15px 20px;\n  border-radius: 3px;\n  color: #222228;\n  border: 0;\n  background-color: #fff;\n  letter-spacing: 1px;\n}\n.main-footer {\n  text-align: center;\n  background-color: #f9f9f9;\n  font-size: 15px;\n  color: rgba(0,0,0,0.54);\n  padding: 30px 0;\n}\n.main-footer .auth0-badge {\n  display: inline-block;\n  background-size: contain;\n  background-repeat: no-repeat;\n  width: 22px;\n  height: 25px;\n  background-image: url(\"/images/auth0-badge.svg\");\n  vertical-align: middle;\n  margin-left: 5px;\n  margin-right: 10px;\n}\nbody.overflow-hidden {\n  overflow: hidden;\n}\n.configuration-modal {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  overflow-x: hidden;\n  overflow-y: auto;\n  pointer-events: auto;\n}\n.configuration-modal .configuration-modal-dialog {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  padding: 25px;\n  padding-top: 50px;\n  background-color: #fff;\n  width: 100%;\n  max-width: 1000px;\n  border-radius: 3px;\n}\n.configuration-modal .configuration-modal-close {\n  position: absolute;\n  cursor: pointer;\n  top: 30px;\n  right: 30px;\n  font-size: 24px;\n  line-height: 1;\n}\n.configuration-modal .configuration-modal-close:hover,\n.configuration-modal .configuration-modal-close:focus {\n  color: rgba(0,0,0,0.5);\n}\n.configuration-modal .configuration-modal-title {\n  font-size: 26px;\n  text-align: center;\n  margin: 0 0 30px 0;\n}\n.configuration-modal .clear-storage-container {\n  background-color: #222228;\n  border-radius: 3px;\n  color: #fff;\n  font-size: 13px;\n  position: relative;\n}\n.configuration-modal .clear-storage-container > p {\n  padding: 20px;\n  padding-right: 240px;\n  font-size: 13px;\n}\n.configuration-modal .clear-storage-container > .clear-storage-btn {\n  position: absolute;\n  right: 20px;\n  top: 50%;\n  transform: translateY(-50%);\n  background-color: #fff;\n  border: none;\n  border-radius: 3px;\n  letter-spacing: 1px;\n  color: #222228;\n  text-transform: uppercase;\n  font-size: 12px;\n  padding: 10px 20px;\n}\n.configuration-modal .configuration-modal-backdrop {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  height: 100%;\n  width: 100%;\n  background-color: rgba(34,34,40,0.75);\n}\n", ""]);
+	exports.push([module.id, ".main-header {\n  background-color: #f9f9f9;\n}\n.main-header .main-navigation {\n  border-bottom: 1px solid rgba(0,0,0,0.05);\n}\n.main-header .main-navigation > .container {\n  position: relative;\n  height: 115px;\n}\n.main-header .openid-logo {\n  display: inline-block;\n  position: absolute;\n  left: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n  width: 135px;\n  height: 42px;\n  background-image: url(\"/images/openid-logo.svg\");\n}\n.main-header .openid-logo > .logo-text {\n  color: rgba(0,0,0,0);\n  font-size: 0;\n}\n.main-header .navigation {\n  display: inline-block;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n.main-header .navigation .navigation-item {\n  display: inline-block;\n  font-size: 14px;\n  margin-right: 20px;\n}\n.main-header .navigation .navigation-item > a {\n  color: #000;\n  padding: 10px;\n}\n.main-header .navigation .navigation-item:last-child {\n  margin-right: 0;\n}\n.main-header .social-icons {\n  position: absolute;\n  right: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n  line-height: 0;\n}\n.main-header .social-icons .auth0-icon {\n  display: inline-block;\n  width: 23px;\n  height: 26px;\n  background-image: url(\"/images/auth0-badge.svg\");\n}\n.main-header .social-icons .twitter-icon {\n  display: inline-block;\n  width: 26px;\n  height: 26px;\n  background-image: url(\"/images/twitter-badge.svg\");\n  margin-left: 10px;\n}\n.main-header .hero {\n  text-align: center;\n  padding: 55px 0;\n}\n.main-header .hero .hero-title {\n  margin: 0;\n  margin-bottom: 25px;\n  font-size: 32px;\n  color: #f8931d;\n}\n.main-header .hero .hero-subtitle {\n  max-width: 700px;\n  margin: 0 auto;\n  font-size: 16px;\n  line-height: 2;\n  color: rgba(0,0,0,0.54);\n}\n.playground .playground-header {\n  position: relative;\n  margin-top: 20px;\n  padding: 25px 0;\n  border-bottom: 1px solid rgba(0,0,0,0.1);\n}\n@media (min-width: 768px) {\n  .playground .playground-header {\n    text-align: center;\n  }\n}\n.playground .playground-header-title {\n  display: inline-block;\n  font-size: 26px;\n  line-height: 39px;\n  margin: 0;\n}\n.playground .playground-header-config {\n  font-size: 12px;\n  text-transform: uppercase;\n  line-height: 39px;\n  vertical-align: middle;\n  position: absolute;\n  right: -16px;\n  top: 50%;\n  transform: translateY(-50%);\n  background-color: transparent;\n  border: none;\n}\n.playground .playground-header-config > i {\n  margin-right: 5px;\n  font-size: 16px;\n  line-height: 39px;\n  vertical-align: middle;\n}\n.playground .playground-content {\n  width: 600px;\n  max-width: 100%;\n  margin: 40px auto 0 auto;\n}\n.playground .playground-content.skip-tutorial .playground-step:before {\n  transition: none;\n}\n.playground .playground-step {\n  position: relative;\n  padding-bottom: 55px;\n}\n@media (min-width: 768px) {\n  .playground .playground-step {\n    left: -32.5px;\n  }\n}\n.playground .playground-step.active .step-number {\n  color: #fff;\n  background-color: #f8931d;\n}\n.playground .playground-step.last-step .step-number {\n  color: #fff;\n  background-color: #7ed321;\n  border-color: #7ed321;\n}\n.playground .playground-step.last-step:before {\n  display: none !important;\n}\n.playground .playground-step:before {\n  content: '';\n  display: inline-block;\n  height: 100%;\n  width: 1px;\n  background-color: #f8931d;\n  position: absolute;\n  left: 20px;\n  top: 0;\n  transition: all 2s;\n}\n@media (max-width: 767px) {\n  .playground .playground-step:before {\n    display: none;\n  }\n}\n.playground .playground-step.active:before {\n  height: 0%;\n}\n.playground .playground-step .step-number {\n  display: inline-block;\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  border: 2px solid #f8931d;\n  background-color: #fff;\n  text-align: center;\n  line-height: 40px;\n  font-size: 18px;\n  color: #f8931d;\n  transition: all 1s;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-number {\n    margin-bottom: 15px;\n    margin-right: 15px;\n  }\n}\n@media (min-width: 768px) {\n  .playground .playground-step .step-number {\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n}\n.playground .playground-step p {\n  margin-bottom: 20px;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-content {\n    display: inline;\n  }\n}\n@media (min-width: 768px) {\n  .playground .playground-step .step-content {\n    padding-left: 65px;\n  }\n}\n.playground .playground-step .step-title {\n  font-size: 24px;\n  line-height: 40px;\n  margin: 0;\n  margin-bottom: 20px;\n  text-align: left;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-title {\n    display: inline-block;\n  }\n}\n.playground .playground-step .step-spinner-container {\n  text-align: center;\n  padding: 7px 0;\n}\n.playground .playground-step .step-spinner-container .step-spinner {\n  display: inline-block;\n  margin: 0;\n  vertical-align: middle;\n}\n.playground .playground-step .snippet-description {\n  font-family: 'Inconsolata', monospace;\n  margin-bottom: 5px;\n  color: #f8931d;\n}\n.playground .playground-step .code-snippet {\n  display: block;\n  width: 100%;\n  border-radius: 3px;\n  color: #fff;\n  background-color: #222228;\n  padding: 10px 20px;\n  margin-bottom: 14px;\n  overflow-x: auto;\n}\n.playground .playground-step .skip-tutorial {\n  display: block;\n  margin: 0 auto;\n  position: relative;\n  left: 32.5px;\n  font-size: 12px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin: 40px auto 20px auto;\n}\n.playground .playground-step .btn-view-jwt {\n  float: right;\n  position: relative;\n  border: none;\n  bottom: 6px;\n  margin-bottom: 8px;\n  border-radius: 50px;\n  padding: 8px 10px;\n  padding-left: 38px;\n  font-size: 12px;\n  font-weight: bold;\n  text-transform: uppercase;\n  background-color: #000;\n  color: #fff;\n  background-image: url(\"/images/jwt-badge.svg\");\n  background-position: 10px center;\n  background-repeat: no-repeat;\n  background-size: 19px 19px;\n}\n.playground .playground-step .code-box-title {\n  border: 1px solid #222228;\n  border-bottom: 0;\n  font-size: 18px;\n  padding-left: 20px;\n  line-height: 65px;\n  border-radius: 3px 3px 0 0;\n  margin: 0;\n}\n.playground .playground-step .code-box-content {\n  background-color: #222228;\n  color: #fff;\n  border-top: none;\n  border-radius: 0 0 3px 3px;\n  padding: 25px 20px;\n  overflow-x: auto;\n}\n.playground .playground-step .code-block {\n  font-family: 'Inconsolata', monospace;\n  font-size: 14px;\n  padding-right: 20px;\n  margin-bottom: 15px;\n}\n.playground .playground-step hr {\n  border-top: 1px solid rgba(255,255,255,0.1);\n  margin: 20px 0;\n}\n.playground .playground-step .code-box-btn {\n  display: block;\n  margin: 0 auto;\n  font-size: 12px;\n  text-transform: uppercase;\n  padding: 15px 20px;\n  border-radius: 3px;\n  color: #222228;\n  border: 0;\n  background-color: #fff;\n  letter-spacing: 1px;\n}\n.main-footer {\n  text-align: center;\n  background-color: #f9f9f9;\n  font-size: 15px;\n  color: rgba(0,0,0,0.54);\n  padding: 30px 0;\n}\n.main-footer .auth0-badge {\n  display: inline-block;\n  background-size: contain;\n  background-repeat: no-repeat;\n  width: 22px;\n  height: 25px;\n  background-image: url(\"/images/auth0-badge.svg\");\n  vertical-align: middle;\n  margin-left: 5px;\n  margin-right: 10px;\n}\nbody.overflow-hidden {\n  overflow: hidden;\n}\n.configuration-modal {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  overflow-x: hidden;\n  overflow-y: auto;\n  pointer-events: auto;\n}\n.configuration-modal .configuration-modal-dialog {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  padding: 25px;\n  padding-top: 50px;\n  background-color: #fff;\n  width: 100%;\n  max-width: 1000px;\n  border-radius: 3px;\n}\n.configuration-modal .configuration-modal-close {\n  position: absolute;\n  cursor: pointer;\n  top: 30px;\n  right: 30px;\n  font-size: 24px;\n  line-height: 1;\n}\n.configuration-modal .configuration-modal-close:hover,\n.configuration-modal .configuration-modal-close:focus {\n  color: rgba(0,0,0,0.5);\n}\n.configuration-modal .configuration-modal-title {\n  font-size: 26px;\n  text-align: center;\n  margin: 0 0 30px 0;\n}\n.configuration-modal .form-control {\n  box-shadow: none;\n  color: rgba(0,0,0,0.86);\n  height: 44px;\n}\n.configuration-modal .control-label {\n  text-align: left !important;\n  color: rgba(0,0,0,0.54);\n}\n.configuration-modal .input-with-button {\n  width: 100%;\n  border-right: 0;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n  float: right;\n}\n.configuration-modal .button-float-right {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n  border-left: 0;\n  height: 44px;\n  float: right;\n  font-size: 12px;\n}\n.configuration-modal .clear-storage-container {\n  background-color: #222228;\n  border-radius: 3px;\n  color: #fff;\n  font-size: 13px;\n  position: relative;\n}\n.configuration-modal .clear-storage-container > p {\n  padding: 20px;\n  padding-right: 240px;\n  font-size: 13px;\n}\n.configuration-modal .clear-storage-container > .clear-storage-btn {\n  position: absolute;\n  right: 20px;\n  top: 50%;\n  transform: translateY(-50%);\n  background-color: #fff;\n  border: none;\n  border-radius: 3px;\n  letter-spacing: 1px;\n  color: #222228;\n  text-transform: uppercase;\n  font-size: 12px;\n  padding: 10px 20px;\n}\n.configuration-modal .configuration-modal-backdrop {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  height: 100%;\n  width: 100%;\n  background-color: rgba(34,34,40,0.75);\n}\n", ""]);
 
 	// exports
 
