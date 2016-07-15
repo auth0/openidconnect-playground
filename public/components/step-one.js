@@ -55,7 +55,7 @@ class StepOne extends React.Component {
               </div>
               <hr />
               { this.state.stepState === 'wait' ?
-                <div className="theme-dark">
+                <div className="theme-dark step-spinner-container">
                   <div className="spinner spinner-md step-spinner">
                     <div className="circle"></div>
                   </div>
