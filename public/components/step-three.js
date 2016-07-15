@@ -40,7 +40,7 @@ class StepThree extends React.Component {
         <div className="step-content">
           <h2 className="step-title">Verify User Token</h2>
           <p>
-            Now, we need to verify that the ID Token sent was from the correct place by validating the JWT's signature'
+            Now, we need to verify that the ID Token sent was from the correct place by validating the JWT's signature
           </p>
           <div>
             <div className="snippet-description pull-left">Your “id_token” is</div>

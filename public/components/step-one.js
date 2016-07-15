@@ -72,6 +72,13 @@ class StepOne extends React.Component {
               : null }
             </div>
           </div>
+          <p>Example code snippet with copy button:</p>
+          <div className="code-snippet light-version">
+            <span className="snippet">Lorem ipsum dolor sit amet.</span>
+            <button className="btn-copy">
+              <i className="icon-budicon-338"></i>
+            </button>
+          </div>
         </div>
         <button onClick={this.props.skipTutorial} className="skip-tutorial btn-link">Skip this tutorial. Show me the complete flow.</button>
       </div>

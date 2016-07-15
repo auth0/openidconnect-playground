@@ -239,6 +239,7 @@ main-color = orange-color
 
     .code-snippet
       display block
+      position relative
       width 100%
       border-radius 3px
       color white
@@ -246,6 +247,33 @@ main-color = orange-color
       padding 10px 20px
       margin-bottom 14px
       overflow-x auto
+
+      &.light-version
+        background-color transparent
+        border 1px solid #9B9B9B
+        color black
+        padding 0
+        padding-right 50px
+
+      .snippet
+        display block
+        width 100%
+        height 100%
+        overflow-x auto
+        padding 10px 20px
+
+      .btn-copy
+        position absolute
+        top 0
+        bottom 0
+        right 0
+        width 50px
+        line-height 50px
+        overflow hidden
+        background-color white
+        border none
+        color #0094C1
+        border-left 1px solid #9B9B9B
 
     .skip-tutorial
       display block
