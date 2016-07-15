@@ -38689,27 +38689,49 @@
 			value: function render() {
 				return _react2.default.createElement(
 					'div',
-					null,
+					{ className: 'form-horizontal' },
 					_react2.default.createElement(
-						'label',
-						{ 'for': 'clientID' },
-						'OIDC Client ID:'
+						'div',
+						{ className: 'form-group' },
+						_react2.default.createElement(
+							'label',
+							{ className: 'col-xs-2 control-label', htmlFor: 'clientID' },
+							'OIDC Client ID:'
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-xs-10' },
+							_react2.default.createElement('input', { className: 'form-control', name: 'clientID', onChange: this.update, value: this.props.clientID, ref: 'clientID' })
+						)
 					),
-					_react2.default.createElement('input', { name: 'clientID', onChange: this.update, value: this.props.clientID, ref: 'clientID' }),
-					_react2.default.createElement('br', null),
 					_react2.default.createElement(
-						'label',
-						{ 'for': 'clientSecret' },
-						'OIDC Client Secret:'
+						'div',
+						{ className: 'form-group' },
+						_react2.default.createElement(
+							'label',
+							{ className: 'col-xs-2 control-label', htmlFor: 'clientSecret' },
+							'OIDC Client Secret:'
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-xs-10' },
+							_react2.default.createElement('input', { className: 'form-control', name: 'clientSecret', onChange: this.update, value: this.props.clientSecret, ref: 'clientSecret' })
+						)
 					),
-					_react2.default.createElement('input', { name: 'clientSecret', onChange: this.update, value: this.props.clientSecret, ref: 'clientSecret' }),
-					_react2.default.createElement('br', null),
 					_react2.default.createElement(
-						'label',
-						{ 'for': 'scopes' },
-						'Scope:'
-					),
-					_react2.default.createElement('input', { name: 'scopes', onChange: this.update, value: this.props.scopes, ref: 'scopes' })
+						'div',
+						{ className: 'form-group' },
+						_react2.default.createElement(
+							'label',
+							{ className: 'col-xs-2 control-label', htmlFor: 'scopes' },
+							'Scope:'
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-xs-10' },
+							_react2.default.createElement('input', { className: 'form-control', name: 'scopes', onChange: this.update, value: this.props.scopes, ref: 'scopes' })
+						)
+					)
 				);
 			}
 		}, {

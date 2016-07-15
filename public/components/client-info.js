@@ -10,20 +10,32 @@ class ClientInfo extends React.Component{
 	}
 	render(){
 		return (
-			<div>
-				<label for="clientID">OIDC Client ID:</label>
-                <input name="clientID" onChange={this.update} value={this.props.clientID} ref="clientID" />
-                <br/>
-				<label for="clientSecret">OIDC Client Secret:</label>
-                <input name="clientSecret" onChange={this.update} value={this.props.clientSecret} ref="clientSecret" />
-                <br/>
-				<label for="scopes">Scope:</label>
-                <input name="scopes" onChange={this.update} value={this.props.scopes} ref="scopes" />
+			<div className="form-horizontal">
+				<div className="form-group">
+					<label className="col-xs-2 control-label" htmlFor="clientID">OIDC Client ID:</label>
+					<div className="col-xs-10">
+	        	<input className="form-control" name="clientID" onChange={this.update} value={this.props.clientID} ref="clientID" />
+					</div>
+				</div>
+
+				<div className="form-group">
+					<label className="col-xs-2 control-label" htmlFor="clientSecret">OIDC Client Secret:</label>
+					<div className="col-xs-10">
+	        	<input className="form-control" name="clientSecret" onChange={this.update} value={this.props.clientSecret} ref="clientSecret" />
+					</div>
+				</div>
+
+				<div className="form-group">
+					<label className="col-xs-2 control-label" htmlFor="scopes">Scope:</label>
+					<div className="col-xs-10">
+	        	<input className="form-control" name="scopes" onChange={this.update} value={this.props.scopes} ref="scopes" />
+					</div>
+				</div>
 			</div>
 		)
 	}
 	update(){
-		window.dispatchEvent(new CustomEvent('configChange', { 
+		window.dispatchEvent(new CustomEvent('configChange', {
 			detail: {
             	clientID: this.refs.clientID.value,
             	clientSecret: this.refs.clientSecret.value,
