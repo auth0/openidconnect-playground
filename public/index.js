@@ -22023,7 +22023,7 @@
 	              _react2.default.createElement(
 	                'option',
 	                { value: 'none' },
-	                'SELECT A SERVER TEMPLATE'
+	                'Select a server template'
 	              ),
 	              _react2.default.createElement(
 	                'option',
@@ -22043,9 +22043,9 @@
 	            )
 	          )
 	        ),
-	        this.props.server === 'Auth0' ? _react2.default.createElement(
+	        _react2.default.createElement(
 	          'div',
-	          null,
+	          { style: { display: this.props.server == 'Auth0' ? 'block' : 'none' } },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'form-group' },
@@ -22094,9 +22094,10 @@
 	              _react2.default.createElement('input', { className: 'form-control', readOnly: true, ref: 'tokenEndpoint', value: this.props.tokenEndpoint })
 	            )
 	          )
-	        ) : _react2.default.createElement(
+	        ),
+	        _react2.default.createElement(
 	          'div',
-	          null,
+	          { style: { display: this.props.server != 'Auth0' ? 'block' : 'none' } },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'form-group' },
