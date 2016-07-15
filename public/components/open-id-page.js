@@ -24,7 +24,7 @@ class OpenIDPage extends React.Component {
     this.state.stateToken = this.state.stateToken || document.querySelector('input[name=stateToken]').value
     this.state.redirectURI = this.state.redirectURI ||  document.querySelector('input[name=redirect-uri]').value
     this.state.clientID = this.state.clientID ||  document.querySelector('input[name=auth0ClientID]').value
-    this.state.clientSecret = this.state.clientSecret ||  document.querySelector('input[name=auth0ClientSecret]').value 
+    this.state.clientSecret = this.state.clientSecret ||  document.querySelector('input[name=auth0ClientSecret]').value
     this.state.configurationModalOpen = false
   }
 
@@ -121,6 +121,8 @@ class OpenIDPage extends React.Component {
 
   setConfigurationModalVisibility(v) {
     this.setState({ configurationModalOpen: v });
+    // Add class to prevent page from scrolling when modal is opened
+    document.body.classList.toggle('overflow-hidden', v);
   }
 
   setStep(step) {
@@ -259,6 +261,6 @@ class OpenIDPage extends React.Component {
 		localStorage.setItem('app-state', JSON.stringify(this.state))
 	}
 }
-	
+
 
 export default OpenIDPage;
