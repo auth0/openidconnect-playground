@@ -236,11 +236,12 @@ body
 
 
     .snippet-description
-      font-family 'Inconsolata', monospace // @todo: change font
+      font-family Menlo, Monaco, monospace
       margin-bottom 5px
       color main-color
 
     .code-snippet
+      font-family Menlo, Monaco, monospace
       display block
       position relative
       width 100%
@@ -277,6 +278,9 @@ body
         border none
         color #0094C1
         border-left 1px solid #9B9B9B
+
+        &:focus
+          outline none
 
     .skip-tutorial
       display block
@@ -328,7 +332,7 @@ body
       overflow-x auto
 
     .code-block
-      font-family 'Inconsolata', monospace // @todo: change font
+      font-family Menlo, Monaco, monospace
       font-size 14px
       padding-right 20px
       margin-bottom 15px
