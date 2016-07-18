@@ -58,7 +58,7 @@ class OpenIDPage extends React.Component {
   update(event){
     if(event && event.detail){
       this.setState(event.detail)
-      if(event.detail.server == 'custom' && this.state.server !== 'custom'){
+      if(event.detail.server && event.detail.server == 'custom' && this.state.server !== 'custom'){
         this.setState({
           discoveryURL: '',
           authEndpoint: '',
@@ -67,12 +67,12 @@ class OpenIDPage extends React.Component {
           userInfoEndpoint: '',
           currentStep: 1
         })
-      } else if(event.detail.server == 'Auth0' && this.state.server !== 'Auth0'){
+      } else if(event.detail.server && event.detail.server == 'Auth0' && this.state.server !== 'Auth0'){
         this.setState({
           domain: 'samples.auth0.com',
           currentStep: 1
         })
-      } else if(event.detail.server !== this.state.server){
+      } else if(event.detail.server && event.detail.server !== this.state.server){
         this.setState({
           currentStep: 1
         })
@@ -245,6 +245,7 @@ class OpenIDPage extends React.Component {
             authEndpoint= {this.state.authEndpoint}
             tokenEndpoint= {this.state.tokenEndpoint}
             tokenKeysEndpoint= {this.state.tokenKeysEndpoint}
+            userInfoEndpoint= {this.state.userInfoEndpoint}
             domain= {this.state.domain}
             server = {this.state.server}
             clientID= {this.state.clientID}

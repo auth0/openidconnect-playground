@@ -21088,7 +21088,7 @@
 	    value: function update(event) {
 	      if (event && event.detail) {
 	        this.setState(event.detail);
-	        if (event.detail.server == 'custom' && this.state.server !== 'custom') {
+	        if (event.detail.server && event.detail.server == 'custom' && this.state.server !== 'custom') {
 	          this.setState({
 	            discoveryURL: '',
 	            authEndpoint: '',
@@ -21097,12 +21097,12 @@
 	            userInfoEndpoint: '',
 	            currentStep: 1
 	          });
-	        } else if (event.detail.server == 'Auth0' && this.state.server !== 'Auth0') {
+	        } else if (event.detail.server && event.detail.server == 'Auth0' && this.state.server !== 'Auth0') {
 	          this.setState({
 	            domain: 'samples.auth0.com',
 	            currentStep: 1
 	          });
-	        } else if (event.detail.server !== this.state.server) {
+	        } else if (event.detail.server && event.detail.server !== this.state.server) {
 	          this.setState({
 	            currentStep: 1
 	          });
@@ -21352,6 +21352,7 @@
 	          authEndpoint: this.state.authEndpoint,
 	          tokenEndpoint: this.state.tokenEndpoint,
 	          tokenKeysEndpoint: this.state.tokenKeysEndpoint,
+	          userInfoEndpoint: this.state.userInfoEndpoint,
 	          domain: this.state.domain,
 	          server: this.state.server,
 	          clientID: this.state.clientID,
@@ -22491,8 +22492,6 @@
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -22511,70 +22510,50 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ConfigurationModal = function (_React$Component) {
-	  _inherits(ConfigurationModal, _React$Component);
-
-	  function ConfigurationModal() {
-	    _classCallCheck(this, ConfigurationModal);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ConfigurationModal).apply(this, arguments));
-	  }
-
-	  _createClass(ConfigurationModal, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
+	var ConfigurationModal = function ConfigurationModal(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'configuration-modal', id: 'configuration-modal' },
+	    _react2.default.createElement('div', { className: 'configuration-modal-backdrop' }),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'configuration-modal-dialog' },
+	      _react2.default.createElement('span', {
+	        onClick: props.closeModal,
+	        className: 'configuration-modal-close icon-budicon-501'
+	      }),
+	      _react2.default.createElement(
+	        'h2',
+	        { className: 'configuration-modal-title' },
+	        'OpenID Connect Configuration'
+	      ),
+	      _react2.default.createElement(_serverUrls2.default, {
+	        discoveryURL: props.discoveryURL,
+	        authEndpoint: props.authEndpoint,
+	        tokenEndpoint: props.tokenEndpoint,
+	        tokenKeysEndpoint: props.tokenKeysEndpoint,
+	        userInfoEndpoint: props.userInfoEndpoint,
+	        domain: props.domain,
+	        server: props.server
+	      }),
+	      _react2.default.createElement(_clientInfo2.default, {
+	        clientID: props.clientID,
+	        clientSecret: props.clientSecret,
+	        scopes: props.scopes
+	      }),
+	      _react2.default.createElement(
 	        'div',
-	        { className: 'configuration-modal', id: 'configuration-modal' },
-	        _react2.default.createElement('div', { className: 'configuration-modal-backdrop' }),
+	        { className: 'clear-storage-container' },
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'configuration-modal-dialog' },
-	          _react2.default.createElement('span', {
-	            onClick: this.props.closeModal,
-	            className: 'configuration-modal-close icon-budicon-501'
-	          }),
-	          _react2.default.createElement(
-	            'h2',
-	            { className: 'configuration-modal-title' },
-	            'OpenID Connect Configuration'
-	          ),
-	          _react2.default.createElement(_serverUrls2.default, {
-	            discoveryURL: this.props.discoveryURL,
-	            authEndpoint: this.props.authEndpoint,
-	            tokenEndpoint: this.props.tokenEndpoint,
-	            tokenKeysEndpoint: this.props.tokenKeysEndpoint,
-	            domain: this.props.domain,
-	            server: this.props.server
-	          }),
-	          _react2.default.createElement(_clientInfo2.default, {
-	            clientID: this.props.clientID,
-	            clientSecret: this.props.clientSecret,
-	            scopes: this.props.scopes
-	          }),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'clear-storage-container' },
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Hey, just a friendly note: we store stuff like your keys in LocalStorage so that when you redirect to authenticate, you don/t lose them. You can clear them by clicking on this button:'
-	            ),
-	            _react2.default.createElement(_clearAllButton2.default, null)
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return ConfigurationModal;
-	}(_react2.default.Component);
+	          'p',
+	          null,
+	          'Hey, just a friendly note: we store stuff like your keys in LocalStorage so that when you redirect to authenticate, you don/t lose them. You can clear them by clicking on this button:'
+	        ),
+	        _react2.default.createElement(_clearAllButton2.default, { onClick: '{ localStorage.clear() }' })
+	      )
+	    )
+	  );
+	};
 
 	exports.default = ConfigurationModal;
 
@@ -22802,6 +22781,20 @@
 	              { className: 'col-md-9 col-xs-12' },
 	              _react2.default.createElement('input', { className: 'form-control', name: 'tokenEndpoint', onChange: this.update, disabled: this.props.server != 'custom' ? 'disabled' : '', value: this.props.tokenKeysEndpoint, ref: 'tokenEndpoint', placeholder: 'https://my-oidc.com/oauth/token' })
 	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'Token Endpoint', className: 'col-md-3 col-xs-12 control-label' },
+	            'Token Endpoint'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-9 col-xs-12' },
+	            _react2.default.createElement('input', { className: 'form-control', name: 'tokenEndpoint', onChange: this.update, disabled: this.props.server != 'custom' ? 'disabled' : '', value: this.props.tokenEndpoint, ref: 'tokenEndpoint', placeholder: 'https://my-oidc.com/oauth/token' })
 	          )
 	        ),
 	        _react2.default.createElement(

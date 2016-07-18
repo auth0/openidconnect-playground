@@ -102,6 +102,13 @@ class ServerURLs extends React.Component{
           </div>
         </div>
 
+        <div className="form-group">
+          <label htmlFor="Token Endpoint" className="col-md-3 col-xs-12 control-label">Token Endpoint</label>
+          <div className="col-md-9 col-xs-12">
+            <input className="form-control" name="tokenEndpoint" onChange={this.update} disabled={this.props.server != 'custom' ? 'disabled' : ''} value={this.props.tokenEndpoint} ref="tokenEndpoint" placeholder="https://my-oidc.com/oauth/token" />
+          </div>
+        </div>
+
         <p id="warning" style={{display:((this.props.server != 'Auth0' || (this.props.server == 'Auth0' && this.props.domain != 'samples.auth0.com')) ? 'block' : 'none')}}>Remember to set https://openidconnect.net/callback as an allowed callback with your application!</p>
 
       </div>

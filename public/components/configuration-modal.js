@@ -3,45 +3,40 @@ import ServerURLs from './server-urls';
 import ClearAllButton from './clear-all-button';
 import ClientInfo from './client-info';
 
-class ConfigurationModal extends React.Component {
+const ConfigurationModal = (props) =>
+    <div className="configuration-modal" id="configuration-modal">
+      <div className="configuration-modal-backdrop"></div>
+      <div className="configuration-modal-dialog">
+        <span
+          onClick={props.closeModal}
+          className="configuration-modal-close icon-budicon-501"
+        >
+        </span>
+        <h2 className="configuration-modal-title">OpenID Connect Configuration</h2>
+        <ServerURLs
+          discoveryURL={props.discoveryURL}
+          authEndpoint={props.authEndpoint}
+          tokenEndpoint={props.tokenEndpoint}
+          tokenKeysEndpoint={props.tokenKeysEndpoint}
+          userInfoEndpoint={props.userInfoEndpoint}
+          domain={props.domain}
+          server={props.server}
+        />
 
-  render() {
-    return (
-      <div className="configuration-modal" id="configuration-modal">
-        <div className="configuration-modal-backdrop"></div>
-        <div className="configuration-modal-dialog">
-          <span
-            onClick={this.props.closeModal}
-            className="configuration-modal-close icon-budicon-501"
-          >
-          </span>
-          <h2 className="configuration-modal-title">OpenID Connect Configuration</h2>
-          <ServerURLs
-            discoveryURL={this.props.discoveryURL}
-            authEndpoint={this.props.authEndpoint}
-            tokenEndpoint={this.props.tokenEndpoint}
-            tokenKeysEndpoint={this.props.tokenKeysEndpoint}
-            domain={this.props.domain}
-            server={this.props.server}
-          />
-
-          <ClientInfo
-            clientID={this.props.clientID}
-            clientSecret={this.props.clientSecret}
-            scopes={this.props.scopes}
-          />
-          <div className="clear-storage-container">
-            <p>
-              Hey, just a friendly note: we store stuff like your keys in
-              LocalStorage so that when you redirect to authenticate, you don&#47;t lose them.
-              You can clear them by clicking on this button:
-            </p>
-            <ClearAllButton />
-          </div>
+        <ClientInfo
+          clientID={props.clientID}
+          clientSecret={props.clientSecret}
+          scopes={props.scopes}
+        />
+        <div className="clear-storage-container">
+          <p>
+            Hey, just a friendly note: we store stuff like your keys in
+            LocalStorage so that when you redirect to authenticate, you don&#47;t lose them.
+            You can clear them by clicking on this button:
+          </p>
+          <ClearAllButton onClick="{ localStorage.clear() }" />
         </div>
       </div>
-    );
-  }
-}
+    </div>;
 
 export default ConfigurationModal;
