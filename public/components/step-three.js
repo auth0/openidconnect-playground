@@ -1,5 +1,5 @@
 import React from 'react';
-import Ajax from 'simple-ajax'
+import Ajax from 'simple-ajax';
 
 class StepThree extends React.Component {
   constructor(){
@@ -7,6 +7,7 @@ class StepThree extends React.Component {
     this.verify = this.verify.bind(this)
   }
   verify(){
+    console.log(this.props)
     this.setState({ stepState: 'wait' })
 		let validateToken = new Ajax({
 			url: '/validate',
@@ -26,7 +27,7 @@ class StepThree extends React.Component {
       window.dispatchEvent(new CustomEvent('configChange', {
         detail: {
           validated: true,
-          decodedId: result,
+          idTokenDecoded: JSON.stringify(result),
           currentStep: 4
         }
       }))
@@ -52,6 +53,16 @@ class StepThree extends React.Component {
           <div className="code-snippet">
             {this.props.idToken}
           </div>
+          <p style={{ display: (this.props.idTokenHeader == 'HS256') ? 'block': 'none'}}>
+            This token is cryptographically signed with the <strong>HS256</strong> algorithim. We'll use the client secret to validate it.
+          </p>
+          <p style={{ display: (this.props.idTokenHeader == 'RS256') ? 'block': 'none'}}>
+            This token is cryptographically signed with the <strong>RS256</strong> algorithim. We'll use the public key of the OpenID Connect server to validate it. In order to do that, we'll fetch the public keys from
+            <br/>
+            {this.props.tokenKeysEndpoint}
+            <br />
+            which is found in the discovery document or configuration menu options.
+          </p>
           <div className="snippet-description pull-left">Your “access_token” is</div>
           <div className="code-snippet">{this.props.accessToken}</div>
           <div className="code-box">

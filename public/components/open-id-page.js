@@ -4,7 +4,6 @@ import StepOne from './step-one';
 import StepTwo from './step-two';
 import StepThree from './step-three';
 import StepFour from './step-four';
-import StepFive from './step-five';
 import ConfigurationModal from './configuration-modal';
 
 class OpenIDPage extends React.Component {
@@ -28,6 +27,7 @@ class OpenIDPage extends React.Component {
     this.state.clientID = this.state.clientID ||  document.querySelector('input[name=auth0ClientID]').value
     this.state.clientSecret = this.state.clientSecret ||  document.querySelector('input[name=auth0ClientSecret]').value
     this.state.authCode = this.state.authCode || document.querySelector('input[name=code]').value
+    this.state.idTokenHeader = this.state.idTokenHeader || ''
     this.state.configurationModalOpen = false
     this.state.validated = this.state.validated || false
     this.saveState()
@@ -239,6 +239,7 @@ class OpenIDPage extends React.Component {
               { this.state.currentStep >= 3 ?
                 <StepThree
                   idToken= {this.state.idToken}
+                  idTokenHeader= {this.state.idTokenHeader}
                   accessToken= {this.state.accessToken}
                   clientSecret= {this.state.clientSecret}
                   server= {this.state.server}
@@ -249,15 +250,7 @@ class OpenIDPage extends React.Component {
               }
               { this.state.currentStep >= 4 ?
                 <StepFour
-                  userInfoEndpoint={this.state.userInfoEndpoint}
-                  accessToken={this.state.accessToken}
-                  isActive={ this.state.currentStep === 4 }
-                />
-                : null
-              }
-              { this.state.currentStep >= 5 ?
-                <StepFive
-                  userProfile={this.state.userProfile}
+                  idTokenDecoded= {this.state.idTokenDecoded}
                 />
                 : null
               }
@@ -291,8 +284,7 @@ class OpenIDPage extends React.Component {
     );
   }
 	saveState(){
-    console.log(this.state)
-		localStorage.setItem('app-state', JSON.stringify(this.state))
+		localStorage.setItem('app-state', JSON.stringify(this.state)) 
 	}
 }
 

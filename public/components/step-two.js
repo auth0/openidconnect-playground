@@ -22,13 +22,16 @@ class StepTwo extends React.Component {
 
 		serviceDiscovery.on('success', function(event){
       this.setState({ stepState: 'initial'})
-			let result = JSON.parse(event.currentTarget.response)
-      result = JSON.parse(result.body)
+      let result = JSON.parse(JSON.parse(event.currentTarget.response).body)
       console.log(result)
+      let payload = result.id_token.split('.')[0]
+      payload = atob(payload)
+      payload = JSON.parse(payload).alg
       window.dispatchEvent(new CustomEvent('configChange', {
         detail: {
           accessToken: result.access_token,
           idToken: result.id_token,
+          idTokenHeader: payload,
           currentStep: 3
         }
       }))

@@ -21015,10 +21015,6 @@
 
 	var _stepFour2 = _interopRequireDefault(_stepFour);
 
-	var _stepFive = __webpack_require__(190);
-
-	var _stepFive2 = _interopRequireDefault(_stepFive);
-
 	var _configurationModal = __webpack_require__(178);
 
 	var _configurationModal2 = _interopRequireDefault(_configurationModal);
@@ -21056,6 +21052,7 @@
 	    _this.state.clientID = _this.state.clientID || document.querySelector('input[name=auth0ClientID]').value;
 	    _this.state.clientSecret = _this.state.clientSecret || document.querySelector('input[name=auth0ClientSecret]').value;
 	    _this.state.authCode = _this.state.authCode || document.querySelector('input[name=code]').value;
+	    _this.state.idTokenHeader = _this.state.idTokenHeader || '';
 	    _this.state.configurationModalOpen = false;
 	    _this.state.validated = _this.state.validated || false;
 	    _this.saveState();
@@ -21353,6 +21350,7 @@
 	              }) : null,
 	              this.state.currentStep >= 3 ? _react2.default.createElement(_stepThree2.default, {
 	                idToken: this.state.idToken,
+	                idTokenHeader: this.state.idTokenHeader,
 	                accessToken: this.state.accessToken,
 	                clientSecret: this.state.clientSecret,
 	                server: this.state.server,
@@ -21360,12 +21358,7 @@
 	                isActive: this.state.currentStep === 3
 	              }) : null,
 	              this.state.currentStep >= 4 ? _react2.default.createElement(_stepFour2.default, {
-	                userInfoEndpoint: this.state.userInfoEndpoint,
-	                accessToken: this.state.accessToken,
-	                isActive: this.state.currentStep === 4
-	              }) : null,
-	              this.state.currentStep >= 5 ? _react2.default.createElement(_stepFive2.default, {
-	                userProfile: this.state.userProfile
+	                idTokenDecoded: this.state.idTokenDecoded
 	              }) : null
 	            )
 	          )
@@ -21409,7 +21402,6 @@
 	  }, {
 	    key: 'saveState',
 	    value: function saveState() {
-	      console.log(this.state);
 	      localStorage.setItem('app-state', JSON.stringify(this.state));
 	    }
 	  }]);
@@ -22191,13 +22183,16 @@
 
 	      serviceDiscovery.on('success', function (event) {
 	        this.setState({ stepState: 'initial' });
-	        var result = JSON.parse(event.currentTarget.response);
-	        result = JSON.parse(result.body);
+	        var result = JSON.parse(JSON.parse(event.currentTarget.response).body);
 	        console.log(result);
+	        var payload = result.id_token.split('.')[0];
+	        payload = atob(payload);
+	        payload = JSON.parse(payload).alg;
 	        window.dispatchEvent(new CustomEvent('configChange', {
 	          detail: {
 	            accessToken: result.access_token,
 	            idToken: result.id_token,
+	            idTokenHeader: payload,
 	            currentStep: 3
 	          }
 	        }));
@@ -22325,6 +22320,7 @@
 	  _createClass(StepThree, [{
 	    key: 'verify',
 	    value: function verify() {
+	      console.log(this.props);
 	      this.setState({ stepState: 'wait' });
 	      var validateToken = new _simpleAjax2.default({
 	        url: '/validate',
@@ -22344,7 +22340,7 @@
 	        window.dispatchEvent(new CustomEvent('configChange', {
 	          detail: {
 	            validated: true,
-	            decodedId: result,
+	            idTokenDecoded: JSON.stringify(result),
 	            currentStep: 4
 	          }
 	        }));
@@ -22396,6 +22392,32 @@
 	            'div',
 	            { className: 'code-snippet' },
 	            this.props.idToken
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            { style: { display: this.props.idTokenHeader == 'HS256' ? 'block' : 'none' } },
+	            'This token is cryptographically signed with the ',
+	            _react2.default.createElement(
+	              'strong',
+	              null,
+	              'HS256'
+	            ),
+	            ' algorithim. We\'ll use the client secret to validate it.'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            { style: { display: this.props.idTokenHeader == 'RS256' ? 'block' : 'none' } },
+	            'This token is cryptographically signed with the ',
+	            _react2.default.createElement(
+	              'strong',
+	              null,
+	              'RS256'
+	            ),
+	            ' algorithim. We\'ll use the public key of the OpenID Connect server to validate it. In order to do that, we\'ll fetch the public keys from',
+	            _react2.default.createElement('br', null),
+	            this.props.tokenKeysEndpoint,
+	            _react2.default.createElement('br', null),
+	            'which is found in the discovery document or configuration menu options.'
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -22450,123 +22472,52 @@
 /* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _simpleAjax = __webpack_require__(171);
-
-	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var StepFour = function (_React$Component) {
-	  _inherits(StepFour, _React$Component);
-
-	  function StepFour() {
-	    _classCallCheck(this, StepFour);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StepFour).call(this));
-
-	    _this.getUserProfile = _this.getUserProfile.bind(_this);
-	    return _this;
-	  }
-
-	  _createClass(StepFour, [{
-	    key: 'getUserProfile',
-	    value: function getUserProfile() {
-	      console.log('profile time!');
-	      this.setState({ stepState: 'wait' });
-	      var validateToken = new _simpleAjax2.default({
-	        url: this.props.userInfoEndpoint,
-	        method: 'GET',
-	        headers: {
-	          Authorization: 'Bearer ' + this.props.accessToken
-	        }
-	      });
-
-	      validateToken.on('success', function (event) {
-	        this.setState({ stepState: 'initial' });
-	        var result = JSON.parse(event.currentTarget.response);
-	        window.dispatchEvent(new CustomEvent('configChange', {
-	          detail: {
-	            userProfile: result,
-	            currentStep: 5
-	          }
-	        }));
-	      }.bind(this));
-
-	      validateToken.send();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'playground-step' },
+	var StepFour = function StepFour(props) {
+	  return _react2.default.createElement(
+	    "div",
+	    { className: "playground-step last-step" },
+	    _react2.default.createElement(
+	      "span",
+	      { className: "step-number" },
+	      _react2.default.createElement("i", { className: "icon-budicon-470" })
+	    ),
+	    _react2.default.createElement(
+	      "div",
+	      { className: "step-content" },
+	      _react2.default.createElement(
+	        "h2",
+	        { className: "step-title" },
+	        "The token is valid!"
+	      ),
+	      _react2.default.createElement(
+	        "div",
+	        { className: "code-box-title" },
+	        "Decoded Token Payload"
+	      ),
+	      _react2.default.createElement(
+	        "div",
+	        { className: "code-box-content" },
 	        _react2.default.createElement(
-	          'span',
-	          { className: 'step-number' },
-	          '4'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'step-content' },
-	          _react2.default.createElement(
-	            'h2',
-	            { className: 'step-title' },
-	            'Get User Profile'
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            'Let\'s use our verified ID Token to get user profile information!'
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'code-box-title' },
-	            'Validate ID Token'
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'code-box-content' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'code-block' },
-	              'GET ',
-	              this.props.userInfoEndpoint,
-	              _react2.default.createElement('br', null),
-	              'Authorization: Bearer ',
-	              this.props.accessToken
-	            ),
-	            _react2.default.createElement('hr', null),
-	            _react2.default.createElement(
-	              'button',
-	              { onClick: this.getUserProfile, className: 'code-box-btn' },
-	              'Get User Profile'
-	            )
-	          )
+	          "div",
+	          { className: "code-block" },
+	          props.idTokenDecoded
 	        )
-	      );
-	    }
-	  }]);
-
-	  return StepFour;
-	}(_react2.default.Component);
+	      )
+	    )
+	  );
+	};
 
 	exports.default = StepFour;
 
@@ -28668,60 +28619,6 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
-
-/***/ },
-/* 189 */,
-/* 190 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var StepFive = function StepFive(props) {
-	  return _react2.default.createElement(
-	    "div",
-	    { className: "playground-step last-step" },
-	    _react2.default.createElement(
-	      "span",
-	      { className: "step-number" },
-	      _react2.default.createElement("i", { className: "icon-budicon-470" })
-	    ),
-	    _react2.default.createElement(
-	      "div",
-	      { className: "step-content" },
-	      _react2.default.createElement(
-	        "h2",
-	        { className: "step-title" },
-	        "Here's your User Profile! Congrats! You are a OpenID expert!"
-	      ),
-	      _react2.default.createElement(
-	        "div",
-	        { className: "code-box-title" },
-	        "User Profile"
-	      ),
-	      _react2.default.createElement(
-	        "div",
-	        { className: "code-box-content" },
-	        _react2.default.createElement(
-	          "div",
-	          { className: "code-block" },
-	          JSON.stringify(props.userProfile)
-	        )
-	      )
-	    )
-	  );
-	};
-
-	exports.default = StepFive;
 
 /***/ }
 /******/ ]);
