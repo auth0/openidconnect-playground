@@ -21,8 +21,6 @@ class StepOne extends React.Component {
 
     let completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI +'&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken
 
-    // console.log(completeURL)
-
     window.location = completeURL
   }
 
@@ -72,9 +70,11 @@ class StepOne extends React.Component {
               : null }
             </div>
           </div>
-          <p>Example code snippet with copy button:</p>
+          <p>You can access and copy your redirect URL here:</p>
           <div className="code-snippet light-version">
-            <span className="snippet">Lorem ipsum dolor sit amet.</span>
+            <span className="snippet">                
+                { this.props.authEndpoint || "Enter an authorization endpoint in the setting dialog!"}&amp;client_id={this.props.clientID}redirect_uri=https://openidconnect.net/callback?scope={encodeURI(this.props.scopes)}&amp;response_type=code&amp;state={this.props.stateToken}
+            </span>
             <button className="btn-copy">
               <i className="icon-budicon-338"></i>
             </button>

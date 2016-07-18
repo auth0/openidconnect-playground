@@ -2,5 +2,3 @@ node_modules
 .env
 sessions/*
 secrets.txt
-# for vs Code
-jsconfig.json

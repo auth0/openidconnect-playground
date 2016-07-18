@@ -21964,8 +21964,6 @@
 
 	      var completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI + '&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken;
 
-	      // console.log(completeURL)
-
 	      window.location = completeURL;
 	    }
 	  }, {
@@ -22064,7 +22062,7 @@
 	          _react2.default.createElement(
 	            'p',
 	            null,
-	            'Example code snippet with copy button:'
+	            'You can access and copy your redirect URL here:'
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -22072,7 +22070,13 @@
 	            _react2.default.createElement(
 	              'span',
 	              { className: 'snippet' },
-	              'Lorem ipsum dolor sit amet.'
+	              this.props.authEndpoint || "Enter an authorization endpoint in the setting dialog!",
+	              '&client_id=',
+	              this.props.clientID,
+	              'redirect_uri=https://openidconnect.net/callback?scope=',
+	              encodeURI(this.props.scopes),
+	              '&response_type=code&state=',
+	              this.props.stateToken
 	            ),
 	            _react2.default.createElement(
 	              'button',
