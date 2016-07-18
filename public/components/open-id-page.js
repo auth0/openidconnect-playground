@@ -4,6 +4,7 @@ import StepOne from './step-one';
 import StepTwo from './step-two';
 import StepThree from './step-three';
 import StepFour from './step-four';
+import StepFive from './step-five';
 import ConfigurationModal from './configuration-modal';
 
 class OpenIDPage extends React.Component {
@@ -28,6 +29,7 @@ class OpenIDPage extends React.Component {
     this.state.clientSecret = this.state.clientSecret ||  document.querySelector('input[name=auth0ClientSecret]').value
     this.state.authCode = this.state.authCode || document.querySelector('input[name=code]').value
     this.state.configurationModalOpen = false
+    this.state.validated = this.state.validated || false
     this.saveState()
   }
 
@@ -53,6 +55,16 @@ class OpenIDPage extends React.Component {
           currentStep: 3
         })
       }
+      if(this.state.validated){
+        this.setState({
+          currentStep: 4
+        })
+      }
+      if(this.state.userProfile){
+        this.setState({
+          currentStep: 5
+        })
+      }
   }
 
   update(event){
@@ -70,11 +82,17 @@ class OpenIDPage extends React.Component {
       } else if(event.detail.server && event.detail.server == 'Auth0' && this.state.server !== 'Auth0'){
         this.setState({
           domain: 'samples.auth0.com',
+          clientID: document.querySelector('input[name=auth0ClientID]').value,
+          clientSecret: document.querySelector('input[name=auth0ClientSecret]').value,
           currentStep: 1
         })
       } else if(event.detail.server && event.detail.server !== this.state.server){
         this.setState({
-          currentStep: 1
+          currentStep: 1,
+          authToken: '',
+          accessToken: '',
+          idToken: '',
+          userProfile: ''
         })
       }
     }
@@ -231,7 +249,15 @@ class OpenIDPage extends React.Component {
               }
               { this.state.currentStep >= 4 ?
                 <StepFour
+                  userInfoEndpoint={this.state.userInfoEndpoint}
+                  accessToken={this.state.accessToken}
                   isActive={ this.state.currentStep === 4 }
+                />
+                : null
+              }
+              { this.state.currentStep >= 5 ?
+                <StepFive
+                  userProfile={this.state.userProfile}
                 />
                 : null
               }

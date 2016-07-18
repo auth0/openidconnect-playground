@@ -21015,6 +21015,10 @@
 
 	var _stepFour2 = _interopRequireDefault(_stepFour);
 
+	var _stepFive = __webpack_require__(190);
+
+	var _stepFive2 = _interopRequireDefault(_stepFive);
+
 	var _configurationModal = __webpack_require__(178);
 
 	var _configurationModal2 = _interopRequireDefault(_configurationModal);
@@ -21053,6 +21057,7 @@
 	    _this.state.clientSecret = _this.state.clientSecret || document.querySelector('input[name=auth0ClientSecret]').value;
 	    _this.state.authCode = _this.state.authCode || document.querySelector('input[name=code]').value;
 	    _this.state.configurationModalOpen = false;
+	    _this.state.validated = _this.state.validated || false;
 	    _this.saveState();
 	    return _this;
 	  }
@@ -21082,6 +21087,16 @@
 	          currentStep: 3
 	        });
 	      }
+	      if (this.state.validated) {
+	        this.setState({
+	          currentStep: 4
+	        });
+	      }
+	      if (this.state.userProfile) {
+	        this.setState({
+	          currentStep: 5
+	        });
+	      }
 	    }
 	  }, {
 	    key: 'update',
@@ -21100,11 +21115,17 @@
 	        } else if (event.detail.server && event.detail.server == 'Auth0' && this.state.server !== 'Auth0') {
 	          this.setState({
 	            domain: 'samples.auth0.com',
+	            clientID: document.querySelector('input[name=auth0ClientID]').value,
+	            clientSecret: document.querySelector('input[name=auth0ClientSecret]').value,
 	            currentStep: 1
 	          });
 	        } else if (event.detail.server && event.detail.server !== this.state.server) {
 	          this.setState({
-	            currentStep: 1
+	            currentStep: 1,
+	            authToken: '',
+	            accessToken: '',
+	            idToken: '',
+	            userProfile: ''
 	          });
 	        }
 	      }
@@ -21339,7 +21360,12 @@
 	                isActive: this.state.currentStep === 3
 	              }) : null,
 	              this.state.currentStep >= 4 ? _react2.default.createElement(_stepFour2.default, {
+	                userInfoEndpoint: this.state.userInfoEndpoint,
+	                accessToken: this.state.accessToken,
 	                isActive: this.state.currentStep === 4
+	              }) : null,
+	              this.state.currentStep >= 5 ? _react2.default.createElement(_stepFive2.default, {
+	                userProfile: this.state.userProfile
 	              }) : null
 	            )
 	          )
@@ -22424,7 +22450,7 @@
 /* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -22435,6 +22461,10 @@
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _simpleAjax = __webpack_require__(171);
+
+	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22450,27 +22480,85 @@
 	  function StepFour() {
 	    _classCallCheck(this, StepFour);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StepFour).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StepFour).call(this));
+
+	    _this.getUserProfile = _this.getUserProfile.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(StepFour, [{
-	    key: "render",
+	    key: 'getUserProfile',
+	    value: function getUserProfile() {
+	      console.log('profile time!');
+	      this.setState({ stepState: 'wait' });
+	      var validateToken = new _simpleAjax2.default({
+	        url: this.props.userInfoEndpoint,
+	        method: 'GET',
+	        headers: {
+	          Authorization: 'Bearer ' + this.props.accessToken
+	        }
+	      });
+
+	      validateToken.on('success', function (event) {
+	        this.setState({ stepState: 'initial' });
+	        var result = JSON.parse(event.currentTarget.response);
+	        window.dispatchEvent(new CustomEvent('configChange', {
+	          detail: {
+	            userProfile: result,
+	            currentStep: 5
+	          }
+	        }));
+	      }.bind(this));
+
+	      validateToken.send();
+	    }
+	  }, {
+	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "playground-step last-step" },
+	        'div',
+	        { className: 'playground-step' },
 	        _react2.default.createElement(
-	          "span",
-	          { className: "step-number" },
-	          _react2.default.createElement("i", { className: "icon-budicon-470" })
+	          'span',
+	          { className: 'step-number' },
+	          '4'
 	        ),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "step-content" },
+	          'div',
+	          { className: 'step-content' },
 	          _react2.default.createElement(
-	            "h2",
-	            { className: "step-title" },
-	            "Congrats! You are a OpenID expert!"
+	            'h2',
+	            { className: 'step-title' },
+	            'Get User Profile'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            'Let\'s use our verified ID Token to get user profile information!'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'code-box-title' },
+	            'Validate ID Token'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'code-box-content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'code-block' },
+	              'GET ',
+	              this.props.userInfoEndpoint,
+	              _react2.default.createElement('br', null),
+	              'Authorization: Bearer ',
+	              this.props.accessToken
+	            ),
+	            _react2.default.createElement('hr', null),
+	            _react2.default.createElement(
+	              'button',
+	              { onClick: this.getUserProfile, className: 'code-box-btn' },
+	              'Get User Profile'
+	            )
 	          )
 	        )
 	      );
@@ -28580,6 +28668,60 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 189 */,
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var StepFive = function StepFive(props) {
+	  return _react2.default.createElement(
+	    "div",
+	    { className: "playground-step last-step" },
+	    _react2.default.createElement(
+	      "span",
+	      { className: "step-number" },
+	      _react2.default.createElement("i", { className: "icon-budicon-470" })
+	    ),
+	    _react2.default.createElement(
+	      "div",
+	      { className: "step-content" },
+	      _react2.default.createElement(
+	        "h2",
+	        { className: "step-title" },
+	        "Here's your User Profile! Congrats! You are a OpenID expert!"
+	      ),
+	      _react2.default.createElement(
+	        "div",
+	        { className: "code-box-title" },
+	        "Validate ID Token"
+	      ),
+	      _react2.default.createElement(
+	        "div",
+	        { className: "code-box-content" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "code-block" },
+	          JSON.stringify(props.userProfile)
+	        )
+	      )
+	    )
+	  );
+	};
+
+	exports.default = StepFive;
 
 /***/ }
 /******/ ]);
