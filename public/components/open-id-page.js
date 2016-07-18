@@ -218,7 +218,7 @@ class OpenIDPage extends React.Component {
                   accessToken= {this.state.accessToken}
                   clientSecret= {this.state.clientSecret}
                   server= {this.state.server}
-                  discovery= {this.state.discoveryURL}
+                  tokenKeysEndpoint= {this.state.tokenKeysEndpoint}
                   isActive={ this.state.currentStep === 3 }
                 />
                 : null

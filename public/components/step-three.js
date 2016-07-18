@@ -14,6 +14,7 @@ class StepThree extends React.Component {
 			data: JSON.stringify({
 				clientSecret: this.props.clientSecret,
         idToken: this.props.idToken,
+        tokenKeysEndpoint: this.props.tokenKeysEndpoint,
         server: this.props.server
 			})
 		})
@@ -57,9 +58,7 @@ class StepThree extends React.Component {
             <div className="code-box-title">Validate ID Token</div>
             <div className="code-box-content">
               <div className="code-block">
-                POST https://openidconnect.net/verifyIDToken?provider={this.props.server}&amp;discoveryURL={this.props.discovery}&amp;clientSecret={this.props.clientSecret}
-                <br/>
-                Authorization: Bearer {this.props.accessToken}
+                POST https://openidconnect.net/validate?provider={this.props.server}&amp;tokenKeysEndpoint={this.props.tokenKeysEndpoint}&amp;clientSecret={this.props.clientSecret}
               </div>
               <hr />
               <button onClick={this.verify} className="code-box-btn">Verify</button>

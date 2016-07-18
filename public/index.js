@@ -21329,7 +21329,7 @@
 	                accessToken: this.state.accessToken,
 	                clientSecret: this.state.clientSecret,
 	                server: this.state.server,
-	                discovery: this.state.discoveryURL,
+	                tokenKeysEndpoint: this.state.tokenKeysEndpoint,
 	                isActive: this.state.currentStep === 3
 	              }) : null,
 	              this.state.currentStep >= 4 ? _react2.default.createElement(_stepFour2.default, {
@@ -22299,6 +22299,7 @@
 	        data: JSON.stringify({
 	          clientSecret: this.props.clientSecret,
 	          idToken: this.props.idToken,
+	          tokenKeysEndpoint: this.props.tokenKeysEndpoint,
 	          server: this.props.server
 	        })
 	      });
@@ -22387,15 +22388,12 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'code-block' },
-	                'POST https://openidconnect.net/verifyIDToken?provider=',
+	                'POST https://openidconnect.net/validate?provider=',
 	                this.props.server,
-	                '&discoveryURL=',
-	                this.props.discovery,
+	                '&tokenKeysEndpoint=',
+	                this.props.tokenKeysEndpoint,
 	                '&clientSecret=',
-	                this.props.clientSecret,
-	                _react2.default.createElement('br', null),
-	                'Authorization: Bearer ',
-	                this.props.accessToken
+	                this.props.clientSecret
 	              ),
 	              _react2.default.createElement('hr', null),
 	              _react2.default.createElement(

@@ -89,8 +89,11 @@ app.post('/validate', function(req, res){
 	if(req.body.server == 'Auth0'){
 		// Auth0 base64 encodes its secrets
 		secret = new Buffer(req.body.clientSecret, 'base64')
-	} else if(req.body.server == 'Google'){
-		//TODO: go get the RSA key
+	} else if(req.body.tokenKeysEndpoint){
+		//go get the keys!
+		request.get(req.body.tokenKeysEndpoint, function(err, res, body){
+			console.log(err, body)
+		})
 	}
 	jwt.verify(req.body.idToken, secret, { algorithims: ['HS256', 'RS256'] },function(err, decoded){
 		if (err){
