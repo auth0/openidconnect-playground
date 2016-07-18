@@ -1,12 +1,12 @@
 'use strict'
 
-let express = require('express')
-let session = require('express-session')
-let genuuid = require('uid-safe')
-let dotenv = require('dotenv').config()
-let sha1 = require('sha1')
-let crypto = require('crypto')
-let request = require('request')
+const express = require('express')
+const session = require('express-session')
+const genuuid = require('uid-safe')
+const dotenv = require('dotenv').config()
+const sha1 = require('sha1')
+const crypto = require('crypto')
+const request = require('request')
 const jwt = require('jsonwebtoken')
 
 let app = express()
