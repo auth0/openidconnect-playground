@@ -7,7 +7,7 @@ const StepFive = (props) =>
     </span>
     <div className="step-content">
       <h2 className="step-title">Here's your User Profile! Congrats! You are a OpenID expert!</h2>
-      <div className="code-box-title">Validate ID Token</div>
+      <div className="code-box-title">User Profile</div>
         <div className="code-box-content">
           <div className="code-block">
             { JSON.stringify(props.userProfile) }

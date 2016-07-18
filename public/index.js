@@ -28706,7 +28706,7 @@
 	      _react2.default.createElement(
 	        "div",
 	        { className: "code-box-title" },
-	        "Validate ID Token"
+	        "User Profile"
 	      ),
 	      _react2.default.createElement(
 	        "div",
