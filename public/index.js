@@ -21332,6 +21332,7 @@
 	                accessToken: this.state.accessToken,
 	                clientSecret: this.state.clientSecret,
 	                server: this.state.server,
+	                discovery: this.state.discoveryURL,
 	                isActive: this.state.currentStep === 3
 	              }) : null,
 	              this.state.currentStep >= 4 ? _react2.default.createElement(_stepFour2.default, {
@@ -22362,26 +22363,23 @@
 	            { className: 'code-snippet' },
 	            this.props.idToken
 	          ),
-	          '// ',
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'snippet-description pull-left' },
 	            'Your “access_token” is'
 	          ),
-	          '// ',
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'code-snippet' },
 	            this.props.accessToken
 	          ),
-	          '// ',
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'code-box' },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'code-box-title' },
-	              'Validate'
+	              'Validate ID Token'
 	            ),
 	            _react2.default.createElement(
 	              'div',
@@ -22389,8 +22387,12 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'code-block' },
-	                'POST ',
-	                this.props.userInfoEndpoint,
+	                'POST https://openidconnect.net/verifyIDToken?provider=',
+	                this.props.server,
+	                '&discoveryURL=',
+	                this.props.discovery,
+	                '&clientSecret=',
+	                this.props.clientSecret,
 	                _react2.default.createElement('br', null),
 	                'Authorization: Bearer ',
 	                this.props.accessToken
@@ -22726,7 +22728,7 @@
 	            _react2.default.createElement(
 	              'label',
 	              { htmlFor: 'authEndpoint', className: 'col-md-3 col-xs-12 control-label' },
-	              'Authorization Endpoint'
+	              'User Authorization Endpoint'
 	            ),
 	            _react2.default.createElement(
 	              'div',
@@ -22789,12 +22791,12 @@
 	            _react2.default.createElement(
 	              'label',
 	              { htmlFor: 'authEndpoint', className: 'col-md-3 col-xs-12 control-label' },
-	              'Authorization Endpoint'
+	              'Authorization Token Endpoint'
 	            ),
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-md-9 col-xs-12' },
-	              _react2.default.createElement('input', { className: 'form-control', name: 'authEndpoint', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.authEndpoint, ref: 'authEndpoint', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' })
+	              _react2.default.createElement('input', { className: 'form-control', name: 'authEndpoint', onChange: this.update, disabled: this.props.server != 'custom' ? 'disabled' : '', value: this.props.authEndpoint, ref: 'authEndpoint', placeholder: 'https://my-oidc.com/code' })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -22808,7 +22810,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-md-9 col-xs-12' },
-	              _react2.default.createElement('input', { className: 'form-control', name: 'tokenEndpoint', onChange: this.update, disabled: this.props.server == 'google' ? 'disabled' : '', value: this.props.tokenEndpoint, ref: 'tokenEndpoint', placeholder: 'https://my-oidc.com/.well-known/oidc-configuration' })
+	              _react2.default.createElement('input', { className: 'form-control', name: 'tokenEndpoint', onChange: this.update, disabled: this.props.server != 'custom' ? 'disabled' : '', value: this.props.tokenEndpoint, ref: 'tokenEndpoint', placeholder: 'https://my-oidc.com/oauth/token' })
 	            )
 	          )
 	        ),

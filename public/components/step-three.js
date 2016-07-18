@@ -49,13 +49,13 @@ class StepThree extends React.Component {
           <div className="code-snippet">
             {this.props.idToken}
           </div>
-          // <div className="snippet-description pull-left">Your “access_token” is</div>
-          // <div className="code-snippet">{this.props.accessToken}</div>
-          // <div className="code-box">
-            <div className="code-box-title">Validate</div>
+          <div className="snippet-description pull-left">Your “access_token” is</div>
+          <div className="code-snippet">{this.props.accessToken}</div>
+          <div className="code-box">
+            <div className="code-box-title">Validate ID Token</div>
             <div className="code-box-content">
               <div className="code-block">
-                POST {this.props.userInfoEndpoint}
+                POST https://openidconnect.net/verifyIDToken?provider={this.props.server}&amp;discoveryURL={this.props.discovery}&amp;clientSecret={this.props.clientSecret}
                 <br/>
                 Authorization: Bearer {this.props.accessToken}
               </div>
