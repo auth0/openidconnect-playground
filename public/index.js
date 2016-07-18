@@ -22694,94 +22694,65 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { style: { display: this.props.server == 'Auth0' ? 'block' : 'none' } },
+	          null,
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'form-group' },
 	            _react2.default.createElement(
-	              'label',
-	              { htmlFor: 'domain', className: 'col-md-3 col-xs-12 control-label' },
-	              'Auth0 domain'
-	            ),
-	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-md-9 col-xs-12' },
+	              { style: { display: this.props.server == 'Auth0' ? 'block' : 'none' } },
 	              _react2.default.createElement(
-	                'button',
-	                {
-	                  onClick: this.updateDiscovery,
-	                  className: 'btn btn-transparent btn-md button-float-right'
-	                },
-	                'Use Auth0 Discovery Document'
+	                'label',
+	                { htmlFor: 'domain', className: 'col-md-3 col-xs-12 control-label' },
+	                'Auth0 domain'
 	              ),
 	              _react2.default.createElement(
 	                'div',
-	                { style: { overflow: 'hidden' } },
-	                _react2.default.createElement('input', { className: 'form-control input-with-button', name: 'domain', onChange: this.update, ref: 'domain', value: this.props.domain, placeholder: 'mydomain.auth0.com' })
+	                { className: 'col-md-9 col-xs-12' },
+	                _react2.default.createElement(
+	                  'button',
+	                  {
+	                    onClick: this.updateDiscovery,
+	                    className: 'btn btn-transparent btn-md button-float-right'
+	                  },
+	                  'Use Auth0 Discovery Document'
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { style: { overflow: 'hidden' } },
+	                  _react2.default.createElement('input', { className: 'form-control input-with-button', name: 'domain', onChange: this.update, ref: 'domain', value: this.props.domain, placeholder: 'mydomain.auth0.com' })
+	                )
 	              )
-	            )
-	          ),
-	          _react2.default.createElement('span', { ref: 'Auth0DiscoveryDocumentURL' }),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'form-group' },
-	            _react2.default.createElement(
-	              'label',
-	              { htmlFor: 'authEndpoint', className: 'col-md-3 col-xs-12 control-label' },
-	              'User Authorization Endpoint'
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-md-9 col-xs-12' },
-	              _react2.default.createElement('input', { className: 'form-control', readOnly: true, ref: 'authEndpoint', value: this.props.authEndpoint })
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'form-group' },
-	            _react2.default.createElement(
-	              'label',
-	              { htmlFor: 'tokenEndpoint', className: 'col-md-3 col-xs-12 control-label' },
-	              'Token Endpoint'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-9 col-xs-12' },
-	              _react2.default.createElement('input', { className: 'form-control', readOnly: true, ref: 'tokenEndpoint', value: this.props.tokenEndpoint })
-	            )
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { style: { display: this.props.server != 'Auth0' ? 'block' : 'none' } },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'form-group' },
-	            _react2.default.createElement(
-	              'label',
-	              { htmlFor: 'discoveryURL', className: 'col-md-3 col-xs-12 control-label' },
-	              'Discovery Document URL'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-9 col-xs-12' },
+	              { style: { display: this.props.server != 'Auth0' ? 'block' : 'none' } },
 	              _react2.default.createElement(
-	                'button',
-	                { className: 'btn btn-transparent btn-md button-float-right', style: { display: this.props.server != 'google' ? 'inline-block' : 'none' }, onClick: this.updateDiscovery },
-	                'Use Discovery Document'
+	                'label',
+	                { htmlFor: 'discoveryURL', className: 'col-md-3 col-xs-12 control-label' },
+	                'Discovery Document URL'
 	              ),
 	              _react2.default.createElement(
 	                'div',
-	                { style: { overflow: 'hidden' } },
-	                _react2.default.createElement('input', {
-	                  className: 'form-control ' + (this.props.server != 'google' ? 'input-with-button' : ''),
-	                  name: 'discoveryURL',
-	                  onChange: this.update,
-	                  disabled: this.props.server == 'google' ? 'disabled' : '',
-	                  value: this.props.discoveryURL,
-	                  ref: 'discoveryURL',
-	                  placeholder: 'https://my-oidc.com/.well-known/oidc-configuration'
-	                })
+	                { className: 'col-md-9 col-xs-12' },
+	                _react2.default.createElement(
+	                  'button',
+	                  { className: 'btn btn-transparent btn-md button-float-right', style: { display: this.props.server != 'google' ? 'inline-block' : 'none' }, onClick: this.updateDiscovery },
+	                  'Use Discovery Document'
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { style: { overflow: 'hidden' } },
+	                  _react2.default.createElement('input', {
+	                    className: 'form-control ' + (this.props.server != 'google' ? 'input-with-button' : ''),
+	                    name: 'discoveryURL',
+	                    onChange: this.update,
+	                    disabled: this.props.server != 'custom' ? 'disabled' : '',
+	                    value: this.props.discoveryURL,
+	                    ref: 'discoveryURL',
+	                    placeholder: 'https://my-oidc.com/.well-known/oidc-configuration'
+	                  })
+	                )
 	              )
 	            )
 	          ),
@@ -22796,7 +22767,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-md-9 col-xs-12' },
-	              _react2.default.createElement('input', { className: 'form-control', name: 'authEndpoint', onChange: this.update, disabled: this.props.server != 'custom' ? 'disabled' : '', value: this.props.authEndpoint, ref: 'authEndpoint', placeholder: 'https://my-oidc.com/code' })
+	              _react2.default.createElement('input', { className: 'form-control', name: 'authEndpoint', onChange: this.update, disabled: this.props.server != 'custom' ? 'disabled' : '', value: this.props.authEndpoint, ref: 'authEndpoint', placeholder: 'https://my-oidc.com/authorize' })
 	            )
 	          ),
 	          _react2.default.createElement(
