@@ -19,6 +19,7 @@ class OpenIDPage extends React.Component {
     this.state.domain = this.state.domain || 'samples.auth0.com'
     this.state.authEndpoint = this.state.authEndpoint || 'https://samples.auth0.com/authorize'
     this.state.tokenEndpoint = this.state.tokenEndpoint || 'https://samples.auth0.com/oauth/token'
+    this.state.tokenKeysEndpoint = this.state.tokenKeysEndpoint || ''
     this.state.userInfoEndpoint = this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo'
     this.state.scopes = this.state.scopes || 'openid profile email'
     this.state.stateToken = this.state.stateToken || document.querySelector('input[name=stateToken]').value
@@ -62,6 +63,7 @@ class OpenIDPage extends React.Component {
           discoveryURL: '',
           authEndpoint: '',
           tokenEndpoint: '',
+          tokenKeysEndpoint: '',
           userInfoEndpoint: ''
         })
       } else if(event.detail.server == 'Auth0' && this.state.server !== 'Auth0'){
@@ -91,12 +93,13 @@ class OpenIDPage extends React.Component {
 				discoveryURL: documentURL,
 				authEndpoint: discovered.authorization_endpoint,
 				tokenEndpoint: discovered.token_endpoint,
-        userInfoEndpoint: discovered.userinfo_endpoint
+        userInfoEndpoint: discovered.userinfo_endpoint,
+        tokenKeysEndpoint: discovered.jwks_uri
 			})
       this.saveState()
 		}.bind(this))
 	}
-	discover(url){
+	discover(url, cb){
 		let serviceDiscovery = new Ajax({
 			url: '/discover',
 			method: 'GET',
@@ -107,13 +110,7 @@ class OpenIDPage extends React.Component {
 
 		serviceDiscovery.on('success', function(event){
 			let discovered = JSON.parse(event.currentTarget.response)
-      this.setState({
-        discoveryURL: url,
-        authEndpoint: discovered.authorization_endpoint,
-        tokenEndpoint: discovered.token_endpoint,
-        domain: null
-      })
-      this.saveState()
+      if(cb && typeof cb == 'function') cb(discovered)
 		}.bind(this))
 
     // TODO: Add error case
@@ -241,6 +238,7 @@ class OpenIDPage extends React.Component {
             discoveryURL={this.state.discoveryURL}
             authEndpoint= {this.state.authEndpoint}
             tokenEndpoint= {this.state.tokenEndpoint}
+            tokenKeysEndpoint= {this.state.tokenKeysEndpoint}
             domain= {this.state.domain}
             server = {this.state.server}
             clientID= {this.state.clientID}

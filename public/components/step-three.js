@@ -8,7 +8,7 @@ class StepThree extends React.Component {
   }
   verify(){
     this.setState({ stepState: 'wait' })
-		let serviceDiscovery = new Ajax({
+		let validateToken = new Ajax({
 			url: '/validate',
 			method: 'POST',
 			data: JSON.stringify({
@@ -18,20 +18,22 @@ class StepThree extends React.Component {
 			})
 		})
 
-		serviceDiscovery.on('success', function(event){
+		validateToken.on('success', function(event){
+      console.log('validated!')
       this.setState({ stepState: 'initial'})
 			let result = JSON.parse(event.currentTarget.response)
       window.dispatchEvent(new CustomEvent('configChange', {
         detail: {
           validated: true,
-          decodedId: result
+          decodedId: result,
+          currentStep: 4
         }
       }))
 		}.bind(this))
 
     // TODO: Add error case
 
-		serviceDiscovery.send()
+		validateToken.send()
   }
   render() {
     return (

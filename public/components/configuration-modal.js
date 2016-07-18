@@ -20,6 +20,7 @@ class ConfigurationModal extends React.Component {
             discoveryURL={this.props.discoveryURL}
             authEndpoint={this.props.authEndpoint}
             tokenEndpoint={this.props.tokenEndpoint}
+            tokenKeysEndpoint={this.props.tokenKeysEndpoint}
             domain={this.props.domain}
             server={this.props.server}
           />

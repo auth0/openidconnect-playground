@@ -21044,6 +21044,7 @@
 	    _this.state.domain = _this.state.domain || 'samples.auth0.com';
 	    _this.state.authEndpoint = _this.state.authEndpoint || 'https://samples.auth0.com/authorize';
 	    _this.state.tokenEndpoint = _this.state.tokenEndpoint || 'https://samples.auth0.com/oauth/token';
+	    _this.state.tokenKeysEndpoint = _this.state.tokenKeysEndpoint || '';
 	    _this.state.userInfoEndpoint = _this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo';
 	    _this.state.scopes = _this.state.scopes || 'openid profile email';
 	    _this.state.stateToken = _this.state.stateToken || document.querySelector('input[name=stateToken]').value;
@@ -21092,6 +21093,7 @@
 	            discoveryURL: '',
 	            authEndpoint: '',
 	            tokenEndpoint: '',
+	            tokenKeysEndpoint: '',
 	            userInfoEndpoint: ''
 	          });
 	        } else if (event.detail.server == 'Auth0' && this.state.server !== 'Auth0') {
@@ -21124,14 +21126,15 @@
 	          discoveryURL: documentURL,
 	          authEndpoint: discovered.authorization_endpoint,
 	          tokenEndpoint: discovered.token_endpoint,
-	          userInfoEndpoint: discovered.userinfo_endpoint
+	          userInfoEndpoint: discovered.userinfo_endpoint,
+	          tokenKeysEndpoint: discovered.jwks_uri
 	        });
 	        this.saveState();
 	      }.bind(this));
 	    }
 	  }, {
 	    key: 'discover',
-	    value: function discover(url) {
+	    value: function discover(url, cb) {
 	      var serviceDiscovery = new _simpleAjax2.default({
 	        url: '/discover',
 	        method: 'GET',
@@ -21142,13 +21145,7 @@
 
 	      serviceDiscovery.on('success', function (event) {
 	        var discovered = JSON.parse(event.currentTarget.response);
-	        this.setState({
-	          discoveryURL: url,
-	          authEndpoint: discovered.authorization_endpoint,
-	          tokenEndpoint: discovered.token_endpoint,
-	          domain: null
-	        });
-	        this.saveState();
+	        if (cb && typeof cb == 'function') cb(discovered);
 	      }.bind(this));
 
 	      // TODO: Add error case
@@ -21348,6 +21345,7 @@
 	          discoveryURL: this.state.discoveryURL,
 	          authEndpoint: this.state.authEndpoint,
 	          tokenEndpoint: this.state.tokenEndpoint,
+	          tokenKeysEndpoint: this.state.tokenKeysEndpoint,
 	          domain: this.state.domain,
 	          server: this.state.server,
 	          clientID: this.state.clientID,
@@ -22295,7 +22293,7 @@
 	    key: 'verify',
 	    value: function verify() {
 	      this.setState({ stepState: 'wait' });
-	      var serviceDiscovery = new _simpleAjax2.default({
+	      var validateToken = new _simpleAjax2.default({
 	        url: '/validate',
 	        method: 'POST',
 	        data: JSON.stringify({
@@ -22305,20 +22303,22 @@
 	        })
 	      });
 
-	      serviceDiscovery.on('success', function (event) {
+	      validateToken.on('success', function (event) {
+	        console.log('validated!');
 	        this.setState({ stepState: 'initial' });
 	        var result = JSON.parse(event.currentTarget.response);
 	        window.dispatchEvent(new CustomEvent('configChange', {
 	          detail: {
 	            validated: true,
-	            decodedId: result
+	            decodedId: result,
+	            currentStep: 4
 	          }
 	        }));
 	      }.bind(this));
 
 	      // TODO: Add error case
 
-	      serviceDiscovery.send();
+	      validateToken.send();
 	    }
 	  }, {
 	    key: 'render',
@@ -22545,6 +22545,7 @@
 	            discoveryURL: this.props.discoveryURL,
 	            authEndpoint: this.props.authEndpoint,
 	            tokenEndpoint: this.props.tokenEndpoint,
+	            tokenKeysEndpoint: this.props.tokenKeysEndpoint,
 	            domain: this.props.domain,
 	            server: this.props.server
 	          }),
@@ -22782,6 +22783,20 @@
 	              'div',
 	              { className: 'col-md-9 col-xs-12' },
 	              _react2.default.createElement('input', { className: 'form-control', name: 'tokenEndpoint', onChange: this.update, disabled: this.props.server != 'custom' ? 'disabled' : '', value: this.props.tokenEndpoint, ref: 'tokenEndpoint', placeholder: 'https://my-oidc.com/oauth/token' })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'form-group', style: { display: this.props.tokenKeysEndpoint || this.props.server == 'custom' ? 'block' : 'none' } },
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'tokenKeysEndpoint', className: 'col-md-3 col-xs-12 control-label' },
+	              'Token Keys Endpoint'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-9 col-xs-12' },
+	              _react2.default.createElement('input', { className: 'form-control', name: 'tokenEndpoint', onChange: this.update, disabled: this.props.server != 'custom' ? 'disabled' : '', value: this.props.tokenKeysEndpoint, ref: 'tokenEndpoint', placeholder: 'https://my-oidc.com/oauth/token' })
 	            )
 	          )
 	        ),
