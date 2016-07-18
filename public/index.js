@@ -21094,11 +21094,17 @@
 	            authEndpoint: '',
 	            tokenEndpoint: '',
 	            tokenKeysEndpoint: '',
-	            userInfoEndpoint: ''
+	            userInfoEndpoint: '',
+	            currentStep: 1
 	          });
 	        } else if (event.detail.server == 'Auth0' && this.state.server !== 'Auth0') {
 	          this.setState({
-	            domain: 'samples.auth0.com'
+	            domain: 'samples.auth0.com',
+	            currentStep: 1
+	          });
+	        } else if (event.detail.server !== this.state.server) {
+	          this.setState({
+	            currentStep: 1
 	          });
 	        }
 	      }
