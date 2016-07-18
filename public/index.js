@@ -21050,7 +21050,9 @@
 	    _this.state.redirectURI = _this.state.redirectURI || document.querySelector('input[name=redirect-uri]').value;
 	    _this.state.clientID = _this.state.clientID || document.querySelector('input[name=auth0ClientID]').value;
 	    _this.state.clientSecret = _this.state.clientSecret || document.querySelector('input[name=auth0ClientSecret]').value;
+	    _this.state.authCode = _this.state.authCode || document.querySelector('input[name=code]').value;
 	    _this.state.configurationModalOpen = false;
+	    _this.saveState();
 	    return _this;
 	  }
 

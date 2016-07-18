@@ -25,7 +25,9 @@ class OpenIDPage extends React.Component {
     this.state.redirectURI = this.state.redirectURI ||  document.querySelector('input[name=redirect-uri]').value
     this.state.clientID = this.state.clientID ||  document.querySelector('input[name=auth0ClientID]').value
     this.state.clientSecret = this.state.clientSecret ||  document.querySelector('input[name=auth0ClientSecret]').value
+    this.state.authCode = this.state.authCode || document.querySelector('input[name=code]').value
     this.state.configurationModalOpen = false
+    this.saveState()
   }
 
   componentDidMount(){
