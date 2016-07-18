@@ -8,6 +8,7 @@ const sha1 = require('sha1')
 const crypto = require('crypto')
 const request = require('request')
 const jwt = require('jsonwebtoken')
+const jwkToPem = require('jwk-to-pem')
 
 let app = express()
 
@@ -89,22 +90,60 @@ app.post('/validate', function(req, res){
 	if(req.body.server == 'Auth0'){
 		// Auth0 base64 encodes its secrets
 		secret = new Buffer(req.body.clientSecret, 'base64')
+		verify(function(err, decoded){
+			if(err){
+				res.status(400).statusMessage(err).end()
+			} else {
+				res.status(200).end(decoded)
+			}
+		})
 	} else if(req.body.tokenKeysEndpoint){
 		//go get the keys!
-		request.get(req.body.tokenKeysEndpoint, function(err, res, body){
-			console.log(err, body)
+		request.get(req.body.tokenKeysEndpoint, function(err, resp, body){
+			let keys = JSON.parse(body).keys
+			let done = false
+			//we have to try EACH key
+			for(let i = 0; i < keys.length; i++){
+				secret = jwkToPem(keys[i]);
+				verify(function(err, decoded){
+					if(err){
+						console.log('Error', err)
+					} else if(decoded && !done){
+						console.log('sending', JSON.stringify(decoded))
+						res.json(decoded).end()
+						done = true
+					}
+				})
+			}
+			setTimeout(function(){
+				// if we get here, none of the keys worked
+				console.log('whatever')
+				if(!done){
+					res.statusMessage = 'Invalid Signature'
+					res.sendStatus(400).end('Invalid Signature')
+				}
+			}.bind(this), 250)
+		})
+	} else {
+		secret = req.body.clientSecret
+		verify(function(err, decoded){
+			if(err){
+				res.status(400).statusMessage(err).end
+			} else {
+				res.status(200).end(decoded)
+			}
 		})
 	}
-	jwt.verify(req.body.idToken, secret, { algorithims: ['HS256', 'RS256'] },function(err, decoded){
-		if (err){
-			console.log(err)
-			res.status(401)
-			res.end(JSON.stringify(err))
-		} else {
-			res.status(200)
-			res.end(JSON.stringify(decoded))
-		}
-	})
+
+	function verify(cb){
+		jwt.verify(req.body.idToken, secret, { algorithims: ['HS256', 'RS256'] },function(err, decoded){
+			if (err){
+				cb(err, null)
+			} else {
+				cb(null, JSON.stringify(decoded))
+			}
+		})
+	}
 	//step 1: validate the token
 	//step 2: send back the results.
 })

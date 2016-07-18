@@ -18,7 +18,7 @@
     "express-session": "^1.13.0",
     "jade": "^1.11.0",
     "jsonwebtoken": "^7.0.1",
-    "node-forge": "^0.6.41",
+    "jwk-to-pem": "^1.2.5",
     "query-parser": "0.0.1",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
