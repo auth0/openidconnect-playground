@@ -5,6 +5,12 @@ class StepTwo extends React.Component {
   constructor(){
     super()
     this.start = this.start.bind(this)
+
+    let savedState = localStorage.getItem('app-state') || '{}'
+    savedState = JSON.parse(savedState)
+
+    this.state = savedState
+    this.state.stepState = 'initial'
   }
   start(){
     this.setState({ stepState: 'wait' })
@@ -24,6 +30,13 @@ class StepTwo extends React.Component {
       this.setState({ stepState: 'initial'})
       let result = JSON.parse(JSON.parse(event.currentTarget.response).body)
       console.log(result)
+
+      if(result.error_description) {
+        this._customError = result.error_description;
+
+        this.setState({ stepState: 'error' });
+      }
+
       let payload = result.id_token.split('.')[0]
       payload = atob(payload)
       payload = JSON.parse(payload).alg
@@ -37,7 +50,9 @@ class StepTwo extends React.Component {
       }))
 		}.bind(this))
 
-    // TODO: Add error case
+    serviceDiscovery.on('error', function(event) {
+      return this.setState({ stepState: 'error' })
+    }.bind(this))
 
 		serviceDiscovery.send()
   }
@@ -67,7 +82,19 @@ class StepTwo extends React.Component {
                 code={this.props.authCode}
               </div>
               <hr />
-              <button onClick={this.start} className="code-box-btn">Exchange</button>
+              { this.state.stepState === 'wait' ?
+                <div className="theme-dark step-spinner-container">
+                  <div className="spinner spinner-md step-spinner">
+                    <div className="circle"></div>
+                  </div>
+                </div>
+                : null }
+              { this.state.stepState === 'error' ?
+                <button onClick={this.start} className="code-box-btn is-error">{this._customError || 'The exchange could not be performed.'}</button>
+                : null }
+              { this.state.stepState !== 'wait' && this.state.stepState !== 'error' ?
+                <button onClick={this.start} className="code-box-btn">Exchange</button>
+              : null }
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import CopySnippet from './copy-snippet';
 
 class StepOne extends React.Component {
 
@@ -6,6 +7,7 @@ class StepOne extends React.Component {
     super();
     this.start = this.start.bind(this);
     this.update = this.update.bind(this);
+
     let savedState = localStorage.getItem('app-state') || '{}'
     savedState = JSON.parse(savedState)
 
@@ -16,15 +18,15 @@ class StepOne extends React.Component {
   update(){
   }
 
+
   start() {
     this.setState({ stepState: 'wait' });
 
-    let completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI +'&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken
-
-    window.location = completeURL
+    window.location = this.completeURL
   }
 
   render() {
+    this.completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI +'&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken
     return (
       <div className={`playground-step ${this.props.isActive ? 'active' : '' }`}>
         <span className="step-number">1</span>
@@ -70,15 +72,9 @@ class StepOne extends React.Component {
               : null }
             </div>
           </div>
+          <br />
           <p>You can access and copy your redirect URL here:</p>
-          <div className="code-snippet light-version">
-            <span className="snippet">                
-                { this.props.authEndpoint || "Enter an authorization endpoint in the setting dialog!"}&amp;client_id={this.props.clientID}redirect_uri=https://openidconnect.net/callback?scope={encodeURI(this.props.scopes)}&amp;response_type=code&amp;state={this.props.stateToken}
-            </span>
-            <button className="btn-copy">
-              <i className="icon-budicon-338"></i>
-            </button>
-          </div>
+          <CopySnippet value={this.completeURL || false} defaultValue="Enter an authorization endpoint in the setting dialog!" />
         </div>
         <button onClick={this.props.skipTutorial} className="skip-tutorial btn-link">Skip this tutorial. Show me the complete flow.</button>
       </div>

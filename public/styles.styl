@@ -8,6 +8,9 @@ main-color = orange-color
 body
   font-family system, -apple-system, BlinkMacSystemFont, "Helvetica", "Arial", sans-serif !important
 
+button
+  outline none
+
 // Header styles
 
 .main-header
@@ -161,6 +164,12 @@ body
         color white
         background-color #7ED321
         border-color #7ED321
+        line-height 44px
+
+    &.last-step.is-invalid
+      .step-number
+        background-color #D0021B
+        border-color #D0021B
 
       &:before
         display none !important
@@ -336,6 +345,7 @@ body
       font-size 14px
       padding-right 20px
       margin-bottom 15px
+      overflow-x: scroll;
 
     hr
       border-top 1px solid rgba(white, 0.10)
@@ -352,6 +362,16 @@ body
       border 0
       background-color white
       letter-spacing 1px
+
+      &:hover
+        background-color darken(white, 4%)
+
+      &.is-error
+        background #D0021B
+        color white
+
+        &:hover
+          background-color darken(#D0021B, 4%)
 
     // end code box styles
 
