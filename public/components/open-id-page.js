@@ -189,7 +189,7 @@ class OpenIDPage extends React.Component {
             <div className="container">
               <h1 className="hero-title">OpenID Connect Playground</h1>
               <h2 className="hero-subtitle">
-                The OIDC playground is so developers can test and work with OpenID
+                The OIDC playground is for developers to test and work with OpenID
                 Connect calls step-by-step, giving them more insight into how OpenID Connect works.
               </h2>
             </div>
