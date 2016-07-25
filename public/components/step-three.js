@@ -37,7 +37,7 @@ class StepThree extends React.Component {
       window.dispatchEvent(new CustomEvent('configChange', {
         detail: {
           validated: true,
-          idTokenDecoded: JSON.stringify(result),
+          idTokenDecoded: JSON.stringify(result, null, ' '),
           currentStep: 4
         }
       }))

@@ -12,7 +12,9 @@ const StepFour = (props) =>
         <div className="code-box-title">Decoded Token Payload</div>
           <div className="code-box-content">
             <div className="code-block">
-              {props.idTokenDecoded}
+              <pre>
+{props.idTokenDecoded}
+              </pre>              
             </div>
           </div>
         </div>
