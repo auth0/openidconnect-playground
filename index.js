@@ -62,7 +62,6 @@ app.post('/code_to_token', function(req, res){
 	//step 1: exchange code for token with OIDC server
 	//step 2: send back https response from OIDC server
 	let result = {};
-	console.log('body', req.body)
 	let reqData = {
 			code: req.body.code,
 			client_id: req.body.clientID,
@@ -73,7 +72,6 @@ app.post('/code_to_token', function(req, res){
 	request.post(req.body.tokenEndpoint, {
 		form: reqData
 	}, function(err, response, body){
-		console.log(err, response.statusCode, body)
 		result.body = body
 		result.response = response
 		//and add the decoded token
@@ -107,9 +105,8 @@ app.post('/validate', function(req, res){
 				secret = jwkToPem(keys[i]);
 				verify(function(err, decoded){
 					if(err){
-						console.log('Error', err)
+						res.status(400).statusMessage(err).end()
 					} else if(decoded && !done){
-						console.log('sending', JSON.stringify(decoded))
 						res.json(decoded).end()
 						done = true
 					}
@@ -117,7 +114,6 @@ app.post('/validate', function(req, res){
 			}
 			setTimeout(function(){
 				// if we get here, none of the keys worked
-				console.log('whatever')
 				if(!done){
 					res.statusMessage = 'Invalid Signature'
 					res.sendStatus(400).end('Invalid Signature')

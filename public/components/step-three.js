@@ -82,9 +82,6 @@ class StepThree extends React.Component {
           <div className="code-box">
             <div className="code-box-title">Validate ID Token</div>
             <div className="code-box-content">
-              <div className="code-block">
-                POST https://openidconnect.net/validate?provider={this.props.server}&amp;tokenKeysEndpoint={this.props.tokenKeysEndpoint}&amp;clientSecret={this.props.clientSecret}
-              </div>
               <hr />
                 { this.state.stepState === 'wait' ?
                   <div className="theme-dark step-spinner-container">
