@@ -61,6 +61,7 @@ class StepTwo extends React.Component {
       <div className={`playground-step ${this.props.isActive ? 'active' : '' }`} >
         <span className="step-number">2</span>
         <div className="step-content">
+          <a id="step2"></a>
           <h2 className="step-title">Exchange Code from Token</h2>
           <p className="snippet-description">Your Code is </p>
         <div className="code-snippet">{this.props.authCode}</div>

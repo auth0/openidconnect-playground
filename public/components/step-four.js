@@ -6,6 +6,7 @@ const StepFour = (props) =>
       <i className={props.idTokenDecoded ? 'icon-budicon-470' : 'icon-budicon-471'}></i>
     </span>
     <div className="step-content">
+      <a id="step4"></a>
       <h2 className="step-title">{props.idTokenDecoded ? 'The token is valid!' : 'The token is invalid. Check your parameters and try verifying again.'}</h2>
       <div className={props.idTokenDecoded ? 'decoded-code-box' : 'hide'}>
         <div className="code-box-title">Decoded Token Payload</div>

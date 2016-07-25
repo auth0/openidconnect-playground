@@ -21073,27 +21073,33 @@
 	    value: function configureStep() {
 	      var code = document.querySelector('input[name=code]').value;
 	      var token = this.state.idToken;
+	      var newStep = 0;
 	      if (code) {
+	        newStep = 2;
 	        this.setState({
 	          currentStep: 2,
 	          authCode: code
 	        });
 	      }
 	      if (token) {
+	        newStep = 3;
 	        this.setState({
 	          currentStep: 3
 	        });
 	      }
 	      if (this.state.validated) {
+	        newStep = 4;
 	        this.setState({
 	          currentStep: 4
 	        });
 	      }
 	      if (this.state.userProfile) {
+	        newStep = 5;
 	        this.setState({
 	          currentStep: 5
 	        });
 	      }
+	      if (newStep > 1) window.location.hash = '#step' + newStep;
 	    }
 	  }, {
 	    key: 'update',
@@ -21126,7 +21132,11 @@
 	          });
 	        }
 	      }
-	      setTimeout(this.saveState.bind(this), 250);
+	      setTimeout(function () {
+	        this.saveState();if (this.state.currentStep > 1) {
+	          window.location.hash = '#step' + this.state.currentStep;
+	        }
+	      }.bind(this), 250);
 	    }
 	  }, {
 	    key: 'updateURLs',
@@ -22300,6 +22310,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'step-content' },
+	          _react2.default.createElement('a', { id: 'step2' }),
 	          _react2.default.createElement(
 	            'h2',
 	            { className: 'step-title' },
@@ -22472,6 +22483,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'step-content' },
+	          _react2.default.createElement('a', { id: 'step3' }),
 	          _react2.default.createElement(
 	            'h2',
 	            { className: 'step-title' },
@@ -22494,9 +22506,13 @@
 	                'Your “id_token” is'
 	              ),
 	              _react2.default.createElement(
-	                'button',
-	                { className: 'btn-view-jwt' },
-	                'View on JWT.io'
+	                'a',
+	                { target: '_', href: 'https://jwt.io/#debugger?&id_token=' + this.props.idToken },
+	                _react2.default.createElement(
+	                  'button',
+	                  { className: 'btn-view-jwt' },
+	                  'View on JWT.io'
+	                )
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -22612,6 +22628,7 @@
 	    _react2.default.createElement(
 	      'div',
 	      { className: 'step-content' },
+	      _react2.default.createElement('a', { id: 'step4' }),
 	      _react2.default.createElement(
 	        'h2',
 	        { className: 'step-title' },

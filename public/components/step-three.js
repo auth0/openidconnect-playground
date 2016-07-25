@@ -52,6 +52,7 @@ class StepThree extends React.Component {
       <div className="playground-step">
         <span className="step-number">3</span>
         <div className="step-content">
+          <a id="step3"></a>
           <h2 className="step-title">Verify User Token</h2>
           <p>
             Now, we need to verify that the ID Token sent was from the correct place by validating the JWT's signature
@@ -60,7 +61,7 @@ class StepThree extends React.Component {
           <div className={this.props.idToken ? 'id-and-access-tokens' : 'hide'}>
             <div>
               <div className="snippet-description pull-left">Your “id_token” is</div>
-              <button className="btn-view-jwt">View on JWT.io</button>
+              <a target="_" href={'https://jwt.io/#debugger?&id_token=' + this.props.idToken}><button className="btn-view-jwt">View on JWT.io</button></a>
             </div>
             <div className="code-snippet">
               {this.props.idToken}

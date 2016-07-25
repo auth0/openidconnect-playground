@@ -44,27 +44,33 @@ class OpenIDPage extends React.Component {
   configureStep(){
       let code = document.querySelector('input[name=code]').value
       let token = this.state.idToken
+      let newStep = 0
       if(code){
+        newStep = 2
         this.setState({
           currentStep: 2,
           authCode: code
         })
       }
       if(token){
+        newStep = 3
         this.setState({
           currentStep: 3
         })
       }
       if(this.state.validated){
+        newStep = 4
         this.setState({
           currentStep: 4
         })
       }
       if(this.state.userProfile){
+        newStep = 5
         this.setState({
           currentStep: 5
         })
       }
+      if(newStep > 1) window.location.hash = '#step' + newStep
   }
 
   update(event){
@@ -96,7 +102,7 @@ class OpenIDPage extends React.Component {
         })
       }
     }
-    setTimeout(this.saveState.bind(this), 250)
+    setTimeout(function(){ this.saveState(); if(this.state.currentStep > 1){ window.location.hash = '#step' + this.state.currentStep }}.bind(this), 250)
   }
 
   updateURLs(){
