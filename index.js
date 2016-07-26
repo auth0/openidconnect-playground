@@ -90,7 +90,8 @@ app.post('/validate', function(req, res){
 		secret = new Buffer(req.body.clientSecret, 'base64')
 		verify(function(err, decoded){
 			if(err){
-				res.status(400).statusMessage(err).end()
+				res.statusMessage = err
+				res.status(400).end()
 			} else {
 				res.status(200).end(decoded)
 			}
@@ -105,7 +106,8 @@ app.post('/validate', function(req, res){
 				secret = jwkToPem(keys[i]);
 				verify(function(err, decoded){
 					if(err){
-						res.status(400).statusMessage(err).end()
+						res.statusMessage = err
+						res.status(400).end()
 					} else if(decoded && !done){
 						res.json(decoded).end()
 						done = true
