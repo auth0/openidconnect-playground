@@ -10,6 +10,7 @@ class StepTwo extends React.Component {
     savedState = JSON.parse(savedState)
 
     this.state = savedState
+    this.state.exchangeResult = '';
     this.state.stepState = 'initial'
   }
   start(){
@@ -29,12 +30,18 @@ class StepTwo extends React.Component {
 		serviceDiscovery.on('success', function(event){
       this.setState({ stepState: 'initial'})
       let result = JSON.parse(JSON.parse(event.currentTarget.response).body)
-      console.log(result)
+
+      let exchangeResult = {
+        status: JSON.parse(event.currentTarget.response).response.statusCode,
+        body: result
+      };
+
+      this.setState({ exchangeResult: exchangeResult });
 
       if(result.error_description) {
         this._customError = result.error_description;
 
-        this.setState({ stepState: 'error' });
+        return this.setState({ stepState: 'error' });
       }
 
       let payload = result.id_token.split('.')[0]
@@ -75,14 +82,30 @@ class StepTwo extends React.Component {
             </div>
             <div className="code-box-content">
               <div className="code-block">
-                POST {this.props.tokenEndpoint} HTTP/1.1
-                grant_type=authorization_code&amp;
-                client_id={this.props.clientID}&amp;
-                client_secret={this.props.clientSecret}
-                redirect_url=https://openidconnect.net/callback&amp;
-                code={this.props.authCode}
+                POST {this.props.tokenEndpoint}
+                  <br />
+                  <br />
+                  grant_type=authorization_code
+                  <br />
+                  &amp;client_id=<a onClick={this.props.openModal} href="#">{this.props.clientID}</a>
+                  <br />
+                  &amp;client_secret=<a onClick={this.props.openModal} href="#">{this.props.clientSecret}</a>
+                  <br />
+                  &amp;redirect_url=https://openidconnect.net/callback
+                  <br />
+                  &amp;code={this.props.authCode}
               </div>
               <hr />
+              { this.state.exchangeResult ?
+                <div className="code-block">
+                  {'HTTP/1.1 ' + JSON.stringify(this.state.exchangeResult.status)}
+                  <br />
+                  {'Content-Type: application/json'}
+                  <div className="json-result">
+                  {JSON.stringify(this.state.exchangeResult.body, null, 2)}
+                  </div>
+                </div>
+                : null }
               { this.state.stepState === 'wait' ?
                 <div className="theme-dark step-spinner-container">
                   <div className="spinner spinner-md step-spinner">
@@ -93,7 +116,7 @@ class StepTwo extends React.Component {
               { this.state.stepState === 'error' ?
                 <button onClick={this.start} className="code-box-btn is-error">{this._customError || 'The exchange could not be performed.'}</button>
                 : null }
-              { this.state.stepState !== 'wait' && this.state.stepState !== 'error' ?
+              { this.state.stepState !== 'wait' && this.state.stepState !== 'error' && !this.state.exchangeResult ?
                 <button onClick={this.start} className="code-box-btn">Exchange</button>
               : null }
             </div>

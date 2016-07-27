@@ -77,28 +77,24 @@ class StepThree extends React.Component {
               <br />
               which is found in the discovery document or configuration menu options.
             </p>
-            <div className="snippet-description pull-left">Your “access_token” is</div>
-            <div className="code-snippet">{this.props.accessToken}</div>
-          </div>
-          <div className="code-box">
-            <div className="code-box-title">Validate ID Token</div>
-            <div className="code-box-content">
-              <hr />
-                { this.state.stepState === 'wait' ?
-                  <div className="theme-dark step-spinner-container">
-                    <div className="spinner spinner-md step-spinner">
-                      <div className="circle"></div>
-                    </div>
-                  </div>
-                  : null }
-                { this.state.stepState === 'error' ?
-                  <button onClick={this.verify} className="code-box-btn is-error">There was an error verifying your token. Try again.</button>
-                  : null }
-                { this.state.stepState !== 'wait' && this.state.stepState !== 'error' ?
-                  <button onClick={this.verify} className="code-box-btn">Verify</button>
-                : null }
-            </div>
-          </div>
+            <div className="snippet-description pull-left hide">Your “access_token” is</div>
+            <div className="code-snippet hide">{this.props.accessToken}</div>
+
+            { this.state.stepState === 'wait' ?
+              <div className="step-spinner-container">
+                <div className="spinner spinner-md step-spinner">
+                  <div className="circle"></div>
+                </div>
+              </div>
+              : null }
+            { this.state.stepState === 'error' ?
+              <button onClick={this.verify} className="code-box-btn is-error">There was an error verifying your token. Try again.</button>
+              : null }
+            { this.state.stepState !== 'wait' && this.state.stepState !== 'error' ?
+              <button onClick={this.verify} className="code-box-btn is-alt">Verify</button>
+            : null }
+        </div>
+
         </div>
       </div>
     );

@@ -5,30 +5,68 @@ class StepOne extends React.Component {
 
   constructor() {
     super();
+
     this.start = this.start.bind(this);
     this.update = this.update.bind(this);
+    this.returnFromAuth = this.returnFromAuth.bind(this);
 
     let savedState = localStorage.getItem('app-state') || '{}'
     savedState = JSON.parse(savedState)
 
     this.state = savedState
     this.state.stepState = 'initial'
+    this.state.isActiveStep = (this.state.currentStep === 1)
   }
 
   update(){
+    this.forceUpdate();
   }
 
-
   start() {
-    this.setState({ stepState: 'wait' });
+    this.setState({
+      stepState: 'wait'
+    });
 
     window.location = this.completeURL
   }
 
+  returnFromAuth() {
+    let c = this;
+
+    c.setState({
+      stepState: 'wait',
+      isActiveStep: c.props.isActive
+    });
+
+    setTimeout(function() {
+      c.setState({
+        stepState: 'initial',
+        isActiveStep: false
+      });
+
+      c.props.scrollAnimated(900, 600);
+    }, 1000);
+  }
+
+  componentDidMount() {
+    var c = this;
+
+    window.addEventListener('returnFromAuth', function() {
+      c.returnFromAuth()
+    });
+
+    window.addEventListener('startOver', function() {
+      c.setState({
+        isActiveStep: true
+      });
+    });
+  }
+
   render() {
     this.completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI +'&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken
+
     return (
-      <div className={`playground-step ${this.props.isActive ? 'active' : '' }`}>
+      <div className={`playground-step ${this.state.isActiveStep ? 'active' : '' }`}>
         <span className="step-number">1</span>
         <div className="step-content">
           <h2 className="step-title">Redirect to OpenID Connector Server</h2>
@@ -39,19 +77,21 @@ class StepOne extends React.Component {
             </h3>
             <div className="code-box-content">
               <div className="code-block">
-                <a onClick={this.props.openModal} href="#"> { this.props.authEndpoint || "Enter an authorization endpoint in the setting dialog!"} </a>
-                <br />
-                client_id=
-                <span>{this.props.clientID}</span>
-                <br />
-                redirect_uri=https://openidconnect.net/callback 
-                <br />
-                ?scope=
-                <span>{encodeURI(this.props.scopes)}</span>
-                <br/>
-                <span>&amp;response_type=code</span>
-                <br />
-                <span>&amp;state={this.props.stateToken}</span>
+                <a onClick={this.props.openModal} href="#"> { this.props.authEndpoint || "Enter an authorization endpoint in the setting dialog!"}? </a>
+                <div className="code-block-url-params">
+                  client_id=
+                  <a onClick={this.props.openModal} href="#">{this.props.clientID}</a>
+                  <br />
+                  &amp;redirect_uri=
+                  <a onClick={this.props.openModal} href="#">https://openidconnect.net/callback </a>
+                  <br />
+                  &amp;scope=
+                  <a onClick={this.props.openModal} href="#">{this.props.scopes}</a>
+                  <br/>
+                  <span>&amp;response_type=code</span>
+                  <br />
+                  <span>&amp;state={this.props.stateToken}</span>
+                </div>
               </div>
               <hr />
               { this.state.stepState === 'wait' ?
@@ -73,8 +113,6 @@ class StepOne extends React.Component {
             </div>
           </div>
           <br />
-          <p>You can access and copy your redirect URL here:</p>
-          <CopySnippet value={this.completeURL || false} defaultValue="Enter an authorization endpoint in the setting dialog!" />
         </div>
         <button onClick={this.props.skipTutorial} className="skip-tutorial btn-link">Skip this tutorial. Show me the complete flow.</button>
       </div>
