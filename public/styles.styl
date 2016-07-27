@@ -4,17 +4,23 @@
 orange-color = #F8931D
 main-background-color = #F9F9F9
 main-color = orange-color
+font-family-serif = system, -apple-system, BlinkMacSystemFont, "Helvetica", "Arial", sans-serif
 
 body
-  font-family system, -apple-system, BlinkMacSystemFont, "Helvetica", "Arial", sans-serif !important
+  font-family font-family-serif
 
 button
   outline none
 
-// Header styles
+// Makes the site fix to desktop size for the moment
+#content,
+.container
+  min-width: 1000px
 
+// Header styles
 .main-header
   background-color main-background-color
+  width: 100%
 
   .main-navigation
     border-bottom 1px solid rgba(black, 0.05)
@@ -99,7 +105,34 @@ button
 
 // end header styles
 
+// Generic Styles
 
+.json-result
+  white-space: pre;
+
+.code-box-btn
+  display block
+  font-size 12px
+  text-transform uppercase
+  padding 15px 20px
+  border-radius 3px
+  color $bg-color-dark
+  border 0
+  background-color white
+  letter-spacing 1px
+
+  &:hover
+    background-color darken(white, 4%)
+
+  &.is-alt
+    border 1px solid #333
+
+  &.is-error
+    background #D0021B
+    color white
+
+    &:hover
+      background-color darken(#D0021B, 4%)
 
 // Playground styles
 
@@ -187,7 +220,7 @@ button
       position absolute
       left 20px
       top 0
-      transition all 2s
+      transition all 1s
 
       +breakpoint("tablet", "max")
         display none
@@ -344,6 +377,25 @@ button
       padding 25px 20px
       overflow-x auto
 
+      ::-webkit-scrollbar
+        width: 5px;
+        height: 10px;
+
+      ::-webkit-scrollbar-track
+        background: transparent;
+        border-radius: 4px;
+
+      ::-webkit-scrollbar-thumb
+        border-radius: 4px;
+        border: 3px solid transparent;
+        border-left: 0;
+        border-right: 0;
+        background:transparent;
+
+      &:hover ::-webkit-scrollbar-thumb
+          border-color: #222228;
+          background:rgba(255,255,255,0.1);
+
     .code-block
       font-family Menlo, Monaco, monospace
       font-size 14px
@@ -351,31 +403,27 @@ button
       margin-bottom 15px
       overflow-x: scroll;
 
+      a
+        color: $color-blue-light
+
+        &:hover:after
+          content: "Edit"
+          font-family: font-family-serif
+          text-transform: uppercase
+          letter-spacing: 1px
+          font-size: 12px
+          padding-left: 15px
+          color: white
+
+    .code-block-url-params
+      padding-left: 30px
+
     hr
       border-top 1px solid rgba(white, 0.10)
       margin 20px 0
 
     .code-box-btn
-      display block
       margin 0 auto
-      font-size 12px
-      text-transform uppercase
-      padding 15px 20px
-      border-radius 3px
-      color $bg-color-dark
-      border 0
-      background-color white
-      letter-spacing 1px
-
-      &:hover
-        background-color darken(white, 4%)
-
-      &.is-error
-        background #D0021B
-        color white
-
-        &:hover
-          background-color darken(#D0021B, 4%)
 
     // end code box styles
 

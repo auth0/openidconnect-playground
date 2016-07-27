@@ -13,6 +13,7 @@ const ConfigurationModal = (props) =>
         >
         </span>
         <h2 className="configuration-modal-title">OpenID Connect Configuration</h2>
+
         <ServerURLs
           discoveryURL={props.discoveryURL}
           authEndpoint={props.authEndpoint}
@@ -28,14 +29,26 @@ const ConfigurationModal = (props) =>
           clientSecret={props.clientSecret}
           scopes={props.scopes}
         />
+
+        <div className="row">
+          <div className="col-md-3 col-xs-12">
+          </div>
+          <div className="col-md-9 col-xs-12">
+            <p>
+              <button onClick={props.closeModal} className="code-box-btn is-alt">Save</button>
+            </p>
+          </div>
+        </div>
+
         <div className="clear-storage-container">
           <p>
             Hey, just a friendly note: we store stuff like your keys in
             LocalStorage so that when you redirect to authenticate, you don&#47;t lose them.
             You can clear them by clicking on this button:
           </p>
-          <ClearAllButton onClick="{ localStorage.clear() }" />
+          <ClearAllButton />
         </div>
+
       </div>
     </div>;
 

@@ -13,11 +13,13 @@ const StepFour = (props) =>
           <div className="code-box-content">
             <div className="code-block">
               <pre>
-{props.idTokenDecoded}
-              </pre>              
+                {props.idTokenDecoded}
+              </pre>
             </div>
           </div>
         </div>
+        <br />
+        <button onClick={props.startOver}  className="code-box-btn is-alt">Start Over</button>
       </div>
     </div>
 

@@ -11,6 +11,8 @@ class OpenIDPage extends React.Component {
   constructor() {
     super();
     this.update = this.update.bind(this)
+    this.startOver = this.startOver.bind(this)
+    this.scrollAnimated = this.scrollAnimated.bind(this)
 		let savedState = localStorage.getItem('app-state') || '{}'
 		savedState = JSON.parse(savedState)
 		this.state = savedState
@@ -30,6 +32,7 @@ class OpenIDPage extends React.Component {
     this.state.idTokenHeader = this.state.idTokenHeader || ''
     this.state.configurationModalOpen = false
     this.state.validated = this.state.validated || false
+    this.state.exchangeResult = this.state.exchangeResult || ''
     this.saveState()
   }
 
@@ -51,6 +54,8 @@ class OpenIDPage extends React.Component {
           currentStep: 2,
           authCode: code
         })
+
+        window.dispatchEvent(new CustomEvent('returnFromAuth'));
       }
       if(token){
         newStep = 3
@@ -70,7 +75,42 @@ class OpenIDPage extends React.Component {
           currentStep: 5
         })
       }
-      if(newStep > 1) window.location.hash = '#step' + newStep
+      // if(newStep > 1) window.location.hash = '#step' + newStep
+  }
+
+  scrollAnimated(to, duration) {
+    var doc = document.documentElement;
+    var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+    var start = top;
+    var change = to - start;
+    var currentTime = 0;
+    var increment = 20;
+
+    function easeInOut(currentTime, startValue, change, duration) {
+      currentTime /= duration / 2;
+
+      if (currentTime < 1) {
+        return change / 2 * currentTime * currentTime + startValue;
+      }
+
+      currentTime--;
+
+      return -change / 2 * (currentTime * (currentTime - 2) - 1) + startValue;
+    }
+
+    function animateScroll() {
+      currentTime += increment;
+
+      var val = easeInOut(currentTime, start, change, duration);
+
+      window.scrollTo(0, val);
+
+      if (currentTime < duration) {
+        setTimeout(animateScroll, increment);
+      }
+    }
+
+    animateScroll();
   }
 
   update(event){
@@ -154,6 +194,13 @@ class OpenIDPage extends React.Component {
     document.body.classList.toggle('overflow-hidden', v);
   }
 
+  startOver() {
+    localStorage.clear();
+    this.setState({ currentStep: 1 });
+
+    window.dispatchEvent(new CustomEvent('startOver'));
+  }
+
   setStep(step) {
     this.setState({ currentStep: step });
   }
@@ -227,6 +274,7 @@ class OpenIDPage extends React.Component {
                   nextStep={ () => { this.setStep(2); } }
                   skipTutorial={ () => { this.setStep(4); }}
                   isActive={ this.state.currentStep === 1 }
+                  scrollAnimated={this.scrollAnimated}
                 />
                 : null
               }
@@ -236,6 +284,7 @@ class OpenIDPage extends React.Component {
                   authCode= {this.state.authCode}
                   clientID= {this.state.clientID}
                   clientSecret= {this.state.clientSecret}
+                  openModal={ () => { this.setConfigurationModalVisibility(true); } }
                   server={this.state.server}
                   nextStep={ () => { this.setStep(3); } }
                   isActive={ this.state.currentStep === 2 }
@@ -256,7 +305,8 @@ class OpenIDPage extends React.Component {
               }
               { this.state.currentStep >= 4 ?
                 <StepFour
-                  idTokenDecoded= {this.state.idTokenDecoded}
+                  startOver={this.startOver}
+                  idTokenDecoded={this.state.idTokenDecoded}
                 />
                 : null
               }
@@ -290,7 +340,7 @@ class OpenIDPage extends React.Component {
     );
   }
 	saveState(){
-		localStorage.setItem('app-state', JSON.stringify(this.state)) 
+		localStorage.setItem('app-state', JSON.stringify(this.state))
 	}
 }
 
