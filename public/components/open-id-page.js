@@ -220,15 +220,12 @@ class OpenIDPage extends React.Component {
                   <a href="">Debugger</a>
                 </li>
                 <li className="navigation-item">
-                  <a href="">Libraries</a>
-                </li>
-                <li className="navigation-item">
                   <a href="">Introduction</a>
                 </li>
                 <li className="navigation-item">
                   <a href="">Ask</a>
                 </li>
-                <li className="navigation-item">
+                <li className="navigation-item is-disabled">
                   <a href="">Get a T-shirt!</a>
                 </li>
               </ul>
@@ -328,6 +325,12 @@ class OpenIDPage extends React.Component {
             scopes = {this.state.scopes}
           />
           : null }
+        <div className="bottom-callout text-center theme-dark">
+          <img src="http://cdn.auth0.com/styleguide/latest/lib/logos/img/logo-grey.png" width="130" />
+          <p>{'The OIDC playground is brought to you by Auth0.' }</p>
+          <p>{'A cloud service, APIs and tools that eliminate the friction of identity for your applications and APIs.'}</p>
+          <a href="http://auth0.com/signup/" className="btn btn-lg btn-success">{'Try Auth0 for Free'}</a>
+        </div>
         <footer className="main-footer">
           <div className="container">
             <span>Crafted by</span>

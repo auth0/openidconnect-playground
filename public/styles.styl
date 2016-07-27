@@ -59,6 +59,10 @@ button
       font-size 14px
       margin-right 20px
 
+      &.is-disabled
+        opacity: 0.2;
+        pointer-events: none;
+
       > a
         color black
         padding 10px
@@ -584,3 +588,17 @@ body.overflow-hidden
 
 
 // end configuration modal styles
+
+.bottom-callout.theme-dark
+  background: $bg-color-dark
+  padding: 40px 30px
+
+  img,
+  .btn
+    margin: 20px 0
+
+  p
+    font-size: $font-size-large
+    color: $color-text-contrast-light
+    font-weight: $font-weight-bold
+    line-height: normal
