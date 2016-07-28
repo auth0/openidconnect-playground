@@ -22191,6 +22191,10 @@
 	  }, {
 	    key: 'start',
 	    value: function start() {
+	      if (!this.props.authEndpoint) {
+	        return alert('Plase enter an authorization endpoint');
+	      }
+
 	      this.setState({
 	        stepState: 'wait'
 	      });
@@ -22271,7 +22275,7 @@
 	                  'a',
 	                  { onClick: this.props.openModal, href: '#' },
 	                  ' ',
-	                  this.props.authEndpoint || "Enter an authorization endpoint in the setting dialog!",
+	                  this.props.authEndpoint || "Enter an authorization endpoint",
 	                  '? '
 	                ),
 	                _react2.default.createElement(
@@ -23039,8 +23043,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -23089,8 +23091,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this,
-	          _React$createElement;
+	      var _this2 = this;
 
 	      return _react2.default.createElement(
 	        'div',
@@ -23190,14 +23191,15 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { style: { overflow: 'hidden' } },
-	                  _react2.default.createElement('input', (_React$createElement = {
+	                  _react2.default.createElement('input', {
 	                    className: 'form-control ' + (this.props.server != 'google' ? 'input-with-button' : ''),
 	                    name: 'discoveryURL',
 	                    onChange: this.update,
 	                    disabled: this.props.server != 'custom' ? 'disabled' : '',
 	                    value: this.props.discoveryURL,
-	                    ref: 'discoveryURL'
-	                  }, _defineProperty(_React$createElement, 'value', 'https://my-oidc.com/.well-known/openid-configuration'), _defineProperty(_React$createElement, 'placeholder', 'https://my-oidc.com/.well-known/openid-configuration'), _React$createElement))
+	                    ref: 'discoveryURL',
+	                    placeholder: 'https://my-oidc.com/.well-known/openid-configuration'
+	                  })
 	                )
 	              )
 	            )

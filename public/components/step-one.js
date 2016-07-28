@@ -23,6 +23,10 @@ class StepOne extends React.Component {
   }
 
   start() {
+    if(!this.props.authEndpoint) {
+      return alert('Plase enter an authorization endpoint');
+    }
+
     this.setState({
       stepState: 'wait'
     });
@@ -77,7 +81,7 @@ class StepOne extends React.Component {
             </h3>
             <div className="code-box-content">
               <div className="code-block">
-                <a onClick={this.props.openModal} href="#"> { this.props.authEndpoint || "Enter an authorization endpoint in the setting dialog!"}? </a>
+                <a onClick={this.props.openModal} href="#"> { this.props.authEndpoint || "Enter an authorization endpoint"}? </a>
                 <div className="code-block-url-params">
                   client_id=
                   <a onClick={this.props.openModal} href="#">{this.props.clientID}</a>

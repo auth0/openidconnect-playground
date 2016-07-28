@@ -73,7 +73,6 @@ class ServerURLs extends React.Component{
                     disabled={this.props.server != 'custom' ? 'disabled' : ''}
                     value={this.props.discoveryURL}
                     ref="discoveryURL"
-                    value="https://my-oidc.com/.well-known/openid-configuration"
                     placeholder="https://my-oidc.com/.well-known/openid-configuration"
                     />
                 </div>
