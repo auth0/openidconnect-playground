@@ -69,7 +69,7 @@ class StepOne extends React.Component {
       <div className={`playground-step ${this.state.isActiveStep ? 'active' : '' }`}>
         <span className="step-number">1</span>
         <div className="step-content">
-          <h2 className="step-title">Redirect to OpenID Connector Server</h2>
+          <h2 className="step-title">Redirect to OpenID Connect Server</h2>
           <div className="code-box">
             <h3 className="code-box-title">
               Request

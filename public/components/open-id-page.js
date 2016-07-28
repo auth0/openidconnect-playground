@@ -23,7 +23,7 @@ class OpenIDPage extends React.Component {
     this.state.tokenEndpoint = this.state.tokenEndpoint || 'https://samples.auth0.com/oauth/token'
     this.state.tokenKeysEndpoint = this.state.tokenKeysEndpoint || ''
     this.state.userInfoEndpoint = this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo'
-    this.state.scopes = this.state.scopes || 'openid profile email'
+    this.state.scopes = this.state.scopes || 'openid profile'
     this.state.stateToken = this.state.stateToken || document.querySelector('input[name=stateToken]').value
     this.state.redirectURI = this.state.redirectURI ||  document.querySelector('input[name=redirect-uri]').value
     this.state.clientID = this.state.clientID ||  document.querySelector('input[name=auth0ClientID]').value
@@ -230,8 +230,8 @@ class OpenIDPage extends React.Component {
                 </li>
               </ul>
               <div className="social-icons">
-                <a href="" className="auth0-icon"></a>
-                <a href="" className="twitter-icon"></a>
+                <span className="crafted">Crafted by</span>
+                <a href="https://auth0/com" className="auth0-icon"></a>
               </div>
             </div>
           </nav>

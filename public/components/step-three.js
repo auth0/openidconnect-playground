@@ -68,14 +68,11 @@ class StepThree extends React.Component {
             </div>
 
             <p style={{ display: (this.props.idTokenHeader == 'HS256') ? 'block': 'none'}}>
-              This token is cryptographically signed with the <strong>HS256</strong> algorithim. We'll use the client secret to validate it.
+              {"This token is cryptographically signed with the"} <strong>HS256</strong> {"algorithim. We'll use the client secret to validate it."}
             </p>
             <p style={{ display: (this.props.idTokenHeader == 'RS256') ? 'block': 'none'}}>
-              This token is cryptographically signed with the <strong>RS256</strong> algorithim. We'll use the public key of the OpenID Connect server to validate it. In order to do that, we'll fetch the public keys from
-              <br/>
-              {this.props.tokenKeysEndpoint}
-              <br />
-              which is found in the discovery document or configuration menu options.
+              {"This token is cryptographically signed with the"} <strong>RS256</strong> {"algorithim. We'll use the public key of the OpenID Connect server to validate it. In order to do that, we'll fetch the public keys from"}
+              <strong>{this.props.tokenKeysEndpoint}</strong>{", which is found in the discovery document or configuration menu options."}
             </p>
             <div className="snippet-description pull-left hide">Your “access_token” is</div>
             <div className="code-snippet hide">{this.props.accessToken}</div>
