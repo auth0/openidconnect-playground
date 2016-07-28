@@ -230,7 +230,7 @@ class OpenIDPage extends React.Component {
                 </li>
               </ul>
               <div className="social-icons">
-                <span className="crafted">Crafted by</span>
+                <span className="crafted">Supported by</span>
                 <a href="https://auth0/com" className="auth0-icon"></a>
               </div>
             </div>

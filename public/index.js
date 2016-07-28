@@ -21436,7 +21436,7 @@
 	                _react2.default.createElement(
 	                  'span',
 	                  { className: 'crafted' },
-	                  'Crafted by'
+	                  'Supported by'
 	                ),
 	                _react2.default.createElement('a', { href: 'https://auth0/com', className: 'auth0-icon' })
 	              )
