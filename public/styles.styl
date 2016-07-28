@@ -4,7 +4,7 @@
 orange-color = #F8931D
 main-background-color = #F9F9F9
 main-color = orange-color
-font-family-serif = system, -apple-system, BlinkMacSystemFont, "Helvetica", "Arial", sans-serif
+font-family-serif = system, -apple-system, BlinkMacSystemFont, "Helvetica", "Arial", sans-serif !important
 
 body
   font-family font-family-serif
@@ -76,6 +76,11 @@ button
     top 50%
     transform translateY(-50%)
     line-height 0
+
+    .crafted
+      position: relative;
+      top: -9px;
+      right: 7px;
 
     .auth0-icon
       display inline-block
@@ -170,10 +175,10 @@ button
     border none
 
     > i
-      margin-right 5px
-      font-size 16px
-      line-height 39px
-      vertical-align middle
+      margin-right: 5px;
+      font-size: 16px;
+      position: relative;
+      top: 4px;
 
   .playground-content
     width 600px
