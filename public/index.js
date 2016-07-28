@@ -21557,7 +21557,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'bottom-callout text-center theme-dark' },
-	          _react2.default.createElement('img', { src: 'http://cdn.auth0.com/styleguide/latest/lib/logos/img/logo-grey.png', width: '130' }),
+	          _react2.default.createElement('img', { src: '//cdn.auth0.com/styleguide/latest/lib/logos/img/logo-grey.png', width: '130' }),
 	          _react2.default.createElement(
 	            'p',
 	            null,
@@ -21570,7 +21570,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'a',
-	            { href: 'http://auth0.com/signup/', className: 'btn btn-lg btn-success' },
+	            { href: '//auth0.com/signup/', className: 'btn btn-lg btn-success' },
 	            'Try Auth0 for Free'
 	          )
 	        ),

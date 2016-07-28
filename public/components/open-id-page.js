@@ -326,10 +326,10 @@ class OpenIDPage extends React.Component {
           />
           : null }
         <div className="bottom-callout text-center theme-dark">
-          <img src="http://cdn.auth0.com/styleguide/latest/lib/logos/img/logo-grey.png" width="130" />
+          <img src="//cdn.auth0.com/styleguide/latest/lib/logos/img/logo-grey.png" width="130" />
           <p>{'The OIDC playground is brought to you by Auth0.' }</p>
           <p>{'A cloud service, APIs and tools that eliminate the friction of identity for your applications and APIs.'}</p>
-          <a href="http://auth0.com/signup/" className="btn btn-lg btn-success">{'Try Auth0 for Free'}</a>
+          <a href="//auth0.com/signup/" className="btn btn-lg btn-success">{'Try Auth0 for Free'}</a>
         </div>
         <footer className="main-footer">
           <div className="container">
