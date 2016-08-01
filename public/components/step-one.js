@@ -120,7 +120,13 @@ class StepOne extends React.Component {
           </div>
           <br />
         </div>
-        <button onClick={this.props.skipTutorial} className="skip-tutorial btn-link">Skip this tutorial. Show me the complete flow.</button>
+        <button
+          onClick={this.props.skipTutorial}
+          style={this.state.isActiveStep ? {} : {visibility: 'hidden'}}
+          className="skip-tutorial btn-link"
+        >
+          Skip this tutorial. Show me the complete flow.
+        </button>
       </div>
     );
   }
