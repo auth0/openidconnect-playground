@@ -1,5 +1,5 @@
 import React from 'react';
-import CopySnippet from './copy-snippet';
+import offset from 'document-offset';
 
 class StepOne extends React.Component {
 
@@ -43,12 +43,14 @@ class StepOne extends React.Component {
     });
 
     setTimeout(function() {
+      let step2 = document.getElementById('step2');
+
       c.setState({
         stepState: 'initial',
         isActiveStep: false
       });
 
-      c.props.scrollAnimated(900, 600);
+      c.props.scrollAnimated(offset(step2).top, 600);
     }, 1000);
   }
 

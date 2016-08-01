@@ -1,10 +1,13 @@
 import React from 'react';
+import offset from 'document-offset';
+import ReactDOM from 'react-dom';
 import Ajax from 'simple-ajax'
 import StepOne from './step-one';
 import StepTwo from './step-two';
 import StepThree from './step-three';
 import StepFour from './step-four';
 import ConfigurationModal from './configuration-modal';
+
 
 class OpenIDPage extends React.Component {
 
@@ -13,6 +16,7 @@ class OpenIDPage extends React.Component {
     this.update = this.update.bind(this)
     this.startOver = this.startOver.bind(this)
     this.scrollAnimated = this.scrollAnimated.bind(this)
+    this.scrollToCurrentStep = this.scrollToCurrentStep.bind(this)
 		let savedState = localStorage.getItem('app-state') || '{}'
 		savedState = JSON.parse(savedState)
 		this.state = savedState
@@ -142,7 +146,24 @@ class OpenIDPage extends React.Component {
         })
       }
     }
-    setTimeout(function(){ this.saveState(); if(this.state.currentStep > 1){ window.location.hash = '#step' + this.state.currentStep }}.bind(this), 250)
+
+    setTimeout(function() {
+      this.saveState();
+
+      if(this.state.currentStep > 1){
+        this.scrollToCurrentStep()
+      }
+    }.bind(this), 250);
+  }
+
+  scrollToCurrentStep() {
+    let c = this.refs['step' + this.state.currentStep];
+    let elem = ReactDOM.findDOMNode(c);
+
+    return this.scrollAnimated(
+      offset(elem).top,
+      600
+    )
   }
 
   updateURLs(){
@@ -157,6 +178,7 @@ class OpenIDPage extends React.Component {
   }
 	updateDiscovery(documentURL){
     documentURL = documentURL || this.state.discoveryURL
+
     console.log('discovering...', documentURL)
 		this.discover(documentURL, function(discovered){
 			this.setState({
@@ -230,7 +252,7 @@ class OpenIDPage extends React.Component {
                 </li>
               </ul>
               <div className="social-icons">
-                <span className="crafted">Supported by</span>
+                <span className="crafted">Crafted by</span>
                 <a href="https://auth0/com" className="auth0-icon"></a>
               </div>
             </div>
@@ -249,6 +271,13 @@ class OpenIDPage extends React.Component {
         <main className="playground">
           <div className="container">
             <div className="playground-header">
+              <div className="mode-switcher">
+                <label>Mode:</label>
+                <select className="form-control">
+                  <option>OpendID Connect + OAuth2</option>
+                  <option disabled>OpendID Connect (Coming soon)</option>
+                </select>
+              </div>
               <h2 className="playground-header-title">Debugger</h2>
               <button
                 onClick={ () => { this.setConfigurationModalVisibility(true); } }
@@ -262,6 +291,7 @@ class OpenIDPage extends React.Component {
             <div className="playground-content">
               { this.state.currentStep >= 1 ?
                 <StepOne
+                  ref="step1"
                   authEndpoint = {this.state.authEndpoint}
                   clientID = {this.state.clientID}
                   scopes = {this.state.scopes}
@@ -277,6 +307,7 @@ class OpenIDPage extends React.Component {
               }
               { this.state.currentStep >= 2 ?
                 <StepTwo
+                  ref="step2"
                   tokenEndpoint= {this.state.tokenEndpoint}
                   authCode= {this.state.authCode}
                   clientID= {this.state.clientID}
@@ -290,6 +321,7 @@ class OpenIDPage extends React.Component {
               }
               { this.state.currentStep >= 3 ?
                 <StepThree
+                  ref="step3"
                   idToken= {this.state.idToken}
                   idTokenHeader= {this.state.idTokenHeader}
                   accessToken= {this.state.accessToken}
@@ -302,8 +334,10 @@ class OpenIDPage extends React.Component {
               }
               { this.state.currentStep >= 4 ?
                 <StepFour
+                  ref="step4"
                   startOver={this.startOver}
                   idTokenDecoded={this.state.idTokenDecoded}
+                  isActive={ this.state.currentStep === 4 }
                 />
                 : null
               }

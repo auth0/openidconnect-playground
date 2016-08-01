@@ -97,13 +97,17 @@ class StepTwo extends React.Component {
               </div>
               <hr />
               { this.state.exchangeResult ?
-                <div className="code-block">
-                  {'HTTP/1.1 ' + JSON.stringify(this.state.exchangeResult.status)}
-                  <br />
-                  {'Content-Type: application/json'}
-                  <div className="json-result">
-                  {JSON.stringify(this.state.exchangeResult.body, null, 2)}
+                <div className="exchange-result">
+                  <div className="code-block" id="exchangeResponse">
+                    {'HTTP/1.1 ' + JSON.stringify(this.state.exchangeResult.status)}
+                    <br />
+                    {'Content-Type: application/json'}
+                    <div className="json-result">
+                    {JSON.stringify(this.state.exchangeResult.body, null, 2)}
+                    </div>
                   </div>
+
+                  <button onClick={this.goToNextStep} className="code-box-btn">Next</button>
                 </div>
                 : null }
               { this.state.stepState === 'wait' ?

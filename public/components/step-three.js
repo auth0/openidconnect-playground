@@ -49,7 +49,7 @@ class StepThree extends React.Component {
   }
   render() {
     return (
-      <div className="playground-step">
+      <div className={`playground-step ${this.props.isActive ? 'active' : '' }`}>
         <span className="step-number">3</span>
         <div className="step-content">
           <a id="step3"></a>

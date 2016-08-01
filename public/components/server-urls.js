@@ -76,6 +76,7 @@ class ServerURLs extends React.Component{
                     placeholder="https://my-oidc.com/.well-known/openid-configuration"
                     />
                 </div>
+                <span className="help-text">Use a discovery document to populate your server urls</span>
               </div>
             </div>
           </div>

@@ -60,7 +60,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(188);
+	__webpack_require__(192);
 
 	_reactDom2.default.render(_react2.default.createElement(_openIdPage2.default, null), document.getElementById('content'));
 
@@ -21112,27 +21112,35 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _simpleAjax = __webpack_require__(173);
+	var _documentOffset = __webpack_require__(173);
+
+	var _documentOffset2 = _interopRequireDefault(_documentOffset);
+
+	var _reactDom = __webpack_require__(33);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _simpleAjax = __webpack_require__(178);
 
 	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
 
-	var _stepOne = __webpack_require__(176);
+	var _stepOne = __webpack_require__(181);
 
 	var _stepOne2 = _interopRequireDefault(_stepOne);
 
-	var _stepTwo = __webpack_require__(178);
+	var _stepTwo = __webpack_require__(182);
 
 	var _stepTwo2 = _interopRequireDefault(_stepTwo);
 
-	var _stepThree = __webpack_require__(179);
+	var _stepThree = __webpack_require__(183);
 
 	var _stepThree2 = _interopRequireDefault(_stepThree);
 
-	var _stepFour = __webpack_require__(180);
+	var _stepFour = __webpack_require__(184);
 
 	var _stepFour2 = _interopRequireDefault(_stepFour);
 
-	var _configurationModal = __webpack_require__(181);
+	var _configurationModal = __webpack_require__(185);
 
 	var _configurationModal2 = _interopRequireDefault(_configurationModal);
 
@@ -21155,6 +21163,7 @@
 	    _this.update = _this.update.bind(_this);
 	    _this.startOver = _this.startOver.bind(_this);
 	    _this.scrollAnimated = _this.scrollAnimated.bind(_this);
+	    _this.scrollToCurrentStep = _this.scrollToCurrentStep.bind(_this);
 	    var savedState = localStorage.getItem('app-state') || '{}';
 	    savedState = JSON.parse(savedState);
 	    _this.state = savedState;
@@ -21290,11 +21299,22 @@
 	          });
 	        }
 	      }
+
 	      setTimeout(function () {
-	        this.saveState();if (this.state.currentStep > 1) {
-	          window.location.hash = '#step' + this.state.currentStep;
+	        this.saveState();
+
+	        if (this.state.currentStep > 1) {
+	          this.scrollToCurrentStep();
 	        }
 	      }.bind(this), 250);
+	    }
+	  }, {
+	    key: 'scrollToCurrentStep',
+	    value: function scrollToCurrentStep() {
+	      var c = this.refs['step' + this.state.currentStep];
+	      var elem = _reactDom2.default.findDOMNode(c);
+
+	      return this.scrollAnimated((0, _documentOffset2.default)(elem).top, 600);
 	    }
 	  }, {
 	    key: 'updateURLs',
@@ -21312,6 +21332,7 @@
 	    key: 'updateDiscovery',
 	    value: function updateDiscovery(documentURL) {
 	      documentURL = documentURL || this.state.discoveryURL;
+
 	      console.log('discovering...', documentURL);
 	      this.discover(documentURL, function (discovered) {
 	        this.setState({
@@ -21436,7 +21457,7 @@
 	                _react2.default.createElement(
 	                  'span',
 	                  { className: 'crafted' },
-	                  'Supported by'
+	                  'Crafted by'
 	                ),
 	                _react2.default.createElement('a', { href: 'https://auth0/com', className: 'auth0-icon' })
 	              )
@@ -21471,6 +21492,29 @@
 	              'div',
 	              { className: 'playground-header' },
 	              _react2.default.createElement(
+	                'div',
+	                { className: 'mode-switcher' },
+	                _react2.default.createElement(
+	                  'label',
+	                  null,
+	                  'Mode:'
+	                ),
+	                _react2.default.createElement(
+	                  'select',
+	                  { className: 'form-control' },
+	                  _react2.default.createElement(
+	                    'option',
+	                    null,
+	                    'OpendID Connect + OAuth2'
+	                  ),
+	                  _react2.default.createElement(
+	                    'option',
+	                    { disabled: true },
+	                    'OpendID Connect (Coming soon)'
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
 	                'h2',
 	                { className: 'playground-header-title' },
 	                'Debugger'
@@ -21492,6 +21536,7 @@
 	              'div',
 	              { className: 'playground-content' },
 	              this.state.currentStep >= 1 ? _react2.default.createElement(_stepOne2.default, {
+	                ref: 'step1',
 	                authEndpoint: this.state.authEndpoint,
 	                clientID: this.state.clientID,
 	                scopes: this.state.scopes,
@@ -21510,6 +21555,7 @@
 	                scrollAnimated: this.scrollAnimated
 	              }) : null,
 	              this.state.currentStep >= 2 ? _react2.default.createElement(_stepTwo2.default, {
+	                ref: 'step2',
 	                tokenEndpoint: this.state.tokenEndpoint,
 	                authCode: this.state.authCode,
 	                clientID: this.state.clientID,
@@ -21524,6 +21570,7 @@
 	                isActive: this.state.currentStep === 2
 	              }) : null,
 	              this.state.currentStep >= 3 ? _react2.default.createElement(_stepThree2.default, {
+	                ref: 'step3',
 	                idToken: this.state.idToken,
 	                idTokenHeader: this.state.idTokenHeader,
 	                accessToken: this.state.accessToken,
@@ -21533,8 +21580,10 @@
 	                isActive: this.state.currentStep === 3
 	              }) : null,
 	              this.state.currentStep >= 4 ? _react2.default.createElement(_stepFour2.default, {
+	                ref: 'step4',
 	                startOver: this.startOver,
-	                idTokenDecoded: this.state.idTokenDecoded
+	                idTokenDecoded: this.state.idTokenDecoded,
+	                isActive: this.state.currentStep === 4
 	              }) : null
 	            )
 	          )
@@ -21611,8 +21660,493 @@
 /* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventEmitter = __webpack_require__(174).EventEmitter,
-	    queryString = __webpack_require__(175);
+	var support = __webpack_require__(174)
+	var getDocument = __webpack_require__(176)
+	var withinElement = __webpack_require__(177)
+
+	/**
+	 * Get offset of a DOM Element or Range within the document.
+	 *
+	 * @param {DOMElement|Range} el - the DOM element or Range instance to measure
+	 * @return {Object} An object with `top` and `left` Number values
+	 * @public
+	 */
+
+	module.exports = function offset(el) {
+	  var doc = getDocument(el)
+	  if (!doc) return
+
+	  // Make sure it's not a disconnected DOM node
+	  if (!withinElement(el, doc)) return
+
+	  var body = doc.body
+	  if (body === el) {
+	    return bodyOffset(el)
+	  }
+
+	  var box = { top: 0, left: 0 }
+	  if ( typeof el.getBoundingClientRect !== "undefined" ) {
+	    // If we don't have gBCR, just use 0,0 rather than error
+	    // BlackBerry 5, iOS 3 (original iPhone)
+	    box = el.getBoundingClientRect()
+
+	    if (el.collapsed && box.left === 0 && box.top === 0) {
+	      // collapsed Range instances sometimes report 0, 0
+	      // see: http://stackoverflow.com/a/6847328/376773
+	      var span = doc.createElement("span");
+
+	      // Ensure span has dimensions and position by
+	      // adding a zero-width space character
+	      span.appendChild(doc.createTextNode("\u200b"));
+	      el.insertNode(span);
+	      box = span.getBoundingClientRect();
+
+	      // Remove temp SPAN and glue any broken text nodes back together
+	      var spanParent = span.parentNode;
+	      spanParent.removeChild(span);
+	      spanParent.normalize();
+	    }
+	  }
+
+	  var docEl = doc.documentElement
+	  var clientTop  = docEl.clientTop  || body.clientTop  || 0
+	  var clientLeft = docEl.clientLeft || body.clientLeft || 0
+	  var scrollTop  = window.pageYOffset || docEl.scrollTop
+	  var scrollLeft = window.pageXOffset || docEl.scrollLeft
+
+	  return {
+	    top: box.top  + scrollTop  - clientTop,
+	    left: box.left + scrollLeft - clientLeft
+	  }
+	}
+
+	function bodyOffset(body) {
+	  var top = body.offsetTop
+	  var left = body.offsetLeft
+
+	  if (support.doesNotIncludeMarginInBodyOffset) {
+	    top  += parseFloat(body.style.marginTop || 0)
+	    left += parseFloat(body.style.marginLeft || 0)
+	  }
+
+	  return {
+	    top: top,
+	    left: left
+	  }
+	}
+
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var domready = __webpack_require__(175)
+
+	module.exports = (function() {
+
+		var support,
+			all,
+			a,
+			select,
+			opt,
+			input,
+			fragment,
+			eventName,
+			i,
+			isSupported,
+			clickFn,
+			div = document.createElement("div");
+
+		// Setup
+		div.setAttribute( "className", "t" );
+		div.innerHTML = "  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>";
+
+		// Support tests won't run in some limited or non-browser environments
+		all = div.getElementsByTagName("*");
+		a = div.getElementsByTagName("a")[ 0 ];
+		if ( !all || !a || !all.length ) {
+			return {};
+		}
+
+		// First batch of tests
+		select = document.createElement("select");
+		opt = select.appendChild( document.createElement("option") );
+		input = div.getElementsByTagName("input")[ 0 ];
+
+		a.style.cssText = "top:1px;float:left;opacity:.5";
+		support = {
+			// IE strips leading whitespace when .innerHTML is used
+			leadingWhitespace: ( div.firstChild.nodeType === 3 ),
+
+			// Make sure that tbody elements aren't automatically inserted
+			// IE will insert them into empty tables
+			tbody: !div.getElementsByTagName("tbody").length,
+
+			// Make sure that link elements get serialized correctly by innerHTML
+			// This requires a wrapper element in IE
+			htmlSerialize: !!div.getElementsByTagName("link").length,
+
+			// Get the style information from getAttribute
+			// (IE uses .cssText instead)
+			style: /top/.test( a.getAttribute("style") ),
+
+			// Make sure that URLs aren't manipulated
+			// (IE normalizes it by default)
+			hrefNormalized: ( a.getAttribute("href") === "/a" ),
+
+			// Make sure that element opacity exists
+			// (IE uses filter instead)
+			// Use a regex to work around a WebKit issue. See #5145
+			opacity: /^0.5/.test( a.style.opacity ),
+
+			// Verify style float existence
+			// (IE uses styleFloat instead of cssFloat)
+			cssFloat: !!a.style.cssFloat,
+
+			// Make sure that if no value is specified for a checkbox
+			// that it defaults to "on".
+			// (WebKit defaults to "" instead)
+			checkOn: ( input.value === "on" ),
+
+			// Make sure that a selected-by-default option has a working selected property.
+			// (WebKit defaults to false instead of true, IE too, if it's in an optgroup)
+			optSelected: opt.selected,
+
+			// Test setAttribute on camelCase class. If it works, we need attrFixes when doing get/setAttribute (ie6/7)
+			getSetAttribute: div.className !== "t",
+
+			// Tests for enctype support on a form (#6743)
+			enctype: !!document.createElement("form").enctype,
+
+			// Makes sure cloning an html5 element does not cause problems
+			// Where outerHTML is undefined, this still works
+			html5Clone: document.createElement("nav").cloneNode( true ).outerHTML !== "<:nav></:nav>",
+
+			// jQuery.support.boxModel DEPRECATED in 1.8 since we don't support Quirks Mode
+			boxModel: ( document.compatMode === "CSS1Compat" ),
+
+			// Will be defined later
+			submitBubbles: true,
+			changeBubbles: true,
+			focusinBubbles: false,
+			deleteExpando: true,
+			noCloneEvent: true,
+			inlineBlockNeedsLayout: false,
+			shrinkWrapBlocks: false,
+			reliableMarginRight: true,
+			boxSizingReliable: true,
+			pixelPosition: false
+		};
+
+		// Make sure checked status is properly cloned
+		input.checked = true;
+		support.noCloneChecked = input.cloneNode( true ).checked;
+
+		// Make sure that the options inside disabled selects aren't marked as disabled
+		// (WebKit marks them as disabled)
+		select.disabled = true;
+		support.optDisabled = !opt.disabled;
+
+		// Test to see if it's possible to delete an expando from an element
+		// Fails in Internet Explorer
+		try {
+			delete div.test;
+		} catch( e ) {
+			support.deleteExpando = false;
+		}
+
+		if ( !div.addEventListener && div.attachEvent && div.fireEvent ) {
+			div.attachEvent( "onclick", clickFn = function() {
+				// Cloning a node shouldn't copy over any
+				// bound event handlers (IE does this)
+				support.noCloneEvent = false;
+			});
+			div.cloneNode( true ).fireEvent("onclick");
+			div.detachEvent( "onclick", clickFn );
+		}
+
+		// Check if a radio maintains its value
+		// after being appended to the DOM
+		input = document.createElement("input");
+		input.value = "t";
+		input.setAttribute( "type", "radio" );
+		support.radioValue = input.value === "t";
+
+		input.setAttribute( "checked", "checked" );
+
+		// #11217 - WebKit loses check when the name is after the checked attribute
+		input.setAttribute( "name", "t" );
+
+		div.appendChild( input );
+		fragment = document.createDocumentFragment();
+		fragment.appendChild( div.lastChild );
+
+		// WebKit doesn't clone checked state correctly in fragments
+		support.checkClone = fragment.cloneNode( true ).cloneNode( true ).lastChild.checked;
+
+		// Check if a disconnected checkbox will retain its checked
+		// value of true after appended to the DOM (IE6/7)
+		support.appendChecked = input.checked;
+
+		fragment.removeChild( input );
+		fragment.appendChild( div );
+
+		// Technique from Juriy Zaytsev
+		// http://perfectionkills.com/detecting-event-support-without-browser-sniffing/
+		// We only care about the case where non-standard event systems
+		// are used, namely in IE. Short-circuiting here helps us to
+		// avoid an eval call (in setAttribute) which can cause CSP
+		// to go haywire. See: https://developer.mozilla.org/en/Security/CSP
+		if ( !div.addEventListener ) {
+			for ( i in {
+				submit: true,
+				change: true,
+				focusin: true
+			}) {
+				eventName = "on" + i;
+				isSupported = ( eventName in div );
+				if ( !isSupported ) {
+					div.setAttribute( eventName, "return;" );
+					isSupported = ( typeof div[ eventName ] === "function" );
+				}
+				support[ i + "Bubbles" ] = isSupported;
+			}
+		}
+
+		// Run tests that need a body at doc ready
+		domready(function() {
+			var container, div, tds, marginDiv,
+				divReset = "padding:0;margin:0;border:0;display:block;overflow:hidden;box-sizing:content-box;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;",
+				body = document.getElementsByTagName("body")[0];
+
+			if ( !body ) {
+				// Return for frameset docs that don't have a body
+				return;
+			}
+
+			container = document.createElement("div");
+			container.style.cssText = "visibility:hidden;border:0;width:0;height:0;position:static;top:0;margin-top:1px";
+			body.insertBefore( container, body.firstChild );
+
+			// Construct the test element
+			div = document.createElement("div");
+			container.appendChild( div );
+
+	    //Check if table cells still have offsetWidth/Height when they are set
+	    //to display:none and there are still other visible table cells in a
+	    //table row; if so, offsetWidth/Height are not reliable for use when
+	    //determining if an element has been hidden directly using
+	    //display:none (it is still safe to use offsets if a parent element is
+	    //hidden; don safety goggles and see bug #4512 for more information).
+	    //(only IE 8 fails this test)
+			div.innerHTML = "<table><tr><td></td><td>t</td></tr></table>";
+			tds = div.getElementsByTagName("td");
+			tds[ 0 ].style.cssText = "padding:0;margin:0;border:0;display:none";
+			isSupported = ( tds[ 0 ].offsetHeight === 0 );
+
+			tds[ 0 ].style.display = "";
+			tds[ 1 ].style.display = "none";
+
+			// Check if empty table cells still have offsetWidth/Height
+			// (IE <= 8 fail this test)
+			support.reliableHiddenOffsets = isSupported && ( tds[ 0 ].offsetHeight === 0 );
+
+			// Check box-sizing and margin behavior
+			div.innerHTML = "";
+			div.style.cssText = "box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;padding:1px;border:1px;display:block;width:4px;margin-top:1%;position:absolute;top:1%;";
+			support.boxSizing = ( div.offsetWidth === 4 );
+			support.doesNotIncludeMarginInBodyOffset = ( body.offsetTop !== 1 );
+
+			// NOTE: To any future maintainer, we've window.getComputedStyle
+			// because jsdom on node.js will break without it.
+			if ( window.getComputedStyle ) {
+				support.pixelPosition = ( window.getComputedStyle( div, null ) || {} ).top !== "1%";
+				support.boxSizingReliable = ( window.getComputedStyle( div, null ) || { width: "4px" } ).width === "4px";
+
+				// Check if div with explicit width and no margin-right incorrectly
+				// gets computed margin-right based on width of container. For more
+				// info see bug #3333
+				// Fails in WebKit before Feb 2011 nightlies
+				// WebKit Bug 13343 - getComputedStyle returns wrong value for margin-right
+				marginDiv = document.createElement("div");
+				marginDiv.style.cssText = div.style.cssText = divReset;
+				marginDiv.style.marginRight = marginDiv.style.width = "0";
+				div.style.width = "1px";
+				div.appendChild( marginDiv );
+				support.reliableMarginRight =
+					!parseFloat( ( window.getComputedStyle( marginDiv, null ) || {} ).marginRight );
+			}
+
+			if ( typeof div.style.zoom !== "undefined" ) {
+				// Check if natively block-level elements act like inline-block
+				// elements when setting their display to 'inline' and giving
+				// them layout
+				// (IE < 8 does this)
+				div.innerHTML = "";
+				div.style.cssText = divReset + "width:1px;padding:1px;display:inline;zoom:1";
+				support.inlineBlockNeedsLayout = ( div.offsetWidth === 3 );
+
+				// Check if elements with layout shrink-wrap their children
+				// (IE 6 does this)
+				div.style.display = "block";
+				div.style.overflow = "visible";
+				div.innerHTML = "<div></div>";
+				div.firstChild.style.width = "5px";
+				support.shrinkWrapBlocks = ( div.offsetWidth !== 3 );
+
+				container.style.zoom = 1;
+			}
+
+			// Null elements to avoid leaks in IE
+			body.removeChild( container );
+			container = div = tds = marginDiv = null;
+		});
+
+		// Null elements to avoid leaks in IE
+		fragment.removeChild( div );
+		all = a = select = opt = input = fragment = div = null;
+
+		return support;
+	})();
+
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*!
+	  * domready (c) Dustin Diaz 2014 - License MIT
+	  */
+	!function (name, definition) {
+
+	  if (true) module.exports = definition()
+	  else if (typeof define == 'function' && typeof define.amd == 'object') define(definition)
+	  else this[name] = definition()
+
+	}('domready', function () {
+
+	  var fns = [], listener
+	    , doc = document
+	    , hack = doc.documentElement.doScroll
+	    , domContentLoaded = 'DOMContentLoaded'
+	    , loaded = (hack ? /^loaded|^c/ : /^loaded|^i|^c/).test(doc.readyState)
+
+
+	  if (!loaded)
+	  doc.addEventListener(domContentLoaded, listener = function () {
+	    doc.removeEventListener(domContentLoaded, listener)
+	    loaded = 1
+	    while (listener = fns.shift()) listener()
+	  })
+
+	  return function (fn) {
+	    loaded ? setTimeout(fn, 0) : fns.push(fn)
+	  }
+
+	});
+
+
+/***/ },
+/* 176 */
+/***/ function(module, exports) {
+
+	
+	/**
+	 * Module exports.
+	 */
+
+	module.exports = getDocument;
+
+	// defined by w3c
+	var DOCUMENT_NODE = 9;
+
+	/**
+	 * Returns `true` if `w` is a Document object, or `false` otherwise.
+	 *
+	 * @param {?} d - Document object, maybe
+	 * @return {Boolean}
+	 * @private
+	 */
+
+	function isDocument (d) {
+	  return d && d.nodeType === DOCUMENT_NODE;
+	}
+
+	/**
+	 * Returns the `document` object associated with the given `node`, which may be
+	 * a DOM element, the Window object, a Selection, a Range. Basically any DOM
+	 * object that references the Document in some way, this function will find it.
+	 *
+	 * @param {Mixed} node - DOM node, selection, or range in which to find the `document` object
+	 * @return {Document} the `document` object associated with `node`
+	 * @public
+	 */
+
+	function getDocument(node) {
+	  if (isDocument(node)) {
+	    return node;
+
+	  } else if (isDocument(node.ownerDocument)) {
+	    return node.ownerDocument;
+
+	  } else if (isDocument(node.document)) {
+	    return node.document;
+
+	  } else if (node.parentNode) {
+	    return getDocument(node.parentNode);
+
+	  // Range support
+	  } else if (node.commonAncestorContainer) {
+	    return getDocument(node.commonAncestorContainer);
+
+	  } else if (node.startContainer) {
+	    return getDocument(node.startContainer);
+
+	  // Selection support
+	  } else if (node.anchorNode) {
+	    return getDocument(node.anchorNode);
+	  }
+	}
+
+
+/***/ },
+/* 177 */
+/***/ function(module, exports) {
+
+	
+	/**
+	 * Check if the DOM element `child` is within the given `parent` DOM element.
+	 *
+	 * @param {DOMElement|Range} child - the DOM element or Range to check if it's within `parent`
+	 * @param {DOMElement} parent  - the parent node that `child` could be inside of
+	 * @return {Boolean} True if `child` is within `parent`. False otherwise.
+	 * @public
+	 */
+
+	module.exports = function within (child, parent) {
+	  // don't throw if `child` is null
+	  if (!child) return false;
+
+	  // Range support
+	  if (child.commonAncestorContainer) child = child.commonAncestorContainer;
+	  else if (child.endContainer) child = child.endContainer;
+
+	  // traverse up the `parentNode` properties until `parent` is found
+	  var node = child;
+	  while (node = node.parentNode) {
+	    if (node == parent) return true;
+	  }
+
+	  return false;
+	};
+
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var EventEmitter = __webpack_require__(179).EventEmitter,
+	    queryString = __webpack_require__(180);
 
 	function tryParseJson(data){
 	    try{
@@ -21755,7 +22289,7 @@
 
 
 /***/ },
-/* 174 */
+/* 179 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -22063,7 +22597,7 @@
 
 
 /***/ },
-/* 175 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -22135,7 +22669,7 @@
 
 
 /***/ },
-/* 176 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22150,9 +22684,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _copySnippet = __webpack_require__(177);
+	var _documentOffset = __webpack_require__(173);
 
-	var _copySnippet2 = _interopRequireDefault(_copySnippet);
+	var _documentOffset2 = _interopRequireDefault(_documentOffset);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22212,12 +22746,14 @@
 	      });
 
 	      setTimeout(function () {
+	        var step2 = document.getElementById('step2');
+
 	        c.setState({
 	          stepState: 'initial',
 	          isActiveStep: false
 	        });
 
-	        c.props.scrollAnimated(900, 600);
+	        c.props.scrollAnimated((0, _documentOffset2.default)(step2).top, 600);
 	      }, 1000);
 	    }
 	  }, {
@@ -22355,90 +22891,7 @@
 	exports.default = StepOne;
 
 /***/ },
-/* 177 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var CopySnippet = function (_React$Component) {
-	  _inherits(CopySnippet, _React$Component);
-
-	  function CopySnippet() {
-	    _classCallCheck(this, CopySnippet);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CopySnippet).call(this));
-
-	    _this.selectText = _this.selectText.bind(_this);
-	    return _this;
-	  }
-
-	  _createClass(CopySnippet, [{
-	    key: "selectText",
-	    value: function selectText() {
-	      var elem = this._snippet;
-	      var range, selection;
-
-	      if (window.getSelection && document.createRange) {
-	        selection = window.getSelection();
-	        range = document.createRange();
-	        range.selectNodeContents(elem);
-	        selection.removeAllRanges();
-	        selection.addRange(range);
-	      } else if (document.selection && document.body.createTextRange) {
-	        range = document.body.createTextRange();
-	        range.moveToElementText(elem);
-	        range.select();
-	      }
-	    }
-	  }, {
-	    key: "render",
-	    value: function render() {
-	      return _react2.default.createElement(
-	        "div",
-	        { className: "code-snippet light-version" },
-	        _react2.default.createElement(
-	          "span",
-	          { className: "snippet", ref: function (e) {
-	              if (e != null) {
-	                return this._snippet = e;
-	              }
-	            }.bind(this) },
-	          this.props.value || this.props.defaultValue
-	        ),
-	        _react2.default.createElement(
-	          "button",
-	          { className: "btn-copy", onClick: this.selectText },
-	          _react2.default.createElement("i", { className: "icon-budicon-338" })
-	        )
-	      );
-	    }
-	  }]);
-
-	  return CopySnippet;
-	}(_react2.default.Component);
-
-	exports.default = CopySnippet;
-
-/***/ },
-/* 178 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22453,7 +22906,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _simpleAjax = __webpack_require__(173);
+	var _simpleAjax = __webpack_require__(178);
 
 	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
 
@@ -22613,14 +23066,23 @@
 	              _react2.default.createElement('hr', null),
 	              this.state.exchangeResult ? _react2.default.createElement(
 	                'div',
-	                { className: 'code-block' },
-	                'HTTP/1.1 ' + JSON.stringify(this.state.exchangeResult.status),
-	                _react2.default.createElement('br', null),
-	                'Content-Type: application/json',
+	                { className: 'exchange-result' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'json-result' },
-	                  JSON.stringify(this.state.exchangeResult.body, null, 2)
+	                  { className: 'code-block', id: 'exchangeResponse' },
+	                  'HTTP/1.1 ' + JSON.stringify(this.state.exchangeResult.status),
+	                  _react2.default.createElement('br', null),
+	                  'Content-Type: application/json',
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'json-result' },
+	                    JSON.stringify(this.state.exchangeResult.body, null, 2)
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'button',
+	                  { onClick: this.goToNextStep, className: 'code-box-btn' },
+	                  'Next'
 	                )
 	              ) : null,
 	              this.state.stepState === 'wait' ? _react2.default.createElement(
@@ -22655,7 +23117,7 @@
 	exports.default = StepTwo;
 
 /***/ },
-/* 179 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22670,7 +23132,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _simpleAjax = __webpack_require__(173);
+	var _simpleAjax = __webpack_require__(178);
 
 	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
 
@@ -22742,7 +23204,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'playground-step' },
+	        { className: 'playground-step ' + (this.props.isActive ? 'active' : '') },
 	        _react2.default.createElement(
 	          'span',
 	          { className: 'step-number' },
@@ -22861,7 +23323,7 @@
 	exports.default = StepThree;
 
 /***/ },
-/* 180 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22869,6 +23331,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
 
@@ -22876,60 +23340,81 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var StepFour = function StepFour(props) {
-	  return _react2.default.createElement(
-	    'div',
-	    { className: props.idTokenDecoded ? 'playground-step last-step' : 'playground-step last-step is-invalid' },
-	    _react2.default.createElement(
-	      'span',
-	      { className: 'step-number' },
-	      _react2.default.createElement('i', { className: props.idTokenDecoded ? 'icon-budicon-470' : 'icon-budicon-471' })
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'step-content' },
-	      _react2.default.createElement('a', { id: 'step4' }),
-	      _react2.default.createElement(
-	        'h2',
-	        { className: 'step-title' },
-	        props.idTokenDecoded ? 'The token is valid!' : 'The token is invalid. Check your parameters and try verifying again.'
-	      ),
-	      _react2.default.createElement(
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StepFour = function (_React$Component) {
+	  _inherits(StepFour, _React$Component);
+
+	  function StepFour() {
+	    _classCallCheck(this, StepFour);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StepFour).apply(this, arguments));
+	  }
+
+	  _createClass(StepFour, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
 	        'div',
-	        { className: props.idTokenDecoded ? 'decoded-code-box' : 'hide' },
+	        { className: 'playground-step ' + (this.props.isActive ? 'active' : '') + ' ' + (this.props.idTokenDecoded ? ' last-step' : ' last-step is-invalid') },
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'code-box-title' },
-	          'Decoded Token Payload'
+	          'span',
+	          { className: 'step-number' },
+	          _react2.default.createElement('i', { className: this.props.idTokenDecoded ? 'icon-budicon-470' : 'icon-budicon-471' })
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'code-box-content' },
+	          { className: 'step-content' },
+	          _react2.default.createElement('a', { id: 'step4' }),
+	          _react2.default.createElement(
+	            'h2',
+	            { className: 'step-title' },
+	            this.props.idTokenDecoded ? 'The token is valid!' : 'The token is invalid. Check your parameters and try verifying again.'
+	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'code-block' },
+	            { className: this.props.idTokenDecoded ? 'decoded-code-box' : 'hide' },
 	            _react2.default.createElement(
-	              'pre',
-	              null,
-	              props.idTokenDecoded
+	              'div',
+	              { className: 'code-box-title' },
+	              'Decoded Token Payload'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'code-box-content' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'code-block' },
+	                _react2.default.createElement(
+	                  'pre',
+	                  null,
+	                  this.props.idTokenDecoded
+	                )
+	              )
 	            )
+	          ),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: this.props.startOver, className: 'code-box-btn is-alt' },
+	            'Start Over'
 	          )
 	        )
-	      ),
-	      _react2.default.createElement('br', null),
-	      _react2.default.createElement(
-	        'button',
-	        { onClick: props.startOver, className: 'code-box-btn is-alt' },
-	        'Start Over'
-	      )
-	    )
-	  );
-	};
+	      );
+	    }
+	  }]);
+
+	  return StepFour;
+	}(_react2.default.Component);
 
 	exports.default = StepFour;
 
 /***/ },
-/* 181 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22942,15 +23427,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _serverUrls = __webpack_require__(182);
+	var _serverUrls = __webpack_require__(186);
 
 	var _serverUrls2 = _interopRequireDefault(_serverUrls);
 
-	var _clearAllButton = __webpack_require__(186);
+	var _clearAllButton = __webpack_require__(190);
 
 	var _clearAllButton2 = _interopRequireDefault(_clearAllButton);
 
-	var _clientInfo = __webpack_require__(187);
+	var _clientInfo = __webpack_require__(191);
 
 	var _clientInfo2 = _interopRequireDefault(_clientInfo);
 
@@ -23022,7 +23507,7 @@
 	exports.default = ConfigurationModal;
 
 /***/ },
-/* 182 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23037,7 +23522,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lodash = __webpack_require__(183);
+	var _lodash = __webpack_require__(187);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -23200,6 +23685,11 @@
 	                    ref: 'discoveryURL',
 	                    placeholder: 'https://my-oidc.com/.well-known/openid-configuration'
 	                  })
+	                ),
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: 'help-text' },
+	                  'Use a discovery document to populate your server urls'
 	                )
 	              )
 	            )
@@ -23276,7 +23766,7 @@
 	exports.default = ServerURLs;
 
 /***/ },
-/* 183 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global, setImmediate) {/**
@@ -28432,10 +28922,10 @@
 	  }
 	}(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(184)(module), (function() { return this; }()), __webpack_require__(185).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(188)(module), (function() { return this; }()), __webpack_require__(189).setImmediate))
 
 /***/ },
-/* 184 */
+/* 188 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -28451,7 +28941,7 @@
 
 
 /***/ },
-/* 185 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(3).nextTick;
@@ -28530,10 +29020,10 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(185).setImmediate, __webpack_require__(185).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(189).setImmediate, __webpack_require__(189).clearImmediate))
 
 /***/ },
-/* 186 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28606,7 +29096,7 @@
 	exports.default = ClearAllButton;
 
 /***/ },
-/* 187 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28713,16 +29203,16 @@
 	exports.default = ClientInfo;
 
 /***/ },
-/* 188 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(189);
+	var content = __webpack_require__(193);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(191)(content, {});
+	var update = __webpack_require__(195)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -28739,21 +29229,21 @@
 	}
 
 /***/ },
-/* 189 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(190)();
+	exports = module.exports = __webpack_require__(194)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "body {\n  font-family: system, -apple-system, BlinkMacSystemFont, \"Helvetica\", \"Arial\", sans-serif !important;\n}\nbutton {\n  outline: none;\n}\n#content,\n.container {\n  min-width: 1000px;\n}\n.main-header {\n  background-color: #f9f9f9;\n  width: 100%;\n}\n.main-header .main-navigation {\n  border-bottom: 1px solid rgba(0,0,0,0.05);\n}\n.main-header .main-navigation > .container {\n  position: relative;\n  height: 115px;\n}\n.main-header .openid-logo {\n  display: inline-block;\n  position: absolute;\n  left: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n  width: 135px;\n  height: 42px;\n  background-image: url(\"/images/openid-logo.svg\");\n}\n.main-header .openid-logo > .logo-text {\n  color: rgba(0,0,0,0);\n  font-size: 0;\n}\n.main-header .navigation {\n  display: inline-block;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n.main-header .navigation .navigation-item {\n  display: inline-block;\n  font-size: 14px;\n  margin-right: 20px;\n}\n.main-header .navigation .navigation-item.is-disabled {\n  opacity: 0.2;\n  pointer-events: none;\n}\n.main-header .navigation .navigation-item > a {\n  color: #000;\n  padding: 10px;\n}\n.main-header .navigation .navigation-item:last-child {\n  margin-right: 0;\n}\n.main-header .social-icons {\n  position: absolute;\n  right: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n  line-height: 0;\n}\n.main-header .social-icons .crafted {\n  position: relative;\n  top: -9px;\n  right: 7px;\n}\n.main-header .social-icons .auth0-icon {\n  display: inline-block;\n  width: 23px;\n  height: 26px;\n  background-image: url(\"/images/auth0-badge.svg\");\n}\n.main-header .social-icons .twitter-icon {\n  display: inline-block;\n  width: 26px;\n  height: 26px;\n  background-image: url(\"/images/twitter-badge.svg\");\n  margin-left: 10px;\n}\n.main-header .hero {\n  text-align: center;\n  padding: 55px 0;\n}\n.main-header .hero .hero-title {\n  margin: 0;\n  margin-bottom: 25px;\n  font-size: 32px;\n  color: #f8931d;\n}\n.main-header .hero .hero-subtitle {\n  max-width: 700px;\n  margin: 0 auto;\n  font-size: 16px;\n  line-height: 2;\n  color: rgba(0,0,0,0.54);\n}\n.json-result {\n  white-space: pre;\n}\n.code-box-btn {\n  display: block;\n  font-size: 12px;\n  text-transform: uppercase;\n  padding: 15px 20px;\n  border-radius: 3px;\n  color: #222228;\n  border: 0;\n  background-color: #fff;\n  letter-spacing: 1px;\n}\n.code-box-btn:hover {\n  background-color: #f5f5f5;\n}\n.code-box-btn.is-alt {\n  border: 1px solid #333;\n}\n.code-box-btn.is-error {\n  background: #d0021b;\n  color: #fff;\n}\n.code-box-btn.is-error:hover {\n  background-color: #c8021a;\n}\n.playground .playground-header {\n  position: relative;\n  margin-top: 20px;\n  padding: 25px 0;\n  border-bottom: 1px solid rgba(0,0,0,0.1);\n}\n@media (min-width: 768px) {\n  .playground .playground-header {\n    text-align: center;\n  }\n}\n.playground .playground-header-title {\n  display: inline-block;\n  font-size: 26px;\n  line-height: 39px;\n  margin: 0;\n}\n.playground .playground-header-config {\n  font-size: 12px;\n  text-transform: uppercase;\n  line-height: 39px;\n  vertical-align: middle;\n  position: absolute;\n  right: -16px;\n  top: 50%;\n  transform: translateY(-50%);\n  background-color: transparent;\n  border: none;\n}\n.playground .playground-header-config > i {\n  margin-right: 5px;\n  font-size: 16px;\n  position: relative;\n  top: 4px;\n}\n.playground .playground-content {\n  width: 600px;\n  max-width: 100%;\n  margin: 40px auto 0 auto;\n}\n.playground .playground-content.skip-tutorial .playground-step:before {\n  transition: none;\n}\n.playground .playground-content pre {\n  background-color: #222228 !important;\n  color: #fff !important;\n}\n.playground .playground-step {\n  position: relative;\n  padding-bottom: 55px;\n}\n@media (min-width: 768px) {\n  .playground .playground-step {\n    left: -32.5px;\n  }\n}\n.playground .playground-step.active .step-number {\n  color: #fff;\n  background-color: #f8931d;\n}\n.playground .playground-step.last-step .step-number {\n  color: #fff;\n  background-color: #7ed321;\n  border-color: #7ed321;\n  line-height: 44px;\n}\n.playground .playground-step.last-step.is-invalid .step-number {\n  background-color: #d0021b;\n  border-color: #d0021b;\n}\n.playground .playground-step.last-step.is-invalid:before {\n  display: none !important;\n}\n.playground .playground-step:before {\n  content: '';\n  display: inline-block;\n  height: 100%;\n  width: 1px;\n  background-color: #f8931d;\n  position: absolute;\n  left: 20px;\n  top: 0;\n  transition: all 1s;\n}\n@media (max-width: 767px) {\n  .playground .playground-step:before {\n    display: none;\n  }\n}\n.playground .playground-step.active:before {\n  height: 0%;\n}\n.playground .playground-step .step-number {\n  display: inline-block;\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  border: 2px solid #f8931d;\n  background-color: #fff;\n  text-align: center;\n  line-height: 40px;\n  font-size: 18px;\n  color: #f8931d;\n  transition: all 1s;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-number {\n    margin-bottom: 15px;\n    margin-right: 15px;\n  }\n}\n@media (min-width: 768px) {\n  .playground .playground-step .step-number {\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n}\n.playground .playground-step p {\n  margin-bottom: 20px;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-content {\n    display: inline;\n  }\n}\n@media (min-width: 768px) {\n  .playground .playground-step .step-content {\n    padding-left: 65px;\n  }\n}\n.playground .playground-step .step-title {\n  font-size: 24px;\n  line-height: 40px;\n  margin: 0;\n  margin-bottom: 20px;\n  text-align: left;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-title {\n    display: inline-block;\n  }\n}\n.playground .playground-step .step-spinner-container {\n  text-align: center;\n  padding: 7px 0;\n}\n.playground .playground-step .step-spinner-container .step-spinner {\n  display: inline-block;\n  margin: 0;\n  vertical-align: middle;\n}\n.playground .playground-step .snippet-description {\n  font-family: Menlo, Monaco, monospace;\n  margin-bottom: 5px;\n  color: #f8931d;\n}\n.playground .playground-step .code-snippet {\n  font-family: Menlo, Monaco, monospace;\n  display: block;\n  position: relative;\n  width: 100%;\n  border-radius: 3px;\n  color: #fff;\n  background-color: #222228;\n  padding: 10px 20px;\n  margin-bottom: 14px;\n  overflow-x: auto;\n}\n.playground .playground-step .code-snippet.light-version {\n  background-color: transparent;\n  border: 1px solid #9b9b9b;\n  color: #000;\n  padding: 0;\n  padding-right: 50px;\n}\n.playground .playground-step .code-snippet .snippet {\n  display: block;\n  width: 100%;\n  height: 100%;\n  overflow-x: auto;\n  padding: 10px 20px;\n}\n.playground .playground-step .code-snippet .btn-copy {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  width: 50px;\n  line-height: 50px;\n  overflow: hidden;\n  background-color: #fff;\n  border: none;\n  color: #0094c1;\n  border-left: 1px solid #9b9b9b;\n}\n.playground .playground-step .code-snippet .btn-copy:focus {\n  outline: none;\n}\n.playground .playground-step .skip-tutorial {\n  display: block;\n  margin: 0 auto;\n  position: relative;\n  left: 32.5px;\n  font-size: 12px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin: 40px auto 20px auto;\n}\n.playground .playground-step .btn-view-jwt {\n  float: right;\n  position: relative;\n  border: none;\n  bottom: 6px;\n  margin-bottom: 8px;\n  border-radius: 50px;\n  padding: 8px 10px;\n  padding-left: 38px;\n  font-size: 12px;\n  font-weight: bold;\n  text-transform: uppercase;\n  background-color: #000;\n  color: #fff;\n  background-image: url(\"/images/jwt-badge.svg\");\n  background-position: 10px center;\n  background-repeat: no-repeat;\n  background-size: 19px 19px;\n}\n.playground .playground-step .code-box-title {\n  border: 1px solid #222228;\n  border-bottom: 0;\n  font-size: 18px;\n  padding-left: 20px;\n  line-height: 65px;\n  border-radius: 3px 3px 0 0;\n  margin: 0;\n}\n.playground .playground-step .code-box-content {\n  background-color: #222228;\n  color: #fff;\n  border-top: none;\n  border-radius: 0 0 3px 3px;\n  padding: 25px 20px;\n  overflow-x: auto;\n}\n.playground .playground-step .code-box-content ::-webkit-scrollbar {\n  width: 5px;\n  height: 10px;\n}\n.playground .playground-step .code-box-content ::-webkit-scrollbar-track {\n  background: transparent;\n  border-radius: 4px;\n}\n.playground .playground-step .code-box-content ::-webkit-scrollbar-thumb {\n  border-radius: 4px;\n  border: 3px solid transparent;\n  border-left: 0;\n  border-right: 0;\n  background: transparent;\n}\n.playground .playground-step .code-box-content:hover ::-webkit-scrollbar-thumb {\n  border-color: #222228;\n  background: rgba(255,255,255,0.1);\n}\n.playground .playground-step .code-block {\n  font-family: Menlo, Monaco, monospace;\n  font-size: 14px;\n  padding-right: 20px;\n  margin-bottom: 15px;\n  overflow-x: scroll;\n}\n.playground .playground-step .code-block a {\n  color: #44c7f4;\n}\n.playground .playground-step .code-block a:hover:after {\n  content: \"Edit\";\n  font-family: system, -apple-system, BlinkMacSystemFont, \"Helvetica\", \"Arial\", sans-serif !important;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  font-size: 12px;\n  padding-left: 15px;\n  color: #fff;\n}\n.playground .playground-step .code-block-url-params {\n  padding-left: 30px;\n}\n.playground .playground-step hr {\n  border-top: 1px solid rgba(255,255,255,0.1);\n  margin: 20px 0;\n}\n.playground .playground-step .code-box-btn {\n  margin: 0 auto;\n}\n.main-footer {\n  text-align: center;\n  background-color: #f9f9f9;\n  font-size: 15px;\n  color: rgba(0,0,0,0.54);\n  padding: 30px 0;\n}\n.main-footer .auth0-badge {\n  display: inline-block;\n  background-size: contain;\n  background-repeat: no-repeat;\n  width: 22px;\n  height: 25px;\n  background-image: url(\"/images/auth0-badge.svg\");\n  vertical-align: middle;\n  margin-left: 5px;\n  margin-right: 10px;\n}\nbody.overflow-hidden {\n  overflow: hidden;\n}\n.configuration-modal {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  overflow-x: hidden;\n  overflow-y: auto;\n  pointer-events: auto;\n}\n.configuration-modal .configuration-modal-dialog {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  padding: 25px;\n  padding-top: 30px;\n  background-color: #fff;\n  width: 100%;\n  max-width: 1000px;\n}\n@media (min-width: 992px) {\n  .configuration-modal .configuration-modal-dialog {\n    left: 50%;\n    top: 50%;\n    right: auto;\n    transform: translate(-50%, -50%);\n    border-radius: 3px;\n  }\n}\n.configuration-modal .configuration-modal-close {\n  position: absolute;\n  cursor: pointer;\n  top: 32px;\n  right: 30px;\n  font-size: 24px;\n  line-height: 1;\n}\n.configuration-modal .configuration-modal-close:hover,\n.configuration-modal .configuration-modal-close:focus {\n  color: rgba(0,0,0,0.5);\n}\n.configuration-modal .configuration-modal-title {\n  font-size: 26px;\n  text-align: center;\n  margin: 0 0 30px 0;\n}\n.configuration-modal .form-control {\n  box-shadow: none;\n  color: rgba(0,0,0,0.86);\n  height: 44px;\n}\n.configuration-modal .form-control:focus {\n  box-shadow: none;\n  border-color: #000;\n}\n.configuration-modal .control-label {\n  text-align: left !important;\n  color: rgba(0,0,0,0.54);\n}\n.configuration-modal .input-with-button {\n  width: 100%;\n  border-right: 0;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n  float: right;\n}\n.configuration-modal .button-float-right {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n  border-left: 0;\n  height: 44px;\n  float: right;\n  font-size: 12px;\n}\n.configuration-modal .clear-storage-container {\n  background-color: #222228;\n  border-radius: 3px;\n  color: #fff;\n  font-size: 13px;\n  position: relative;\n}\n@media (max-width: 767px) {\n  .configuration-modal .clear-storage-container {\n    padding-bottom: 20px;\n  }\n}\n.configuration-modal .clear-storage-container > p {\n  margin: 0;\n  padding: 20px;\n  font-size: 13px;\n}\n@media (min-width: 768px) {\n  .configuration-modal .clear-storage-container > p {\n    padding-right: 240px;\n  }\n}\n.configuration-modal .clear-storage-container > .clear-storage-btn {\n  right: 20px;\n  background-color: #fff;\n  border: none;\n  border-radius: 3px;\n  letter-spacing: 1px;\n  color: #222228;\n  text-transform: uppercase;\n  font-size: 12px;\n  padding: 10px 20px;\n}\n@media (max-width: 767px) {\n  .configuration-modal .clear-storage-container > .clear-storage-btn {\n    display: block;\n    margin: 0 auto;\n  }\n}\n@media (min-width: 768px) {\n  .configuration-modal .clear-storage-container > .clear-storage-btn {\n    position: absolute;\n    top: 50%;\n    transform: translateY(-50%);\n  }\n}\n.configuration-modal .configuration-modal-backdrop {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  height: 100%;\n  width: 100%;\n  background-color: rgba(34,34,40,0.75);\n}\n.bottom-callout.theme-dark {\n  background: #222228;\n  padding: 40px 30px;\n}\n.bottom-callout.theme-dark img,\n.bottom-callout.theme-dark .btn {\n  margin: 20px 0;\n}\n.bottom-callout.theme-dark p {\n  font-size: 18px;\n  color: rgba(255,255,255,0.7);\n  font-weight: 500;\n  line-height: normal;\n}\n", ""]);
+	exports.push([module.id, "body {\n  font-family: system, -apple-system, BlinkMacSystemFont, \"Helvetica\", \"Arial\", sans-serif !important;\n}\nbutton {\n  outline: none;\n}\n#content,\n.container {\n  min-width: 1000px;\n}\n.main-header {\n  background-color: #f9f9f9;\n  width: 100%;\n}\n.main-header .main-navigation {\n  border-bottom: 1px solid rgba(0,0,0,0.05);\n}\n.main-header .main-navigation > .container {\n  position: relative;\n  height: 115px;\n}\n.main-header .openid-logo {\n  display: inline-block;\n  position: absolute;\n  left: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n  width: 135px;\n  height: 42px;\n  background-image: url(\"/images/openid-logo.svg\");\n}\n.main-header .openid-logo > .logo-text {\n  color: rgba(0,0,0,0);\n  font-size: 0;\n}\n.main-header .navigation {\n  display: inline-block;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n.main-header .navigation .navigation-item {\n  display: inline-block;\n  font-size: 14px;\n  margin-right: 20px;\n}\n.main-header .navigation .navigation-item.is-disabled {\n  opacity: 0.2;\n  pointer-events: none;\n}\n.main-header .navigation .navigation-item > a {\n  color: #000;\n  padding: 10px;\n}\n.main-header .navigation .navigation-item:last-child {\n  margin-right: 0;\n}\n.main-header .social-icons {\n  position: absolute;\n  right: 15px;\n  top: 50%;\n  transform: translateY(-50%);\n  line-height: 0;\n}\n.main-header .social-icons .crafted {\n  position: relative;\n  top: -9px;\n  right: 7px;\n}\n.main-header .social-icons .auth0-icon {\n  display: inline-block;\n  width: 23px;\n  height: 26px;\n  background-image: url(\"/images/auth0-badge.svg\");\n}\n.main-header .social-icons .twitter-icon {\n  display: inline-block;\n  width: 26px;\n  height: 26px;\n  background-image: url(\"/images/twitter-badge.svg\");\n  margin-left: 10px;\n}\n.main-header .hero {\n  text-align: center;\n  padding: 55px 0;\n}\n.main-header .hero .hero-title {\n  margin: 0;\n  margin-bottom: 25px;\n  font-size: 32px;\n  color: #f8931d;\n}\n.main-header .hero .hero-subtitle {\n  max-width: 700px;\n  margin: 0 auto;\n  font-size: 16px;\n  line-height: 2;\n  color: rgba(0,0,0,0.54);\n}\n.json-result {\n  white-space: pre;\n}\n.code-box-btn {\n  display: block;\n  font-size: 12px;\n  text-transform: uppercase;\n  padding: 15px 20px;\n  border-radius: 3px;\n  color: #222228;\n  border: 0;\n  background-color: #fff;\n  letter-spacing: 1px;\n}\n.code-box-btn:hover {\n  background-color: #f5f5f5;\n}\n.code-box-btn.is-alt {\n  border: 1px solid #333;\n}\n.code-box-btn.is-error {\n  background: #d0021b;\n  color: #fff;\n}\n.code-box-btn.is-error:hover {\n  background-color: #c8021a;\n}\n.playground .mode-switcher {\n  position: absolute;\n  top: 50%;\n  transform: translateY(-50%);\n  left: 0;\n}\n.playground .mode-switcher .form-control {\n  width: 225px;\n  display: inline-block;\n  margin-left: 10px;\n  font-size: 14px;\n  height: 38px;\n}\n.playground .playground-header {\n  position: relative;\n  margin-top: 20px;\n  padding: 25px 0;\n  border-bottom: 1px solid rgba(0,0,0,0.1);\n}\n@media (min-width: 768px) {\n  .playground .playground-header {\n    text-align: center;\n  }\n}\n.playground .playground-header-title {\n  display: inline-block;\n  font-size: 26px;\n  line-height: 39px;\n  margin: 0;\n}\n.playground .playground-header-config {\n  font-size: 12px;\n  text-transform: uppercase;\n  line-height: 39px;\n  vertical-align: middle;\n  position: absolute;\n  right: -16px;\n  top: 50%;\n  transform: translateY(-50%);\n  background-color: transparent;\n  border: none;\n}\n.playground .playground-header-config > i {\n  margin-right: 5px;\n  font-size: 16px;\n  position: relative;\n  top: 4px;\n}\n.playground .playground-content {\n  width: 600px;\n  max-width: 100%;\n  margin: 40px auto 0 auto;\n}\n.playground .playground-content.skip-tutorial .playground-step:before {\n  transition: none;\n}\n.playground .playground-content pre {\n  background-color: #222228 !important;\n  color: #fff !important;\n}\n.playground .playground-step {\n  position: relative;\n  padding-bottom: 55px;\n}\n@media (min-width: 768px) {\n  .playground .playground-step {\n    left: -32.5px;\n  }\n}\n.playground .playground-step.active .step-number {\n  color: #fff;\n  background-color: #f8931d;\n}\n.playground .playground-step.last-step .step-number {\n  color: #fff;\n  background-color: #7ed321;\n  border-color: #7ed321;\n  line-height: 44px;\n}\n.playground .playground-step.last-step.is-invalid .step-number {\n  background-color: #d0021b;\n  border-color: #d0021b;\n}\n.playground .playground-step.last-step.is-invalid:before {\n  display: none !important;\n}\n.playground .playground-step:before {\n  content: '';\n  display: inline-block;\n  height: 100%;\n  width: 1px;\n  background-color: #f8931d;\n  position: absolute;\n  left: 20px;\n  top: 0;\n  transition: all 1s;\n}\n@media (max-width: 767px) {\n  .playground .playground-step:before {\n    display: none;\n  }\n}\n.playground .playground-step.active:before {\n  height: 0%;\n}\n.playground .playground-step .step-number {\n  display: inline-block;\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  border: 2px solid #f8931d;\n  background-color: #fff;\n  text-align: center;\n  line-height: 40px;\n  font-size: 18px;\n  color: #f8931d;\n  transition: all 1s;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-number {\n    margin-bottom: 15px;\n    margin-right: 15px;\n  }\n}\n@media (min-width: 768px) {\n  .playground .playground-step .step-number {\n    position: absolute;\n    top: 0;\n    left: 0;\n  }\n}\n.playground .playground-step p {\n  margin-bottom: 20px;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-content {\n    display: inline;\n  }\n}\n@media (min-width: 768px) {\n  .playground .playground-step .step-content {\n    padding-left: 65px;\n  }\n}\n.playground .playground-step .step-title {\n  font-size: 24px;\n  line-height: 40px;\n  margin: 0;\n  margin-bottom: 20px;\n  text-align: left;\n}\n@media (max-width: 767px) {\n  .playground .playground-step .step-title {\n    display: inline-block;\n  }\n}\n.playground .playground-step .step-spinner-container {\n  text-align: center;\n  padding: 7px 0;\n}\n.playground .playground-step .step-spinner-container .step-spinner {\n  display: inline-block;\n  margin: 0;\n  vertical-align: middle;\n}\n.playground .playground-step .snippet-description {\n  font-family: Menlo, Monaco, monospace;\n  margin-bottom: 5px;\n  color: #f8931d;\n}\n.playground .playground-step .code-snippet {\n  font-family: Menlo, Monaco, monospace;\n  display: block;\n  position: relative;\n  width: 100%;\n  border-radius: 3px;\n  color: #fff;\n  background-color: #222228;\n  padding: 10px 20px;\n  margin-bottom: 14px;\n  overflow-x: auto;\n}\n.playground .playground-step .code-snippet.light-version {\n  background-color: transparent;\n  border: 1px solid #9b9b9b;\n  color: #000;\n  padding: 0;\n  padding-right: 50px;\n}\n.playground .playground-step .code-snippet .snippet {\n  display: block;\n  width: 100%;\n  height: 100%;\n  overflow-x: auto;\n  padding: 10px 20px;\n}\n.playground .playground-step .code-snippet .btn-copy {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  width: 50px;\n  line-height: 50px;\n  overflow: hidden;\n  background-color: #fff;\n  border: none;\n  color: #0094c1;\n  border-left: 1px solid #9b9b9b;\n}\n.playground .playground-step .code-snippet .btn-copy:focus {\n  outline: none;\n}\n.playground .playground-step .skip-tutorial {\n  display: block;\n  margin: 0 auto;\n  position: relative;\n  left: 32.5px;\n  font-size: 12px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin: 40px auto 20px auto;\n}\n.playground .playground-step .btn-view-jwt {\n  float: right;\n  position: relative;\n  border: none;\n  bottom: 6px;\n  margin-bottom: 8px;\n  border-radius: 50px;\n  padding: 8px 10px;\n  padding-left: 38px;\n  font-size: 12px;\n  font-weight: bold;\n  text-transform: uppercase;\n  background-color: #000;\n  color: #fff;\n  background-image: url(\"/images/jwt-badge.svg\");\n  background-position: 10px center;\n  background-repeat: no-repeat;\n  background-size: 19px 19px;\n}\n.playground .playground-step .code-box-title {\n  border: 1px solid #222228;\n  border-bottom: 0;\n  font-size: 18px;\n  padding-left: 20px;\n  line-height: 65px;\n  border-radius: 3px 3px 0 0;\n  margin: 0;\n}\n.playground .playground-step .code-box-content {\n  background-color: #222228;\n  color: #fff;\n  border-top: none;\n  border-radius: 0 0 3px 3px;\n  padding: 25px 20px;\n  overflow-x: auto;\n}\n.playground .playground-step .code-box-content ::-webkit-scrollbar {\n  width: 5px;\n  height: 10px;\n}\n.playground .playground-step .code-box-content ::-webkit-scrollbar-track {\n  background: transparent;\n  border-radius: 4px;\n}\n.playground .playground-step .code-box-content ::-webkit-scrollbar-thumb {\n  border-radius: 4px;\n  border: 3px solid transparent;\n  border-left: 0;\n  border-right: 0;\n  background: transparent;\n}\n.playground .playground-step .code-box-content:hover ::-webkit-scrollbar-thumb {\n  border-color: #222228;\n  background: rgba(255,255,255,0.1);\n}\n.playground .playground-step .code-block {\n  font-family: Menlo, Monaco, monospace;\n  font-size: 14px;\n  padding-right: 20px;\n  margin-bottom: 15px;\n  overflow-x: scroll;\n}\n.playground .playground-step .code-block a {\n  color: #44c7f4;\n}\n.playground .playground-step .code-block a:hover:after {\n  content: \"Edit\";\n  font-family: system, -apple-system, BlinkMacSystemFont, \"Helvetica\", \"Arial\", sans-serif !important;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  font-size: 12px;\n  padding-left: 15px;\n  color: #fff;\n}\n.playground .playground-step .code-block-url-params {\n  padding-left: 30px;\n}\n.playground .playground-step hr {\n  border-top: 1px solid rgba(255,255,255,0.1);\n  margin: 20px 0;\n}\n.playground .playground-step .code-box-btn {\n  margin: 0 auto;\n}\n.main-footer {\n  text-align: center;\n  background-color: #f9f9f9;\n  font-size: 15px;\n  color: rgba(0,0,0,0.54);\n  padding: 30px 0;\n}\n.main-footer .auth0-badge {\n  display: inline-block;\n  background-size: contain;\n  background-repeat: no-repeat;\n  width: 22px;\n  height: 25px;\n  background-image: url(\"/images/auth0-badge.svg\");\n  vertical-align: middle;\n  margin-left: 5px;\n  margin-right: 10px;\n}\nbody.overflow-hidden {\n  overflow: hidden;\n}\n.configuration-modal {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  overflow-x: hidden;\n  overflow-y: auto;\n  pointer-events: auto;\n}\n.configuration-modal .configuration-modal-dialog {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  padding: 25px;\n  padding-top: 30px;\n  background-color: #fff;\n  width: 100%;\n  max-width: 1000px;\n}\n@media (min-width: 992px) {\n  .configuration-modal .configuration-modal-dialog {\n    left: 50%;\n    top: 50%;\n    right: auto;\n    transform: translate(-50%, -50%);\n    border-radius: 3px;\n  }\n}\n.configuration-modal .configuration-modal-close {\n  position: absolute;\n  cursor: pointer;\n  top: 32px;\n  right: 30px;\n  font-size: 24px;\n  line-height: 1;\n}\n.configuration-modal .configuration-modal-close:hover,\n.configuration-modal .configuration-modal-close:focus {\n  color: rgba(0,0,0,0.5);\n}\n.configuration-modal .configuration-modal-title {\n  font-size: 26px;\n  text-align: center;\n  margin: 0 0 30px 0;\n}\n.configuration-modal .form-control {\n  box-shadow: none;\n  color: rgba(0,0,0,0.86);\n  height: 44px;\n}\n.configuration-modal .form-control:focus {\n  box-shadow: none;\n  border-color: #000;\n}\n.configuration-modal .control-label {\n  text-align: left !important;\n  color: rgba(0,0,0,0.54);\n}\n.configuration-modal .input-with-button {\n  width: 100%;\n  border-right: 0;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n  float: right;\n}\n.configuration-modal .button-float-right {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n  border-left: 0;\n  height: 44px;\n  float: right;\n  font-size: 12px;\n}\n.configuration-modal .clear-storage-container {\n  background-color: #222228;\n  border-radius: 3px;\n  color: #fff;\n  font-size: 13px;\n  position: relative;\n}\n@media (max-width: 767px) {\n  .configuration-modal .clear-storage-container {\n    padding-bottom: 20px;\n  }\n}\n.configuration-modal .clear-storage-container > p {\n  margin: 0;\n  padding: 20px;\n  font-size: 13px;\n}\n@media (min-width: 768px) {\n  .configuration-modal .clear-storage-container > p {\n    padding-right: 240px;\n  }\n}\n.configuration-modal .clear-storage-container > .clear-storage-btn {\n  right: 20px;\n  background-color: #fff;\n  border: none;\n  border-radius: 3px;\n  letter-spacing: 1px;\n  color: #222228;\n  text-transform: uppercase;\n  font-size: 12px;\n  padding: 10px 20px;\n}\n@media (max-width: 767px) {\n  .configuration-modal .clear-storage-container > .clear-storage-btn {\n    display: block;\n    margin: 0 auto;\n  }\n}\n@media (min-width: 768px) {\n  .configuration-modal .clear-storage-container > .clear-storage-btn {\n    position: absolute;\n    top: 50%;\n    transform: translateY(-50%);\n  }\n}\n.configuration-modal .configuration-modal-backdrop {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  height: 100%;\n  width: 100%;\n  background-color: rgba(34,34,40,0.75);\n}\n.bottom-callout.theme-dark {\n  background: #222228;\n  padding: 40px 30px;\n}\n.bottom-callout.theme-dark img,\n.bottom-callout.theme-dark .btn {\n  margin: 20px 0;\n}\n.bottom-callout.theme-dark p {\n  font-size: 18px;\n  color: rgba(255,255,255,0.7);\n  font-weight: 500;\n  line-height: normal;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 190 */
+/* 194 */
 /***/ function(module, exports) {
 
 	/*
@@ -28809,7 +29299,7 @@
 
 
 /***/ },
-/* 191 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
