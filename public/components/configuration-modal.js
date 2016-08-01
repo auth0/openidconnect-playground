@@ -43,7 +43,7 @@ const ConfigurationModal = (props) =>
         <div className="clear-storage-container">
           <p>
             Hey, just a friendly note: we store stuff like your keys in
-            LocalStorage so that when you redirect to authenticate, you don&#47;t lose them.
+            LocalStorage so that when you redirect to authenticate, you don’t lose them.
             You can clear them by clicking on this button:
           </p>
           <ClearAllButton />

@@ -45,7 +45,7 @@ class ServerURLs extends React.Component{
           </div>
         </div>
 
-        <div>
+        <div className="form-horizontal">
           <div className="form-group">
             <div style={{display: this.props.server == 'Auth0' ? 'block': 'none'}}>
               <label htmlFor="domain" className="col-md-3 col-xs-12 control-label">Auth0 domain</label>

@@ -488,26 +488,24 @@ body.overflow-hidden
   right 0
   bottom 0
   left 0
-  overflow-x hidden
   overflow-y auto
   pointer-events auto
 
   .configuration-modal-dialog
-    position absolute
-    top 0
-    left 0
-    right 0
     padding 25px
-    padding-top 30px
     background-color white
-    width 100%
     max-width 1000px
 
+    +breakpoint("desktop", "max")
+      position absolute
+      padding-top 30px
+      top 0
+      left 0
+      right 0
+
     +breakpoint("desktop")
-      left 50%
-      top 50%
-      right auto
-      transform translate(-50%, -50%)
+      position relative
+      margin 40px auto
       border-radius 3px
 
 
@@ -560,6 +558,7 @@ body.overflow-hidden
     background-color #222228
     border-radius 3px
     color white
+    padding 15px
     font-size 13px
     position relative
 
@@ -568,14 +567,15 @@ body.overflow-hidden
 
     > p
       margin 0
-      padding 20px
+      padding 0 20px
+      margin-bottom 20px
       font-size 13px
 
-      +breakpoint("tablet")
+      +breakpoint("desktop")
         padding-right 240px
+        margin-bottom 0
 
     > .clear-storage-btn
-      right 20px
       background-color white
       border none
       border-radius 3px
@@ -585,18 +585,19 @@ body.overflow-hidden
       font-size 12px
       padding 10px 20px
 
-      +breakpoint("tablet", "max")
+      +breakpoint("desktop", "max")
         display block
         margin 0 auto
 
-      +breakpoint("tablet")
+      +breakpoint("desktop")
+        right 20px
         position absolute
         top 50%
         transform translateY(-50%)
 
 
   .configuration-modal-backdrop
-    position fixed
+    position absolute
     top 0
     right 0
     bottom 0
