@@ -1,18 +1,14 @@
 import React from 'react';
+import Ajax from 'simple-ajax';
 import offset from 'document-offset';
 import ReactDOM from 'react-dom';
-import Ajax from 'simple-ajax';
-import Hero from './hero';
-import Footer from './footer';
 import StepOne from './step-one';
 import StepTwo from './step-two';
 import StepThree from './step-three';
 import StepFour from './step-four';
 import ConfigurationModal from './configuration-modal';
 
-
-class OpenIDPage extends React.Component {
-
+class DebuggerPage extends React.Component {
   constructor() {
     super();
     this.update = this.update.bind(this)
@@ -181,38 +177,38 @@ class OpenIDPage extends React.Component {
       this.updateDiscovery(this.state.discoveryURL)
     }
   }
-	updateDiscovery(documentURL){
+  updateDiscovery(documentURL){
     documentURL = documentURL || this.state.discoveryURL
 
-		this.discover(documentURL, function(discovered){
-			this.setState({
-				discoveryURL: documentURL,
-				authEndpoint: discovered.authorization_endpoint,
-				tokenEndpoint: discovered.token_endpoint,
+    this.discover(documentURL, function(discovered){
+      this.setState({
+        discoveryURL: documentURL,
+        authEndpoint: discovered.authorization_endpoint,
+        tokenEndpoint: discovered.token_endpoint,
         userInfoEndpoint: discovered.userinfo_endpoint,
         tokenKeysEndpoint: discovered.jwks_uri
-			})
-      this.saveState()
-		}.bind(this))
-	}
-	discover(url, cb){
-		let serviceDiscovery = new Ajax({
-			url: '/discover',
-			method: 'GET',
-			data: {
-				url
-			}
-		})
+      });
+      this.saveState();
+    }.bind(this));
+  }
+  discover(url, cb) {
+    const serviceDiscovery = new Ajax({
+      url: '/discover',
+      method: 'GET',
+      data: {
+        url
+      }
+    });
 
-		serviceDiscovery.on('success', function(event){
-			let discovered = JSON.parse(event.currentTarget.response)
+    serviceDiscovery.on('success', function(event){
+      let discovered = JSON.parse(event.currentTarget.response)
       if(cb && typeof cb == 'function') cb(discovered)
-		}.bind(this))
+    }.bind(this))
 
     // TODO: Add error case
 
-		serviceDiscovery.send()
-	}
+    serviceDiscovery.send();
+  }
 
   openConfigurationModal(visibility, inputFocus) {
     this.setState({
@@ -235,10 +231,13 @@ class OpenIDPage extends React.Component {
     this.setState({ currentStep: step });
   }
 
+  saveState() {
+    localStorage.setItem('app-state', JSON.stringify(this.state));
+  }
+
   render() {
     return (
-      <div className="openid-page">
-        <Hero />
+      <div>
         <main className="playground">
           <div className="container">
             <div className="playground-header">
@@ -316,7 +315,7 @@ class OpenIDPage extends React.Component {
             </div>
           </div>
         </main>
-        {this.state.configurationModalOpen ?
+        { this.state.configurationModalOpen ?
           <ConfigurationModal ref="config"
             closeModal={ () => { this.openConfigurationModal(false); } }
             discoveryURL={this.state.discoveryURL}
@@ -330,16 +329,10 @@ class OpenIDPage extends React.Component {
             clientSecret= {this.state.clientSecret}
             scopes = {this.state.scopes}
             focus = {this.state.configurationModalFocus}
-          />
-          : null }
-        <Footer />
+          /> : null }
       </div>
     );
   }
-	saveState(){
-		localStorage.setItem('app-state', JSON.stringify(this.state))
-	}
 }
 
-
-export default OpenIDPage;
+export default DebuggerPage;

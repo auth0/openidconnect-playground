@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router'
 
 const Hero = () =>
   <header className="main-header">
@@ -9,10 +10,10 @@ const Hero = () =>
         </a>
         <ul className="navigation">
           <li className="navigation-item">
-            <a href="">Debugger</a>
+            <Link to="/">Debugger</Link>
           </li>
           <li className="navigation-item">
-            <a href="">Introduction</a>
+            <Link to="/introduction">Introduction</Link>
           </li>
           <li className="navigation-item">
             <a href="">Ask</a>
