@@ -20425,6 +20425,7 @@
 	    _this.startOver = _this.startOver.bind(_this);
 	    _this.scrollAnimated = _this.scrollAnimated.bind(_this);
 	    _this.scrollToCurrentStep = _this.scrollToCurrentStep.bind(_this);
+	    _this.openConfigurationModal = _this.openConfigurationModal.bind(_this);
 	    var savedState = localStorage.getItem('app-state') || '{}';
 	    savedState = JSON.parse(savedState);
 	    _this.state = savedState;
@@ -20443,6 +20444,7 @@
 	    _this.state.authCode = _this.state.authCode || document.querySelector('input[name=code]').value;
 	    _this.state.idTokenHeader = _this.state.idTokenHeader || '';
 	    _this.state.configurationModalOpen = false;
+	    _this.state.configurationModalFocus = '';
 	    _this.state.validated = _this.state.validated || false;
 	    _this.state.exchangeResult = _this.state.exchangeResult || '';
 	    _this.saveState();
@@ -20627,11 +20629,15 @@
 	      serviceDiscovery.send();
 	    }
 	  }, {
-	    key: 'setConfigurationModalVisibility',
-	    value: function setConfigurationModalVisibility(v) {
-	      this.setState({ configurationModalOpen: v });
+	    key: 'openConfigurationModal',
+	    value: function openConfigurationModal(visibility, inputFocus) {
+	      this.setState({
+	        configurationModalOpen: visibility,
+	        configurationModalFocus: inputFocus
+	      });
+	      console.log(inputFocus);
 	      // Add class to prevent page from scrolling when modal is opened
-	      document.body.classList.toggle('overflow-hidden', v);
+	      document.body.classList.toggle('overflow-hidden', visibility);
 	    }
 	  }, {
 	    key: 'startOver',
@@ -20784,7 +20790,7 @@
 	                'button',
 	                {
 	                  onClick: function onClick() {
-	                    _this2.setConfigurationModalVisibility(true);
+	                    _this2.openConfigurationModal(true);
 	                  },
 	                  className: 'playground-header-config btn btn-link',
 	                  href: ''
@@ -20803,9 +20809,7 @@
 	                scopes: this.state.scopes,
 	                stateToken: this.state.stateToken,
 	                redirectURI: this.state.redirectURI,
-	                openModal: function openModal() {
-	                  _this2.setConfigurationModalVisibility(true);
-	                },
+	                openModal: this.openConfigurationModal,
 	                nextStep: function nextStep() {
 	                  _this2.setStep(2);
 	                },
@@ -20821,9 +20825,7 @@
 	                authCode: this.state.authCode,
 	                clientID: this.state.clientID,
 	                clientSecret: this.state.clientSecret,
-	                openModal: function openModal() {
-	                  _this2.setConfigurationModalVisibility(true);
-	                },
+	                openModal: this.openConfigurationModal,
 	                server: this.state.server,
 	                nextStep: function nextStep() {
 	                  _this2.setStep(3);
@@ -20851,7 +20853,7 @@
 	        ),
 	        this.state.configurationModalOpen ? _react2.default.createElement(_configurationModal2.default, { ref: 'config',
 	          closeModal: function closeModal() {
-	            _this2.setConfigurationModalVisibility(false);
+	            _this2.openConfigurationModal(false);
 	          },
 	          discoveryURL: this.state.discoveryURL,
 	          authEndpoint: this.state.authEndpoint,
@@ -20862,7 +20864,8 @@
 	          server: this.state.server,
 	          clientID: this.state.clientID,
 	          clientSecret: this.state.clientSecret,
-	          scopes: this.state.scopes
+	          scopes: this.state.scopes,
+	          focus: this.state.configurationModalFocus
 	        }) : null,
 	        _react2.default.createElement(
 	          'div',
@@ -22035,6 +22038,8 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      this.completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI + '&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken;
 
 	      return _react2.default.createElement(
@@ -22070,7 +22075,9 @@
 	                { className: 'code-block' },
 	                _react2.default.createElement(
 	                  'a',
-	                  { onClick: this.props.openModal, href: '#' },
+	                  { onClick: function onClick() {
+	                      _this2.props.openModal(true, 'authEndpoint');
+	                    }, href: '#' },
 	                  ' ',
 	                  this.props.authEndpoint || "Enter an authorization endpoint",
 	                  '? '
@@ -22081,21 +22088,27 @@
 	                  'client_id=',
 	                  _react2.default.createElement(
 	                    'a',
-	                    { onClick: this.props.openModal, href: '#' },
+	                    { onClick: function onClick() {
+	                        _this2.props.openModal(true, 'clientID');
+	                      }, href: '#' },
 	                    this.props.clientID
 	                  ),
 	                  _react2.default.createElement('br', null),
 	                  '&redirect_uri=',
 	                  _react2.default.createElement(
 	                    'a',
-	                    { onClick: this.props.openModal, href: '#' },
+	                    { onClick: function onClick() {
+	                        _this2.props.openModal(true, '');
+	                      }, href: '#' },
 	                    'https://openidconnect.net/callback\u2028'
 	                  ),
 	                  _react2.default.createElement('br', null),
 	                  '&scope=',
 	                  _react2.default.createElement(
 	                    'a',
-	                    { onClick: this.props.openModal, href: '#' },
+	                    { onClick: function onClick() {
+	                        _this2.props.openModal(true, 'scopes');
+	                      }, href: '#' },
 	                    this.props.scopes
 	                  ),
 	                  _react2.default.createElement('br', null),
@@ -22730,12 +22743,14 @@
 	        tokenKeysEndpoint: props.tokenKeysEndpoint,
 	        userInfoEndpoint: props.userInfoEndpoint,
 	        domain: props.domain,
-	        server: props.server
+	        server: props.server,
+	        focus: props.focus
 	      }),
 	      _react2.default.createElement(_clientInfo2.default, {
 	        clientID: props.clientID,
 	        clientSecret: props.clientSecret,
-	        scopes: props.scopes
+	        scopes: props.scopes,
+	        focus: props.focus
 	      }),
 	      _react2.default.createElement(
 	        'div',
@@ -22815,6 +22830,10 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      document.querySelector('option[value=' + (this.props.server || 'Auth0') + ']').setAttribute('selected', 'true');
+
+	      if (this.refs[this.props.focus]) {
+	        this.refs[this.props.focus].focus();
+	      }
 	    }
 	  }, {
 	    key: 'update',
@@ -39537,7 +39556,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -39555,84 +39574,91 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var ClientInfo = function (_React$Component) {
-		_inherits(ClientInfo, _React$Component);
+	  _inherits(ClientInfo, _React$Component);
 
-		function ClientInfo() {
-			_classCallCheck(this, ClientInfo);
+	  function ClientInfo() {
+	    _classCallCheck(this, ClientInfo);
 
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ClientInfo).call(this));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ClientInfo).call(this));
 
-			_this.update = _this.update.bind(_this);
-			var savedState = localStorage.getItem('app-state') || '{}';
-			savedState = JSON.parse(savedState);
-			_this.state = savedState;
-			return _this;
-		}
+	    _this.update = _this.update.bind(_this);
+	    var savedState = localStorage.getItem('app-state') || '{}';
+	    savedState = JSON.parse(savedState);
+	    _this.state = savedState;
+	    return _this;
+	  }
 
-		_createClass(ClientInfo, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					{ className: 'form-horizontal' },
-					_react2.default.createElement(
-						'div',
-						{ className: 'form-group' },
-						_react2.default.createElement(
-							'label',
-							{ className: 'col-md-3 col-xs-12 control-label', htmlFor: 'clientID' },
-							'OIDC Client ID'
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'col-md-9 col-xs-12' },
-							_react2.default.createElement('input', { className: 'form-control', name: 'clientID', onChange: this.update, value: this.props.clientID, ref: 'clientID' })
-						)
-					),
-					_react2.default.createElement(
-						'div',
-						{ className: 'form-group' },
-						_react2.default.createElement(
-							'label',
-							{ className: 'col-md-3 col-xs-12 control-label', htmlFor: 'clientSecret' },
-							'OIDC Client Secret'
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'col-md-9 col-xs-12' },
-							_react2.default.createElement('input', { className: 'form-control', name: 'clientSecret', onChange: this.update, value: this.props.clientSecret, ref: 'clientSecret' })
-						)
-					),
-					_react2.default.createElement(
-						'div',
-						{ className: 'form-group' },
-						_react2.default.createElement(
-							'label',
-							{ className: 'col-md-3 col-xs-12 control-label', htmlFor: 'scopes' },
-							'Scope'
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'col-md-9 col-xs-12' },
-							_react2.default.createElement('input', { className: 'form-control', name: 'scopes', onChange: this.update, value: this.props.scopes, ref: 'scopes' })
-						)
-					)
-				);
-			}
-		}, {
-			key: 'update',
-			value: function update() {
-				window.dispatchEvent(new CustomEvent('configChange', {
-					detail: {
-						clientID: this.refs.clientID.value,
-						clientSecret: this.refs.clientSecret.value,
-						scopes: this.refs.scopes.value
-					}
-				}));
-			}
-		}]);
+	  _createClass(ClientInfo, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      if (this.refs[this.props.focus]) {
+	        this.refs[this.props.focus].focus();
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'form-horizontal' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          _react2.default.createElement(
+	            'label',
+	            { className: 'col-md-3 col-xs-12 control-label', htmlFor: 'clientID' },
+	            'OIDC Client ID'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-9 col-xs-12' },
+	            _react2.default.createElement('input', { className: 'form-control', name: 'clientID', onChange: this.update, value: this.props.clientID, ref: 'clientID' })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          _react2.default.createElement(
+	            'label',
+	            { className: 'col-md-3 col-xs-12 control-label', htmlFor: 'clientSecret' },
+	            'OIDC Client Secret'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-9 col-xs-12' },
+	            _react2.default.createElement('input', { className: 'form-control', name: 'clientSecret', onChange: this.update, value: this.props.clientSecret, ref: 'clientSecret' })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          _react2.default.createElement(
+	            'label',
+	            { className: 'col-md-3 col-xs-12 control-label', htmlFor: 'scopes' },
+	            'Scope'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-9 col-xs-12' },
+	            _react2.default.createElement('input', { className: 'form-control', name: 'scopes', onChange: this.update, value: this.props.scopes, ref: 'scopes' })
+	          )
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'update',
+	    value: function update() {
+	      window.dispatchEvent(new CustomEvent('configChange', {
+	        detail: {
+	          clientID: this.refs.clientID.value,
+	          clientSecret: this.refs.clientSecret.value,
+	          scopes: this.refs.scopes.value
+	        }
+	      }));
+	    }
+	  }]);
 
-		return ClientInfo;
+	  return ClientInfo;
 	}(_react2.default.Component);
 
 	exports.default = ClientInfo;

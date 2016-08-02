@@ -7,7 +7,11 @@ class ServerURLs extends React.Component{
     this.update = this.update.bind(this)
   }
   componentDidMount(){
-      document.querySelector('option[value=' + (this.props.server || 'Auth0' )+ ']').setAttribute('selected', 'true')
+    document.querySelector('option[value=' + (this.props.server || 'Auth0' )+ ']').setAttribute('selected', 'true')
+
+    if (this.refs[this.props.focus]) {
+      this.refs[this.props.focus].focus()
+    }
   }
   update(event){
     let changed = {

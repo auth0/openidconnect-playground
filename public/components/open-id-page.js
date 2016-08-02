@@ -17,6 +17,7 @@ class OpenIDPage extends React.Component {
     this.startOver = this.startOver.bind(this)
     this.scrollAnimated = this.scrollAnimated.bind(this)
     this.scrollToCurrentStep = this.scrollToCurrentStep.bind(this)
+    this.openConfigurationModal = this.openConfigurationModal.bind(this);
 		let savedState = localStorage.getItem('app-state') || '{}'
 		savedState = JSON.parse(savedState)
 		this.state = savedState
@@ -35,6 +36,7 @@ class OpenIDPage extends React.Component {
     this.state.authCode = this.state.authCode || document.querySelector('input[name=code]').value
     this.state.idTokenHeader = this.state.idTokenHeader || ''
     this.state.configurationModalOpen = false
+    this.state.configurationModalFocus = ''
     this.state.validated = this.state.validated || false
     this.state.exchangeResult = this.state.exchangeResult || ''
     this.saveState()
@@ -210,10 +212,14 @@ class OpenIDPage extends React.Component {
 		serviceDiscovery.send()
 	}
 
-  setConfigurationModalVisibility(v) {
-    this.setState({ configurationModalOpen: v });
+  openConfigurationModal(visibility, inputFocus) {
+    this.setState({
+      configurationModalOpen: visibility,
+      configurationModalFocus: inputFocus
+    });
+    console.log(inputFocus);
     // Add class to prevent page from scrolling when modal is opened
-    document.body.classList.toggle('overflow-hidden', v);
+    document.body.classList.toggle('overflow-hidden', visibility);
   }
 
   startOver() {
@@ -280,7 +286,7 @@ class OpenIDPage extends React.Component {
               </div>
               <h2 className="playground-header-title">Debugger</h2>
               <button
-                onClick={ () => { this.setConfigurationModalVisibility(true); } }
+                onClick={ () => { this.openConfigurationModal(true); } }
                 className="playground-header-config btn btn-link"
                 href=""
               >
@@ -297,7 +303,7 @@ class OpenIDPage extends React.Component {
                   scopes = {this.state.scopes}
                   stateToken = {this.state.stateToken}
                   redirectURI = {this.state.redirectURI}
-                  openModal={ () => { this.setConfigurationModalVisibility(true); } }
+                  openModal={this.openConfigurationModal}
                   nextStep={ () => { this.setStep(2); } }
                   skipTutorial={ () => { this.setStep(4); }}
                   isActive={ this.state.currentStep === 1 }
@@ -312,7 +318,7 @@ class OpenIDPage extends React.Component {
                   authCode= {this.state.authCode}
                   clientID= {this.state.clientID}
                   clientSecret= {this.state.clientSecret}
-                  openModal={ () => { this.setConfigurationModalVisibility(true); } }
+                  openModal={this.openConfigurationModal}
                   server={this.state.server}
                   nextStep={ () => { this.setStep(3); } }
                   isActive={ this.state.currentStep === 2 }
@@ -346,7 +352,7 @@ class OpenIDPage extends React.Component {
         </main>
         {this.state.configurationModalOpen ?
           <ConfigurationModal ref="config"
-            closeModal={ () => { this.setConfigurationModalVisibility(false); } }
+            closeModal={ () => { this.openConfigurationModal(false); } }
             discoveryURL={this.state.discoveryURL}
             authEndpoint= {this.state.authEndpoint}
             tokenEndpoint= {this.state.tokenEndpoint}
@@ -357,6 +363,7 @@ class OpenIDPage extends React.Component {
             clientID= {this.state.clientID}
             clientSecret= {this.state.clientSecret}
             scopes = {this.state.scopes}
+            focus = {this.state.configurationModalFocus}
           />
           : null }
         <div className="bottom-callout text-center theme-dark">

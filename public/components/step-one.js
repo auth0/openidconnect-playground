@@ -83,16 +83,16 @@ class StepOne extends React.Component {
             </h3>
             <div className="code-box-content">
               <div className="code-block">
-                <a onClick={this.props.openModal} href="#"> { this.props.authEndpoint || "Enter an authorization endpoint"}? </a>
+                <a onClick={() => { this.props.openModal(true, 'authEndpoint') }} href="#"> { this.props.authEndpoint || "Enter an authorization endpoint"}? </a>
                 <div className="code-block-url-params">
                   client_id=
-                  <a onClick={this.props.openModal} href="#">{this.props.clientID}</a>
+                  <a onClick={() => { this.props.openModal(true, 'clientID') }} href="#">{this.props.clientID}</a>
                   <br />
                   &amp;redirect_uri=
-                  <a onClick={this.props.openModal} href="#">https://openidconnect.net/callback </a>
+                  <a onClick={() => { this.props.openModal(true, '') }} href="#">https://openidconnect.net/callback </a>
                   <br />
                   &amp;scope=
-                  <a onClick={this.props.openModal} href="#">{this.props.scopes}</a>
+                  <a onClick={() => { this.props.openModal(true, 'scopes') }} href="#">{this.props.scopes}</a>
                   <br/>
                   <span>&amp;response_type=code</span>
                   <br />

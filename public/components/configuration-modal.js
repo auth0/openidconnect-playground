@@ -22,12 +22,14 @@ const ConfigurationModal = (props) =>
           userInfoEndpoint={props.userInfoEndpoint}
           domain={props.domain}
           server={props.server}
+          focus={props.focus}
         />
 
         <ClientInfo
           clientID={props.clientID}
           clientSecret={props.clientSecret}
           scopes={props.scopes}
+          focus={props.focus}
         />
 
         <div className="row">
