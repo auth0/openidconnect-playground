@@ -20385,6 +20385,10 @@
 
 	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
 
+	var _hero = __webpack_require__(191);
+
+	var _hero2 = _interopRequireDefault(_hero);
+
 	var _stepOne = __webpack_require__(177);
 
 	var _stepOne2 = _interopRequireDefault(_stepOne);
@@ -20660,95 +20664,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'openid-page' },
-	        _react2.default.createElement(
-	          'header',
-	          { className: 'main-header' },
-	          _react2.default.createElement(
-	            'nav',
-	            { className: 'main-navigation' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'container' },
-	              _react2.default.createElement(
-	                'a',
-	                { href: '', className: 'openid-logo' },
-	                _react2.default.createElement(
-	                  'h1',
-	                  { className: 'logo-text' },
-	                  'OpenID'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'ul',
-	                { className: 'navigation' },
-	                _react2.default.createElement(
-	                  'li',
-	                  { className: 'navigation-item' },
-	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '' },
-	                    'Debugger'
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'li',
-	                  { className: 'navigation-item' },
-	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '' },
-	                    'Introduction'
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'li',
-	                  { className: 'navigation-item' },
-	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '' },
-	                    'Ask'
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'li',
-	                  { className: 'navigation-item is-disabled' },
-	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '' },
-	                    'Get a T-shirt!'
-	                  )
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'social-icons' },
-	                _react2.default.createElement(
-	                  'span',
-	                  { className: 'crafted' },
-	                  'Crafted by'
-	                ),
-	                _react2.default.createElement('a', { href: 'https://auth0/com', className: 'auth0-icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'section',
-	            { className: 'hero' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'container' },
-	              _react2.default.createElement(
-	                'h1',
-	                { className: 'hero-title' },
-	                'OpenID Connect Playground'
-	              ),
-	              _react2.default.createElement(
-	                'h2',
-	                { className: 'hero-subtitle' },
-	                'The OIDC playground is for developers to test and work with OpenID Connect calls step-by-step, giving them more insight into how OpenID Connect works.'
-	              )
-	            )
-	          )
-	        ),
+	        _react2.default.createElement(_hero2.default, null),
 	        _react2.default.createElement(
 	          'main',
 	          { className: 'playground' },
@@ -40023,6 +39939,116 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Hero = function Hero() {
+	  return _react2.default.createElement(
+	    "header",
+	    { className: "main-header" },
+	    _react2.default.createElement(
+	      "nav",
+	      { className: "main-navigation" },
+	      _react2.default.createElement(
+	        "div",
+	        { className: "container" },
+	        _react2.default.createElement(
+	          "a",
+	          { href: "", className: "openid-logo" },
+	          _react2.default.createElement(
+	            "h1",
+	            { className: "logo-text" },
+	            "OpenID"
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "ul",
+	          { className: "navigation" },
+	          _react2.default.createElement(
+	            "li",
+	            { className: "navigation-item" },
+	            _react2.default.createElement(
+	              "a",
+	              { href: "" },
+	              "Debugger"
+	            )
+	          ),
+	          _react2.default.createElement(
+	            "li",
+	            { className: "navigation-item" },
+	            _react2.default.createElement(
+	              "a",
+	              { href: "" },
+	              "Introduction"
+	            )
+	          ),
+	          _react2.default.createElement(
+	            "li",
+	            { className: "navigation-item" },
+	            _react2.default.createElement(
+	              "a",
+	              { href: "" },
+	              "Ask"
+	            )
+	          ),
+	          _react2.default.createElement(
+	            "li",
+	            { className: "navigation-item is-disabled" },
+	            _react2.default.createElement(
+	              "a",
+	              { href: "" },
+	              "Get a T-shirt!"
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "social-icons" },
+	          _react2.default.createElement(
+	            "span",
+	            { className: "crafted" },
+	            "Crafted by"
+	          ),
+	          _react2.default.createElement("a", { href: "https://auth0/com", className: "auth0-icon" })
+	        )
+	      )
+	    ),
+	    _react2.default.createElement(
+	      "section",
+	      { className: "hero" },
+	      _react2.default.createElement(
+	        "div",
+	        { className: "container" },
+	        _react2.default.createElement(
+	          "h1",
+	          { className: "hero-title" },
+	          "OpenID Connect Playground"
+	        ),
+	        _react2.default.createElement(
+	          "h2",
+	          { className: "hero-subtitle" },
+	          "The OIDC playground is for developers to test and work with OpenID Connect calls step-by-step, giving them more insight into how OpenID Connect works."
+	        )
+	      )
+	    )
+	  );
+	};
+
+	exports.default = Hero;
 
 /***/ }
 /******/ ]);
