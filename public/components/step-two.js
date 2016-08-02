@@ -51,8 +51,7 @@ class StepTwo extends React.Component {
         detail: {
           accessToken: result.access_token,
           idToken: result.id_token,
-          idTokenHeader: payload,
-          currentStep: 3
+          idTokenHeader: payload
         }
       }))
 		}.bind(this))

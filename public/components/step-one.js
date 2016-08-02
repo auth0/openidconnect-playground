@@ -50,7 +50,7 @@ class StepOne extends React.Component {
         isActiveStep: false
       });
 
-      c.props.scrollAnimated(offset(step2).top, 600);
+      c.props.scrollAnimated(offset(step2).top - 30, 600);
     }, 1000);
   }
 

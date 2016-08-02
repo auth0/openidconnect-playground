@@ -17,7 +17,7 @@ class ClearAllButton extends React.Component {
 
     localStorage.clear();
 
-    c.setState({ buttonText: 'LocalStorage Cleared!' });
+    c.setState({ buttonText: 'LocalStorage Cleared' });
 
     setTimeout(function() {
       c.setState({ buttonText: 'Clear LocalStorage' });

@@ -81,7 +81,6 @@ class OpenIDPage extends React.Component {
           currentStep: 5
         })
       }
-      // if(newStep > 1) window.location.hash = '#step' + newStep
   }
 
   scrollAnimated(to, duration) {
@@ -161,9 +160,10 @@ class OpenIDPage extends React.Component {
   scrollToCurrentStep() {
     let c = this.refs['step' + this.state.currentStep];
     let elem = ReactDOM.findDOMNode(c);
+    var scrollOffset = -30;
 
     return this.scrollAnimated(
-      offset(elem).top,
+      offset(elem).top + scrollOffset,
       600
     )
   }
