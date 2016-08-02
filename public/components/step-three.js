@@ -13,7 +13,6 @@ class StepThree extends React.Component {
     this.state.stepState = 'initial'
   }
   verify(){
-    console.log(this.props)
     this.setState({ stepState: 'wait' })
 		let validateToken = new Ajax({
 			url: '/validate',
@@ -31,7 +30,6 @@ class StepThree extends React.Component {
     }.bind(this));
 
 		validateToken.on('success', function(event){
-      console.log('validated!')
       this.setState({ stepState: 'initial'})
 			let result = JSON.parse(event.currentTarget.response)
       window.dispatchEvent(new CustomEvent('configChange', {

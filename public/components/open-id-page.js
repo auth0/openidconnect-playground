@@ -169,7 +169,6 @@ class OpenIDPage extends React.Component {
   }
 
   updateURLs(){
-    console.log(this.state.server)
     if(this.state.server == 'google'){
       this.updateDiscovery('https://accounts.google.com/.well-known/openid-configuration')
     } else if (this.state.server == 'Auth0'){
@@ -181,7 +180,6 @@ class OpenIDPage extends React.Component {
 	updateDiscovery(documentURL){
     documentURL = documentURL || this.state.discoveryURL
 
-    console.log('discovering...', documentURL)
 		this.discover(documentURL, function(discovered){
 			this.setState({
 				discoveryURL: documentURL,
@@ -217,7 +215,7 @@ class OpenIDPage extends React.Component {
       configurationModalOpen: visibility,
       configurationModalFocus: inputFocus
     });
-    console.log(inputFocus);
+
     // Add class to prevent page from scrolling when modal is opened
     document.body.classList.toggle('overflow-hidden', visibility);
   }
