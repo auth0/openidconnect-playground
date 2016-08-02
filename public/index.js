@@ -20389,6 +20389,10 @@
 
 	var _hero2 = _interopRequireDefault(_hero);
 
+	var _footer = __webpack_require__(192);
+
+	var _footer2 = _interopRequireDefault(_footer);
+
 	var _stepOne = __webpack_require__(177);
 
 	var _stepOne2 = _interopRequireDefault(_stepOne);
@@ -20784,45 +20788,7 @@
 	          scopes: this.state.scopes,
 	          focus: this.state.configurationModalFocus
 	        }) : null,
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'bottom-callout text-center theme-dark' },
-	          _react2.default.createElement('img', { src: '//cdn.auth0.com/styleguide/latest/lib/logos/img/logo-grey.png', width: '130' }),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            'The OIDC playground is brought to you by Auth0.'
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            'A cloud service, APIs and tools that eliminate the friction of identity for your applications and APIs.'
-	          ),
-	          _react2.default.createElement(
-	            'a',
-	            { href: '//auth0.com/signup/', className: 'btn btn-lg btn-success' },
-	            'Try Auth0 for Free'
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'footer',
-	          { className: 'main-footer' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'container' },
-	            _react2.default.createElement(
-	              'span',
-	              null,
-	              'Crafted by'
-	            ),
-	            _react2.default.createElement('span', { className: 'auth0-badge' }),
-	            _react2.default.createElement(
-	              'span',
-	              null,
-	              '© 2013-2016 Auth0 Inc. All Rights Reserved.'
-	            )
-	          )
-	        )
+	        _react2.default.createElement(_footer2.default, null)
 	      );
 	    }
 	  }, {
@@ -40049,6 +40015,74 @@
 	};
 
 	exports.default = Hero;
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Footer = function Footer() {
+	  return _react2.default.createElement(
+	    "div",
+	    null,
+	    _react2.default.createElement(
+	      "div",
+	      { className: "bottom-callout text-center theme-dark" },
+	      _react2.default.createElement("img", {
+	        src: "//cdn.auth0.com/styleguide/latest/lib/logos/img/logo-grey.png",
+	        width: "130",
+	        role: "presentation"
+	      }),
+	      _react2.default.createElement(
+	        "p",
+	        null,
+	        "The OIDC playground is brought to you by Auth0."
+	      ),
+	      _react2.default.createElement(
+	        "p",
+	        null,
+	        "A cloud service, APIs and tools that eliminate the friction of identity for your applications and APIs."
+	      ),
+	      _react2.default.createElement(
+	        "a",
+	        { href: "//auth0.com/signup/", className: "btn btn-lg btn-success" },
+	        'Try Auth0 for Free'
+	      )
+	    ),
+	    _react2.default.createElement(
+	      "footer",
+	      { className: "main-footer" },
+	      _react2.default.createElement(
+	        "div",
+	        { className: "container" },
+	        _react2.default.createElement(
+	          "span",
+	          null,
+	          "Crafted by"
+	        ),
+	        _react2.default.createElement("span", { className: "auth0-badge" }),
+	        _react2.default.createElement(
+	          "span",
+	          null,
+	          "© 2013-2016 Auth0 Inc. All Rights Reserved."
+	        )
+	      )
+	    )
+	  );
+	};
+
+	exports.default = Footer;
 
 /***/ }
 /******/ ]);
