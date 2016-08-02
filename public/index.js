@@ -20562,6 +20562,8 @@
 	        }
 	      }
 
+	      if (event.detail.skipScroll) return;
+
 	      setTimeout(function () {
 	        this.saveState();
 
@@ -20828,7 +20830,8 @@
 	                nextStep: function nextStep() {
 	                  _this2.setStep(3);
 	                },
-	                isActive: this.state.currentStep === 2
+	                isActive: this.state.currentStep === 2,
+	                scrollAnimated: this.scrollAnimated
 	              }) : null,
 	              this.state.currentStep >= 3 ? _react2.default.createElement(_stepThree2.default, {
 	                ref: 'step3',
@@ -22179,6 +22182,10 @@
 
 	var _simpleAjax2 = _interopRequireDefault(_simpleAjax);
 
+	var _documentOffset = __webpack_require__(169);
+
+	var _documentOffset2 = _interopRequireDefault(_documentOffset);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22246,9 +22253,12 @@
 	          detail: {
 	            accessToken: result.access_token,
 	            idToken: result.id_token,
-	            idTokenHeader: payload
+	            idTokenHeader: payload,
+	            skipScroll: true
 	          }
 	        }));
+
+	        this.props.scrollAnimated((0, _documentOffset2.default)(this.stepCodeBox).top - 20, 600);
 	      }.bind(this));
 
 	      serviceDiscovery.on('error', function (event) {
@@ -22256,6 +22266,15 @@
 	      }.bind(this));
 
 	      serviceDiscovery.send();
+	    }
+	  }, {
+	    key: 'goToNextStep',
+	    value: function goToNextStep() {
+	      window.dispatchEvent(new CustomEvent('configChange', {
+	        detail: {
+	          currentStep: 3
+	        }
+	      }));
 	    }
 	  }, {
 	    key: 'render',
@@ -22296,7 +22315,9 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'code-box' },
+	            { className: 'code-box', ref: function ref(node) {
+	                return _this2.stepCodeBox = node;
+	              } },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'code-box-title' },
@@ -22310,7 +22331,6 @@
 	                { className: 'code-block' },
 	                'POST ',
 	                this.props.tokenEndpoint,
-	                _react2.default.createElement('br', null),
 	                _react2.default.createElement('br', null),
 	                'grant_type=authorization_code',
 	                _react2.default.createElement('br', null),

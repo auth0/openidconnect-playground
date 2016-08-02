@@ -148,6 +148,8 @@ class OpenIDPage extends React.Component {
       }
     }
 
+    if (event.detail.skipScroll) return;
+
     setTimeout(function() {
       this.saveState();
 
@@ -320,6 +322,7 @@ class OpenIDPage extends React.Component {
                   server={this.state.server}
                   nextStep={ () => { this.setStep(3); } }
                   isActive={ this.state.currentStep === 2 }
+                  scrollAnimated={this.scrollAnimated}
                 />
                 : null
               }

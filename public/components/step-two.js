@@ -1,5 +1,6 @@
 import React from 'react'
 import Ajax from 'simple-ajax'
+import offset from 'document-offset'
 
 class StepTwo extends React.Component {
   constructor(){
@@ -51,9 +52,15 @@ class StepTwo extends React.Component {
         detail: {
           accessToken: result.access_token,
           idToken: result.id_token,
-          idTokenHeader: payload
+          idTokenHeader: payload,
+          skipScroll: true
         }
       }))
+
+      this.props.scrollAnimated(
+        offset(this.stepCodeBox).top - 20,
+        600
+      )
 		}.bind(this))
 
     serviceDiscovery.on('error', function(event) {
@@ -61,6 +68,13 @@ class StepTwo extends React.Component {
     }.bind(this))
 
 		serviceDiscovery.send()
+  }
+  goToNextStep() {
+    window.dispatchEvent(new CustomEvent('configChange', {
+      detail: {
+        currentStep: 3
+      }
+    }))
   }
   render() {
     return (
@@ -75,14 +89,13 @@ class StepTwo extends React.Component {
             Now, we need to turn that access code into an access token,
             by having our server make a request to your token endpoint
           </p>
-          <div className="code-box">
+          <div className="code-box" ref={ node => this.stepCodeBox = node}>
             <div className="code-box-title">
               Request
             </div>
             <div className="code-box-content">
               <div className="code-block">
                 POST {this.props.tokenEndpoint}
-                  <br />
                   <br />
                   grant_type=authorization_code
                   <br />
