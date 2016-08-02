@@ -22092,14 +22092,7 @@
 	                    this.props.clientID
 	                  ),
 	                  _react2.default.createElement('br', null),
-	                  '&redirect_uri=',
-	                  _react2.default.createElement(
-	                    'a',
-	                    { onClick: function onClick() {
-	                        _this2.props.openModal(true, '');
-	                      }, href: '#' },
-	                    'https://openidconnect.net/callback\u2028'
-	                  ),
+	                  '&redirect_uri= https://openidconnect.net/callback\u2028',
 	                  _react2.default.createElement('br', null),
 	                  '&scope=',
 	                  _react2.default.createElement(
@@ -22268,6 +22261,8 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'playground-step ' + (this.props.isActive ? 'active' : '') },
@@ -22323,14 +22318,18 @@
 	                '&client_id=',
 	                _react2.default.createElement(
 	                  'a',
-	                  { onClick: this.props.openModal, href: '#' },
+	                  { onClick: function onClick() {
+	                      _this2.props.openModal(true, 'clientID');
+	                    }, href: '#' },
 	                  this.props.clientID
 	                ),
 	                _react2.default.createElement('br', null),
 	                '&client_secret=',
 	                _react2.default.createElement(
 	                  'a',
-	                  { onClick: this.props.openModal, href: '#' },
+	                  { onClick: function onClick() {
+	                      _this2.props.openModal(true, 'clientSecret');
+	                    }, href: '#' },
 	                  this.props.clientSecret
 	                ),
 	                _react2.default.createElement('br', null),
@@ -22827,7 +22826,7 @@
 	      document.querySelector('option[value=' + (this.props.server || 'Auth0') + ']').setAttribute('selected', 'true');
 
 	      if (this.refs[this.props.focus]) {
-	        this.refs[this.props.focus].focus();
+	        this.refs[this.props.focus].select();
 	      }
 	    }
 	  }, {
@@ -39587,7 +39586,7 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      if (this.refs[this.props.focus]) {
-	        this.refs[this.props.focus].focus();
+	        this.refs[this.props.focus].select();
 	      }
 	    }
 	  }, {

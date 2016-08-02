@@ -10,7 +10,7 @@ class ClientInfo extends React.Component{
   }
   componentDidMount(){
     if (this.refs[this.props.focus]) {
-      this.refs[this.props.focus].focus()
+      this.refs[this.props.focus].select()
     }
   }
   render(){

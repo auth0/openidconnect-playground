@@ -87,9 +87,9 @@ class StepTwo extends React.Component {
                   <br />
                   grant_type=authorization_code
                   <br />
-                  &amp;client_id=<a onClick={this.props.openModal} href="#">{this.props.clientID}</a>
+                  &amp;client_id=<a onClick={() => { this.props.openModal(true, 'clientID') }} href="#">{this.props.clientID}</a>
                   <br />
-                  &amp;client_secret=<a onClick={this.props.openModal} href="#">{this.props.clientSecret}</a>
+                  &amp;client_secret=<a onClick={() => { this.props.openModal(true, 'clientSecret') }} href="#">{this.props.clientSecret}</a>
                   <br />
                   &amp;redirect_url=https://openidconnect.net/callback
                   <br />

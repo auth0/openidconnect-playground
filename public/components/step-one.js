@@ -89,7 +89,7 @@ class StepOne extends React.Component {
                   <a onClick={() => { this.props.openModal(true, 'clientID') }} href="#">{this.props.clientID}</a>
                   <br />
                   &amp;redirect_uri=
-                  <a onClick={() => { this.props.openModal(true, '') }} href="#">https://openidconnect.net/callback </a>
+                  https://openidconnect.net/callback 
                   <br />
                   &amp;scope=
                   <a onClick={() => { this.props.openModal(true, 'scopes') }} href="#">{this.props.scopes}</a>
