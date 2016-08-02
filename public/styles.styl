@@ -488,6 +488,7 @@ body.overflow-hidden
   right 0
   bottom 0
   left 0
+  z-index 1000
   overflow-y auto
   pointer-events auto
 
@@ -495,6 +496,9 @@ body.overflow-hidden
     padding 25px
     background-color white
     max-width 1000px
+    overflow hidden
+    transform none
+    opacity 1
 
     +breakpoint("desktop", "max")
       position absolute
@@ -507,6 +511,7 @@ body.overflow-hidden
       position relative
       margin 40px auto
       border-radius 3px
+      box-shadow 0 0 0 9999px rgba(0,0,0,0.5)
 
 
   .configuration-modal-close
@@ -594,17 +599,6 @@ body.overflow-hidden
         position absolute
         top 50%
         transform translateY(-50%)
-
-
-  .configuration-modal-backdrop
-    position absolute
-    top 0
-    right 0
-    bottom 0
-    left 0
-    height 100%
-    width 100%
-    background-color rgba(#222228, 0.75)
 
 
 // end configuration modal styles

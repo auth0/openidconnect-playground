@@ -5,7 +5,6 @@ import ClientInfo from './client-info';
 
 const ConfigurationModal = (props) =>
     <div className="configuration-modal" id="configuration-modal">
-      <div className="configuration-modal-backdrop"></div>
       <div className="configuration-modal-dialog">
         <span
           onClick={props.closeModal}
