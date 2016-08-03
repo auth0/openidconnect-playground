@@ -16,10 +16,10 @@ const Hero = () =>
             <Link to="/introduction">Introduction</Link>
           </li>
           <li className="navigation-item">
-            <a href="">Ask</a>
+            <a href="https://ask.auth0.com/category/openidconnect">Ask</a>
           </li>
-          <li className="navigation-item is-disabled">
-            <a href="">Get a T-shirt!</a>
+          <li className="navigation-item">
+            <a href="http://shop.spreadshirt.com/auth0/">Get a T-shirt!</a>
           </li>
         </ul>
         <div className="social-icons">

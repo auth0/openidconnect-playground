@@ -27,21 +27,6 @@ app.use(session({
 
 app.set('view engine', 'jade')
 
-app.get('/',
-  function(req, res){
-  	let code = null, tokenInfo = null, tokenResponse = null
-  	if(!req.session.refresh && req.session.authCode){
-	  	code = req.session.authCode
-	  	req.session.refresh = true
-	}
-    res.render('index', { 
-    	code,
-    	redirect_uri: process.env.REDIRECT_URI,
-    	state: sha1(crypto.randomBytes(1024).toString())
-    })
-  }
-);
-
 app.get('/discover', function(req, res){
 	request.get(req.query.url, function(err, resp, body){
 		if(err) res.send(err)
@@ -56,6 +41,21 @@ app.get('/callback', function(req, res){
 		res.redirect('/')
 	}
 })
+
+app.get('*',
+  function(req, res){
+  	let code = null, tokenInfo = null, tokenResponse = null
+  	if(!req.session.refresh && req.session.authCode){
+	  	code = req.session.authCode
+	  	req.session.refresh = true
+	  }
+    res.render('index', {
+    	code,
+    	redirect_uri: process.env.REDIRECT_URI,
+    	state: sha1(crypto.randomBytes(1024).toString())
+    })
+  }
+);
 
 app.post('/code_to_token', function(req, res){
 	//REQUIRED params: code, clientID, clientSecret, tokenEndpoint, serviceURL
@@ -148,9 +148,3 @@ app.post('/validate', function(req, res){
 
 
 app.listen(process.env.PORT || 3000)
-
-
-
-
-
-

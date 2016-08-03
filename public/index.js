@@ -74,7 +74,7 @@
 
 	_reactDom2.default.render(_react2.default.createElement(
 	  _reactRouter.Router,
-	  { history: _reactRouter.hashHistory },
+	  { history: _reactRouter.browserHistory },
 	  _react2.default.createElement(
 	    _reactRouter.Route,
 	    { path: '/', component: _app2.default },
@@ -20498,16 +20498,16 @@
 	            { className: 'navigation-item' },
 	            _react2.default.createElement(
 	              'a',
-	              { href: '' },
+	              { href: 'https://ask.auth0.com/category/openidconnect' },
 	              'Ask'
 	            )
 	          ),
 	          _react2.default.createElement(
 	            'li',
-	            { className: 'navigation-item is-disabled' },
+	            { className: 'navigation-item' },
 	            _react2.default.createElement(
 	              'a',
-	              { href: '' },
+	              { href: 'http://shop.spreadshirt.com/auth0/' },
 	              'Get a T-shirt!'
 	            )
 	          )
