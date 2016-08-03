@@ -248,13 +248,6 @@ class DebuggerPage extends React.Component {
         <main className="playground">
           <div className="container">
             <div className="playground-header">
-              <div className="mode-switcher">
-                <label>Mode:</label>
-                <select className="form-control">
-                  <option>OpendID Connect + OAuth2</option>
-                  <option disabled>OpendID Connect (Coming soon)</option>
-                </select>
-              </div>
               <h2 className="playground-header-title">Debugger</h2>
               <button
                 onClick={ () => { this.openConfigurationModal(true); } }
@@ -264,6 +257,13 @@ class DebuggerPage extends React.Component {
                 <i className="icon-budicon-329"></i>
                 Configuration
               </button>
+              <div className="mode-switcher">
+                <label>Mode:</label>
+                <select className="form-control">
+                  <option>OpendID Connect + OAuth2</option>
+                  <option disabled>OpendID Connect (Coming soon)</option>
+                </select>
+              </div>
             </div>
             <div className="playground-content">
               { this.state.currentStep >= 1 ?

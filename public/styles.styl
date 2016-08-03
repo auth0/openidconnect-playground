@@ -13,9 +13,9 @@ button
   outline none
 
 // Makes the site fix to desktop size for the moment
-#content,
-.container
-  min-width: 1000px
+// #content,
+// .container
+//   min-width: 1000px
 
 // Header styles
 .main-header
@@ -24,20 +24,28 @@ button
 
   .main-navigation
     border-bottom 1px solid rgba(black, 0.05)
+    text-align center
 
     > .container
-      position relative
-      height 115px
+      +breakpoint("tablet")
+        position relative
+        height 115px
 
   .openid-logo
-    display inline-block
-    position absolute
-    left 15px
-    top 50%
-    transform translateY(-50%)
     width 135px
     height 42px
     background-image url('/images/openid-logo.svg')
+
+    +breakpoint("tablet", "max")
+      display block
+      margin 20px auto
+
+    +breakpoint("tablet")
+      display inline-block
+      position absolute
+      left 15px
+      top 50%
+      transform translateY(-50%)
 
     // Hide logo text
     > .logo-text
@@ -46,18 +54,26 @@ button
 
   .navigation
     display inline-block
-    position absolute
-    left 50%
-    top 50%
-    transform translate(-50%, -50%)
     list-style none
     padding 0
     margin 0
 
+    +breakpoint("tablet", "max")
+      margin-bottom 20px
+
+    +breakpoint("tablet")
+      position absolute
+      left 50%
+      top 50%
+      transform translate(-50%, -50%)
+
     .navigation-item
       display inline-block
       font-size 14px
-      margin-right 20px
+      margin-right 12px
+
+      +breakpoint("tablet")
+        margin-right 20px
 
       &.is-disabled
         opacity: 0.2;
@@ -71,11 +87,12 @@ button
         margin-right 0
 
   .social-icons
-    position absolute
-    right 15px
-    top 50%
-    transform translateY(-50%)
-    line-height 0
+    +breakpoint("tablet")
+      position absolute
+      right 15px
+      top 50%
+      transform translateY(-50%)
+      line-height 0
 
     .crafted
       position: relative;
@@ -148,10 +165,14 @@ button
 .playground
 
   .mode-switcher
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
+    +breakpoint("tablet", "max")
+      display block
+
+    +breakpoint("tablet")
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0;
 
     .form-control
       width: 225px;
@@ -171,10 +192,16 @@ button
       text-align center
 
   .playground-header-title
-    display inline-block
     font-size 26px
     line-height 39px
     margin 0
+
+    +breakpoint("tablet", "max")
+      text-align center
+      margin-bottom 35px
+
+    +breakpoint("tablet")
+      display inline-block
 
   .playground-header-config
     font-size 12px
@@ -183,10 +210,15 @@ button
     vertical-align middle
     position absolute
     right -16px
-    top 50%
-    transform translateY(-50%)
     background-color transparent
     border none
+
+    +breakpoint("tablet", "max")
+      bottom 17px
+
+    +breakpoint("tablet")
+      top 50%
+      transform translateY(-50%)
 
     > i
       margin-right: 5px;
@@ -354,12 +386,14 @@ button
     .skip-tutorial
       display block
       margin 0 auto
-      position relative
-      left 32.5px
       font-size 12px
       text-transform uppercase
       letter-spacing 1px
       margin 40px auto 20px auto
+
+      +breakpoint("tablet")
+        position relative
+        left 32.5px
 
     .btn-view-jwt
       float right
@@ -500,14 +534,14 @@ body.overflow-hidden
     transform none
     opacity 1
 
-    +breakpoint("desktop", "max")
+    +breakpoint("tablet", "max")
       position absolute
       padding-top 30px
       top 0
       left 0
       right 0
 
-    +breakpoint("desktop")
+    +breakpoint("tablet")
       position relative
       margin 40px auto
       border-radius 3px
@@ -576,7 +610,7 @@ body.overflow-hidden
       margin-bottom 20px
       font-size 13px
 
-      +breakpoint("desktop")
+      +breakpoint("tablet")
         padding-right 260px
         margin-bottom 0
 
@@ -591,11 +625,11 @@ body.overflow-hidden
       padding 10px 20px
       width 240px
 
-      +breakpoint("desktop", "max")
+      +breakpoint("tablet", "max")
         display block
         margin 0 auto
 
-      +breakpoint("desktop")
+      +breakpoint("tablet")
         right 20px
         position absolute
         top 50%
@@ -630,6 +664,7 @@ body.overflow-hidden
   .introduction-container
     max-width 580px
     margin 0 auto
+    padding 0 15px
 
   .introduction-section
     margin-bottom 60px
