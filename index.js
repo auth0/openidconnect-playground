@@ -26,6 +26,11 @@ app.use(function (req, res, next) {
   return next();
 });
 
+app.use(function (req, res, next) {
+  res.setHeader('X-Frame-Options', 'DENY');
+  next();
+});
+
 app.use(session({
     store: new FileStore(),
     secret: 'keyboard cat',
