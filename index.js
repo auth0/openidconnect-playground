@@ -16,7 +16,16 @@ app.use(require('body-parser').json())
 app.use(express.static('public'));
 
 var FileStore = require('session-file-store')(session);
- 
+
+app.use(function (req, res, next) {
+  const proto = req.headers['x-forwarded-proto'];
+  if (proto && proto !== 'https') {
+    return res.redirect(302, `https://${req.hostname}${req.originalUrl}`);
+  }
+
+  return next();
+});
+
 app.use(session({
     store: new FileStore(),
     secret: 'keyboard cat',
@@ -33,7 +42,7 @@ app.get('/',
 	  	code = req.session.authCode
 	  	req.session.refresh = true
 	}
-    res.render('index', { 
+    res.render('index', {
     	code,
     	redirect_uri: process.env.REDIRECT_URI,
     	state: sha1(crypto.randomBytes(1024).toString())
@@ -81,7 +90,7 @@ app.post('/code_to_token', function(req, res){
 		})
 	} else if (req.body.server == 'google'){
 		console.log('Google token request...')
-		request.post('https://www.googleapis.com/oauth2/v4/token', 
+		request.post('https://www.googleapis.com/oauth2/v4/token',
 		{
 			form: {
 				code: req.body.code,
@@ -93,7 +102,7 @@ app.post('/code_to_token', function(req, res){
 		}, function(err, response, body){
 			console.log(err, response.statusCode, body)
 			result.body = body
-			result.response = response	
+			result.response = response
 			res.end(JSON.stringify(result))
 		})
 	}
@@ -107,9 +116,3 @@ app.post('/validate', function(req, res){
 
 
 app.listen(process.env.PORT || 5000)
-
-
-
-
-
-
