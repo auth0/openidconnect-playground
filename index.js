@@ -16,13 +16,29 @@ app.use(require('body-parser').json())
 
 app.use(express.static('public'));
 
+app.use(function (req, res, next) {
+  const proto = req.headers['x-forwarded-proto'];
+  if (proto && proto !== 'https') {
+    return res.redirect(302, `https://${req.hostname}${req.originalUrl}`);
+  }
+
+  return next();
+});
+
+app.use(function (req, res, next) {
+  res.setHeader('X-Frame-Options', 'DENY');
+  next();
+});
+
 var FileStore = require('session-file-store')(session);
- 
+
 app.use(session({
-    store: new FileStore(),
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false
+  store: new FileStore(),
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  proxy: true,
+  cookie: { secure: true }
 }));
 
 app.set('view engine', 'jade')
@@ -147,4 +163,4 @@ app.post('/validate', function(req, res){
 })
 
 
-app.listen(process.env.PORT || 3000)
+app.listen(process.env.PORT || 5000)

@@ -1,5 +1,6 @@
 import React from 'react';
 import Ajax from 'simple-ajax';
+import { filterParams } from '../utils';
 
 class InputPanel extends React.Component {
   constructor() {
@@ -83,18 +84,22 @@ class InputPanel extends React.Component {
       this.refs.serverURL.refs.value.disabled = true;
     }
 
+    if (!validateServer(URL)) {
+      return alert(`${URL} is not a valid server address`);
+    }
+
     let changed = !(type == this.state.server)
 
     if(type == 'Auth0'){
       this.refs.serverURL.updateLabel("Your Auth0 Domain", "https://domain.auth0.com");
       this.setState({
         serverURL: changed ? 'https://samples.auth0.com' : (URL || 'https://'),
-        clientID:  this.refs.clientID.refs.value.value || this.state.savedClientID || 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC',
-        clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || 'gcyGiDHsIE6bUT9oAs6ghuynjt8usUqTRglg8n8eWqw9SgnGJ5cRLCUz03gJ_s_X',
+        clientID:  this.refs.clientID.refs.value.value || this.state.savedClientID || 'kbyuFDidLLm280LIwVFiazOqjO3ty8KH',
+        clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || '60Op4HFM0I8ajz0WdiStAbziZ-VFQttXuxixHHs2R7r7-CW8GR79l-mmLqMhc-Sa',
         authEndpoint: '/authorize',
         tokenEndpoint: '/oauth/token',
-        completeURL: URL + '/authorize?client_id='+ encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value  + '&state=' + this.state.stateToken,
-        warning: !this.state.clientID || this.state.clientID == 'BUIJSW9x60sIHBw8Kd9EmCbj8eDIFxDC' ? false : true
+        completeURL: URL + '/authorize' + filterParams('?client_id='+ encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value  + '&state=' + this.state.stateToken),
+        warning: !this.state.clientID || this.state.clientID == 'kbyuFDidLLm280LIwVFiazOqjO3ty8KH' ? false : true
       })
     } else if(type == 'custom'){
       this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
@@ -104,7 +109,7 @@ class InputPanel extends React.Component {
         clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || '',
         authEndpoint: '/authorize',
         tokenEndpoint: '/oauth/token',
-        completeURL: URL + '/' + encodeURIComponent(this.refs.authEndpoint.refs.value.value) +'?client_id='+  encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
+        completeURL: URL + '/' + encodeURIComponent(this.refs.authEndpoint.refs.value.value) + filterParams('?client_id='+  encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken),
         warning: true
       })
     } else if(type == 'google'){
@@ -130,7 +135,7 @@ class InputPanel extends React.Component {
           tokenEndpoint:  discovered.token_endpoint,
           clientID: changed ? (this.state.savedClientID || '') : (this.refs.clientID.refs.value.value || this.state.savedClientID || ''),
           clientSecret: changed ? (this.state.savedClientID || '') : (this.refs.clientSecret.refs.value.value || this.state.savedSecret || ''),
-          completeURL: discovered.auth_endpoint + '?client_id='+  encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken,
+          completeURL: discovered.auth_endpoint + filterParams('?client_id='+  encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value + '&state=' + this.state.stateToken),
           warning: true
         })
       }.bind(this));

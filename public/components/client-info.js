@@ -1,4 +1,5 @@
 import React from 'react'
+import { sanitizeParam } from '../utils'
 
 class ClientInfo extends React.Component{
   constructor(){
@@ -39,14 +40,14 @@ class ClientInfo extends React.Component{
       </div>
     )
   }
-  update(){
+  update() {
     window.dispatchEvent(new CustomEvent('configChange', {
       detail: {
-              clientID: this.refs.clientID.value,
-              clientSecret: this.refs.clientSecret.value,
-              scopes: this.refs.scopes.value
-          }
-    }))
+        clientID: sanitizeParam(this.refs.clientID.value),
+        clientSecret: sanitizeParam(this.refs.clientSecret.value),
+        scopes: sanitizeParam(this.refs.scopes.value)
+      }
+    }));
   }
 }
 
