@@ -32,10 +32,12 @@ app.use(function (req, res, next) {
 });
 
 app.use(session({
-    store: new FileStore(),
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false
+  store: new FileStore(),
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  proxy: true,
+  cookie: { secure: true }
 }));
 
 app.set('view engine', 'jade')
