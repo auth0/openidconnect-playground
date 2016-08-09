@@ -7,6 +7,7 @@ import StepTwo from './step-two';
 import StepThree from './step-three';
 import StepFour from './step-four';
 import ConfigurationModal from './configuration-modal';
+import { filterScopes } from '../utils';
 
 class DebuggerPage extends React.Component {
   constructor() {
@@ -226,6 +227,12 @@ class DebuggerPage extends React.Component {
   }
 
   openConfigurationModal(visibility, inputFocus) {
+    window.dispatchEvent(new CustomEvent('configChange', {
+      detail: {
+        scopes: filterScopes(this.state.scopes)
+      }
+    }));
+
     this.setState({
       configurationModalOpen: visibility,
       configurationModalFocus: inputFocus

@@ -4,7 +4,7 @@ import { sanitizeParam } from '../utils'
 class ClientInfo extends React.Component{
   constructor(){
     super()
-    this.update = this.update.bind(this)
+    this.update = this.update.bind(this);
     let savedState = localStorage.getItem('app-state') || '{}'
     savedState = JSON.parse(savedState)
     this.state = savedState

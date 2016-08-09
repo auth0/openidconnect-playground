@@ -1,5 +1,6 @@
 import React from 'react';
 import offset from 'document-offset';
+import { validateUrl } from '../utils';
 
 class StepOne extends React.Component {
 
@@ -30,6 +31,11 @@ class StepOne extends React.Component {
     this.setState({
       stepState: 'wait'
     });
+
+    if (!validateUrl(this.completeURL)) {
+      alert('You entered an invalid server address');
+      return window.location.reload();
+    }
 
     window.location = this.completeURL
   }

@@ -30,7 +30,10 @@ html(lang="en")
 			input(type="hidden", name="redirect-uri", value=redirect_uri)
 			input(type="hidden", name="stateToken", value=state)
 			input(type="hidden", name="code", value=code)
-			input(type="hidden", name="auth0ClientID", value="kbyuFDidLLm280LIwVFiazOqjO3ty8KH")
-			input(type="hidden", name="auth0ClientSecret", value="60Op4HFM0I8ajz0WdiStAbziZ-VFQttXuxixHHs2R7r7-CW8GR79l-mmLqMhc-Sa")
+			input(type="hidden", name="auth0ClientID", value=clientId)
+			input(type="hidden", name="auth0ClientSecret", value=clientSecret)
 			
 		script(src='index.js')
+		script.
+			window.clientId=!{JSON.stringify(clientId)};
+			window.clientSecret=!{JSON.stringify(clientSecret)};

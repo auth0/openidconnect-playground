@@ -1,6 +1,6 @@
 import React from 'react';
 import Ajax from 'simple-ajax';
-import { filterParams } from '../utils';
+import { filterParams, validateUrl } from '../utils';
 
 class InputPanel extends React.Component {
   constructor() {
@@ -94,8 +94,8 @@ class InputPanel extends React.Component {
       this.refs.serverURL.updateLabel("Your Auth0 Domain", "https://domain.auth0.com");
       this.setState({
         serverURL: changed ? 'https://samples.auth0.com' : (URL || 'https://'),
-        clientID:  this.refs.clientID.refs.value.value || this.state.savedClientID || 'kbyuFDidLLm280LIwVFiazOqjO3ty8KH',
-        clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || '60Op4HFM0I8ajz0WdiStAbziZ-VFQttXuxixHHs2R7r7-CW8GR79l-mmLqMhc-Sa',
+        clientID:  this.refs.clientID.refs.value.value || this.state.savedClientID || window.clientId,
+        clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || window.clientSecret,
         authEndpoint: '/authorize',
         tokenEndpoint: '/oauth/token',
         completeURL: URL + '/authorize' + filterParams('?client_id='+ encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value  + '&state=' + this.state.stateToken),
@@ -156,6 +156,12 @@ class InputPanel extends React.Component {
       savedClientSecret: this.state.clientSecret
     })
     localStorage.setItem('app-state', JSON.stringify(this.state))
+
+    if (!validateUrl(this.state.completeURL)) {
+      alert('You entered an invalid server address');
+      return window.location.reload();
+    }
+
     window.location = this.state.completeURL
   }
 }

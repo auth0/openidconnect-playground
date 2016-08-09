@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import { sanitizeEndpoint } from '../utils'
 
 class ServerURLs extends React.Component{
   constructor(){
@@ -15,10 +16,10 @@ class ServerURLs extends React.Component{
   }
   update(event){
     let changed = {
-      server: this.refs.server.value,
-      authEndpoint: this.refs.authEndpoint.value,
-      tokenEndpoint: this.refs.tokenEndpoint.value,
-      domain: this.refs.domain.value,
+      server: sanitizeEndpoint(this.refs.server.value),
+      authEndpoint: sanitizeEndpoint(this.refs.authEndpoint.value),
+      tokenEndpoint: sanitizeEndpoint(this.refs.tokenEndpoint.value),
+      domain: sanitizeEndpoint(this.refs.domain.value),
       discoveryURL: this.refs.discoveryURL.value
     }
     changed[event.target.name] = event.target.value
