@@ -68,7 +68,7 @@ app.get('*',
     res.render('index', {
     	code,
     	redirect_uri: process.env.REDIRECT_URI,
-    	state: sha1(crypto.randomBytes(1024).toString()),
+    	state: crypto.randomBytes(20).toString('hex'),
       clientId: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET
     })
