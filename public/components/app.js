@@ -6,7 +6,7 @@ class OpenIDPage extends React.Component {
   render() {
     return (
       <div className="openid-page">
-        <Hero />
+        <Hero mobileNavigationOpen={this.mobileNavigationOpen} />
         { this.props.children }
         <Footer />
       </div>

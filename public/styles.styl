@@ -12,11 +12,6 @@ body
 button
   outline none
 
-// Makes the site fix to desktop size for the moment
-// #content,
-// .container
-//   min-width: 1000px
-
 // Header styles
 .main-header
   background-color main-background-color
@@ -27,25 +22,47 @@ button
     text-align center
 
     > .container
+      width 100%
+      max-width 1200px
+      position relative
+      height 80px
+
       +breakpoint("tablet")
-        position relative
         height 115px
+
+    &.mobile-open
+      +breakpoint("tablet", "max")
+        position fixed
+        height 100vh
+        width 100vw
+        z-index 99
+        background-color main-background-color
+
+        > .container
+          border-bottom 1px solid rgba(0,0,0,0.05)
+
+        .mobile-navigation
+          display block
+
+        .trigger-nav
+          .bar:nth-child(1)
+            transform translate(0, 7px) rotate(-45deg)
+
+          .bar:nth-child(2)
+            opacity 0
+
+          .bar:nth-child(3)
+            transform translate(0, -7px) rotate(45deg)
 
   .openid-logo
     width 135px
     height 42px
     background-image url('/images/openid-logo.svg')
-
-    +breakpoint("tablet", "max")
-      display block
-      margin 20px auto
-
-    +breakpoint("tablet")
-      display inline-block
-      position absolute
-      left 15px
-      top 50%
-      transform translateY(-50%)
+    display inline-block
+    position absolute
+    left 15px
+    top 50%
+    transform translateY(-50%)
 
     // Hide logo text
     > .logo-text
@@ -57,9 +74,10 @@ button
     list-style none
     padding 0
     margin 0
+    white-space nowrap
 
     +breakpoint("tablet", "max")
-      margin-bottom 20px
+      display none
 
     +breakpoint("tablet")
       position absolute
@@ -87,10 +105,12 @@ button
         margin-right 0
 
   .social-icons
+    display none
     a
       color: rgba(0,0,0,0.54)
 
     +breakpoint("tablet")
+      display block
       position absolute
       right 15px
       top 50%
@@ -108,6 +128,69 @@ button
       height 26px
       background-image url('/images/twitter-badge.svg')
       margin-left 10px
+
+  // Mobile navigation trigger
+  .trigger-nav
+    display inline-block
+    position absolute
+    right 0
+    top 50%
+    transform translateY(-50%)
+    cursor pointer
+    padding 15px
+
+    +breakpoint("tablet")
+      display none
+
+    > .bar
+      width 22px
+      height 2px
+      background-color black
+      transition all 0.3s ease-in-out
+
+    > .bar + .bar
+      margin-top 5px
+
+  .mobile-navigation
+    display none
+    height calc(100% - 80px)
+    position relative
+
+  .mobile-nav-list
+    list-style-type none
+    padding 0
+    margin 0
+    position absolute
+    top calc(50% - 30px)
+    left 50%
+    transform translate(-50%, -50%)
+
+  .mobile-nav-item
+    font-size 30px
+    white-space nowrap
+    margin 10px 0
+
+    > a
+      color $color-text-light
+
+  .mobile-crafted-by
+    position absolute
+    bottom 0
+    left 0
+    right 0
+    width 100%
+    height 60px
+    line-height 60px
+    border-top 1px solid rgba(black, 0.05)
+
+    > a
+      color $color-text-light
+
+    svg
+      position relative
+      top 8px
+      margin-left 10px
+
 
   .hero
     text-align center
@@ -184,9 +267,7 @@ button
     margin-top 20px
     padding 25px 0
     border-bottom 1px solid rgba(black, 0.10)
-
-    +breakpoint("tablet")
-      text-align center
+    text-align center
 
   .playground-header-title
     font-size 26px
@@ -203,18 +284,18 @@ button
   .playground-header-config
     font-size 12px
     text-transform uppercase
-    line-height 39px
     vertical-align middle
-    position absolute
-    right -16px
     background-color transparent
     border none
 
     +breakpoint("tablet", "max")
-      bottom 17px
+      margin-top 15px
 
     +breakpoint("tablet")
+      line-height 39px
+      position absolute
       top 50%
+      right -16px
       transform translateY(-50%)
 
     > i
