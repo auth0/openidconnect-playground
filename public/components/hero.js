@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router'
+import Auth0Logo from './auth0-logo';
 
 const Hero = () =>
   <header className="main-header">
@@ -23,8 +24,10 @@ const Hero = () =>
           </li>
         </ul>
         <div className="social-icons">
-          <span className="crafted">Crafted by</span>
-          <a href="https://auth0/com" className="auth0-icon"></a>
+          <a href="https://auth0.com/?utm_source=openidconnect&amp;utm_campaign=craftedby" target="_blank">
+            <span className="crafted">Crafted by</span>
+            <Auth0Logo />
+          </a>
         </div>
       </div>
     </nav>
