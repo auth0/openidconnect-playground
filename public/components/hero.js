@@ -8,11 +8,10 @@ class Hero extends React.Component {
 
     this.toggleMobileNav = this.toggleMobileNav.bind(this);
     this.state = {};
-    this.state.navMobileOpen = true;
+    this.state.navMobileOpen = false;
   }
 
   toggleMobileNav() {
-    document.body.classList.toggle('overflow-hidden', !this.state.navMobileOpen);
     this.setState({
       navMobileOpen: !this.state.navMobileOpen
     });
@@ -55,10 +54,10 @@ class Hero extends React.Component {
           <div className="mobile-navigation">
             <ul className="mobile-nav-list">
               <li className="mobile-nav-item">
-                <Link to="/">Debugger</Link>
+                <Link to="/" onClick={this.toggleMobileNav}>Debugger</Link>
               </li>
               <li className="mobile-nav-item">
-                <Link to="/introduction">Introduction</Link>
+                <Link to="/introduction" onClick={this.toggleMobileNav}>Introduction</Link>
               </li>
               <li className="mobile-nav-item">
                 <a href="https://ask.auth0.com/category/openidconnect">Ask</a>

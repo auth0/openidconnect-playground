@@ -173,9 +173,6 @@ button
     > a
       color $color-text-light
 
-      &:hover
-        color black
-
   .mobile-crafted-by
     position absolute
     bottom 0
@@ -270,9 +267,7 @@ button
     margin-top 20px
     padding 25px 0
     border-bottom 1px solid rgba(black, 0.10)
-
-    +breakpoint("tablet")
-      text-align center
+    text-align center
 
   .playground-header-title
     font-size 26px
@@ -289,18 +284,18 @@ button
   .playground-header-config
     font-size 12px
     text-transform uppercase
-    line-height 39px
     vertical-align middle
-    position absolute
-    right -16px
     background-color transparent
     border none
 
     +breakpoint("tablet", "max")
-      bottom 17px
+      margin-top 15px
 
     +breakpoint("tablet")
+      line-height 39px
+      position absolute
       top 50%
+      right -16px
       transform translateY(-50%)
 
     > i
