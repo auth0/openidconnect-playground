@@ -31539,20 +31539,6 @@
 	          )
 	        ),
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'form-group' },
-	          _react2.default.createElement(
-	            'label',
-	            { htmlFor: 'Token Endpoint', className: 'col-md-3 col-xs-12 control-label' },
-	            'Token Endpoint'
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'col-md-9 col-xs-12' },
-	            _react2.default.createElement('input', { className: 'form-control', name: 'tokenEndpoint', onChange: this.update, disabled: this.props.server != 'custom' ? 'disabled' : '', value: this.props.tokenEndpoint, ref: 'tokenEndpoint', placeholder: 'https://my-oidc.com/oauth/token' })
-	          )
-	        ),
-	        _react2.default.createElement(
 	          'p',
 	          { id: 'warning', style: { display: this.props.server != 'Auth0' || this.props.server == 'Auth0' && this.props.domain != 'samples.auth0.com' ? 'block' : 'none' } },
 	          'Remember to set https://openidconnect.net/callback as an allowed callback with your application!'
