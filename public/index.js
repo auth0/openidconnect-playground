@@ -27812,7 +27812,7 @@
 	    value: function openConfigurationModal(visibility, inputFocus) {
 	      window.dispatchEvent(new CustomEvent('configChange', {
 	        detail: {
-	          scopes: (0, _utils.filterScopes)(this.state.scopes)
+	          scopes: (0, _utils.filterScopes)(this.state.scopes, this.state.server, this.state.audience)
 	        }
 	      }));
 
@@ -29265,13 +29265,13 @@
 	  return value.split('?')[0] || '';
 	}
 
-	function isValidScope(scope) {
-	  return 'openid profile email phone address'.indexOf(scope) !== -1;
+	function isValidScope(scope, server, audience) {
+	  return server === 'Auth0' && audience ? true : 'openid profile email phone address'.indexOf(scope) !== -1;
 	}
 
-	function filterScopes(scopes) {
+	function filterScopes(scopes, server, audience) {
 	  return scopes.split(' ').filter(function (scope) {
-	    return isValidScope(scope);
+	    return isValidScope(scope, server, audience);
 	  }).join(' ');
 	}
 

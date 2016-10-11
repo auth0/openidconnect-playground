@@ -230,7 +230,7 @@ class DebuggerPage extends React.Component {
   openConfigurationModal(visibility, inputFocus) {
     window.dispatchEvent(new CustomEvent('configChange', {
       detail: {
-        scopes: filterScopes(this.state.scopes)
+        scopes: filterScopes(this.state.scopes, this.state.server, this.state.audience)
       }
     }));
 
