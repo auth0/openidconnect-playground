@@ -29158,7 +29158,7 @@
 	                    this.props.clientID
 	                  ),
 	                  _react2.default.createElement('br', null),
-	                  '&redirect_uri= https://openidconnect.net/callback\u2028',
+	                  '&redirect_uri=https://openidconnect.net/callback\u2028',
 	                  _react2.default.createElement('br', null),
 	                  '&audience=',
 	                  _react2.default.createElement(
