@@ -27,6 +27,7 @@ class DebuggerPage extends React.Component {
     this.state.tokenEndpoint = this.state.tokenEndpoint || 'https://samples.auth0.com/oauth/token';
     this.state.tokenKeysEndpoint = this.state.tokenKeysEndpoint || '';
     this.state.userInfoEndpoint = this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo';
+    this.state.audience = this.state.audience || '';
     this.state.scopes = this.state.scopes || 'openid profile';
     this.state.stateToken = this.state.stateToken || document.querySelector('input[name=stateToken]').value;
     this.state.redirectURI = this.state.redirectURI ||  document.querySelector('input[name=redirect-uri]').value;
@@ -278,6 +279,7 @@ class DebuggerPage extends React.Component {
                   ref="step1"
                   authEndpoint = {this.state.authEndpoint}
                   clientID = {this.state.clientID}
+                  audience = {this.state.audience}
                   scopes = {this.state.scopes}
                   stateToken = {this.state.stateToken}
                   redirectURI = {this.state.redirectURI}
@@ -341,6 +343,7 @@ class DebuggerPage extends React.Component {
             server = {this.state.server}
             clientID= {this.state.clientID}
             clientSecret= {this.state.clientSecret}
+            audience= {this.state.audience}
             scopes = {this.state.scopes}
             focus = {this.state.configurationModalFocus}
           /> : null }

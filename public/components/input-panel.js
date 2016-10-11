@@ -29,6 +29,13 @@ class InputPanel extends React.Component {
             update={this.update}
           />
           <InputValue
+            ref="audience"
+            name="audience"
+            label="Audience"
+            val={this.state.audience}
+            update={this.update}
+          />
+          <InputValue
             ref="scope"
             name="scope"
             label="Scope"
@@ -41,6 +48,7 @@ class InputPanel extends React.Component {
           server={this.state.serverURL}
           authEndpoint={this.state.authEndpoint}
           clientID={this.state.clientID}
+          audience={this.state.audience}
           scope= {this.state.scope}
           stateToken={this.state.stateToken}
         />
@@ -59,6 +67,7 @@ class InputPanel extends React.Component {
       this.setState({
         clientID: null,
         clientSecret: null,
+        audience: null,
         scope: null
       });
     }
@@ -72,6 +81,7 @@ class InputPanel extends React.Component {
       tokenEndpoint: this.refs.tokenEndpoint.refs.value.value,
       clientID: this.refs.clientID.refs.value.value,
       clientSecret: this.refs.clientSecret.refs.value.value,
+      audience: this.refs.audience.refs.value.value,
       scope: this.refs.scope.refs.value.value,
       stateToken: document.querySelector('input[name=stateToken]').value
     });
