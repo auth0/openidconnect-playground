@@ -31,7 +31,7 @@ class ClientInfo extends React.Component{
           </div>
         </div>
 
-        <div className="form-group">
+        <div className="form-group" style={{display: this.props.server == 'Auth0' ? 'block': 'none'}}>
           <label className="col-md-3 col-xs-12 control-label" htmlFor="audience">Audience (optional)</label>
           <div className="col-md-9 col-xs-12">
             <input className="form-control" name="audience" onChange={this.update} value={this.props.audience} ref="audience" placeholder="https://example.com/api" />

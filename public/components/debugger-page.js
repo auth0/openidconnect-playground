@@ -277,6 +277,7 @@ class DebuggerPage extends React.Component {
               { this.state.currentStep >= 1 ?
                 <StepOne
                   ref="step1"
+                  server = {this.state.server}
                   authEndpoint = {this.state.authEndpoint}
                   clientID = {this.state.clientID}
                   audience = {this.state.audience}

@@ -27895,6 +27895,7 @@
 	              { className: 'playground-content' },
 	              this.state.currentStep >= 1 ? _react2.default.createElement(_stepOne2.default, {
 	                ref: 'step1',
+	                server: this.state.server,
 	                authEndpoint: this.state.authEndpoint,
 	                clientID: this.state.clientID,
 	                audience: this.state.audience,
@@ -29104,7 +29105,8 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      this.completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI + '&audience=' + encodeURI(this.props.audience) + '&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken;
+	      this.completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI + '&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken;
+	      if (this.props.server === 'Auth0' && this.props.audience) this.completeURL += '&audience=' + encodeURI(this.props.audience);
 
 	      return _react2.default.createElement(
 	        'div',
@@ -29160,15 +29162,19 @@
 	                  _react2.default.createElement('br', null),
 	                  '&redirect_uri=https://openidconnect.net/callback\u2028',
 	                  _react2.default.createElement('br', null),
-	                  '&audience=',
-	                  _react2.default.createElement(
-	                    'a',
-	                    { onClick: function onClick() {
-	                        _this2.props.openModal(true, 'audience');
-	                      }, href: '#' },
-	                    this.props.audience
-	                  ),
-	                  _react2.default.createElement('br', null),
+	                  this.props.server === 'Auth0' && this.props.audience ? _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    '&audience=',
+	                    _react2.default.createElement(
+	                      'a',
+	                      { onClick: function onClick() {
+	                          _this2.props.openModal(true, 'audience');
+	                        }, href: '#' },
+	                      this.props.audience
+	                    ),
+	                    _react2.default.createElement('br', null)
+	                  ) : null,
 	                  '&scope=',
 	                  _react2.default.createElement(
 	                    'a',
@@ -31373,7 +31379,8 @@
 	        clientSecret: props.clientSecret,
 	        audience: props.audience,
 	        scopes: props.scopes,
-	        focus: props.focus
+	        focus: props.focus,
+	        server: props.server
 	      }),
 	      _react2.default.createElement(
 	        'div',
@@ -48806,7 +48813,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'form-group' },
+	          { className: 'form-group', style: { display: this.props.server == 'Auth0' ? 'block' : 'none' } },
 	          _react2.default.createElement(
 	            'label',
 	            { className: 'col-md-3 col-xs-12 control-label', htmlFor: 'audience' },

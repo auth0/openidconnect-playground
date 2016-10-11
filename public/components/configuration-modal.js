@@ -30,6 +30,7 @@ const ConfigurationModal = (props) =>
           audience={props.audience}
           scopes={props.scopes}
           focus={props.focus}
+          server={props.server}
         />
 
         <div className="row">
