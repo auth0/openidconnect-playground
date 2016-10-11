@@ -27,6 +27,7 @@ class DebuggerPage extends React.Component {
     this.state.tokenEndpoint = this.state.tokenEndpoint || 'https://samples.auth0.com/oauth/token';
     this.state.tokenKeysEndpoint = this.state.tokenKeysEndpoint || '';
     this.state.userInfoEndpoint = this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo';
+    this.state.useAudience = this.state.useAudience || false;
     this.state.audience = this.state.audience || '';
     this.state.scopes = this.state.scopes || 'openid profile';
     this.state.stateToken = this.state.stateToken || document.querySelector('input[name=stateToken]').value;
@@ -230,7 +231,7 @@ class DebuggerPage extends React.Component {
   openConfigurationModal(visibility, inputFocus) {
     window.dispatchEvent(new CustomEvent('configChange', {
       detail: {
-        scopes: filterScopes(this.state.scopes, this.state.server, this.state.audience)
+        scopes: filterScopes(this.state.scopes, this.state.server, this.state.useAudience)
       }
     }));
 
@@ -280,6 +281,7 @@ class DebuggerPage extends React.Component {
                   server = {this.state.server}
                   authEndpoint = {this.state.authEndpoint}
                   clientID = {this.state.clientID}
+                  useAudience = {this.state.useAudience}
                   audience = {this.state.audience}
                   scopes = {this.state.scopes}
                   stateToken = {this.state.stateToken}
@@ -344,6 +346,7 @@ class DebuggerPage extends React.Component {
             server = {this.state.server}
             clientID= {this.state.clientID}
             clientSecret= {this.state.clientSecret}
+            useAudience= {this.state.useAudience}
             audience= {this.state.audience}
             scopes = {this.state.scopes}
             focus = {this.state.configurationModalFocus}

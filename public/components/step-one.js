@@ -76,7 +76,7 @@ class StepOne extends React.Component {
 
   render() {
     this.completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI  + '&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken
-    if (this.props.server === 'Auth0' && this.props.audience)
+    if (this.props.server === 'Auth0' && this.props.useAudience)
       this.completeURL += '&audience=' + encodeURI(this.props.audience);
 
     return (
@@ -98,7 +98,7 @@ class StepOne extends React.Component {
                   <br />
                   &amp;redirect_uri=https://openidconnect.net/callback 
                   <br />
-                { this.props.server === 'Auth0' && this.props.audience ?
+                { this.props.server === 'Auth0' && this.props.useAudience ?
                   <span>
                     &amp;audience=
                     <a onClick={() => { this.props.openModal(true, 'audience') }} href="#">{this.props.audience}</a>

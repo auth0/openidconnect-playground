@@ -27601,6 +27601,7 @@
 	    _this.state.tokenEndpoint = _this.state.tokenEndpoint || 'https://samples.auth0.com/oauth/token';
 	    _this.state.tokenKeysEndpoint = _this.state.tokenKeysEndpoint || '';
 	    _this.state.userInfoEndpoint = _this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo';
+	    _this.state.useAudience = _this.state.useAudience || false;
 	    _this.state.audience = _this.state.audience || '';
 	    _this.state.scopes = _this.state.scopes || 'openid profile';
 	    _this.state.stateToken = _this.state.stateToken || document.querySelector('input[name=stateToken]').value;
@@ -27812,7 +27813,7 @@
 	    value: function openConfigurationModal(visibility, inputFocus) {
 	      window.dispatchEvent(new CustomEvent('configChange', {
 	        detail: {
-	          scopes: (0, _utils.filterScopes)(this.state.scopes, this.state.server, this.state.audience)
+	          scopes: (0, _utils.filterScopes)(this.state.scopes, this.state.server, this.state.useAudience)
 	        }
 	      }));
 
@@ -27898,6 +27899,7 @@
 	                server: this.state.server,
 	                authEndpoint: this.state.authEndpoint,
 	                clientID: this.state.clientID,
+	                useAudience: this.state.useAudience,
 	                audience: this.state.audience,
 	                scopes: this.state.scopes,
 	                stateToken: this.state.stateToken,
@@ -27958,6 +27960,7 @@
 	          server: this.state.server,
 	          clientID: this.state.clientID,
 	          clientSecret: this.state.clientSecret,
+	          useAudience: this.state.useAudience,
 	          audience: this.state.audience,
 	          scopes: this.state.scopes,
 	          focus: this.state.configurationModalFocus
@@ -29106,7 +29109,7 @@
 	      var _this2 = this;
 
 	      this.completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI + '&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken;
-	      if (this.props.server === 'Auth0' && this.props.audience) this.completeURL += '&audience=' + encodeURI(this.props.audience);
+	      if (this.props.server === 'Auth0' && this.props.useAudience) this.completeURL += '&audience=' + encodeURI(this.props.audience);
 
 	      return _react2.default.createElement(
 	        'div',
@@ -29162,7 +29165,7 @@
 	                  _react2.default.createElement('br', null),
 	                  '&redirect_uri=https://openidconnect.net/callback\u2028',
 	                  _react2.default.createElement('br', null),
-	                  this.props.server === 'Auth0' && this.props.audience ? _react2.default.createElement(
+	                  this.props.server === 'Auth0' && this.props.useAudience ? _react2.default.createElement(
 	                    'span',
 	                    null,
 	                    '&audience=',
@@ -29265,13 +29268,13 @@
 	  return value.split('?')[0] || '';
 	}
 
-	function isValidScope(scope, server, audience) {
-	  return server === 'Auth0' && audience ? true : 'openid profile email phone address'.indexOf(scope) !== -1;
+	function isValidScope(scope, server, useAudience) {
+	  return server === 'Auth0' && useAudience ? true : 'openid profile email phone address'.indexOf(scope) !== -1;
 	}
 
-	function filterScopes(scopes, server, audience) {
+	function filterScopes(scopes, server, useAudience) {
 	  return scopes.split(' ').filter(function (scope) {
-	    return isValidScope(scope, server, audience);
+	    return isValidScope(scope, server, useAudience);
 	  }).join(' ');
 	}
 
@@ -31377,6 +31380,7 @@
 	      _react2.default.createElement(_clientInfo2.default, {
 	        clientID: props.clientID,
 	        clientSecret: props.clientSecret,
+	        useAudience: props.useAudience,
 	        audience: props.audience,
 	        scopes: props.scopes,
 	        focus: props.focus,
@@ -48817,12 +48821,20 @@
 	          _react2.default.createElement(
 	            'label',
 	            { className: 'col-md-3 col-xs-12 control-label', htmlFor: 'audience' },
-	            'Audience (optional)'
+	            _react2.default.createElement('input', { type: 'checkbox', name: 'useAudience', onChange: this.update, checked: this.props.useAudience, ref: 'useAudience' }),
+	            '\xA0Audience (',
+	            _react2.default.createElement(
+	              'a',
+	              { href: 'https://auth0.com/docs/api-auth', target: '_blank' },
+	              'more info'
+	            ),
+	            ')'
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-md-9 col-xs-12' },
-	            _react2.default.createElement('input', { className: 'form-control', name: 'audience', onChange: this.update, value: this.props.audience, ref: 'audience', placeholder: 'https://example.com/api' })
+	            { className: 'col-md-9 col-xs-12', style: { display: this.props.useAudience ? 'block' : 'none' } },
+	            _react2.default.createElement('input', { className: 'form-control', name: 'audience', onChange: this.update, value: this.props.audience, ref: 'audience', placeholder: 'https://example.com/api' }),
+	            'Make sure an API exists in your Auth0 tenant with the same identifier as the above audience. You can also specify custom (non-OIDC) scopes for that audience below:'
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -48848,6 +48860,7 @@
 	        detail: {
 	          clientID: (0, _utils.sanitizeParam)(this.refs.clientID.value),
 	          clientSecret: (0, _utils.sanitizeParam)(this.refs.clientSecret.value),
+	          useAudience: this.refs.useAudience.checked,
 	          audience: (0, _utils.sanitizeParam)(this.refs.audience.value),
 	          scopes: (0, _utils.sanitizeParam)(this.refs.scopes.value)
 	        }
