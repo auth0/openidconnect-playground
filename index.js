@@ -38,7 +38,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   proxy: true,
-  cookie: { secure: true }
+  cookie: { secure: process.env.NON_SECURE_SESSION !== 'true' }
 }));
 
 app.set('view engine', 'jade')
@@ -56,6 +56,9 @@ app.get('/callback', function(req, res){
 		req.session.authCode = req.query.code
 		res.redirect('/')
 	}
+  if(req.query.error){
+    res.status(400).send(`${req.query.error}: ${req.query.error_description}`)
+  }
 })
 
 app.get('*',

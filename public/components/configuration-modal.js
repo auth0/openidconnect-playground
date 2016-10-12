@@ -27,8 +27,11 @@ const ConfigurationModal = (props) =>
         <ClientInfo
           clientID={props.clientID}
           clientSecret={props.clientSecret}
+          useAudience={props.useAudience}
+          audience={props.audience}
           scopes={props.scopes}
           focus={props.focus}
+          server={props.server}
         />
 
         <div className="row">

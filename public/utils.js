@@ -12,13 +12,15 @@ function sanitizeEndpoint(value) {
   return value.split('?')[0] || '';
 }
 
-function isValidScope(scope) {
-  return 'openid profile email phone address'.indexOf(scope) !== -1;
+function isValidScope(scope, server, useAudience) {
+  return server === 'Auth0' && useAudience ?
+    true :
+    'openid profile email phone address'.indexOf(scope) !== -1;
 }
 
-function filterScopes(scopes) {
+function filterScopes(scopes, server, useAudience) {
   return scopes.split(' ')
-    .filter(scope => isValidScope(scope))
+    .filter(scope => isValidScope(scope, server, useAudience))
     .join(' ');
 }
 

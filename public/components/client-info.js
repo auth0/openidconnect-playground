@@ -31,6 +31,18 @@ class ClientInfo extends React.Component{
           </div>
         </div>
 
+        <div className="form-group" style={{display: this.props.server == 'Auth0' ? 'block': 'none'}}>
+          <label className="col-md-3 col-xs-12 control-label" htmlFor="audience">
+            <input type="checkbox" name="useAudience" onChange={this.update} checked={this.props.useAudience} ref="useAudience"/>
+            &nbsp;Audience (<a href="https://auth0.com/docs/api-auth" target="_blank">more info</a>)
+          </label>
+          <div className="col-md-9 col-xs-12" style={{display: this.props.useAudience ? 'block': 'none'}}>
+            <input className="form-control" name="audience" onChange={this.update} value={this.props.audience} ref="audience" placeholder="https://example.com/api" />
+            Make sure an API exists in your Auth0 tenant with the same identifier as the above audience.
+            You can also specify custom (non-OIDC) scopes for that audience below:
+          </div>
+        </div>
+
         <div className="form-group">
           <label className="col-md-3 col-xs-12 control-label" htmlFor="scopes">Scope</label>
           <div className="col-md-9 col-xs-12">
@@ -45,6 +57,8 @@ class ClientInfo extends React.Component{
       detail: {
         clientID: sanitizeParam(this.refs.clientID.value),
         clientSecret: sanitizeParam(this.refs.clientSecret.value),
+        useAudience: this.refs.useAudience.checked,
+        audience: sanitizeParam(this.refs.audience.value),
         scopes: sanitizeParam(this.refs.scopes.value)
       }
     }));
