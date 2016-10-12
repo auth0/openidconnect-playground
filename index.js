@@ -56,6 +56,9 @@ app.get('/callback', function(req, res){
 		req.session.authCode = req.query.code
 		res.redirect('/')
 	}
+  if(req.query.error){
+    res.status(400).send(`${req.query.error}: ${req.query.error_description}`)
+  }
 })
 
 app.get('*',
