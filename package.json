@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js --ignore ./sessions --verbose"
+    "start": "nodemon index.js --ignore ./sessions --verbose",
+    "build": "webpack",
+    "watch": "webpack -w"
   },
   "keywords": [],
   "author": "",
@@ -43,6 +45,7 @@
     "eslint-plugin-jsx-a11y": "^0.6.2",
     "eslint-plugin-react": "^4.3.0",
     "file-loader": "^0.9.0",
+    "nodemon": "^1.11.0",
     "pug-loader": "^1.0.2",
     "react-router": "^2.6.1",
     "style-loader": "^0.13.1",

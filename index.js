@@ -38,7 +38,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   proxy: true,
-  cookie: { secure: true }
+  cookie: { secure: process.env.NON_SECURE_SESSION !== 'true' }
 }));
 
 app.set('view engine', 'jade')
