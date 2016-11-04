@@ -7,7 +7,6 @@ import StepTwo from './step-two';
 import StepThree from './step-three';
 import StepFour from './step-four';
 import ConfigurationModal from './configuration-modal';
-import { filterScopes } from '../utils';
 
 class DebuggerPage extends React.Component {
   constructor() {
@@ -27,7 +26,7 @@ class DebuggerPage extends React.Component {
     this.state.tokenEndpoint = this.state.tokenEndpoint || 'https://samples.auth0.com/oauth/token';
     this.state.tokenKeysEndpoint = this.state.tokenKeysEndpoint || '';
     this.state.userInfoEndpoint = this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo';
-    this.state.scopes = this.state.scopes || 'openid profile';
+    this.state.scopes = this.state.scopes || 'openid profile email phone address';
     this.state.stateToken = this.state.stateToken || document.querySelector('input[name=stateToken]').value;
     this.state.redirectURI = this.state.redirectURI ||  document.querySelector('input[name=redirect-uri]').value;
     this.state.clientID = this.state.clientID ||  document.querySelector('input[name=auth0ClientID]').value;
@@ -229,7 +228,7 @@ class DebuggerPage extends React.Component {
   openConfigurationModal(visibility, inputFocus) {
     window.dispatchEvent(new CustomEvent('configChange', {
       detail: {
-        scopes: filterScopes(this.state.scopes)
+        scopes: this.state.scopes
       }
     }));
 
