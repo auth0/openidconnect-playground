@@ -100,57 +100,60 @@ app.post('/code_to_token', (req, res) => {
 });
 
 app.post('/validate', (req, res) => {
-  // REQUIRED: idToken, clientSecret or tokenKeysEndpoint, server
-  // server is because we need to know what to do with/to/where to get the key
-  let secret;
-
-  if (req.body.server === 'Auth0') {
-    // Auth0 base64 encodes its secrets
-    secret = new Buffer(req.body.clientSecret, 'base64');
-    verify((err, decoded) => {
-      if (err) {
-        res.status(400).send(err);
-      } else {
-        res.status(200).json(decoded);
-      }
-    });
-  } else if (req.body.tokenKeysEndpoint) {
-    // go get the keys!
-    request.get(req.body.tokenKeysEndpoint, (err, resp, body) => {
-      const keys = JSON.parse(body).keys;
-      let done = false;
-      // we have to try EACH key
-      for (let i = 0; i < keys.length; i++) {
-        secret = jwkToPem(keys[i]);
-        verify((err, decoded) => {
-          if (err) {
-            res.status(400).send(err);
-          } else if (decoded && !done) {
-            res.json(decoded);
-            done = true;
-          }
-        });
-      }
-      setTimeout(() => {
-        // if we get here, none of the keys worked
-        if (!done) {
-          res.sendStatus(400).send('Invalid Signature');
-        }
-      }, 250);
-    });
-  } else {
-    secret = req.body.clientSecret;
-    verify((err, decoded) => {
-      if (err) {
-        res.status(400).send(err);
-      } else {
-        res.status(200).json(decoded);
-      }
-    });
+  if (!req.body.idToken) {
+    return res.status(400).send(
+      'Missing idToken param.');
   }
 
-  function verify(cb) {
-    jwt.verify(req.body.idToken, secret, { algorithims: ['HS256', 'RS256'] }, cb);
+  const tokenHeader = jwt.decode(req.body.idToken, { complete: true }).header;
+
+  // RS256 = validation with public key
+  if (tokenHeader.alg === 'RS256') {
+    if (!req.body.tokenKeysEndpoint) {
+      return res.status(400).send(
+        `idToken algorithm is ${tokenHeader.alg} but tokenKeysEndpoint param is missing.`);
+    }
+    if (!tokenHeader.kid) {
+      return res.status(400).send(
+        `idToken algorithm is ${tokenHeader.alg} but kid header is missing.`);
+    }
+
+    // fetch public key
+    return request.get({
+      url: req.body.tokenKeysEndpoint,
+      json: true
+    }, (err, resp, body) => {
+      // find key with matching kid
+      const key = body.keys.find(k => k.kid === tokenHeader.kid);
+      if (!key) {
+        return res.status(400).send(`No public key found with matching kid '${tokenHeader.kid}'`);
+      }
+
+      const secret = jwkToPem(key);
+      return verify(secret);
+    });
+  // HS256 = validation with client secret
+  } else if (tokenHeader.alg === 'HS256') {
+    if (!req.body.clientSecret) {
+      return res.status(400).send(
+        `idToken algorithm is ${tokenHeader.alg} but clientSecret param is missing.`);
+    }
+
+    const secret = req.body.server === 'Auth0' ?
+      new Buffer(req.body.clientSecret, 'base64') :
+      req.body.clientSecret;
+    return verify(secret);
+  }
+  return res.status(400).send(`Unsupported idToken algorithim: ${tokenHeader.alg}`);
+
+  function verify(secret) {
+    jwt.verify(req.body.idToken, secret, (err, decoded) => {
+      if (err) {
+        return res.status(400).send(err);
+      }
+
+      return res.json(decoded);
+    });
   }
 });
 
