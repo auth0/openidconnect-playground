@@ -12,16 +12,6 @@ function sanitizeEndpoint(value) {
   return value.split('?')[0] || '';
 }
 
-function isValidScope(scope) {
-  return 'openid profile email phone address'.indexOf(scope) !== -1;
-}
-
-function filterScopes(scopes) {
-  return scopes.split(' ')
-    .filter(scope => isValidScope(scope))
-    .join(' ');
-}
-
 function isValidParam(param) {
   return 'client_id scope response_type redirect_uri'.indexOf(param.split('=')[0] || '') !== -1;
 }
@@ -41,7 +31,6 @@ function validateUrl(value) {
 
 module.exports = {
   filterParams,
-  filterScopes,
   sanitizeEndpoint,
   sanitizeParam,
   validateServer,
