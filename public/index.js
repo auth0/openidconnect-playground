@@ -31150,7 +31150,7 @@
 	                'RS256'
 	              ),
 	              ' ',
-	              "algorithim. We'll use the public key of the OpenID Connect server to validate it. In order to do that, we'll fetch the public keys from",
+	              "algorithim. We'll use the public key of the OpenID Connect server to validate it. In order to do that, we'll fetch the public key from ",
 	              _react2.default.createElement(
 	                'strong',
 	                null,
