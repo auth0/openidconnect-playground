@@ -258,8 +258,8 @@ class DebuggerPage extends React.Component {
               <div className="mode-switcher">
                 <label>Mode:</label>
                 <select className="form-control">
-                  <option>OpendID Connect + OAuth2</option>
-                  <option disabled>OpendID Connect (Coming soon)</option>
+                  <option>OpenID Connect + OAuth2</option>
+                  <option disabled>OpenID Connect (Coming soon)</option>
                 </select>
               </div>
               <button
