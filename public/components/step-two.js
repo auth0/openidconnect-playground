@@ -103,7 +103,7 @@ class StepTwo extends React.Component {
                   <br />
                   &amp;client_secret=<a onClick={() => { this.props.openModal(true, 'clientSecret') }} href="#">{this.props.clientSecret}</a>
                   <br />
-                  &amp;redirect_url=https://openidconnect.net/callback
+                  &amp;redirect_uri=https://openidconnect.net/callback
                   <br />
                   &amp;code={this.props.authCode}
               </div>
