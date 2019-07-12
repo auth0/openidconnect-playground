@@ -45,6 +45,7 @@ class ServerURLs extends React.Component{
               <option value="none">Select a server template</option>
               <option value="Auth0">Auth0</option>
               <option value="google">Google</option>
+              <option value="PhantAuth">PhantAuth</option>
               <option value="custom">Custom</option>
             </select>
           </div>
@@ -66,7 +67,7 @@ class ServerURLs extends React.Component{
                 </div>
               </div>
             </div>
-            <div style={{display: this.props.server != 'Auth0' ? 'block': 'none'}}>
+            <div style={{display: ! ['Auth0', 'PhantAuth'].includes(this.props.server) ? 'block': 'none'}}>
               <label htmlFor="discoveryURL" className="col-md-3 col-xs-12 control-label">Discovery Document URL</label>
               <div className="col-md-9 col-xs-12">
                 <button className="btn btn-transparent btn-md button-float-right"style={{display:(this.props.server != 'google' ? 'inline-block' : 'none')}} onClick={this.updateDiscovery}>Use Discovery Document</button>
@@ -108,7 +109,7 @@ class ServerURLs extends React.Component{
           </div>
         </div>
 
-        <p id="warning" style={{display:((this.props.server != 'Auth0' || (this.props.server == 'Auth0' && this.props.domain != 'samples.auth0.com')) ? 'block' : 'none')}}>Remember to set https://openidconnect.net/callback as an allowed callback with your application!</p>
+        <p id="warning" style={{display:((!['Auth0', 'PhantAuth'].includes(this.props.server) || (this.props.server == 'Auth0' && this.props.domain != 'samples.auth0.com')) ? 'block' : 'none')}}>Remember to set https://openidconnect.net/callback as an allowed callback with your application!</p>
 
       </div>
     )

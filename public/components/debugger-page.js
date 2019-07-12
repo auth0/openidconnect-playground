@@ -150,6 +150,19 @@ class DebuggerPage extends React.Component {
           clientSecret: document.querySelector('input[name=auth0ClientSecret]').value,
           currentStep: 1
         });
+      } else if (event.detail.server &&
+                event.detail.server === 'PhantAuth' &&
+                this.state.server !== 'PhantAuth') {
+        this.setState({
+          domain: 'phantauth.net',
+          clientID: 'phantauth%2bphantauth.test@gmail.com',
+          clientSecret: 'p0m1dXW6',
+          currentStep: 1,
+          authToken: '',
+          accessToken: '',
+          idToken: '',
+          userProfile: ''
+        });
       } else if (event.detail.server && event.detail.server !== this.state.server) {
         this.setState({
           currentStep: 1,
@@ -186,7 +199,7 @@ class DebuggerPage extends React.Component {
   updateURLs(){
     if(this.state.server == 'google'){
       this.updateDiscovery('https://accounts.google.com/.well-known/openid-configuration')
-    } else if (this.state.server == 'Auth0'){
+    } else if (['Auth0', 'PhantAuth'].includes(this.state.server)){
       this.updateDiscovery('https://' + this.state.domain + '/.well-known/openid-configuration')
     } else {
       this.updateDiscovery(this.state.discoveryURL)

@@ -101,6 +101,16 @@ class InputPanel extends React.Component {
         completeURL: URL + '/authorize' + filterParams('?client_id='+ encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value  + '&state=' + this.state.stateToken),
         warning: !this.state.clientID || this.state.clientID == 'kbyuFDidLLm280LIwVFiazOqjO3ty8KH' ? false : true
       })
+    } else if(type == 'PhantAuth'){
+      this.setState({
+        serverURL: 'https://phantauth.net',
+        clientID:  this.refs.clientID.refs.value.value || this.state.savedClientID || window.clientId,
+        clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || window.clientSecret,
+        authEndpoint: '/auth/authorize',
+        tokenEndpoint: '/auth/token',
+        completeURL: URL + '/auth/authorize' + filterParams('?client_id='+ encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value  + '&state=' + this.state.stateToken),
+        warning: false
+      })
     } else if(type == 'custom'){
       this.refs.serverURL.updateLabel("Server URL", "https://sample-oidc.com");
       this.setState({
@@ -210,6 +220,7 @@ class ServerPicker extends React.Component{
           <option value="none">SELECT A SERVER</option>
           <option value="Auth0">Auth0</option>
           <option value="google">Google</option>
+          <option value="PhantAuth">PhantAuth</option>
           <option value="custom">Custom</option>
         </select>
       </div>
