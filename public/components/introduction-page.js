@@ -28,7 +28,7 @@ const IntroductionPage = () =>
           <li><a href="https://auth0.com/resources/ebooks/the-openid-connect-handbook?ref=oidc-microsite"title="The OpenID Connect Handbook - free eBook">The OpenID Connect Handbook - free eBook</a></li>
           <li><a href="http://openid.net/" title="The OpenID Connect Standards site">The OpenID Connect Standards site</a></li>
           <li><a href="http://openid.net/connect/faq/" title="OpenID Connect FAQ and Q&A's">OpenID Connect FAQ and Q&As</a></li>
-          <li><a href="https://auth0.com/blog/openid-connect-final-spec-10/">OpenID Connect Specs are Final! - Auth0 Blog</a></li>
+          <li><a href="https://auth0.com/blog/search/?query=open%20id%20connect&page=1" title="OpenID Connect blog posts from Auth0">OpenID Connect posts on Auth0 Blog</a></li>
         </ul>
       </div>
       <div className="introduction-section">
