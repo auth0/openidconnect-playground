@@ -25,6 +25,7 @@ const IntroductionPage = () =>
           You can learn even more about OIDC at the following resources:
         </p>
         <ul>
+          <li><a href="https://auth0.com/resources/ebooks/the-openid-connect-handbook?ref=oidc-microsite">The OpenID Connect Handbook - free eBook</a></li>
           <li><a href="http://openid.net/">The OpenID Connect Standards site</a></li>
           <li><a href="http://openid.net/connect/faq/">OpenID Connect FAQ and Q&As</a></li>
           <li><a href="https://auth0.com/blog/openid-connect-final-spec-10/">OpenID Connect Specs are Final! - Auth0 Blog</a></li>
