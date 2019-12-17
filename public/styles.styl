@@ -109,6 +109,41 @@ button
     a
       color: rgba(0,0,0,0.54)
 
+      .crafted-by__question-mark
+        transition color .5s, background-color .5s
+        margin-left 8px
+        border-radius 50%
+        width 18px
+        height 18px
+        display inline-block
+        background-color #e3e3e3
+        color #aeb0b3
+        line-height 18px
+        vertical-align top
+      &:before
+        -webkit-backface-visibility hidden
+        content "Learn more about Auth0"
+        position absolute
+        top 28px
+        right 0
+        border-radius 3px
+        padding 8px 0px
+        font-size 14px
+        line-height 14px
+        min-width 170px
+        background-color #555
+        color white
+        transition visibility 0s, opacity .5s
+        visibility hidden
+        opacity 0
+      &:hover
+        .crafted-by__question-mark
+          background-color #ccc
+          color #888889
+        &:before
+          opacity 1
+          visibility visible
+
     +breakpoint("tablet")
       display block
       position absolute
