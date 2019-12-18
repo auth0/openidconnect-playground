@@ -771,9 +771,9 @@ body.overflow-hidden
   border-radius 3px
   box-shadow 0 40px 21px -35px #d5d5d5
   background #F9F9F9
-  background-image url('/images/free-ipad-mobile.png')
+  background-image url('/images/oidc-handbook-gc-ipad.png')
   background-repeat no-repeat
-  background-position right bottom
+  background-position right bottom -32px
   background-size 420px
   .gc-banner__main-header
     margin 0
@@ -788,6 +788,9 @@ body.overflow-hidden
     margin 14px 0 0 0
   .gc-banner__cta
     margin 26px 0 0 0
+    background-color #F8931D
+    &:hover
+      background-color #eb5424
 
   @media screen and (max-width: 768px)
     min-height 494px
@@ -797,3 +800,5 @@ body.overflow-hidden
     .gc-banner__main-header, .gc-banner__sub-header
       word-break keep-all
       text-align center
+    .gc-banner__cta
+      width 100%
