@@ -252,24 +252,18 @@ class DebuggerPage extends React.Component {
     return (
       <div>
         <section className="gc-banner__wrapper">
-          <div className="gc_banner__content">
-            <div className="gc-banner__content-copy">
-              <h2 className="gc-banner__main-header">
-                Get the OIDC Handbook for free!
-              </h2>
-              <h3 className="gc-banner__sub-header">
-                Download it now and get up-to-speed faster
-              </h3>
-            </div>
-            <div className="gc-banner__cta">
-              <a
-                href="https://auth0.com/resources/ebooks/the-openid-connect-handbook?utm_source=openidconnect&utm_medium=gc_banner&utm_campaign=oidc_gc_banner_12_2019"
-                className="btn btn-lg btn-success"
-              >
-                {'DOWNLOAD EBOOK'}
-              </a>
-            </div>
-          </div>
+          <h2 className="gc-banner__main-header">
+            Get the OIDC Handbook for free!
+          </h2>
+          <h3 className="gc-banner__sub-header">
+            Download it now and get up-to-speed faster
+          </h3>
+          <a
+            href="https://auth0.com/resources/ebooks/the-openid-connect-handbook?utm_source=openidconnect&utm_medium=gc_banner&utm_campaign=oidc_gc_banner_12_2019"
+            className="btn btn-lg btn-success gc-banner__cta"
+          >
+            {'DOWNLOAD EBOOK'}
+          </a>
         </section>
         <main className="playground">
           <div className="container">

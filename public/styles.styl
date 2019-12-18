@@ -763,48 +763,37 @@ body.overflow-hidden
 
 // gated content styles
 .gc-banner__wrapper
-  margin-top 66px
-  margin-left auto
-  margin-right auto
   max-width 986px
-  background #F9F9F9
+  min-height 236px
+  margin 66px auto 0 auto
+  padding 48px 146px 48px
   border 1px solid #E3E5E7
   border-radius 3px
-  box-shadow 0px 40px 21px -35px #d5d5d5
-  background-image url('/images/free-ipad-desktop.png')
+  box-shadow 0 40px 21px -35px #d5d5d5
+  background #F9F9F9
+  background-image url('/images/free-ipad-mobile.png')
   background-repeat no-repeat
-  background-position right
-  min-height 236px
-  .gc_banner__content
-    display flex
-    flex-direction column
-    align-items start
-    margin-left 15%
+  background-position right bottom
+  background-size 420px
   .gc-banner__main-header
+    margin 0
     font-size 20px
     line-height 32px
     color orange-color
     text-align left
-    margin-bottom 0
   .gc-banner__sub-header
     font-size 18px
     line-height 30px
     text-align left
-    margin-top 14px
-    margin-bottom 0
+    margin 14px 0 0 0
   .gc-banner__cta
-    margin-top 26px
+    margin 26px 0 0 0
 
-  @media screen and (max-width: 860px)
-    .gc-banner__main-header, .gc-banner__sub-header
-      max-width 290px
-      word-break keep-all
   @media screen and (max-width: 768px)
-    height 363px
-    max-width 327px
-    background-image url('/images/free-ipad-mobile.png')
-    background-repeat no-repeat
+    min-height 494px
     background-position bottom
+    padding 48px 40px
+    text-align center
     .gc-banner__main-header, .gc-banner__sub-header
+      word-break keep-all
       text-align center
-      width 212px
