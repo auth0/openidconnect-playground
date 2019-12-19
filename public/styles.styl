@@ -795,3 +795,47 @@ body.overflow-hidden
     margin 0
 
 // end introduction page styles
+
+// gated content styles
+.gc-banner__wrapper
+  max-width 986px
+  margin 66px auto 0 auto
+  padding 48px 146px 0
+  border 1px solid #E3E5E7
+  border-radius 3px
+  box-shadow 0 40px 21px -35px #d5d5d5
+  background #F9F9F9
+  background-image url('/images/oidc-handbook-gc-ipad.png')
+  background-repeat no-repeat
+  background-position right bottom -32px
+  background-size 420px
+  .gc-banner__main-header
+    margin 0
+    font-size 20px
+    line-height 32px
+    color orange-color
+    text-align left
+  .gc-banner__sub-header
+    font-size 18px
+    line-height 30px
+    text-align left
+    margin 14px 0 0 0
+  .gc-banner__cta
+    min-width: 208px
+    margin 26px 0 50px
+    background-color #F8931D
+    &:hover
+      background-color #eb5424
+
+  @media screen and (max-width: 768px)
+    margin-left 24px
+    margin-right 24px
+    padding 48px 40px
+    background-position center bottom -40px
+    text-align center
+    .gc-banner__main-header, .gc-banner__sub-header
+      word-break keep-all
+      text-align center
+    .gc-banner__cta
+      width 100%
+      margin-bottom 116px
