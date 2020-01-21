@@ -28,8 +28,18 @@ html(lang="en")
 		script(src="https://cdn.cookielaw.org/consent/2ba730b0-d578-4b19-b9c0-603eb33056b0.js")
 		script(type="text/javascript").
 			function OptanonWrapper() { }
+			
+		// Google Tag Manager
+	  script.
+	    ​(f​unction(​w​,d,s,l,i​){w[l]=w[l]||[];w[l].push({​'gtm.start'​: new​​Date(​).getTime(),event:'​gtm.js'​});v​ar​f=d.getElementsByTagName(s)[​0]​, j=d.createElement(s),dl=l!='​ dataLayer'?​ ​'&l='+​ l:​'';​ j.async=​true;​ j.src= 'https://www.googletagmanager.com/gtm.js?id='​+i+dl;f.parentNode.insertBefore(j,f); })(​window,​​document​,'​script'​,'​dataLayer',​​'GTM-W7FRLJ')​;<​/script>
+ 		// End Google Tag Manager
 
 	body
+		// Google Tag Manager (noscript)
+		noscript
+			iframe(src='​"https://www.googletagmanager.com/ns.html?id=GTM-W7FRLJ"', height='​ 0', ​='', width='​ 0', style='​"display:none;visibility:hidden"​')
+		// End Google Tag Manager (noscript)
+
 		#content
 		.hidden
 			input(type="hidden", name="redirect-uri", value=redirect_uri)
