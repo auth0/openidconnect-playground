@@ -22379,7 +22379,7 @@
 /* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -22420,153 +22420,161 @@
 	  }
 
 	  _createClass(Hero, [{
-	    key: 'toggleMobileNav',
+	    key: "toggleMobileNav",
 	    value: function toggleMobileNav() {
 	      this.setState({
 	        navMobileOpen: !this.state.navMobileOpen
 	      });
 	    }
 	  }, {
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'header',
-	        { className: 'main-header' },
+	        "header",
+	        { className: "main-header" },
 	        _react2.default.createElement(
-	          'nav',
-	          { className: 'main-navigation ' + (this.state.navMobileOpen ? 'mobile-open' : '') },
+	          "nav",
+	          {
+	            className: "main-navigation " + (this.state.navMobileOpen ? "mobile-open" : "")
+	          },
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'container' },
+	            "div",
+	            { className: "container" },
 	            _react2.default.createElement(
-	              'a',
-	              { href: '', className: 'openid-logo' },
+	              "a",
+	              { href: "", className: "openid-logo" },
 	              _react2.default.createElement(
-	                'h1',
-	                { className: 'logo-text' },
-	                'OpenID'
+	                "h1",
+	                { className: "logo-text" },
+	                "OpenID"
 	              )
 	            ),
 	            _react2.default.createElement(
-	              'ul',
-	              { className: 'navigation' },
+	              "ul",
+	              { className: "navigation" },
 	              _react2.default.createElement(
-	                'li',
-	                { className: 'navigation-item' },
+	                "li",
+	                { className: "navigation-item" },
 	                _react2.default.createElement(
 	                  _reactRouter.Link,
-	                  { to: '/' },
-	                  'Debugger'
+	                  { to: "/" },
+	                  "Debugger"
 	                )
 	              ),
 	              _react2.default.createElement(
-	                'li',
-	                { className: 'navigation-item' },
+	                "li",
+	                { className: "navigation-item" },
 	                _react2.default.createElement(
 	                  _reactRouter.Link,
-	                  { to: '/introduction' },
-	                  'Introduction'
+	                  { to: "/introduction" },
+	                  "Introduction"
 	                )
 	              ),
 	              _react2.default.createElement(
-	                'li',
-	                { className: 'navigation-item' },
+	                "li",
+	                { className: "navigation-item" },
 	                _react2.default.createElement(
-	                  'a',
-	                  { href: 'https://ask.auth0.com/category/openidconnect' },
-	                  'Ask'
+	                  "a",
+	                  { href: "https://ask.auth0.com/category/openidconnect" },
+	                  "Ask"
 	                )
 	              ),
 	              _react2.default.createElement(
-	                'li',
-	                { className: 'navigation-item' },
+	                "li",
+	                { className: "navigation-item" },
 	                _react2.default.createElement(
-	                  'a',
-	                  { href: 'http://shop.spreadshirt.com/auth0/' },
-	                  'Get a T-shirt!'
+	                  "a",
+	                  { href: "http://shop.spreadshirt.com/auth0/" },
+	                  "Get a T-shirt!"
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
-	              'div',
-	              { className: 'social-icons' },
+	              "div",
+	              { className: "social-icons" },
 	              _react2.default.createElement(
-	                'a',
-	                { href: 'https://auth0.com/why-auth0?utm_source=openidconnect&utm_medium=navbar_whats_auth0&utm_campaign=openidconnect_nav_cta_12_2019', target: '_blank' },
+	                "a",
+	                {
+	                  href: "https://auth0.com/developers?utm_source=openidconnect&utm_medium=navbar_whats_auth0&utm_campaign=openidconnect_nav_cta_12_2019",
+	                  target: "_blank"
+	                },
 	                _react2.default.createElement(
-	                  'span',
-	                  { className: 'crafted' },
-	                  'Crafted by'
+	                  "span",
+	                  { className: "crafted" },
+	                  "Crafted by"
 	                ),
 	                _react2.default.createElement(_auth0Logo2.default, null),
 	                _react2.default.createElement(
-	                  'span',
-	                  { className: 'crafted-by__question-mark' },
-	                  '?'
+	                  "span",
+	                  { className: "crafted-by__question-mark" },
+	                  "?"
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
-	              'div',
-	              { className: 'trigger-nav', onClick: this.toggleMobileNav },
-	              _react2.default.createElement('div', { className: 'bar' }),
-	              _react2.default.createElement('div', { className: 'bar' }),
-	              _react2.default.createElement('div', { className: 'bar' })
+	              "div",
+	              { className: "trigger-nav", onClick: this.toggleMobileNav },
+	              _react2.default.createElement("div", { className: "bar" }),
+	              _react2.default.createElement("div", { className: "bar" }),
+	              _react2.default.createElement("div", { className: "bar" })
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'mobile-navigation' },
+	            "div",
+	            { className: "mobile-navigation" },
 	            _react2.default.createElement(
-	              'ul',
-	              { className: 'mobile-nav-list' },
+	              "ul",
+	              { className: "mobile-nav-list" },
 	              _react2.default.createElement(
-	                'li',
-	                { className: 'mobile-nav-item' },
+	                "li",
+	                { className: "mobile-nav-item" },
 	                _react2.default.createElement(
 	                  _reactRouter.Link,
-	                  { to: '/', onClick: this.toggleMobileNav },
-	                  'Debugger'
+	                  { to: "/", onClick: this.toggleMobileNav },
+	                  "Debugger"
 	                )
 	              ),
 	              _react2.default.createElement(
-	                'li',
-	                { className: 'mobile-nav-item' },
+	                "li",
+	                { className: "mobile-nav-item" },
 	                _react2.default.createElement(
 	                  _reactRouter.Link,
-	                  { to: '/introduction', onClick: this.toggleMobileNav },
-	                  'Introduction'
+	                  { to: "/introduction", onClick: this.toggleMobileNav },
+	                  "Introduction"
 	                )
 	              ),
 	              _react2.default.createElement(
-	                'li',
-	                { className: 'mobile-nav-item' },
+	                "li",
+	                { className: "mobile-nav-item" },
 	                _react2.default.createElement(
-	                  'a',
-	                  { href: 'https://ask.auth0.com/category/openidconnect' },
-	                  'Ask'
+	                  "a",
+	                  { href: "https://ask.auth0.com/category/openidconnect" },
+	                  "Ask"
 	                )
 	              ),
 	              _react2.default.createElement(
-	                'li',
-	                { className: 'mobile-nav-item' },
+	                "li",
+	                { className: "mobile-nav-item" },
 	                _react2.default.createElement(
-	                  'a',
-	                  { href: 'http://shop.spreadshirt.com/auth0/' },
-	                  'Get a T-shirt!'
+	                  "a",
+	                  { href: "http://shop.spreadshirt.com/auth0/" },
+	                  "Get a T-shirt!"
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
-	              'div',
-	              { className: 'mobile-crafted-by' },
+	              "div",
+	              { className: "mobile-crafted-by" },
 	              _react2.default.createElement(
-	                'a',
-	                { href: 'https://auth0.com/?utm_source=openidconnect&utm_campaign=craftedby', target: '_blank' },
+	                "a",
+	                {
+	                  href: "https://auth0.com/?utm_source=openidconnect&utm_campaign=craftedby",
+	                  target: "_blank"
+	                },
 	                _react2.default.createElement(
-	                  'span',
-	                  { className: 'crafted' },
-	                  'Crafted by'
+	                  "span",
+	                  { className: "crafted" },
+	                  "Crafted by"
 	                ),
 	                _react2.default.createElement(_auth0Logo2.default, null)
 	              )
@@ -22574,20 +22582,20 @@
 	          )
 	        ),
 	        _react2.default.createElement(
-	          'section',
-	          { className: 'hero' },
+	          "section",
+	          { className: "hero" },
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'container' },
+	            "div",
+	            { className: "container" },
 	            _react2.default.createElement(
-	              'h1',
-	              { className: 'hero-title' },
-	              'OpenID Connect Playground'
+	              "h1",
+	              { className: "hero-title" },
+	              "OpenID Connect Playground"
 	            ),
 	            _react2.default.createElement(
-	              'h2',
-	              { className: 'hero-subtitle' },
-	              'The OIDC playground is for developers to test and work with OpenID Connect calls step-by-step, giving them more insight into how OpenID Connect works.'
+	              "h2",
+	              { className: "hero-subtitle" },
+	              "The OIDC playground is for developers to test and work with OpenID Connect calls step-by-step, giving them more insight into how OpenID Connect works."
 	            )
 	          )
 	        )
