@@ -16,16 +16,22 @@ class StepTwo extends React.Component {
   }
   start(){
     this.setState({ stepState: 'wait' })
+    const data = {
+      code: this.props.authCode,
+      clientID: this.props.clientID,
+      clientSecret: this.props.clientSecret,
+      server: this.props.server,
+      tokenEndpoint: this.props.tokenEndpoint
+    }
+
+    if(this.props.audience && this.props.audience !== '') {
+      data.audience = this.props.audience;
+    }
+
 		let serviceDiscovery = new Ajax({
 			url: '/code_to_token',
 			method: 'POST',
-			data: JSON.stringify({
-				code: this.props.authCode,
-        clientID: this.props.clientID,
-        clientSecret: this.props.clientSecret,
-        server: this.props.server,
-        tokenEndpoint: this.props.tokenEndpoint
-			})
+			data: JSON.stringify(data)
 		})
 
 		serviceDiscovery.on('success', function(event){
@@ -106,6 +112,10 @@ class StepTwo extends React.Component {
                   &amp;redirect_uri=https://openidconnect.net/callback
                   <br />
                   &amp;code={this.props.authCode}
+
+                  {this.props.audience&& <br/>}
+                  {this.props.audience&& '&audience='}
+                  {this.props.audience&& <a onClick={() => { this.props.openModal(true, 'audience') }} href="#">{this.props.audience}</a>}
               </div>
               <hr />
               { this.state.exchangeResult ?

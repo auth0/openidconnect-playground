@@ -294,6 +294,7 @@ class DebuggerPage extends React.Component {
                   scopes = {this.state.scopes}
                   stateToken = {this.state.stateToken}
                   redirectURI = {this.state.redirectURI}
+                  audience={this.state.audience}
                   openModal={this.openConfigurationModal}
                   nextStep={ () => { this.setStep(2); } }
                   skipTutorial={ () => { this.setStep(4); }}
@@ -309,6 +310,7 @@ class DebuggerPage extends React.Component {
                   authCode= {this.state.authCode}
                   clientID= {this.state.clientID}
                   clientSecret= {this.state.clientSecret}
+                  audience={this.state.audience}
                   openModal={this.openConfigurationModal}
                   server={this.state.server}
                   nextStep={ () => { this.setStep(3); } }
@@ -346,16 +348,17 @@ class DebuggerPage extends React.Component {
           <ConfigurationModal ref="config"
             closeModal={ () => { this.openConfigurationModal(false); } }
             discoveryURL={this.state.discoveryURL}
-            authEndpoint= {this.state.authEndpoint}
-            tokenEndpoint= {this.state.tokenEndpoint}
-            tokenKeysEndpoint= {this.state.tokenKeysEndpoint}
-            userInfoEndpoint= {this.state.userInfoEndpoint}
-            domain= {this.state.domain}
-            server = {this.state.server}
-            clientID= {this.state.clientID}
-            clientSecret= {this.state.clientSecret}
-            scopes = {this.state.scopes}
-            focus = {this.state.configurationModalFocus}
+            authEndpoint={this.state.authEndpoint}
+            tokenEndpoint={this.state.tokenEndpoint}
+            tokenKeysEndpoint={this.state.tokenKeysEndpoint}
+            userInfoEndpoint={this.state.userInfoEndpoint}
+            domain={this.state.domain}
+            server={this.state.server}
+            clientID={this.state.clientID}
+            clientSecret={this.state.clientSecret}
+            scopes={this.state.scopes}
+            focus={this.state.configurationModalFocus}
+            audience={this.state.audience}
           /> : null }
       </div>
     );
