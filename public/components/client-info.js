@@ -39,7 +39,7 @@ class ClientInfo extends React.Component{
         </div>
 
         <div className="form-group">
-          <label className="col-md-3 col-xs-12 control-label" htmlFor="audience">Audience</label>
+          <label className="col-md-3 col-xs-12 control-label" htmlFor="audience">Audience <span className="small">(optional)</span></label>
           <div className="col-md-9 col-xs-12">
             <input className="form-control" name="audience" onChange={this.update} value={this.props.audience} ref="audience" />
           </div>
