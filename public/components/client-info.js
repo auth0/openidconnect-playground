@@ -37,6 +37,13 @@ class ClientInfo extends React.Component{
             <input className="form-control" name="scopes" onChange={this.update} value={this.props.scopes} ref="scopes" />
           </div>
         </div>
+
+        <div className="form-group">
+          <label className="col-md-3 col-xs-12 control-label" htmlFor="audience">Audience</label>
+          <div className="col-md-9 col-xs-12">
+            <input className="form-control" name="audience" onChange={this.update} value={this.props.audience} ref="audience" />
+          </div>
+        </div>
       </div>
     )
   }
@@ -45,7 +52,8 @@ class ClientInfo extends React.Component{
       detail: {
         clientID: sanitizeParam(this.refs.clientID.value),
         clientSecret: sanitizeParam(this.refs.clientSecret.value),
-        scopes: sanitizeParam(this.refs.scopes.value)
+        scopes: sanitizeParam(this.refs.scopes.value),
+        audience: sanitizeParam(this.refs.audience.value)
       }
     }));
   }

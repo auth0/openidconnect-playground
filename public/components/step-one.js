@@ -75,7 +75,11 @@ class StepOne extends React.Component {
   }
 
   render() {
-    this.completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI +'&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken
+    this.completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI +'&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken;
+
+    if(this.props.audience && this.props.audience !== "") {
+      this.completeURL += `&audience=${this.props.audience}`;
+    }
 
     return (
       <div className={`playground-step ${this.state.isActiveStep ? 'active' : '' }`}>
@@ -95,7 +99,7 @@ class StepOne extends React.Component {
                   <a onClick={() => { this.props.openModal(true, 'clientID') }} href="#">{this.props.clientID}</a>
                   <br />
                   &amp;redirect_uri=
-                  https://openidconnect.net/callback 
+                  https://openidconnect.net/callback
                   <br />
                   &amp;scope=
                   <a onClick={() => { this.props.openModal(true, 'scopes') }} href="#">{this.props.scopes}</a>
@@ -103,6 +107,10 @@ class StepOne extends React.Component {
                   <span>&amp;response_type=code</span>
                   <br />
                   <span>&amp;state={this.props.stateToken}</span>
+
+                  {this.props.audience&& <br/>}
+                  {this.props.audience&& '&audience='}
+                  {this.props.audience&& <a onClick={() => { this.props.openModal(true, 'audience') }} href="#">{this.props.audience}</a>}
                 </div>
               </div>
               <hr />
