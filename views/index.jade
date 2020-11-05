@@ -25,9 +25,6 @@ html(lang="en")
 		meta(name="twitter:image:height", content="630")
 		meta(name="google-site-verification", content="tLAuc_2L4oGIS68FVPW-FvFdIxLNYkLBCAb-9PseeWY")
 		script(src="https://code.jquery.com/jquery-2.2.4.min.js")
-		script(src="https://cdn.cookielaw.org/consent/2ba730b0-d578-4b19-b9c0-603eb33056b0.js")
-		script(type="text/javascript").
-			function OptanonWrapper() { }
 			
 		// Google Tag Manager
 		script.
@@ -60,6 +57,6 @@ html(lang="en")
 			window.clientSecret=!{JSON.stringify(clientSecret)};			
 
 		div
-      		div(id="consent_blackbar")
-      		div(id="teconsent" style="position: absolute; bottom: -100px;")
-      		script(async="async" src="//consent.trustarc.com/notice?domain=auth0banner.com&c=teconsent&js=nj&noticeType=bb&text=true" crossOrigin)		
+			div(id="consent_blackbar")
+			div(id="teconsent" style="position: absolute; bottom: -100px;")
+			script(async="async" src="//consent.trustarc.com/notice?domain=auth0banner.com&c=teconsent&js=nj&noticeType=bb&text=true" crossOrigin)		
