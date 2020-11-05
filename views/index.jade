@@ -58,4 +58,8 @@ html(lang="en")
 		script.
 			window.clientId=!{JSON.stringify(clientId)};
 			window.clientSecret=!{JSON.stringify(clientSecret)};			
-		
+
+		div
+      		div(id="consent_blackbar")
+      		div(id="teconsent" style="position: absolute; bottom: -100px;")
+      		script(async="async" src="//consent.trustarc.com/notice?domain=auth0banner.com&c=teconsent&js=nj&noticeType=bb&text=true" crossOrigin)		
