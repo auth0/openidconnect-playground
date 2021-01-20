@@ -46,3 +46,7 @@ npm run watch
 ```
 
 [http://localhost:5000](http://localhost:5000)
+
+## License
+
+This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
