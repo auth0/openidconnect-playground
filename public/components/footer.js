@@ -16,10 +16,16 @@ const Footer = () =>
       <a href="//auth0.com/signup/" className="btn btn-lg btn-success">{'Try Auth0 for Free'}</a>
     </div>
     <footer className="main-footer">
-      <div className="container">
-        <span>Crafted by</span>
-        <span className="auth0-badge"></span>
-        <span>© 2013-2016 Auth0 Inc. All Rights Reserved.</span>
+      <div className="main-footer-container">
+        <div className="privacy-links-container">
+          <a href="https://auth0.com/privacy" target="_blank">Privacy</a>
+          <a href="https://auth0.com/web-terms" target="_blank">Terms of Service</a>
+        </div>
+        <div className="">
+          <span>Crafted by</span>
+          <span className="auth0-badge"></span>
+          <span>© 2013-{new Date().getFullYear()} Auth0 Inc. All Rights Reserved.</span>
+        </div>
       </div>
     </footer>
   </div>;
