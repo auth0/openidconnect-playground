@@ -10,7 +10,10 @@ class StepFour extends React.Component {
 
   logOut() {
     this.props.logOut();
-    window.location.href = `https://${this.props.domain}/v2/logout?client_id=${this.props.clientID}&returnTo=${encodeURIComponent(window.location.origin)}`;
+
+    if (this.props.server === 'Auth0') {
+      window.location.href = `https://${this.props.domain}/v2/logout?client_id=${this.props.clientID}&returnTo=${encodeURIComponent(window.location.origin)}`;
+    }
   }
 
   render() {

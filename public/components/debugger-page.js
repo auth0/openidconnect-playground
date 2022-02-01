@@ -347,6 +347,7 @@ class DebuggerPage extends React.Component {
                   startOver={this.startOver}
                   logOut={this.logOut}
                   domain={this.state.domain}
+                  server={this.state.server}
                   clientID={this.state.clientID}
                   idTokenDecoded={this.state.idTokenDecoded}
                   isActive={ this.state.currentStep === 4 }
