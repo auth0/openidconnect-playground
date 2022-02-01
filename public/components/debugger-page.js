@@ -13,6 +13,7 @@ class DebuggerPage extends React.Component {
     super();
     this.update = this.update.bind(this);
     this.startOver = this.startOver.bind(this);
+    this.logOut = this.logOut.bind(this);
     this.scrollAnimated = this.scrollAnimated.bind(this);
     this.scrollToCurrentStep = this.scrollToCurrentStep.bind(this);
     this.openConfigurationModal = this.openConfigurationModal.bind(this);
@@ -242,10 +243,18 @@ class DebuggerPage extends React.Component {
   }
 
   startOver() {
-    localStorage.clear();
-    this.setState({ currentStep: 1 });
+    this.setState({ currentStep: 1, accessToken: "", authCode: "", idToken: "", idTokenDecoded:"",  idTokenHeader:"", validated: false}, function() {
+      console.log(this.state);
+      this.saveState()
+      window.dispatchEvent(new CustomEvent('startOver'));
+    });
+    
+  }
 
-    window.dispatchEvent(new CustomEvent('startOver'));
+  logOut() {
+    localStorage.clear();
+    this.setState({currentStep: 1});
+    window.dispatchEvent(new CustomEvent('logOut'));
   }
 
   render() {
@@ -336,6 +345,10 @@ class DebuggerPage extends React.Component {
                 <StepFour
                   ref="step4"
                   startOver={this.startOver}
+                  logOut={this.logOut}
+                  domain={this.state.domain}
+                  server={this.state.server}
+                  clientID={this.state.clientID}
                   idTokenDecoded={this.state.idTokenDecoded}
                   isActive={ this.state.currentStep === 4 }
                 />
