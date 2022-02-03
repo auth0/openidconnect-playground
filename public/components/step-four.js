@@ -3,19 +3,6 @@ import Ajax from 'simple-ajax';
 
 
 class StepFour extends React.Component {
-  constructor(){
-    super();
-    this.logOut = this.logOut.bind(this)
-  }
-
-  logOut() {
-    this.props.logOut();
-
-    if (this.props.server === 'Auth0') {
-      window.location.href = `https://${this.props.domain}/v2/logout?client_id=${this.props.clientID}&returnTo=${encodeURIComponent(window.location.origin)}`;
-    }
-  }
-
   render() {
     return (
       <div className={`playground-step ${this.props.isActive ? 'active' : '' } ${this.props.idTokenDecoded ? ' last-step' : ' last-step is-invalid'}`}>
@@ -38,7 +25,7 @@ class StepFour extends React.Component {
             <br />
             <div className="code-box-btn-group">
               <button onClick={this.props.startOver}  className="code-box-btn is-alt">Start Over</button>
-              <button onClick={this.logOut}  className="code-box-btn is-subtle">Log Out</button>
+              <button onClick={this.props.logOut}  className="code-box-btn is-subtle">Log Out</button>
             </div>
           </div>
       </div>

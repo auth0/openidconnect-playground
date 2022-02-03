@@ -12,6 +12,7 @@ class DebuggerPage extends React.Component {
   constructor() {
     super();
     this.update = this.update.bind(this);
+    this.deleteAuthState = this.deleteAuthState.bind(this);
     this.startOver = this.startOver.bind(this);
     this.logOut = this.logOut.bind(this);
     this.scrollAnimated = this.scrollAnimated.bind(this);
@@ -242,19 +243,26 @@ class DebuggerPage extends React.Component {
     document.body.classList.toggle('overflow-hidden', visibility);
   }
 
-  startOver() {
+  deleteAuthState(callback) {
     this.setState({ currentStep: 1, accessToken: "", authCode: "", idToken: "", idTokenDecoded:"",  idTokenHeader:"", validated: false}, function() {
-      console.log(this.state);
       this.saveState()
-      window.dispatchEvent(new CustomEvent('startOver'));
+      callback();
     });
-    
+  }
+
+  startOver() {
+    this.deleteAuthState(function() {
+      window.dispatchEvent(new CustomEvent('startOver'));
+    })
   }
 
   logOut() {
-    localStorage.clear();
-    this.setState({currentStep: 1});
-    window.dispatchEvent(new CustomEvent('logOut'));
+    this.deleteAuthState(function() {
+      window.dispatchEvent(new CustomEvent('logOut'));
+      if (this.state.server === 'Auth0') {
+        window.location.href = `https://${this.state.domain}/v2/logout?client_id=${this.state.clientID}&returnTo=${encodeURIComponent(window.location.origin)}`;
+      }  
+    })
   }
 
   render() {
@@ -346,9 +354,6 @@ class DebuggerPage extends React.Component {
                   ref="step4"
                   startOver={this.startOver}
                   logOut={this.logOut}
-                  domain={this.state.domain}
-                  server={this.state.server}
-                  clientID={this.state.clientID}
                   idTokenDecoded={this.state.idTokenDecoded}
                   isActive={ this.state.currentStep === 4 }
                 />
