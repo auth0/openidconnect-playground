@@ -134,6 +134,12 @@ app.post("/validate", (req, res) => {
             },
             (err, resp, body) => {
                 // find key with matching kid
+                if (!body || !body.keys || !Array.isArray(body.keys)) {
+                    return res
+                        .status(400)
+                        .send(`No public key found with matching kid '${tokenHeader.kid}'`);
+                }
+
                 const key = body.keys.find((k) => k.kid === tokenHeader.kid);
                 if (!key) {
                     return res
