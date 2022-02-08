@@ -134,7 +134,7 @@ app.post("/validate", (req, res) => {
             },
             (err, resp, body) => {
                 // find key with matching kid
-                const key = body?.keys?.find((k) => k.kid === tokenHeader.kid);
+                const key = body.keys.find((k) => k.kid === tokenHeader.kid);
                 if (!key) {
                     return res
                         .status(400)
