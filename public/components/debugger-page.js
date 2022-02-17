@@ -250,6 +250,13 @@ class DebuggerPage extends React.Component {
     });
   }
 
+  deleteState(callback) {
+    this.setState({ currentStep: 1, accessToken: "", authCode: "", idToken: "", idTokenDecoded:"",  idTokenHeader:"", validated: false, stateToken: undefined}, function() {
+      this.saveState()
+      callback();
+    });
+  }
+
   startOver() {
     this.deleteAuthState(function() {
       window.dispatchEvent(new CustomEvent('startOver'));
@@ -257,7 +264,7 @@ class DebuggerPage extends React.Component {
   }
 
   logOut() {
-    this.deleteAuthState(function() {
+    this.deleteState(function() {
       window.dispatchEvent(new CustomEvent('logOut'));
       if (this.state.server === 'Auth0') {
         window.location.href = `https://${this.state.domain}/v2/logout?client_id=${this.state.clientID}&returnTo=${encodeURIComponent(window.location.origin)}`;
