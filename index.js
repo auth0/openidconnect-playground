@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const request = require("request");
 const jwt = require("jsonwebtoken");
 const jwkToPem = require("jwk-to-pem");
+const Validator = require('jsonschema').Validator;
 require("dotenv").config({ silent: true });
 
 const app = express();
@@ -17,7 +18,7 @@ app.use((req, res, next) => {
     if (proto && proto !== "https") {
         return res.redirect(302, `https://${req.hostname}${req.originalUrl}`);
     }
-
+    
     return next();
 });
 
@@ -36,14 +37,45 @@ app.use(
         proxy: true,
         cookie: { secure: process.env.NON_SECURE_SESSION !== "true" },
     })
-);
-
+    );
+    
 app.set("view engine", "jade");
+
+const isJson = (str) => {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+const valid = new Validator();
+const discoverySchema = {
+    "properties": {
+      "authorization_endpoint": {"type": "string"},
+      "token_endpoint": {"type": "string"},
+      "userinfo_endpoint": {"type": "string"},
+      "jwks_uri": {"type": "string"},
+    },
+    "required": ["authorization_endpoint","token_endpoint","userinfo_endpoint","jwks_uri"]
+  };
 
 app.get("/discover", (req, res) => {
     request.get(req.query.url, (err, resp, body) => {
-        if (err) res.send(err);
-        else res.send(body);
+        if (err) {
+            return res.send(err);
+        } else {
+            if (isJson(body)) {
+                const isValid = valid.validate(JSON.parse(body), discoverySchema);
+                if (isValid.errors.length < 1) {
+                    return res.send(body)
+                } else {
+                    return res.status(400).json({"message":"Discovery documement is not valid", "errors": isValid.errors.map(e => e.message)});    
+                }
+            } else {
+                return res.status(400).json({"message": "Discovery document is not a JSON file."});
+            }
+        };
     });
 });
 
