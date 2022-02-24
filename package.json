@@ -25,6 +25,7 @@
         "express": "^4.13.4",
         "express-session": "^1.13.0",
         "jade": "^1.11.0",
+        "jsonschema": "^1.4.0",
         "jsonwebtoken": "^7.0.1",
         "jwk-to-pem": "^1.2.5",
         "query-parser": "0.0.1",
