@@ -51,6 +51,7 @@ const isJson = (str) => {
 }
 const valid = new Validator();
 const discoverySchema = {
+    "type": "object",
     "properties": {
       "authorization_endpoint": {"type": "string"},
       "token_endpoint": {"type": "string"},
