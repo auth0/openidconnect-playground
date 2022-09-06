@@ -24,7 +24,7 @@ const Footer = () =>
         <div className="">
           <span>Crafted by</span>
           <span className="auth0-badge"></span>
-          <span>© 2013-{new Date().getFullYear()} Auth0 Inc. All Rights Reserved.</span>
+          <span>© {new Date().getFullYear()} Okta, Inc. All Rights Reserved.</span>
         </div>
       </div>
     </footer>
