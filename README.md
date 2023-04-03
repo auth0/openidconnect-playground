@@ -1,4 +1,4 @@
-# OpenID Connect Playground
+# OpenID Connect Playgrounds
 
 Uses Express, React, and I'll be taking apart passport next.
 
