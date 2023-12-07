@@ -1,4 +1,0 @@
-{
-  "extends": "auth0",
-  "parser": "babel-eslint"
-}
