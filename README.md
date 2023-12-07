@@ -13,6 +13,7 @@ Uses Express, React, and I'll be taking apart passport next.
 If running locally, create a `.env` file with these values:
 ```
 JWT_SECRET=y0ur_secret
+PORT=5000
 REDIRECT_URI=http://localhost:5000/callback
 CLIENT_ID=(client_id from a client in your tenant)
 CLIENT_SECRET=(client_secret from a client in your tenant)
