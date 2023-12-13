@@ -27,8 +27,9 @@ html(lang="en")
 		script(src="https://code.jquery.com/jquery-2.2.4.min.js")
 
 		// OneTrustScripts
-		script(src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js", type="text/javascript", charset="UTF-8", data-domain-script="642ff5cd-0d1e-4865-bef1-2167332ca61a", id="consent-script")
-		script(src="cookie-consent.js")
+		if process.env.NODE_ENV === "production"
+			script(src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js", type="text/javascript", charset="UTF-8", data-domain-script="642ff5cd-0d1e-4865-bef1-2167332ca61a", id="consent-script")
+			script(src="cookie-consent.js")
 
 	body
 		// Google Tag Manager (noscript)
