@@ -27,20 +27,6 @@ function addScripts(lvl) {
             f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-N6KSGFBD');
     }
-
-    // Functional
-    if (lvl.includes(COOKIE_CONSENT_FUNCTIONAL)) {
-        (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0],
-                p = /^http:/.test(d.location) ? 'http' : 'https';
-            if (!d.getElementById(id)) {
-                js = d.createElement(s);
-                js.id = id;
-                js.src = p + '://platform.twitter.com/widgets.js';
-                fjs.parentNode.insertBefore(js, fjs);
-            }
-        })(document, 'script', 'twitter-wjs');
-    }
 }
 
 // Add required scripts without waiting for the user consent
