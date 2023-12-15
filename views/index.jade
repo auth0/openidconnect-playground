@@ -26,11 +26,6 @@ html(lang="en")
 		meta(name="google-site-verification", content="tLAuc_2L4oGIS68FVPW-FvFdIxLNYkLBCAb-9PseeWY")
 		script(src="https://code.jquery.com/jquery-2.2.4.min.js")
 
-		// OneTrustScripts
-		if process.env.NODE_ENV === "production"
-			script(src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js", type="text/javascript", charset="UTF-8", data-domain-script="642ff5cd-0d1e-4865-bef1-2167332ca61a", id="consent-script")
-			script(src="cookie-consent.js")
-
 	body
 		// Google Tag Manager (noscript)
 		noscript
@@ -49,3 +44,7 @@ html(lang="en")
 		script.
 			window.clientId=!{JSON.stringify(clientId)};
 			window.clientSecret=!{JSON.stringify(clientSecret)};
+		// OneTrustScripts
+		if process.env.NODE_ENV === "production"
+			script(src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js", type="text/javascript", charset="UTF-8", data-domain-script="642ff5cd-0d1e-4865-bef1-2167332ca61a", id="consent-script")
+			script(src="cookie-consent.js")
