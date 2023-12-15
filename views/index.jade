@@ -25,22 +25,11 @@ html(lang="en")
 		meta(name="twitter:image:height", content="630")
 		meta(name="google-site-verification", content="tLAuc_2L4oGIS68FVPW-FvFdIxLNYkLBCAb-9PseeWY")
 		script(src="https://code.jquery.com/jquery-2.2.4.min.js")
-			
-		// Google Tag Manager
-		script.
-			(function(w,d,s,l,i){
-				w[l]=w[l]||[];
-				w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
-				var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-				j.async=true;
-				j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;
-				f.parentNode.insertBefore(j,f);
-			})(window,document,'script','dataLayer','GTM-W7FRLJ');
 
 	body
 		// Google Tag Manager (noscript)
 		noscript
-			iframe(src="https://www.googletagmanager.com/ns.html?id=GTM-W7FRLJ", height="0", width="0", style="display:none;visibility:hidden")
+			iframe(src="https://www.googletagmanager.com/ns.html?id=GTM-N6KSGFBD", height="0", width="0", style="display:none;visibility:hidden")
 		// End Google Tag Manager (noscript)
 
 		#content
@@ -50,13 +39,12 @@ html(lang="en")
 			input(type="hidden", name="code", value=code)
 			input(type="hidden", name="auth0ClientID", value=clientId)
 			input(type="hidden", name="auth0ClientSecret", value=clientSecret)
-			
+
 		script(src='index.js')
 		script.
 			window.clientId=!{JSON.stringify(clientId)};
-			window.clientSecret=!{JSON.stringify(clientSecret)};			
-
-		div
-			div(id="consent_blackbar")
-			div(id="teconsent" style="position: absolute; bottom: -100px;")
-			script(async="async" src="//consent.trustarc.com/notice?domain=auth0banner.com&c=teconsent&js=nj&noticeType=bb&text=true" crossOrigin)		
+			window.clientSecret=!{JSON.stringify(clientSecret)};
+		// OneTrustScripts
+		if process.env.NODE_ENV === "production"
+			script(src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js", type="text/javascript", charset="UTF-8", data-domain-script="642ff5cd-0d1e-4865-bef1-2167332ca61a", id="consent-script")
+			script(src="cookie-consent.js")
