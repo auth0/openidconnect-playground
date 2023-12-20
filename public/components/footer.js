@@ -26,7 +26,7 @@ const Footer = () => {
           A cloud service, APIs and tools that eliminate the friction of
           identity for your applications and APIs.
         </p>
-        <a href="//auth0.com/signup/" className="btn btn-lg btn-success">
+        <a target="_blank" rel="noreferrer noopener" href="https://auth0.com/signup/?utm_source=openidconnect.net&utm_medium=microsites&utm_campaign=devn_signup" className="btn btn-lg btn-success">
           {"Try Auth0 for Free"}
         </a>
       </div>
