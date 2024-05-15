@@ -25,7 +25,7 @@ class StepOne extends React.Component {
 
   start() {
     if(!this.props.authEndpoint) {
-      return alert('Plase enter an authorization endpoint');
+      return alert('Please enter an authorization endpoint');
     }
 
     this.setState({
