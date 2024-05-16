@@ -17,7 +17,7 @@ const IntroductionPage = () =>
           OIDC was created as an identity layer for OAuth 2.0-- because while OAuth provides a
           solid standard for user Authentication (proving they are who they say they are),
           developers needed a standard way of expressing user identity. Before, getting the
-          same pieces of user information could be a completely different proccess for each
+          same pieces of user information could be a completely different process for each
           OAuth provider. But with OIDC, you get the same fields in the same format, from any
           provider (as long as they implement OIDC!).
         </p>

@@ -71,12 +71,12 @@ app.get("/discover", (req, res) => {
                 if (isValid.errors.length < 1) {
                     return res.send(body)
                 } else {
-                    return res.status(400).json({"message":"Discovery documement is not valid", "errors": isValid.errors.map(e => e.message)});    
+                    return res.status(400).json({"message":"Discovery document is not valid", "errors": isValid.errors.map(e => e.message)});
                 }
             } else {
                 return res.status(400).json({"message": "Discovery document is not a JSON file."});
             }
-        };
+        }
     });
 });
 
@@ -202,7 +202,7 @@ app.post("/validate", (req, res) => {
     }
     return res
         .status(400)
-        .send(`Unsupported idToken algorithim: ${tokenHeader.alg}`);
+        .send(`Unsupported idToken algorithm: ${tokenHeader.alg}`);
 
     function verify(secret) {
         jwt.verify(req.body.idToken, secret, (err, decoded) => {
