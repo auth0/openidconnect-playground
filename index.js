@@ -88,6 +88,10 @@ app.get("/callback", (req, res) => {
         /* eslint-enable no-param-reassign */
         res.redirect("/");
     }
+
+    if (req.query.error) {
+        return res.status(500).json({"code": "Internal server error", ...req.query});
+    }
 });
 
 app.get("*", (req, res) => {
