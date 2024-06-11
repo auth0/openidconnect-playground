@@ -28,6 +28,7 @@ app.use((req, res, next) => {
 });
 
 const FileStore = require("session-file-store")(session);
+
 app.use(
   session({
     store: new FileStore(),
@@ -49,6 +50,7 @@ const isJson = (str) => {
   }
   return true;
 };
+
 const valid = new Validator();
 const discoverySchema = {
   type: "object",
@@ -72,11 +74,15 @@ app.get("/discover", (req, res) => {
       return res.send(err);
     } else {
       if (isJson(body)) {
-        const isValid = valid.validate(JSON.parse(body), discoverySchema);
+        const jsonBody = JSON.parse(body);
+        const isValid = valid.validate(jsonBody, discoverySchema);
         if (isValid.errors.length < 1) {
-          res.setHeader("Content-Type", "application/json");
-
-          return res.send(body);
+          return res.json({
+            authorization_endpoint: jsonBody.authorization_endpoint,
+            token_endpoint: jsonBody.token_endpoint,
+            userinfo_endpoint: jsonBody.userinfo_endpoint,
+            jwks_uri: jsonBody.jwks_uri,
+          });
         } else {
           return res.status(400).json({
             message: "Discovery document is not valid",
