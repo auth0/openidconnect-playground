@@ -71,7 +71,9 @@ const discoverySchema = {
 app.get("/discover", (req, res) => {
   request.get(req.query.url, (err, resp, body) => {
     if (err) {
-      return res.send(err);
+      return res.status(400).json({
+        message: err.message || "Couldn't get a discovery document",
+      });
     } else {
       if (isJson(body)) {
         const jsonBody = JSON.parse(body);
