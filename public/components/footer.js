@@ -17,8 +17,8 @@ const Footer = () => {
     <div>
       <div className="bottom-callout text-center theme-dark">
         <img
-          src="//cdn.auth0.com/quantum-assets/dist/1.0.4/logos/auth0/auth0-lockup-en-ondark.svg"
-          width="160"
+          src="/images/auth0-badge-light.svg"
+          width="110"
           role="presentation"
         />
         <p>The OIDC playground is brought to you by Auth0.</p>
