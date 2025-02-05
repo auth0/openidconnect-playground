@@ -6,7 +6,7 @@ const IntroductionPage = () =>
       <div className="introduction-section">
         <h2 className="section-title">Welcome to the OpenID Connect Playground!</h2>
         <p>
-          This project was created at Auth0 by Okta to educate developers about OpenID Connect
+          This project was created at Auth0 to educate developers about OpenID Connect
           (also known as OIDC) and allow users to play with and test every step of the OpenID
           Connect login process.
         </p>
