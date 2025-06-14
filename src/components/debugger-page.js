@@ -23,16 +23,16 @@ class DebuggerPage extends React.Component {
     this.state = savedState;
     this.state.currentStep = this.state.currentStep || 1;
     this.state.server = this.state.server || 'Auth0';
-    this.state.domain = this.state.domain || 'samples.auth0.com';
-    this.state.authEndpoint = this.state.authEndpoint || 'https://samples.auth0.com/authorize';
-    this.state.tokenEndpoint = this.state.tokenEndpoint || 'https://samples.auth0.com/oauth/token';
+    this.state.domain = this.state.domain || 'test-microsites-06112025.us.auth0.com';
+    this.state.authEndpoint = this.state.authEndpoint || 'https://test-microsites-06112025.us.auth0.com/authorize';
+    this.state.tokenEndpoint = this.state.tokenEndpoint || 'https://test-microsites-06112025.us.auth0.com/oauth/token';
     this.state.tokenKeysEndpoint = this.state.tokenKeysEndpoint || '';
-    this.state.userInfoEndpoint = this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo';
+    this.state.userInfoEndpoint = this.state.userInfoEndpoint || 'https://test-microsites-06112025.us.auth0.com/userinfo';
     this.state.scopes = this.state.scopes || 'openid profile email phone address';
     this.state.stateToken = this.state.stateToken || document.querySelector('input[name=stateToken]').value;
-    this.state.redirectURI = this.state.redirectURI ||  document.querySelector('input[name=redirect-uri]').value;
-    this.state.clientID = this.state.clientID ||  document.querySelector('input[name=auth0ClientID]').value;
-    this.state.clientSecret = this.state.clientSecret ||  document.querySelector('input[name=auth0ClientSecret]').value;
+    this.state.redirectURI = this.state.redirectURI || document.querySelector('input[name=redirect-uri]').value;
+    this.state.clientID = this.state.clientID || document.querySelector('input[name=auth0ClientID]').value;
+    this.state.clientSecret = this.state.clientSecret || document.querySelector('input[name=auth0ClientSecret]').value;
     this.state.authCode = this.state.authCode || document.querySelector('input[name=code]').value;
     this.state.idTokenHeader = this.state.idTokenHeader || '';
     this.state.configurationModalOpen = false;
@@ -43,11 +43,40 @@ class DebuggerPage extends React.Component {
   }
 
   componentDidMount() {
-    // figure out what step we're on
-    this.configureStep();
-    // listen for config changes
-    window.addEventListener('configChange', this.update.bind(this));
-    window.addEventListener('discovery', this.updateURLs.bind(this));
+    // fetch auth data if it is empty
+    if(this.isEmptyClientAuthData) {
+      this.fetchClientAuthData().then(res => {
+        this.configureStep();
+        window.addEventListener('configChange', this.update.bind(this));
+        window.addEventListener('discovery', this.updateURLs.bind(this));
+      })
+    } else {
+       this.configureStep();
+        window.addEventListener('configChange', this.update.bind(this));
+        window.addEventListener('discovery', this.updateURLs.bind(this));
+    }
+   
+  }
+
+  isEmptyClientAuthData() {
+    return !this.state.stateToken ||
+      !this.state.redirectURI ||
+      !this.state.clientID ||
+      !this.state.clientSecret ||
+      !this.state.authCode
+  }
+
+  fetchClientAuthData() {
+    return fetch('api/auth_data').then(res => res.json()).then(data => {
+      this.setState({
+      clientID: data.clientId,
+      clientSecret: data.clientSecret,
+      stateToken: data.state,
+      redirectURI: data.redirect_uri,
+      authCode: data.code
+    })
+    this.saveState()
+  })
   }
 
   setStep(step) {
@@ -59,7 +88,7 @@ class DebuggerPage extends React.Component {
   }
 
   configureStep() {
-    let code = document.querySelector('input[name=code]').value;
+    let code = this.state.authCode;
     let token = this.state.idToken;
     let newStep = 0;
 
@@ -96,7 +125,7 @@ class DebuggerPage extends React.Component {
 
   scrollAnimated(to, duration) {
     var doc = document.documentElement;
-    var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+    var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
     var start = top;
     var change = to - start;
     var currentTime = 0;
@@ -133,8 +162,8 @@ class DebuggerPage extends React.Component {
     if (event && event.detail) {
       this.setState(event.detail);
       if (event.detail.server &&
-          event.detail.server === 'custom' &&
-          this.state.server !== 'custom') {
+        event.detail.server === 'custom' &&
+        this.state.server !== 'custom') {
         this.setState({
           discoveryURL: '',
           authEndpoint: '',
@@ -144,10 +173,10 @@ class DebuggerPage extends React.Component {
           currentStep: 1
         });
       } else if (event.detail.server &&
-                event.detail.server === 'Auth0' &&
-                this.state.server !== 'Auth0') {
+        event.detail.server === 'Auth0' &&
+        this.state.server !== 'Auth0') {
         this.setState({
-          domain: 'samples.auth0.com',
+          domain: 'test-microsites-06112025.us.auth0.com',
           clientID: document.querySelector('input[name=auth0ClientID]').value,
           clientSecret: document.querySelector('input[name=auth0ClientSecret]').value,
           currentStep: 1
@@ -165,10 +194,10 @@ class DebuggerPage extends React.Component {
 
     if (event.detail.skipScroll) return;
 
-    setTimeout(function() {
+    setTimeout(function () {
       this.saveState();
 
-      if(this.state.currentStep > 1){
+      if (this.state.currentStep > 1) {
         this.scrollToCurrentStep()
       }
     }.bind(this), 250);
@@ -185,19 +214,19 @@ class DebuggerPage extends React.Component {
     )
   }
 
-  updateURLs(){
-    if(this.state.server == 'google'){
+  updateURLs() {
+    if (this.state.server == 'google') {
       this.updateDiscovery('https://accounts.google.com/.well-known/openid-configuration')
-    } else if (this.state.server == 'Auth0'){
+    } else if (this.state.server == 'Auth0') {
       this.updateDiscovery('https://' + this.state.domain + '/.well-known/openid-configuration')
     } else {
       this.updateDiscovery(this.state.discoveryURL)
     }
   }
-  updateDiscovery(documentURL){
+  updateDiscovery(documentURL) {
     documentURL = documentURL || this.state.discoveryURL
 
-    this.discover(documentURL, function(discovered){
+    this.discover(documentURL, function (discovered) {
       this.setState({
         discoveryURL: documentURL,
         authEndpoint: discovered.authorization_endpoint,
@@ -210,16 +239,16 @@ class DebuggerPage extends React.Component {
   }
   discover(url, cb) {
     const serviceDiscovery = new Ajax({
-      url: '/discover',
+      url: 'api/discover',
       method: 'GET',
       data: {
         url
       }
     });
 
-    serviceDiscovery.on('success', function(event){
+    serviceDiscovery.on('success', function (event) {
       let discovered = JSON.parse(event.currentTarget.response)
-      if(cb && typeof cb == 'function') cb(discovered)
+      if (cb && typeof cb == 'function') cb(discovered)
     }.bind(this))
 
     // TODO: Add error case
@@ -244,24 +273,24 @@ class DebuggerPage extends React.Component {
   }
 
   deleteAuthState(callback) {
-    this.setState({ currentStep: 1, accessToken: "", authCode: "", idToken: "", idTokenDecoded:"",  idTokenHeader:"", validated: false}, function() {
+    this.setState({ currentStep: 1, accessToken: "", authCode: "", idToken: "", idTokenDecoded: "", idTokenHeader: "", validated: false }, function () {
       this.saveState()
       callback();
     });
   }
 
   startOver() {
-    this.deleteAuthState(function() {
+    this.deleteAuthState(function () {
       window.dispatchEvent(new CustomEvent('startOver'));
     })
   }
 
   logOut() {
-    this.deleteAuthState(function() {
+    this.deleteAuthState(function () {
       window.dispatchEvent(new CustomEvent('logOut'));
       if (this.state.server === 'Auth0') {
         window.location.href = `https://${this.state.domain}/v2/logout?client_id=${this.state.clientID}&returnTo=${encodeURIComponent(window.location.origin)}`;
-      }  
+      }
     }.bind(this))
   }
 
@@ -294,7 +323,7 @@ class DebuggerPage extends React.Component {
                 </select>
               </div>
               <button
-                onClick={ () => { this.openConfigurationModal(true); } }
+                onClick={() => { this.openConfigurationModal(true); }}
                 className="playground-header-config btn btn-link"
                 href=""
               >
@@ -303,68 +332,68 @@ class DebuggerPage extends React.Component {
               </button>
             </div>
             <div className="playground-content">
-              { this.state.currentStep >= 1 ?
+              {this.state.currentStep >= 1 ?
                 <StepOne
                   ref="step1"
-                  authEndpoint = {this.state.authEndpoint}
-                  clientID = {this.state.clientID}
-                  scopes = {this.state.scopes}
-                  stateToken = {this.state.stateToken}
-                  redirectURI = {this.state.redirectURI}
+                  authEndpoint={this.state.authEndpoint}
+                  clientID={this.state.clientID}
+                  scopes={this.state.scopes}
+                  stateToken={this.state.stateToken}
+                  redirectURI={this.state.redirectURI}
                   audience={this.state.audience}
                   openModal={this.openConfigurationModal}
-                  nextStep={ () => { this.setStep(2); } }
-                  skipTutorial={ () => { this.setStep(4); }}
-                  isActive={ this.state.currentStep === 1 }
+                  nextStep={() => { this.setStep(2); }}
+                  skipTutorial={() => { this.setStep(4); }}
+                  isActive={this.state.currentStep === 1}
                   scrollAnimated={this.scrollAnimated}
                 />
                 : null
               }
-              { this.state.currentStep >= 2 ?
+              {this.state.currentStep >= 2 ?
                 <StepTwo
                   ref="step2"
-                  tokenEndpoint= {this.state.tokenEndpoint}
-                  authCode= {this.state.authCode}
-                  clientID= {this.state.clientID}
-                  clientSecret= {this.state.clientSecret}
+                  tokenEndpoint={this.state.tokenEndpoint}
+                  authCode={this.state.authCode}
+                  clientID={this.state.clientID}
+                  clientSecret={this.state.clientSecret}
                   audience={this.state.audience}
                   openModal={this.openConfigurationModal}
                   server={this.state.server}
-                  nextStep={ () => { this.setStep(3); } }
-                  isActive={ this.state.currentStep === 2 }
+                  nextStep={() => { this.setStep(3); }}
+                  isActive={this.state.currentStep === 2}
                   scrollAnimated={this.scrollAnimated}
                 />
                 : null
               }
-              { this.state.currentStep >= 3 ?
+              {this.state.currentStep >= 3 ?
                 <StepThree
                   ref="step3"
-                  idToken= {this.state.idToken}
-                  idTokenHeader= {this.state.idTokenHeader}
-                  accessToken= {this.state.accessToken}
-                  clientSecret= {this.state.clientSecret}
-                  server= {this.state.server}
-                  tokenKeysEndpoint= {this.state.tokenKeysEndpoint}
-                  isActive={ this.state.currentStep === 3 }
+                  idToken={this.state.idToken}
+                  idTokenHeader={this.state.idTokenHeader}
+                  accessToken={this.state.accessToken}
+                  clientSecret={this.state.clientSecret}
+                  server={this.state.server}
+                  tokenKeysEndpoint={this.state.tokenKeysEndpoint}
+                  isActive={this.state.currentStep === 3}
                 />
                 : null
               }
-              { this.state.currentStep >= 4 ?
+              {this.state.currentStep >= 4 ?
                 <StepFour
                   ref="step4"
                   startOver={this.startOver}
                   logOut={this.logOut}
                   idTokenDecoded={this.state.idTokenDecoded}
-                  isActive={ this.state.currentStep === 4 }
+                  isActive={this.state.currentStep === 4}
                 />
                 : null
               }
             </div>
           </div>
         </main>
-        { this.state.configurationModalOpen ?
+        {this.state.configurationModalOpen ?
           <ConfigurationModal ref="config"
-            closeModal={ () => { this.openConfigurationModal(false); } }
+            closeModal={() => { this.openConfigurationModal(false); }}
             discoveryURL={this.state.discoveryURL}
             authEndpoint={this.state.authEndpoint}
             tokenEndpoint={this.state.tokenEndpoint}
@@ -377,7 +406,7 @@ class DebuggerPage extends React.Component {
             scopes={this.state.scopes}
             focus={this.state.configurationModalFocus}
             audience={this.state.audience}
-          /> : null }
+          /> : null}
       </div>
     );
   }

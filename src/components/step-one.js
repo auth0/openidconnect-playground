@@ -27,7 +27,6 @@ class StepOne extends React.Component {
     if(!this.props.authEndpoint) {
       return alert('Please enter an authorization endpoint');
     }
-
     this.setState({
       stepState: 'wait'
     });
@@ -76,7 +75,6 @@ class StepOne extends React.Component {
 
   render() {
     this.completeURL = this.props.authEndpoint + '?client_id=' + this.props.clientID + '&redirect_uri=' + this.props.redirectURI +'&scope=' + encodeURI(this.props.scopes) + '&response_type=code&state=' + this.props.stateToken;
-
     if(this.props.audience && this.props.audience !== "") {
       this.completeURL += `&audience=${this.props.audience}`;
     }

@@ -4,12 +4,11 @@
     "description": "",
     "main": "index.js",
     "engines": {
-        "node": "v16",
-        "npm": "v6"
+        "node": ">=18.0.0",
+        "npm": ">=6.0.0"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon index.js --ignore ./sessions --verbose",
         "build": "webpack",
         "watch": "webpack -w"
     },
@@ -19,12 +18,12 @@
     "dependencies": {
         "@auth0/styleguide-core": "^3.0.0",
         "body-parser": "^1.15.0",
+        "cookie": "^1.0.2",
         "document-offset": "^1.0.4",
         "dotenv": "^2.0.0",
         "dotfile": "0.0.2",
         "express": "^4.13.4",
         "express-session": "^1.17.3",
-        "jade": "^1.11.0",
         "jsonschema": "^1.4.0",
         "jsonwebtoken": "^7.0.1",
         "jwk-to-pem": "^1.2.5",
@@ -32,6 +31,7 @@
         "react": "^15.0.1",
         "react-dom": "^15.0.1",
         "request": "^2.72.0",
+        "serverless-http": "^3.2.0",
         "session-file-store": "^0.2.0",
         "sha1": "^1.1.1",
         "simple-ajax": "^2.5.0",
@@ -42,7 +42,6 @@
         "@babel/core": "^7.11.4",
         "@babel/preset-env": "^7.11.0",
         "@babel/preset-react": "^7.10.4",
-        "babel-eslint": "^6.1.0",
         "babel-loader": "^9.2.1",
         "css-loader": "^7.1.2",
         "eslint": "^2.10.2",

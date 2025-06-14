@@ -9,6 +9,8 @@ class InputPanel extends React.Component {
     let oldState = localStorage.getItem('app-state');
     this.state = JSON.parse(oldState) || {};
     this.state.warning = false;
+    this.state.serverClientId = "",
+    this.state.serverClientSecret = ""
   }
   render(){
     return (
@@ -54,6 +56,8 @@ class InputPanel extends React.Component {
     this.updateStateToken();
   }
 
+  
+
   update(e){
     if (!localStorage.getItem('app-state')) {
       this.setState({
@@ -93,9 +97,9 @@ class InputPanel extends React.Component {
     if(type == 'Auth0'){
       this.refs.serverURL.updateLabel("Your Auth0 Domain", "https://domain.auth0.com");
       this.setState({
-        serverURL: changed ? 'https://samples.auth0.com' : (URL || 'https://'),
-        clientID:  this.refs.clientID.refs.value.value || this.state.savedClientID || window.clientId,
-        clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || window.clientSecret,
+        serverURL: changed ? 'https://test-microsites-06112025.us.auth0.com' : (URL || 'https://'),
+        clientID:  this.refs.clientID.refs.value.value || this.state.savedClientID ||this.state.serverClientId,
+        clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || this.state.serverClientSecret,
         authEndpoint: '/authorize',
         tokenEndpoint: '/oauth/token',
         completeURL: URL + '/authorize' + filterParams('?client_id='+ encodeURIComponent(this.refs.clientID.refs.value.value) +'&scope='+ encodeURIComponent(this.refs.scope.refs.value.value) + '&response_type=code&redirect_uri=' + document.querySelector("[name=redirect-uri]").value  + '&state=' + this.state.stateToken),
@@ -114,7 +118,7 @@ class InputPanel extends React.Component {
       })
     } else if(type == 'google'){
       let googleDiscovery = new Ajax({
-        url: '/discover',
+        url: '/api/discover',
         method: 'GET',
         data: {
           'service': 'google'
