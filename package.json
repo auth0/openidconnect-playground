@@ -19,6 +19,7 @@
         "@auth0/styleguide-core": "^3.0.0",
         "body-parser": "^1.15.0",
         "cookie": "^1.0.2",
+        "cookie-signature": "^1.2.2",
         "document-offset": "^1.0.4",
         "dotenv": "^2.0.0",
         "dotfile": "0.0.2",
