@@ -1,10 +1,15 @@
 const crypto = require("crypto");
 const cookie = require("cookie")
+const signature = require("cookie-signature")
 
 export default function handler(req, res) {
+    const secret = process.env.JWT_SECRET
+    const cookies = cookie.parse(req.headers.cookie || '')
+    const refresh = cookies.refresh?.startsWith('s:') ? signature.unsign(cookies.refresh.slice(2), secret) : null
+    const authCode = cookies.authCode?.startsWith('s:') ? signature.unsign(cookies.authCode.slice(2), secret) : null
     let code = null;
-    if (req.cookies.refresh === "false" && req.cookies.authCode) {
-        code = req.cookies.authCode;
+    if (refresh === "false" && authCode) {
+        code = authCode;
         res.setHeader("Set-Cookie", [
             cookie.serialize("refresh", "true", {
                 httpOnly: true,
