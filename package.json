@@ -19,6 +19,7 @@
     "dependencies": {
         "@auth0/styleguide-core": "^3.0.0",
         "body-parser": "^1.15.0",
+        "core-js": "^3.43.0",
         "document-offset": "^1.0.4",
         "dotenv": "^2.0.0",
         "dotfile": "0.0.2",
