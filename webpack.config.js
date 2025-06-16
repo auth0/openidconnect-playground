@@ -1,10 +1,20 @@
-const path = require("path")
+const path = require("path");
+
 module.exports = {
   entry: "./src/app.js",
   output: {
     path: path.resolve(__dirname, "public"),
     filename: "bundle.js",
     publicPath: '/'
+  },
+  resolve: {
+    modules: ['node_modules'],
+    extensions: ['.js', '.jsx'],
+    fallback: {
+      crypto:false,
+      path: false,
+      stream: false
+    }
   },
   module: {
     rules: [
