@@ -23,11 +23,11 @@ class DebuggerPage extends React.Component {
     this.state = savedState;
     this.state.currentStep = this.state.currentStep || 1;
     this.state.server = this.state.server || 'Auth0';
-    this.state.domain = this.state.domain || 'test-microsites-06112025.us.auth0.com';
-    this.state.authEndpoint = this.state.authEndpoint || 'https://test-microsites-06112025.us.auth0.com/authorize';
-    this.state.tokenEndpoint = this.state.tokenEndpoint || 'https://test-microsites-06112025.us.auth0.com/oauth/token';
+    this.state.domain = this.state.domain || 'samples.auth0.com';
+    this.state.authEndpoint = this.state.authEndpoint || 'https://samples.auth0.com/authorize';
+    this.state.tokenEndpoint = this.state.tokenEndpoint || 'https://samples.auth0.com/oauth/token';
     this.state.tokenKeysEndpoint = this.state.tokenKeysEndpoint || '';
-    this.state.userInfoEndpoint = this.state.userInfoEndpoint || 'https://test-microsites-06112025.us.auth0.com/userinfo';
+    this.state.userInfoEndpoint = this.state.userInfoEndpoint || 'https://samples.auth0.com/userinfo';
     this.state.scopes = this.state.scopes || 'openid profile email phone address';
     this.state.stateToken = this.state.stateToken || document.querySelector('input[name=stateToken]').value;
     this.state.redirectURI = this.state.redirectURI || document.querySelector('input[name=redirect-uri]').value;
@@ -178,7 +178,7 @@ class DebuggerPage extends React.Component {
         event.detail.server === 'Auth0' &&
         this.state.server !== 'Auth0') {
         this.setState({
-          domain: 'test-microsites-06112025.us.auth0.com',
+          domain: 'samples.auth0.com',
           currentStep: 1
         });
       } else if (event.detail.server && event.detail.server !== this.state.server) {

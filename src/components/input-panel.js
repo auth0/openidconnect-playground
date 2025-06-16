@@ -97,7 +97,7 @@ class InputPanel extends React.Component {
     if(type == 'Auth0'){
       this.refs.serverURL.updateLabel("Your Auth0 Domain", "https://domain.auth0.com");
       this.setState({
-        serverURL: changed ? 'https://test-microsites-06112025.us.auth0.com' : (URL || 'https://'),
+        serverURL: changed ? 'https://samples.auth0.com' : (URL || 'https://'),
         clientID:  this.refs.clientID.refs.value.value || this.state.savedClientID ||this.state.serverClientId,
         clientSecret: this.refs.clientSecret.refs.value.value || this.state.savedSecret || this.state.serverClientSecret,
         authEndpoint: '/authorize',
