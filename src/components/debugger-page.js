@@ -46,16 +46,11 @@ class DebuggerPage extends React.Component {
     // fetch auth data if it is empty
     if(this.isEmptyClientAuthData) {
       this.fetchClientAuthData().then(res => {
-        this.configureStep();
-        window.addEventListener('configChange', this.update.bind(this));
-        window.addEventListener('discovery', this.updateURLs.bind(this));
+        this.attachListeners();
       })
-    } else {
-       this.configureStep();
-        window.addEventListener('configChange', this.update.bind(this));
-        window.addEventListener('discovery', this.updateURLs.bind(this));
-    }
-   
+      return;
+    } 
+    this.attachListeners();
   }
 
   isEmptyClientAuthData() {
@@ -64,6 +59,13 @@ class DebuggerPage extends React.Component {
       !this.state.clientID ||
       !this.state.clientSecret ||
       !this.state.authCode
+  }
+
+  attachListeners() {
+     this.configureStep();
+     this.updateURLs();
+      window.addEventListener('configChange', this.update.bind(this));
+      window.addEventListener('discovery', this.updateURLs.bind(this));
   }
 
   fetchClientAuthData() {
@@ -177,8 +179,6 @@ class DebuggerPage extends React.Component {
         this.state.server !== 'Auth0') {
         this.setState({
           domain: 'test-microsites-06112025.us.auth0.com',
-          clientID: document.querySelector('input[name=auth0ClientID]').value,
-          clientSecret: document.querySelector('input[name=auth0ClientSecret]').value,
           currentStep: 1
         });
       } else if (event.detail.server && event.detail.server !== this.state.server) {
