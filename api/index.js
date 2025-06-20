@@ -14,8 +14,6 @@ const app = express();
 app.use(require("body-parser").json());
 
 
-app.use(express.static('public'));
-
 
 app.use((req, res, next) => {
  const proto = req.headers["x-forwarded-proto"];

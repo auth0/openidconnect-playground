@@ -1,6 +1,12 @@
-const jwkToPem = require("jwk-to-pem");
+const jose = require('node-jose')
 const jwt = require('jsonwebtoken')
 const request = require('request')
+
+async function convertJwkToPem(jwk) {
+    const keyStore = jose.JWK.createKeyStore();
+    const key = await keyStore.add(jwk, 'json')
+    return key.toPEM();
+}
 
 module.exports = (req, res) => {
     if (req.method === "POST") {
@@ -48,8 +54,8 @@ module.exports = (req, res) => {
                             .send(`No public key found with matching kid '${tokenHeader.kid}'`);
                     }
 
-                    const secret = jwkToPem(key);
-                    return verify(secret);
+                    return convertJwkToPem(key).then(secret => verify(secret)).catch(err => res.status(400).send("Error verifying key", err))
+                    
                 },
             );
             // HS256 = validation with client secret
