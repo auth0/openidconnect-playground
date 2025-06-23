@@ -17,7 +17,7 @@ const Footer = () => {
     <div>
       <div className="bottom-callout text-center theme-dark">
         <img
-          src="/images/auth0-badge-light.svg"
+          src="public/images/auth0-badge-light.svg"
           width="110"
           role="presentation"
         />

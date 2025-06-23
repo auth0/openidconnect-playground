@@ -27,7 +27,7 @@ class TokenPanel extends React.Component {
   getToken(){
     let panel = this
     let tokenRequest = new Ajax({
-      url: '/code_to_token',
+      url: 'api/code_to_token',
       method: 'POST',
       data: JSON.stringify(panel.state)
     })

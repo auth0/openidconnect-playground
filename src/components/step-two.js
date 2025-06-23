@@ -29,7 +29,7 @@ class StepTwo extends React.Component {
     }
 
 		let serviceDiscovery = new Ajax({
-			url: '/code_to_token',
+			url: 'api/code_to_token',
 			method: 'POST',
 			data: JSON.stringify(data)
 		})

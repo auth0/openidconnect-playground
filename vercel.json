@@ -1,0 +1,12 @@
+{ 
+    "version": 2, 
+    "builds": [
+        {"src": "api/**/*.js", "use": "@vercel/node"},
+        {"src": "public/**", "use": "@vercel/static"}
+    ],
+    "rewrites": [
+        {"source": "/callback", "destination": "/api/callback"},
+        {"source": "/api/(.*)", "destination": "/api/$1.js"},
+        {"source": "/((?!api|bundle\\.js|.*\\..*).*)", "destination": "/public/index.html"}
+    ]
+}

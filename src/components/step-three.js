@@ -15,7 +15,7 @@ class StepThree extends React.Component {
   verify(){
     this.setState({ stepState: 'wait' })
 		let validateToken = new Ajax({
-			url: '/validate',
+			url: 'api//validate',
 			method: 'POST',
 			data: JSON.stringify({
 				clientSecret: this.props.clientSecret,

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import Auth0Logo from "./auth0-logo";
 
 class Hero extends React.Component {
