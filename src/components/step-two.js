@@ -43,6 +43,8 @@ class StepTwo extends React.Component {
         body: result
       };
 
+      console.log(exchangeResult);
+
       this.setState({ exchangeResult: exchangeResult });
 
       if(result.error_description) {
@@ -76,6 +78,7 @@ class StepTwo extends React.Component {
 		serviceDiscovery.send()
   }
   goToNextStep() {
+    console.log("goToNextStep");
     window.dispatchEvent(new CustomEvent('configChange', {
       detail: {
         currentStep: 3
