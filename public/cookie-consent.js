@@ -38,7 +38,7 @@ const POLL_INTERVAL = 200;
 let tries = 0;
 const poll = window.setInterval(() => {
     if (tries >= POLL_MAX) {
-        addScripts(window.OnetrustActiveGroups)
+        addScripts(window.OnetrustActiveGroups);
         return window.clearInterval(poll);
     }
 
