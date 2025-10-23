@@ -48,3 +48,8 @@ html(lang="en")
 		if process.env.NODE_ENV === "production"
 			script(src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js", type="text/javascript", charset="UTF-8", data-domain-script="642ff5cd-0d1e-4865-bef1-2167332ca61a", id="consent-script")
 			script(src="cookie-consent.js")
+		// Adobe Analytics Scripts
+		if process.env.NODE_ENV === "production"
+			script(src="https://assets.adobedtm.com/6bb3f7663515/fea558f43eb7/launch-be034d63605e.min.js", type="text/javascript", charset="UTF-8", id="adobe-analytics-script", async)
+    	else 
+      		script(src="https://assets.adobedtm.com/6bb3f7663515/fea558f43eb7/launch-e7dc4271fcde-development.min.js", type="text/javascript", charset="UTF-8", id="adobe-analytics-script", async)
