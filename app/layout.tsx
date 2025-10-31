@@ -1,7 +1,15 @@
-<!DOCTYPE 5>
-<html lang="en">
+
+import "libs/theme/styles/globals.scss";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+   <html lang="en">
   <head>
-    <meta charset="UTF-8"/>
+    <meta charSet="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="https://cdn.auth0.com/styleguide/4.7.5/index.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
@@ -24,29 +32,21 @@
     <meta name="twitter:image:width" content="1200"/>
     <meta name="twitter:image:height" content="630"/>
     <meta name="google-site-verification" content="tLAuc_2L4oGIS68FVPW-FvFdIxLNYkLBCAb-9PseeWY"/>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    {/* <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script> */}
   </head>
   <body>
-    <!-- Google Tag Manager (noscript)-->
-    <noscript>
+   {children}
+   {/*  <noscript>
       <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6KSGFBD" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript)-->
-    <div id="content"></div>
-    <div class="hidden">
-      <input type="hidden" name="redirect-uri"/>
-      <input type="hidden" name="stateToken"/>
-      <input type="hidden" name="code"/>
-      <input type="hidden" name="auth0ClientID"/>
-      <input type="hidden" name="auth0ClientSecret"/>
-    </div>
-    <script src="bundle.js"></script>
-    <script>
+    </noscript> */}
+    {/* <script>
       window.clientId=JSON.stringify(clientId);
 	  window.clientSecret=JSON.stringify(clientSecret);
     </script>
     <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8" data-domain-script="642ff5cd-0d1e-4865-bef1-2167332ca61a" id="consent-script"></script>
     <script src="https://assets.adobedtm.com/6bb3f7663515/fea558f43eb7/launch-be034d63605e.min.js" async></script>
-    <script src="cookie-consent.js"></script>
+    <script src="cookie-consent.js"></script> */}
   </body>
 </html>
+  );
+}
