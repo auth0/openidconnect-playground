@@ -20,7 +20,7 @@ jobs:
         run: npm install --global vercel@latest
       - name: Check Vercel scope
         run: |
-          vercel whoami --token=${{ secrets.VERCEL_ACCESS_TOKEN }}
+          vercel whoami --token=${{ secrets.VERCEL_ACCESS_TOKEN }} --output json | jq .
       - name: Deploy on Vercel
         id: deploy
         run: |
@@ -32,8 +32,7 @@ jobs:
           vercel alias set \
           --token=${{ secrets.VERCEL_ACCESS_TOKEN }} \
           ${{ steps.deploy.outputs.deploymentUrl }} \
-          development-openidconnect.vercel.app \
-          --scope=dougchan-okta
+          development-openidconnect.vercel.app
 
   Add-Comment:
     runs-on:
