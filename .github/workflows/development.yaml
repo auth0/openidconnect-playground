@@ -18,6 +18,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
+      - name: Check Vercel scope
+        run: |
+          vercel whoami --token=${{ secrets.VERCEL_ACCESS_TOKEN }}
       - name: Deploy on Vercel
         id: deploy
         run: |
@@ -29,7 +32,7 @@ jobs:
           vercel alias set \
           --token=${{ secrets.VERCEL_ACCESS_TOKEN }} \
           ${{ steps.deploy.outputs.deploymentUrl }} \
-          development.openidconnect.com
+          development-openidconnect.vercel.app
 
   Add-Comment:
     runs-on:
