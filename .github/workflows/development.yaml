@@ -29,8 +29,7 @@ jobs:
           vercel alias set \
           --token=${{ secrets.VERCEL_ACCESS_TOKEN }} \
           ${{ steps.deploy.outputs.deploymentUrl }} \
-          development.openidconnect.com \
-          --scope=okta
+          development.openidconnect.com
 
   Add-Comment:
     runs-on:
