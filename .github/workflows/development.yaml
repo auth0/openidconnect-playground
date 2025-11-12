@@ -20,7 +20,7 @@ jobs:
         run: npm install --global vercel@latest
       - name: Check Vercel scope
         run: |
-          vercel whoami --token=${{ secrets.VERCEL_ACCESS_TOKEN }} --output json | jq .
+          curl -s -H "Authorization: Bearer ${{ secrets.VERCEL_ACCESS_TOKEN }}" https://api.vercel.com/v2/user | jq .
       - name: Deploy on Vercel
         id: deploy
         run: |
