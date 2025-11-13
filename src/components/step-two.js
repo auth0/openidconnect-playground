@@ -36,14 +36,12 @@ class StepTwo extends React.Component {
 
 		serviceDiscovery.on('success', function(event){
       this.setState({ stepState: 'initial'})
-      let result = JSON.parse(JSON.parse(event.currentTarget.response).body)
+      let result = JSON.parse(event.currentTarget.response).body
 
       let exchangeResult = {
         status: JSON.parse(event.currentTarget.response).response.statusCode,
         body: result
       };
-
-      console.log(exchangeResult);
 
       this.setState({ exchangeResult: exchangeResult });
 
@@ -78,7 +76,6 @@ class StepTwo extends React.Component {
 		serviceDiscovery.send()
   }
   goToNextStep() {
-    console.log("goToNextStep");
     window.dispatchEvent(new CustomEvent('configChange', {
       detail: {
         currentStep: 3
