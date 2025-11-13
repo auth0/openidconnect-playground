@@ -28,6 +28,7 @@ export default async function handler(req, res) {
       const result = {
         body: tokenData,
         response: {
+          body: tokenData,
           statusCode: response.status,
           headers: response.headers,
         },
