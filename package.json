@@ -36,7 +36,6 @@
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
         "react-router-dom": "^6.2.1",
-        "request": "^2.72.0",
         "sass": "^1.93.2",
         "serverless-http": "^3.2.0",
         "sha1": "^1.1.1",
