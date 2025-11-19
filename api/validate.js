@@ -1,91 +1,76 @@
-const jose = require('node-jose')
-const jwt = require('jsonwebtoken')
-const request = require('request')
+import { Validator } from "jsonschema";
 
-async function convertJwkToPem(jwk) {
-    const keyStore = jose.JWK.createKeyStore();
-    const key = await keyStore.add(jwk, 'json')
-    return key.toPEM();
-}
+const valid = new Validator();
 
-module.exports = (req, res) => {
-    if (req.method === "POST") {
-        if (!req.body.idToken) {
-            return res.status(400).send("Missing idToken param.");
-        }
+const discoverySchema = {
+  type: "object",
+  properties: {
+    authorization_endpoint: { type: "string", format: "uri" },
+    token_endpoint: { type: "string", format: "uri" },
+    userinfo_endpoint: { type: "string", format: "uri" },
+    jwks_uri: { type: "string", format: "uri" },
+  },
+  required: [
+    "authorization_endpoint",
+    "token_endpoint",
+    "userinfo_endpoint",
+    "jwks_uri",
+  ],
+};
 
-        const tokenHeader = jwt.decode(req.body.idToken, { complete: true }).header;
+const isJson = (str) => {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+};
 
-        // RS256 = validation with public key
-        if (tokenHeader.alg === "RS256") {
-            if (!req.body.tokenKeysEndpoint) {
-                return res
-                    .status(400)
-                    .send(
-                        `idToken algorithm is ${tokenHeader.alg} but tokenKeysEndpoint param is missing.`,
-                    );
-            }
-            if (!tokenHeader.kid) {
-                return res
-                    .status(400)
-                    .send(
-                        `idToken algorithm is ${tokenHeader.alg} but kid header is missing.`,
-                    );
-            }
+export default async function handler(req, res) {
+  if (req.method !== "GET") {
+    res.setHeader("Allow", ["GET"]);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
 
-            // fetch public key
-            return request.get(
-                {
-                    url: req.body.tokenKeysEndpoint,
-                    json: true,
-                },
-                (err, resp, body) => {
-                    // find key with matching kid
-                    if (!body || !body.keys || !Array.isArray(body.keys)) {
-                        return res
-                            .status(400)
-                            .send(`No public key found with matching kid '${tokenHeader.kid}'`);
-                    }
+  try {
+    const response = await fetch(req.query.url);
 
-                    const key = body.keys.find((k) => k.kid === tokenHeader.kid);
-                    if (!key) {
-                        return res
-                            .status(400)
-                            .send(`No public key found with matching kid '${tokenHeader.kid}'`);
-                    }
-
-                    return convertJwkToPem(key).then(secret => verify(secret)).catch(err => res.status(400).send("Error verifying key", err))
-                    
-                },
-            );
-            // HS256 = validation with client secret
-        } else if (tokenHeader.alg === "HS256") {
-            if (!req.body.clientSecret) {
-                return res
-                    .status(400)
-                    .send(
-                        `idToken algorithm is ${tokenHeader.alg} but clientSecret param is missing.`,
-                    );
-            }
-
-            const secret =
-                req.body.server === "Auth0"
-                    ? new Buffer(req.body.clientSecret, "base64")
-                    : req.body.clientSecret;
-            return verify(secret);
-        }
-        return res
-            .status(400)
-            .send(`Unsupported idToken algorithm: ${tokenHeader.alg}`);
-
-        function verify(secret) {
-            jwt.verify(req.body.idToken, secret, (err, decoded) => {
-                if (err) {
-                    return res.status(400).send(err);
-                }
-
-                return res.json(decoded);
-            });
-        }
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch discovery document: ${response.status} ${response.statusText}`
+      );
     }
+
+    const body = await response.text();
+
+    if (isJson(body)) {
+      const jsonBody = JSON.parse(body);
+      const validationResult = valid.validate(jsonBody, discoverySchema);
+
+      if (validationResult.valid) {
+        return res.status(200).json({
+          authorization_endpoint: jsonBody.authorization_endpoint,
+          token_endpoint: jsonBody.token_endpoint,
+          userinfo_endpoint: jsonBody.userinfo_endpoint,
+          jwks_uri: jsonBody.jwks_uri,
+        });
+      } else {
+        return res.status(400).json({
+          message: "Discovery document is not valid.",
+          errors: validationResult.errors.map(
+            (e) => `The ${e.property.replace("instance.", "")} ${e.message}`
+          ),
+        });
+      }
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Discovery document is not a JSON file." });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "An unexpected error occurred.",
+    });
+  }
 }
