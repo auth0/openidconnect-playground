@@ -1,15 +1,13 @@
-name: Vercel Preview Deployment
+name: Vercel Development Deployment
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
   push:
-    branches-ignore:
-      - master
-      - production
-      - development
+    branches:
+        - development
 jobs:
-  Deploy-Preview:
+  Deploy-Development:
     runs-on:
       labels: ubuntu-latest
     environment: preview
@@ -26,19 +24,18 @@ jobs:
           vercel deploy --token=${{ secrets.VERCEL_ACCESS_TOKEN }} > deploy.log
           URL=$(cat deploy.log | grep -o 'https://[^ ]*.vercel.app' | head -n1)
           echo "deploymentUrl=$URL" >> $GITHUB_OUTPUT
-      - name: Extract branch name
-        shell: bash
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: extract_branch
-      - name: Assign Custom Domain
-        if: ${{ steps.extract_branch.outputs.branch == 'remove-basepath-2' }}
+      - name: Assign alias to static preview domain
         run: |
-          vercel alias set --token=${{ secrets.VERCEL_ACCESS_TOKEN }} ${{ steps.deploy.outputs.deploymentUrl }} ab-test-next-jwt-io.vercel.app --scope=okta
+          vercel alias set \
+          --token=${{ secrets.VERCEL_ACCESS_TOKEN }} \
+          ${{ steps.deploy.outputs.deploymentUrl }} \
+          development.openidconnect.com \
+          --scope=okta
 
   Add-Comment:
     runs-on:
       labels: ubuntu-latest
-    needs: Deploy-Preview
+    needs: Deploy-Development
     permissions:
       issues: write
       pull-requests: write
@@ -47,7 +44,7 @@ jobs:
         uses: actions/github-script@v6
         id: comment-deployment-url-script
         env:
-          DEPLOYMENT_URL: ${{ needs.Deploy-Preview.outputs.deploymentUrl }}
+          DEPLOYMENT_URL: ${{ needs.Deploy-Development.outputs.deploymentUrl }}
         with:
           script: |
             // Get pull requests that are open for current ref.
