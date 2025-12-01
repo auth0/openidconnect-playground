@@ -12,16 +12,19 @@
 
   @media #{$breakpoint-dimension-sm} {
     display: block;
-    padding: 1rem 2rem
+    padding: 1rem 1.5rem
   }
    @media #{$breakpoint-dimension-md} {
     padding: 1rem 3rem
+  }
+  @media #{$breakpoint-dimension-lg} {
+    padding: 1rem 10rem
   }
   
 }
 
 .logo_title { 
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-style: normal;
     font-weight: 500;
     line-height: 24px;
@@ -70,7 +73,11 @@
   gap: 3rem;
   
   @media #{$breakpoint-dimension-sm} {
-    margin-left: 3.5rem;
+    margin-left: 1.5rem;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+     margin-left: 3.5rem;
   }
 }
 
@@ -87,7 +94,7 @@
   }
 
   @media #{$breakpoint-dimension-md} {
-    gap: 2.5rem;
+    gap: 2rem;
   }
 }
 
