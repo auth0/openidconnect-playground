@@ -108,6 +108,9 @@ a {
   --color_fg_default: var(--functional-gray-200);
   --color_fg_link_primary: var(--cloud);
 
+  --surface-tertiary: var(--functional-gray-850);
+  --border-faint: var(--functional-gray-550);
+
   --color_bg_app_bar: rgba(17, 17, 17, 0.66);
   --color_bg_app_bar_plain: rgba(17, 17, 17);
 
@@ -125,7 +128,7 @@ a {
   --color_bg_layer_bold: var(--functional-gray-700);
   --color_bg_layer_boldest: var(--functional-gray-50);
   --color_bg_layer_alternate: var(--functional-gray-850);
-  --color_bg_layer_alternate-bold: var(--functional-gray-800);
+  --color_bg_layer_alternate-bold: var(--functional-gray-700);
   --color_bg_layer_elevated: var(--functional-gray-900);
 
   --color_bg_layer_highlight1: var(--ocean);
@@ -178,6 +181,9 @@ body[data-theme="light"] {
   --color_bg_state_info_subtle: #eef0fd;
   --color_fg_on_state_info_subtle: #263588;
   --color_border_state_info: #3f59e4;
+
+  --surface-tertiary: var(--functional-gray-150);
+  --border-faint: #E8E8E8;
 
   --color_bg_state_danger_subtle: #fbeeed;
   --color_fg_on_state_danger_subtle: #761c17;

@@ -21,6 +21,7 @@
     "license": "ISC",
     "dependencies": {
         "body-parser": "^1.15.0",
+        "clsx": "^2.1.1",
         "cookie": "^1.0.2",
         "cookie-signature": "^1.2.2",
         "document-offset": "^1.0.4",

@@ -1,0 +1,150 @@
+@use "libs/theme/styles/variables" as *;
+@use "libs/theme/styles/mixins" as *;
+
+.container {
+  display: none;
+  max-width: calc(100% - 2rem);
+  position: fixed;
+  top: 1rem;
+  right: 0;
+  left: 0;
+  color: var(--color_fg_link);
+
+  @media #{$breakpoint-dimension-sm} {
+    display: block;
+    padding: 1rem 1.5rem
+  }
+   @media #{$breakpoint-dimension-md} {
+    padding: 1rem 3rem
+  }
+  @media #{$breakpoint-dimension-lg} {
+    padding: 1rem 10rem
+  }
+  
+}
+
+.logo_title { 
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    @media #{$breakpoint-dimension-md} {
+    font-size: 1.5rem;
+  }
+}
+
+.logo_small_title {
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 11px;
+}
+
+.wrapper {
+  @include ExtendedGrid;
+  height: $navbar-height;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    & .logo_img {
+        margin-right: 8px;
+    }
+}
+
+.navTabs {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3rem;
+  
+  @media #{$breakpoint-dimension-sm} {
+    margin-left: 1.5rem;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+     margin-left: 3.5rem;
+  }
+}
+
+.navList {
+  display: flex;
+  padding: 0;
+  list-style-type: none;
+  margin: 0;
+
+  height: 100%;
+
+  @media #{$breakpoint-dimension-sm} {
+    gap: 1.5rem;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    gap: 2rem;
+  }
+}
+
+.navList__item {
+  position: relative;
+  border-bottom: 2px solid transparent;
+  color: var(--color_fg_link);
+
+  &[data-active="true"] {
+    border-bottom: 2px solid var(--color_fg_link);
+  }
+}
+
+.navList__item,
+.navList__item > a {
+  display: flex;
+  align-items: center;
+
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 2rem;
+  letter-spacing: 0.2px;
+
+  @media #{$breakpoint-dimension-md} {
+    font-size: 1rem;
+  }
+}
+
+.navList__link {
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  text-align: center;
+  text-decoration: none;
+
+  @media #{$breakpoint-dimension-md} {
+    gap: 0.8rem;
+    padding-bottom: 0.8rem;
+  }
+}
+
+.navList__external__link {
+  color: $link-resting-color
+}
+
+.icon__container {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: center;
+}

@@ -1,0 +1,79 @@
+@use "libs/theme/styles/variables" as *;
+@use "libs/theme/styles/mixins" as *;
+
+.container {
+    display: flex;
+    width: 44px;
+    height: 24px;
+    padding: 3px 3.667px 3px 22.333px;
+    justify-content: flex-end;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 12px;
+    border: 1px solid var(--border-faint);
+    background:var(--surface-tertiary);
+    cursor: pointer;
+}
+
+.toggle_input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    transition: background 0.3s ease;
+}
+
+.thumb {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border-radius: 999px;
+    transition: transform 0.3s ease;
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.25)
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    opacity: 0;
+    transform: translateY(2px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.sun {
+    margin-left: 4px;
+}
+.moon {
+    margin-left: auto;
+    margin-top: 6px;
+}
+
+.toggle_input:not(:checked) + .toggle .sun {
+    opacity: 1;
+    transform: translate(-18px, -16px)
+}
+
+.toggle_input:not(:checked) + .toggle .thumb {
+    transform: translateX(-20px)
+}
+
+.toggle_input:checked + .toggle .moon {
+    opacity: 1;
+    transform: translateY(0)
+}
+
+.toggle_input:checked + .toggle .thumb {
+    transform: translateX(-2px)
+}
