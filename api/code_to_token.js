@@ -1,8 +1,7 @@
 const jwt = require("jsonwebtoken");
-
 const ALLOWED_HOSTNAMES = new Set([
-  "https://samples.auth0.com",
-  "https://oauth2.googleapis.com"
+  "samples.auth0.com",
+  "oauth2.googleapis.com"
 ]);
 
 function isAllowedHostname(hostname) {
@@ -22,7 +21,8 @@ export default async function handler(req, res) {
 
       const providedUrl = new URL(req.body.tokenEndpoint)
       const isInvalidProtocol = providedUrl.protocol !== "http:" && providedUrl.protocol !== "https:"
-      if(isInvalidProtocol && !isAllowedHostname(providedUrl.hostname)) {
+      
+      if(isInvalidProtocol || !isAllowedHostname(providedUrl.hostname)) {
         throw new Error(`Invalid URL`)
       }
 
