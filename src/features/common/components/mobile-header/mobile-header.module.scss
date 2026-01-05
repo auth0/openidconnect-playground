@@ -2,9 +2,8 @@
 @use "libs/theme/styles/mixins" as *;
 
 .container {
-  width: calc(100% - 2rem);
   position: fixed;
-  top: 1rem;
+  top: 0;
   right: 0;
   left: 0;
   border-radius: 1rem;

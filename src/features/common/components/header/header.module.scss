@@ -3,12 +3,14 @@
 
 .container {
   display: none;
-  max-width: calc(100% - 2rem);
+  width: 100%;
   position: fixed;
-  top: 1rem;
+  top: 0;
   right: 0;
   left: 0;
   color: var(--color_fg_link);
+  background: var(--color_bg_layer);
+  z-index: 100;
 
   @media #{$breakpoint-dimension-sm} {
     display: block;
