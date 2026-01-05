@@ -6,6 +6,7 @@ import {
 import { PrimaryFont } from "libs/theme/fonts";
 import { cookies } from "next/headers";
 import "libs/theme/styles/globals.scss";
+import styles from "./layout.module.scss"
 import { MobileHeaderComponent } from "features/common/components/mobile-header/mobile-header.component";
 
 export default async function RootLayout({
@@ -66,7 +67,7 @@ export default async function RootLayout({
       <body className={PrimaryFont.className} data-theme={theme}>
         <HeaderComponent theme={theme} />
         <MobileHeaderComponent theme={theme} />
-        {children}
+        <main className={styles.main} >{children}</main>
         {/*  <noscript>
       <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6KSGFBD" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript> */}
