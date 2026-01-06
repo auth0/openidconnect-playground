@@ -1,5 +1,11 @@
 import { HeroJumbotronComponent } from "features/common/components/hero-jumbotron/hero-jumbotron.component";
+import { DebuggerToolbar } from "features/debugger/components/toolbar/debugger-toolbar.component";
 
 export default function Page() {
-    return <HeroJumbotronComponent />
+  return (
+    <>
+      <HeroJumbotronComponent />
+      <DebuggerToolbar />
+    </>
+  );
 }
