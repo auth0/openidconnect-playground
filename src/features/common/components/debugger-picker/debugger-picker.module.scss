@@ -24,8 +24,6 @@ $picker-list-offset-lg: calc(($picker-list-width-lg - $picker-width-lg) / 2);
   cursor: pointer;
   gap: 0.75rem;
 
-  //width: $picker-width-sm;
-
   @media #{$breakpoint-dimension-md} {
     &[data-has-label="true"] {
       width: 100%;
