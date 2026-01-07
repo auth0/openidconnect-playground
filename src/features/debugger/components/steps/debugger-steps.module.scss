@@ -1,0 +1,56 @@
+@use "libs/theme/styles/variables" as *;
+@use "libs/theme/styles/mixins" as *;
+
+.container {
+  @include Container;
+}
+
+.wrapper {
+  @include ExtendedGrid;
+}
+
+.content {
+  margin: 0 2rem;
+  border-radius: 24px;
+  border: 0.5px solid var(--color_border_light);
+  background: var(--color_bg_layer_alternate);
+  backdrop-filter: blur(40px);
+}
+
+.step_container {
+  display: flex;
+  padding: 0 24px;
+  align-items: center;
+  &[data-state="upcoming"] .step_number {
+    color: var(--color_fg_bold);
+    border: 1px solid var(--color_fg_default);
+    background-color: transparent;
+  }
+  @media #{$breakpoint-dimension-sm} {
+    padding: 0 64px;
+  }
+}
+
+.step_content {
+    display: flex;
+    padding: 16px 40px 16px 0;
+    align-items: center;
+    gap: 12px;
+    color: var(--color_fg_bold);
+}
+
+.step_container:not(:last-child) {
+    border-bottom: 0.5px solid var(--color_border_light);
+}
+
+.step_number {
+  display: flex;
+  width: 32px;
+  padding: 7px 0 5px 0;
+  justify-content: center;
+  align-items: center;
+  border-radius: 999px;
+  background-color: var(--color_fg_default);
+  color: var(--color_bg_layer);
+  flex-shrink: 0;
+}
