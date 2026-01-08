@@ -3,6 +3,7 @@
 
 .container {
   @include Container;
+  margin-bottom: 100px;
 }
 
 .wrapper {
@@ -17,7 +18,7 @@
   backdrop-filter: blur(40px);
 }
 
-.step_container {
+.step_title_container {
   display: flex;
   padding: 0 24px;
   align-items: center;
@@ -31,7 +32,7 @@
   }
 }
 
-.step_content {
+.step_title_content {
     display: flex;
     padding: 16px 40px 16px 0;
     align-items: center;
@@ -39,7 +40,7 @@
     color: var(--color_fg_bold);
 }
 
-.step_container:not(:last-child) {
+.step_container:not(:last-child) .step_title_container {
     border-bottom: 0.5px solid var(--color_border_light);
 }
 
@@ -53,4 +54,10 @@
   background-color: var(--color_fg_default);
   color: var(--color_bg_layer);
   flex-shrink: 0;
+}
+
+.step_content {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
 }
