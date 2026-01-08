@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { ComponentType, useState } from "react";
 import styles from "./debugger-steps.module.scss";
 import { StepOne, StepTwo, StepThree, StepFour } from "./index";
@@ -38,7 +38,7 @@ export const DebuggerSteps = () => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.content}>
-          {stepsList.map((step, index) => {
+          {stepsList.map(({ id, label, component: Component }, index) => {
             const state =
               index < currentStepIndex
                 ? "completed"
@@ -46,18 +46,24 @@ export const DebuggerSteps = () => {
                 ? "current"
                 : "upcoming";
             return (
-              <div
-                key={step.id}
-                className={styles.step_container}
-                data-state={state}
-                aria-current={state === "current" ? "step" : undefined}
-                aria-label={`${step.label} ${state}`}
-              >
-                <div className={styles.step_content}>
-                  {" "}
-                  <div className={styles.step_number}>{index + 1}</div>
-                  <p>{step.label}</p>
+              <div key={id} className={styles.step_container}>
+                <div
+                  className={styles.step_title_container}
+                  data-state={state}
+                  aria-current={state === "current" ? "step" : undefined}
+                  aria-label={`${label} ${state}`}
+                >
+                  <div className={styles.step_title_content}>
+                    {" "}
+                    <div className={styles.step_number}>{index + 1}</div>
+                    <p>{label}</p>
+                  </div>
                 </div>
+                {state === "current" ? (
+                  <div className={styles.step_content}>
+                    <Component />
+                  </div>
+                ) : null}
               </div>
             );
           })}
