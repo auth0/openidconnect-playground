@@ -174,7 +174,7 @@
   font-weight: 400;
 
   @media #{$breakpoint-dimension-sm} {
-    max-width: 40rem;
+    max-width: 39rem;
     font-size: 1rem;
     line-height: 1.5rem;
     letter-spacing: 0.01rem;
@@ -225,13 +225,16 @@
   gap: 0.5rem;
   align-self: stretch;
   border-radius: 0.375rem;
-  background: $color_bg_button_primary_gradient;
-  color: $color_fg_on_button_primary;
+  color: var(--color_fg_link);
   font-size: 1rem;
   line-height: 1.5rem;
   font-style: normal;
   font-weight: 500;
   letter-spacing: 0.2px;
+  background: linear-gradient(var(--color_bg_button_primary_hero), var(--color_bg_button_primary_hero)) padding-box,
+              linear-gradient(90deg,#3F59E4, #92D7CC) border-box;
+  border: 1.5px solid transparent;
+  backdrop-filter: blur(20px);
 
   @media #{$breakpoint-dimension-sm} {
     width: fit-content;
