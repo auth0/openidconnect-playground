@@ -245,12 +245,7 @@ $color_border_default: $gray-75;
 
 $color_bg_button_primary: $Blue300;
 $color_fg_on_button_primary: $functional-gray-50;
-$color_bg_button_primary_gradient: linear-gradient(
-  120deg,
-  #191919 -29.78%,
-  #4016a0 11.61%,
-  #3f59e4 100.07%
-);
+$color_bg_button_primary_hero:#1a1a1a;
 
 body[data-theme="light"] {
   $color_bg_page: $functional-gray-950;
@@ -270,10 +265,5 @@ body[data-theme="light"] {
 
   $color_bg_button_primary: $Blue300;
   $color_fg_on_button_primary: $functional-gray-50;
-  $color_bg_button_primary_gradient: linear-gradient(
-    120deg,
-    #191919 -29.78%,
-    #4016a0 11.61%,
-    #3f59e4 100.07%
-  );
+  $color_bg_button_primary_hero: #B0A5F1
 }
