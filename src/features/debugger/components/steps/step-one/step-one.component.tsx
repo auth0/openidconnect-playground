@@ -1,3 +1,4 @@
+import { Button } from "features/common/components/button/button.component";
 import { Codeblock, RequestData } from "../../codeblock/codeblock.component";
 
 const REQUEST_DATA: RequestData = {
@@ -6,7 +7,7 @@ const REQUEST_DATA: RequestData = {
     {
       key: "client_id",
       value: "testvalue1234456677888",
-      isEditable: true
+      isEditable: true,
     },
     {
       key: "redirect_uri",
@@ -17,8 +18,9 @@ const REQUEST_DATA: RequestData = {
 
 export const StepOne = () => {
   return (
-    <div>
+    <>
       <Codeblock title="Request" type="request" requestData={REQUEST_DATA} />
-    </div>
+      <Button label="Start"/>
+    </>
   );
 };
