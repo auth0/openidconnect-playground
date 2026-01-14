@@ -1,9 +1,16 @@
 @use "libs/theme/styles/variables" as *;
 @use "libs/theme/styles/mixins" as *;
 
+
+.scroll_container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
 .container {
   width: 544px;
   border: 0.5px solid var(--color_border_light);
+  background-color: var(--color_bg_light);
 }
 
 .title_container {
@@ -37,6 +44,10 @@
   &:not(:first-child) {
     gap: 2rem;
   }
+}
+
+.code_line_number {
+  color: var(--functional-gray-550);
 }
 
 .param_value {
