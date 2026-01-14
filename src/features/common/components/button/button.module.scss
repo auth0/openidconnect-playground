@@ -1,0 +1,55 @@
+@use "libs/theme/styles/variables" as *;
+@use "libs/theme/styles/mixins" as *;
+
+.button {
+  display: flex;
+  padding: 1rem 2rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: stretch;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  background-color: var(--sky);
+  color: $color_fg_on_button_primary;
+  border: 0px;
+  cursor: pointer;
+
+  @media #{$breakpoint-dimension-sm} {
+    width: fit-content;
+    margin: auto;
+  }
+}
+
+.button_arrow {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 0.75rem;
+  width: 0.75rem;
+  border: 0;
+
+  svg {
+    height: 0.75rem;
+    width: 0.75rem;
+
+    path {
+      fill: $color_fg_on_button_primary;
+    }
+  }
+
+  @media #{$breakpoint-dimension-sm} {
+    height: 1rem;
+    width: 1rem;
+
+    svg {
+      height: 0.875rem;
+      width: 0.875rem;
+    }
+  }
+}
