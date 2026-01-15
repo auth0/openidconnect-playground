@@ -59,11 +59,14 @@ export const DebuggerSteps = () => {
                     <p>{label}</p>
                   </div>
                 </div>
-                {state === "current" ? (
-                  <div className={styles.step_content}>
-                    <Component />
-                  </div>
-                ) : null}
+
+                <div
+                  className={styles.step_content}
+                  data-open={state === "current"}
+                  aria-hidden={state !== "current"}
+                >
+                  <Component />
+                </div>
               </div>
             );
           })}
