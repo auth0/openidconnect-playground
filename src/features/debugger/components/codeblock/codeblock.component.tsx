@@ -12,15 +12,15 @@ export type RequestData = {
 };
 interface CodeBlockProps {
   title: string;
-  type: "request" | "json" | "code";
+  type: "request" | "json" | "token";
   requestData?: RequestData;
-  code?: string;
+  token?: string;
 }
 
 const formatLineNumber = (num: number) => num.toString().padStart(2, "0");
 
 export const Codeblock = (props: CodeBlockProps) => {
-  const { title, type, requestData, code } = props;
+  const { title, type, requestData, token } = props;
   return (
     <div className={styles.scrollContainer}>
       <div className={styles.container}>
@@ -28,10 +28,10 @@ export const Codeblock = (props: CodeBlockProps) => {
         <div className={styles.codeBlock}>
           {type === "request" && requestData ? (
             <>
-              <div className={styles.codeLine}>
-                <p className={styles.codeLineNumber}>{formatLineNumber(1)}</p>
-                <p className={styles.paramValue} data-editable={"true"}>
-                  <span>{`${requestData.method ? requestData.method : ""} ${requestData.url}?`}</span>
+              <div className={styles.code_line}>
+                <p className={styles.code_line_number}>01</p>
+                <p className={styles.param_value} data-editable={requestData.isEditable}>
+                  <span>{`${requestData.method ? requestData.method: ""} ${requestData.url}?`}</span>
                 </p>
               </div>
               {requestData.params.map((data, idx) => (
@@ -50,7 +50,7 @@ export const Codeblock = (props: CodeBlockProps) => {
               ))}
             </>
           ) : null}
-          {type === "code" && code ? <p>{code}</p> : null}
+          {type === "token" && token ? <p>{token}</p> : null}
         </div>
       </div>
     </div>
