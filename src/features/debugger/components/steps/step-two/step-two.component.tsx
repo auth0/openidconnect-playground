@@ -1,6 +1,6 @@
 import { Button } from "features/common/components/button/button.component";
 import { Codeblock, RequestData } from "../../codeblock/codeblock.component";
-import styles from "./step-two.module.scss";
+import styles from "../debugger-steps.module.scss"
 
 //TODO: replace with actual data coming from local state and api endpoint
 const REQUEST_DATA: RequestData = {
