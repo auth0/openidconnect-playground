@@ -1,6 +1,6 @@
 import { Button } from "features/common/components/button/button.component";
 import { Codeblock, RequestData } from "../../codeblock/codeblock.component";
-import styles from "../debugger-steps.module.scss"
+import styles from "./step-two.module.scss";
 
 //TODO: replace with actual data coming from local state and api endpoint
 const REQUEST_DATA: RequestData = {
@@ -36,7 +36,7 @@ const REQUEST_DATA: RequestData = {
 export const StepTwo = () => {
   return (
     <>
-      <Codeblock title="Your Code" type="code" code="asdfasdfasdfsadfsdf" />
+      <Codeblock title="Your Code" type="token" token="asdfasdfasdfsadfsdf" />
       <p className={styles.description}>
         Now, we need to turn that access code into an access token, by having
         our server make a request to your token endpoint
