@@ -50,7 +50,7 @@ export const Codeblock = (props: CodeBlockProps) => {
               ))}
             </>
           ) : null}
-          {type === "token" && token ? <p>{token}</p> : null}
+          {type === "token" && token ? <p className={styles.token}>{token}</p> : null}
         </div>
       </div>
     </div>
