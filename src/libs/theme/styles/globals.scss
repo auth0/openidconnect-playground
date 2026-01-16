@@ -107,6 +107,7 @@ a {
   --color_fg_bold: var(--functional-gray-50);
   --color_fg_default: var(--functional-gray-200);
   --color_fg_link_primary: var(--cloud);
+  --color_fg_neutral: var(--functional-gray-400);
 
   --surface-tertiary: var(--functional-gray-850);
   --border-faint: var(--functional-gray-550);
@@ -221,6 +222,7 @@ body[data-theme="light"] {
   --color_bg_app_bar_plain: rgba(241, 241, 241);
 
   --color_fg_link: var(--charcoal2);
+  --color_fg_neutral: #4a5059;
   --color_fg_link_hover: var(--charcoal2);
   --color_fg_link_pressed: var(--charcoal2);
 
