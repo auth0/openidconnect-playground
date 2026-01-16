@@ -79,3 +79,12 @@
 .token {
   overflow-wrap: break-word;
 }
+
+.json {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.json_line {
+  color: #928eff;
+}
