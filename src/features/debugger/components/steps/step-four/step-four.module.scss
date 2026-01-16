@@ -1,0 +1,12 @@
+@use "libs/theme/styles/variables" as *;
+@use "libs/theme/styles/mixins" as *;
+
+.buttons_container {
+ display: flex;
+ gap: 1rem;
+ flex-direction: column;
+ flex-shrink: 0;
+ @media #{$breakpoint-dimension-sm} {
+    flex-direction: row;
+ }
+}

@@ -1,4 +1,6 @@
+import { Button } from "features/common/components/button/button.component";
 import { Codeblock } from "../../codeblock/codeblock.component";
+import styles from "./step-four.module.scss"
 
 const JSON_EXAMPLE = `{
  "email": "julian.leiss@auth0.com",
@@ -40,7 +42,15 @@ const JSON_EXAMPLE = `{
 export const StepFour = () => {
   return (
     <>
-      <Codeblock title="Decoded Token Payload" type="json" json={JSON.parse(JSON_EXAMPLE)} />
+      <Codeblock
+        title="Decoded Token Payload"
+        type="json"
+        json={JSON.parse(JSON_EXAMPLE)}
+      />
+      <div className={styles.buttons_container }>
+        <Button label="Start Over" />
+        <Button label="Log Out" variant="transparent"/>
+      </div>
     </>
   );
 };
