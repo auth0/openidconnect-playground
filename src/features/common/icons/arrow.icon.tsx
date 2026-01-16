@@ -9,7 +9,7 @@ export const ArrowIcon = () => {
     >
       <path
         d="M10.8242 4.44727L15.3767 8.99977L10.8242 13.5523"
-        stroke="white"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeMiterlimit="10"
         strokeLinecap="round"
@@ -17,7 +17,7 @@ export const ArrowIcon = () => {
       />
       <path
         d="M2.625 9H15.2475"
-        stroke="white"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeMiterlimit="10"
         strokeLinecap="round"
