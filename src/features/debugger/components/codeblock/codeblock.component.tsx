@@ -1,5 +1,6 @@
 import { ComponentType } from "react";
 import styles from "./codeblock.module.scss";
+import clsx from "clsx";
 
 export type RequestData = {
   url: string;
@@ -24,13 +25,19 @@ const formatLineNumber = (num: number) => num.toString().padStart(2, "0");
 export const Codeblock = (props: CodeBlockProps) => {
   const { title, type, requestData, token, HeaderRightComponent } = props;
   return (
-    <div className={styles.scrollContainer}>
-      <div className={styles.container}>
-        <div className={styles.header_container}>
-          <div className={styles.title_container}>{title}</div>
-          {HeaderRightComponent && <HeaderRightComponent />}
-        </div>
-        <div className={styles.code_block}>
+    <div className={styles.container}>
+      <div className={styles.header_container}>
+        <div className={styles.title_container}>{title}</div>
+        {HeaderRightComponent && <HeaderRightComponent />}
+      </div>
+      <div className={styles.scroll_container}>
+        <div
+          className={clsx(
+            styles.code_block,
+            type === "token" && styles.vertical_scroll_container,
+            type === "request" && styles.horizontal_scroll_container
+          )}
+        >
           {type === "request" && requestData ? (
             <>
               <div className={styles.code_line}>

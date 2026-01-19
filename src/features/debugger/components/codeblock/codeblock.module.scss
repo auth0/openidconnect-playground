@@ -1,24 +1,29 @@
 @use "libs/theme/styles/variables" as *;
 @use "libs/theme/styles/mixins" as *;
 
-
-.scrollContainer {
-  overflow-x: auto;
-  overflow-y: hidden;
-  max-width: 100%;
-}
 .container {
-  width: 544px;
+  max-width: 100%;
   border: 0.5px solid var(--color_border_light);
   background-color: var(--color_bg_light);
 }
 
+.horizontal_scroll_container {
+  min-width: 544px;
+}
+
+.vertical_scroll_container {
+  max-height: 248px;
+  @media #{$breakpoint-dimension-sm} {
+    max-height: fit-content;
+  }
+}
+
 .title_container {
-    color: var(--color_fg_bold);
-    text-transform: uppercase;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
+  color: var(--color_fg_bold);
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
 }
 
 .header_container {
@@ -28,7 +33,14 @@
   border-bottom: 0.5px solid var(--color_border_light);
 }
 
-.codeBlock {
+.scroll_container {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-width: 100%;
+}
+
+.code_block {
+  max-width: 544px;
   color: var(--color_fg_link);
   font-feature-settings: 'liga' off, 'clig' off;
   font-family: var(--font-mono);
