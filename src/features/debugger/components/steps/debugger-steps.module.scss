@@ -81,3 +81,26 @@
     letter-spacing: -0.1px;
   }
 }
+
+.button_container {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+  color: var(--color_fg_link);
+  p {
+    font-family: Aeonik;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.28px;
+  }
+  
+  svg {
+    path {
+      stroke: var(--color_fg_link);
+    }
+  }
+}
