@@ -13,14 +13,19 @@
   background-color: var(--color_bg_light);
 }
 
-.titleContainer {
-    padding: 24px;
+.title_container {
     color: var(--color_fg_bold);
     text-transform: uppercase;
     font-size: 14px;
     font-weight: 500;
     line-height: 20px;
-    border-bottom: 0.5px solid var(--color_border_light);
+}
+
+.header_container {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 0.5px solid var(--color_border_light);
 }
 
 .codeBlock {
