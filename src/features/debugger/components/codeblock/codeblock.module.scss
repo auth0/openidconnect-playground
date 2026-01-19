@@ -66,6 +66,7 @@
 
 .codeLineNumber {
   color: var(--functional-gray-550);
+  flex-shrink: 0;
 }
 
 .paramValue {

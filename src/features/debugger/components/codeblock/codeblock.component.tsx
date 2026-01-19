@@ -36,8 +36,17 @@ export const Codeblock = (props: CodeBlockProps) => {
     <div className={styles.container}>
       <div className={styles.header_container}>
         <div className={styles.title_container}>{title}</div>
-        <div className={styles.code_block}>
-          {type === "request" ? (
+        {HeaderRightComponent && <HeaderRightComponent />}
+      </div>
+      <div className={styles.scroll_container}>
+        <div
+          className={clsx(
+            styles.code_block,
+            type === "token" || type === "json" && styles.vertical_scroll_container,
+            type === "request" || type === "json" && styles.horizontal_scroll_container,
+          )}
+        >
+          {type === "request" && props.requestData ? (
             <>
               <div className={styles.code_line}>
                 <p className={styles.code_line_number}>01</p>
