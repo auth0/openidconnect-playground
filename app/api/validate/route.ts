@@ -1,0 +1,116 @@
+import { NextRequest, NextResponse } from "next/server";
+import jose from "node-jose";
+import jwt from "jsonwebtoken";
+
+async function convertJwkToPem(jwk) {
+  const keyStore = jose.JWK.createKeyStore();
+  const key = await keyStore.add(jwk, "json");
+  return key.toPEM();
+}
+
+export async function POST(request: NextRequest) {
+  const data = await request.json();
+  if (!data.idToken) {
+    return NextResponse.json(
+      { message: "Missing idToken param." },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  // A nested function to handle the final verification step
+  function verify(secret) {
+    jwt.verify(data.idToken, secret, (err, decoded) => {
+      if (err) {
+        return NextResponse.json({ message: err.message }, { status: 400 });
+      }
+      return NextResponse.json(decoded, { status: 200 });
+    });
+  }
+
+  try {
+    const tokenHeader = jwt.decode(data.idToken, { complete: true }).header;
+    if (!tokenHeader || !tokenHeader.alg) {
+      return NextResponse.json(
+        { message: "Invalid token header." },
+        { status: 400 },
+      );
+    }
+
+    // RS256 = validation with public key fetched from an endpoint
+    if (tokenHeader.alg === "RS256") {
+      if (!data.tokenKeysEndpoint) {
+        return NextResponse.json({
+          message: `idToken algorithm is ${tokenHeader.alg} but tokenKeysEndpoint param is missing.`,
+        });
+      }
+      if (!tokenHeader.kid) {
+        return NextResponse.json(
+          {
+            message: `idToken algorithm is ${tokenHeader.alg} but kid header is missing.`,
+          },
+          { status: 400 },
+        );
+      }
+
+      // Fetch public keys using the fetch API
+      const response = await fetch(data.tokenKeysEndpoint);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch keys: ${response.statusText}`);
+      }
+
+      const jwks = await response.json(); // Automatically parses the JSON body
+
+      if (!jwks || !jwks.keys || !Array.isArray(jwks.keys)) {
+        return NextResponse.json(
+          { message: "Invalid key set returned from the endpoint." },
+          { status: 400 },
+        );
+      }
+
+      // Find the key with the matching 'kid'
+      const key = jwks.keys.find((k) => k.kid === tokenHeader.kid);
+      if (!key) {
+        return NextResponse.json(
+          {
+            message: `No public key found with matching kid '${tokenHeader.kid}'`,
+          },
+          { status: 400 },
+        );
+      }
+
+      const pem = await convertJwkToPem(key);
+      return verify(pem);
+
+      // HS256 = validation with client secret
+    } else if (tokenHeader.alg === "HS256") {
+      if (!data.clientSecret) {
+        return NextResponse.json(
+          {
+            message: `idToken algorithm is ${tokenHeader.alg} but clientSecret param is missing.`,
+          },
+          { status: 400 },
+        );
+      }
+
+      const secret =
+        data.server === "Auth0"
+          ? Buffer.from(data.clientSecret, "base64")
+          : data.clientSecret;
+      return verify(secret);
+    }
+
+    return NextResponse.json(
+      { message: `Unsupported idToken algorithm: ${tokenHeader.alg}` },
+      {
+        status: 400,
+      },
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: error.message || "An unexpected error occurred." },
+      { status: 500 },
+    );
+  }
+}
