@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./debugger-steps.module.scss";
 import { StepOne, StepTwo, StepThree, StepFour } from "./index";
 import {
@@ -63,12 +63,12 @@ export const DebuggerSteps = () => {
     {
       id: "step-two",
       label: "Exchange Code from Token",
-      render: () => <StepTwo  />,
+      render: () => <StepTwo />,
     },
     {
       id: "step-three",
       label: "Verify User Token",
-      render: () => <StepThree  />,
+      render: () => <StepThree />,
     },
     {
       id: "step-four",
@@ -77,11 +77,13 @@ export const DebuggerSteps = () => {
     },
   ];
 
+  const stepRefs = useRef<Record<number, HTMLDivElement | null>>({});
+
   useEffect(() => {
     const savedData = localStorage.getItem("app-state");
     const { debuggerSteps, auth } = getAppData(savedData);
     if (debuggerSteps) setDebuggerStepsData(debuggerSteps);
-    if(auth) setAuthData(auth)
+    if (auth) setAuthData(auth);
     if (!auth) {
       fetch("api/auth_data")
         .then((res) => res.json())
@@ -93,11 +95,29 @@ export const DebuggerSteps = () => {
             redirectURI: data.redirect_uri,
             authCode: data.code,
           };
+          if (authDataResponse.authCode) {
+            setCurrentStepIndex(1);
+            debuggerSteps.currentStep = 1;
+          }
           setAuthData(authDataResponse);
-          localStorage.setItem('app-state', JSON.stringify({...debuggerSteps, ...authDataResponse}));
+          localStorage.setItem(
+            "app-state",
+            JSON.stringify({ ...debuggerSteps, ...authDataResponse }),
+          );
         });
     }
   }, []);
+
+  useEffect(() => {
+    if (currentStepIndex === 0) return;
+    const ref = stepRefs.current[currentStepIndex];
+    if (!ref) return;
+    const yOffset = ref.getBoundingClientRect().top + window.scrollY - 170;
+    window.scrollTo({
+      behavior: "smooth",
+      top: yOffset,
+    });
+  }, [currentStepIndex]);
 
   return (
     <div className={styles.container}>
@@ -129,6 +149,9 @@ export const DebuggerSteps = () => {
                   className={styles.stepContent}
                   data-open={state === "current"}
                   aria-hidden={state !== "current"}
+                  ref={(el) => {
+                    stepRefs.current[index] = el;
+                  }}
                 >
                   {render()}
                 </div>
