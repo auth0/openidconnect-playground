@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const cookieStore = await cookies();
@@ -14,5 +14,6 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  return NextResponse.redirect(new URL("/", request.url), { status: 302 });
+  const urlHomepage = new URL("/", request.url);
+  return NextResponse.redirect(urlHomepage, { status: 302 });
 }
