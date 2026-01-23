@@ -13,6 +13,7 @@ const DebuggerStepsDataSchema = z.object({
   accessToken: z.string().nullish(),
   audience: z.string().nullish(),
   authEndpoint: z.string().nullish(),
+  currentStep: z.number().nullish(),
   discoveryURL: z.string().nullish(),
   domain: z.string().nullish(),
   exchangeResult: z.string().nullish(),
@@ -21,7 +22,6 @@ const DebuggerStepsDataSchema = z.object({
   idTokenHeader: z.string().nullish(),
   scopes: z.string().nullish(),
   server: z.string().nullish(),
-  skipScroll: z.string().nullish(),
   tokenEndpoint: z.string().nullish(),
   tokenKeysEndpoint: z.string().nullish(),
   userInfoEndpoint: z.string().nullish(),
@@ -45,6 +45,7 @@ export const InitialDebuggerStepsData: DebuggerStepsData = {
   idTokenHeader: "",
   validated: false,
   exchangeResult: "",
+  currentStep: 0,
 };
 
 export function getAppData(savedData: string | null) {
@@ -53,23 +54,30 @@ export function getAppData(savedData: string | null) {
   }
   const parsedData = JSON.parse(savedData);
   const validated = AppDataSchema.parse(parsedData);
-  let debuggerSteps: DebuggerStepsData = {
-    accessToken: validated.accessToken,
-    audience: validated.audience,
-    authEndpoint: validated.authEndpoint,
-    discoveryURL: validated.discoveryURL,
-    domain: validated.domain,
-    exchangeResult: validated.exchangeResult,
-    idToken: validated.idToken,
-    idTokenDecoded: validated.idTokenDecoded,
-    idTokenHeader: validated.idTokenHeader,
-    scopes: validated.scopes,
-    server: validated.server,
-    skipScroll: validated.skipScroll,
-    tokenEndpoint: validated.tokenEndpoint,
-    tokenKeysEndpoint: validated.tokenKeysEndpoint,
-    userInfoEndpoint: validated.userInfoEndpoint,
-    validated: validated.validated,
+  const debuggerSteps: DebuggerStepsData = {
+    accessToken: validated.accessToken ?? InitialDebuggerStepsData.accessToken,
+    audience: validated.audience ?? InitialDebuggerStepsData.audience,
+    authEndpoint:
+      validated.authEndpoint ?? InitialDebuggerStepsData.authEndpoint,
+    discoveryURL:
+      validated.discoveryURL ?? InitialDebuggerStepsData.discoveryURL,
+    domain: validated.domain ?? InitialDebuggerStepsData.domain,
+    exchangeResult:
+      validated.exchangeResult ?? InitialDebuggerStepsData.exchangeResult,
+    idToken: validated.idToken ?? InitialDebuggerStepsData.idToken,
+    idTokenDecoded:
+      validated.idTokenDecoded ?? InitialDebuggerStepsData.idTokenDecoded,
+    idTokenHeader:
+      validated.idTokenHeader ?? InitialDebuggerStepsData.idTokenHeader,
+    scopes: validated.scopes ?? InitialDebuggerStepsData.scopes,
+    server: validated.server ?? InitialDebuggerStepsData.server,
+    tokenEndpoint:
+      validated.tokenEndpoint ?? InitialDebuggerStepsData.tokenEndpoint,
+    tokenKeysEndpoint:
+      validated.tokenKeysEndpoint ?? InitialDebuggerStepsData.tokenKeysEndpoint,
+    userInfoEndpoint:
+      validated.userInfoEndpoint ?? InitialDebuggerStepsData.userInfoEndpoint,
+    validated: validated.validated ?? InitialDebuggerStepsData.validated,
   };
   let auth: AuthData = {
     authCode: validated.authCode,
@@ -78,12 +86,8 @@ export function getAppData(savedData: string | null) {
     redirectURI: validated.redirectURI,
     stateToken: validated.stateToken,
   };
-  debuggerSteps = Object.values(debuggerSteps).every(
-    (value) => value === null || value === undefined || value === "",
-  )
-    ? null
-    : debuggerSteps;
-  auth = Object.values(auth).every(
+ 
+  auth = Object.values(auth).some(
     (value) => value === null || value === undefined || value === "",
   )
     ? null
