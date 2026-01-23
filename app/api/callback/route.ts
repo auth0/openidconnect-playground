@@ -21,7 +21,8 @@ export async function GET(request: NextRequest) {
       path: "/",
       sameSite: "lax",
     });
-    return NextResponse.redirect(new URL("/", request.url), { status: 302 });
+    const urlHomepage = new URL("/", request.url)
+    return NextResponse.redirect(urlHomepage, { status: 302 });
   } else {
     return NextResponse.json(
       { message: 'Bad Request: Missing required parameter "code"' },
