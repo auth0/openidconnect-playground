@@ -82,7 +82,10 @@ export const DebuggerSteps = () => {
   useEffect(() => {
     const savedData = localStorage.getItem("app-state");
     const { debuggerSteps, auth } = getAppData(savedData);
-    if (debuggerSteps) setDebuggerStepsData(debuggerSteps);
+    if (debuggerSteps) {
+      setDebuggerStepsData(debuggerSteps);
+      setCurrentStepIndex(debuggerSteps.currentStep)
+    }
     if (auth) setAuthData(auth);
     if (!auth) {
       fetch("api/auth_data")
