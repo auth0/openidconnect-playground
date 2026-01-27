@@ -86,6 +86,10 @@
   word-break: break-word;
 }
 
-.jsonLine {
+.raw_json {
+  color: var(--color_fg_neutral)
+}
+
+.json_line {
   color: #928eff;
 }
