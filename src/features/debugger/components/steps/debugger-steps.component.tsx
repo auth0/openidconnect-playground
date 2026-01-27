@@ -23,7 +23,7 @@ export const DebuggerSteps = () => {
     InitialDebuggerStepsData,
   );
   const [authData, setAuthData] = useState<AuthData | null>(null);
-  const requestData = useMemo<RequestData>(() => {
+  const requestDataStepOne = useMemo<RequestData>(() => {
     return {
       url: debuggerStepsData.authEndpoint ?? "",
       isEditable: true,
@@ -53,17 +53,57 @@ export const DebuggerSteps = () => {
       ],
     };
   }, [debuggerStepsData, authData]);
+  console.log("current index", currentStepIndex);
+
+  const requestDataStepTwo: RequestData = useMemo(() => {
+    return {
+      url: debuggerStepsData.tokenEndpoint,
+      method: "POST",
+      isEditable: false,
+      params: [
+        {
+          key: "grant_type",
+          value: "authorization_code",
+        },
+        {
+          key: "client_id",
+          value: authData?.clientID,
+          isEditable: true,
+        },
+        {
+          key: "client_secret",
+          value: authData?.clientSecret,
+          isEditable: true,
+        },
+        {
+          key: "redirect_uri",
+          value: authData?.redirectURI,
+        },
+        {
+          key: "code",
+          value: authData?.authCode,
+        },
+      ],
+    };
+  }, [authData, debuggerStepsData]);
 
   const stepsList: Steps[] = [
     {
       id: "step-one",
       label: "Redirect to OpenID Connect Server",
-      render: () => <StepOne requestData={requestData} />,
+      render: () => <StepOne requestData={requestDataStepOne} />,
     },
     {
       id: "step-two",
       label: "Exchange Code from Token",
-      render: () => <StepTwo />,
+      render: () => (
+        <StepTwo
+          authCode={authData?.authCode}
+          requestData={requestDataStepTwo}
+          setDebuggerStepsData={setDebuggerStepsData}
+          setCurrentStepIndex={setCurrentStepIndex}
+        />
+      ),
     },
     {
       id: "step-three",
