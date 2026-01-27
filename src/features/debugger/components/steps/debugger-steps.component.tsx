@@ -53,6 +53,39 @@ export const DebuggerSteps = () => {
       ],
     };
   }, [debuggerStepsData, authData]);
+  console.log("current index", currentStepIndex);
+
+  const requestDataStepTwo: RequestData = useMemo(() => {
+    return {
+      url: debuggerStepsData.tokenEndpoint,
+      method: "POST",
+      isEditable: false,
+      params: [
+        {
+          key: "grant_type",
+          value: "authorization_code",
+        },
+        {
+          key: "client_id",
+          value: authData?.clientID,
+          isEditable: true,
+        },
+        {
+          key: "client_secret",
+          value: authData?.clientSecret,
+          isEditable: true,
+        },
+        {
+          key: "redirect_uri",
+          value: authData?.redirectURI,
+        },
+        {
+          key: "code",
+          value: authData?.authCode,
+        },
+      ],
+    };
+  }, [authData, debuggerStepsData]);
 
   const requestDataStepTwo: RequestData = useMemo(() => {
     return {
