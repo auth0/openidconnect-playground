@@ -15,8 +15,8 @@ export async function POST(request: NextRequest) {
     const data = await request.json();
     const reqData = {
       code: data.code,
-      client_id: data.clientID,
-      client_secret: data.clientSecret,
+      client_id: data.client_id,
+      client_secret: data.client_secret,
       grant_type: "authorization_code",
       redirect_uri: process.env.REDIRECT_URI ?? "",
     };
