@@ -53,7 +53,6 @@ export const DebuggerSteps = () => {
       ],
     };
   }, [debuggerStepsData, authData]);
-  console.log("current index", currentStepIndex);
 
   const requestDataStepTwo: RequestData = useMemo(() => {
     return {
