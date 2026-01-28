@@ -9,13 +9,16 @@ export const StepTwo = ({
   requestData,
   setDebuggerStepsData,
   setCurrentStepIndex,
+  restartData,
 }: {
   authCode: string;
   requestData: RequestData;
   setDebuggerStepsData: Dispatch<SetStateAction<DebuggerStepsData>>;
   setCurrentStepIndex: Dispatch<SetStateAction<number>>;
+  restartData: () => void;
 }) => {
   const [exchangeResult, setExchangeResult] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const bodyFromRequestData = () => {
     const body = {
       tokenEndpoint: requestData.url,
@@ -26,28 +29,40 @@ export const StepTwo = ({
 
     return body;
   };
-  const handleExchangeCode = () => {
-    fetch("api/code_to_token", {
-      method: requestData.method,
-      body: JSON.stringify(bodyFromRequestData()),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const result = data.result.response.body;
-        const payload = result.id_token.split(".")[0];
-        const decodedPayload = atob(payload);
-        const idTokenHeader = JSON.parse(decodedPayload).alg;
-        setDebuggerStepsData((prev) => {
-          return {
-            ...prev,
-            idToken: result.id_token,
-            idTokenHeader,
-          };
-        });
-        const statusString = `'HTTP/1.1 ${data.result.response.statusCode}`;
-        const jsonResponseString = `Content-Type: application/json\n${JSON.stringify(result, null, 2)}`;
-        setExchangeResult(`${statusString}\n${jsonResponseString}`);
+  const handleExchangeCode = async () => {
+    try {
+      const response = await fetch("api/code_to_token", {
+        method: requestData.method,
+        body: JSON.stringify(bodyFromRequestData()),
       });
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log("The error data is", errorData);
+        throw new Error(
+          errorData.message || "The exchange could not be performed",
+        );
+      }
+      const data = await response.json();
+      const result = data.result.response.body;
+      const payload = result.id_token.split(".")[0];
+      const decodedPayload = atob(payload);
+      const idTokenHeader = JSON.parse(decodedPayload).alg;
+      setDebuggerStepsData((prev) => {
+        return {
+          ...prev,
+          idToken: result.id_token,
+          idTokenHeader,
+        };
+      });
+      const statusString = `'HTTP/1.1 ${data.result.response.statusCode}`;
+      const jsonResponseString = `Content-Type: application/json\n${JSON.stringify(result, null, 2)}`;
+      setExchangeResult(`${statusString}\n${jsonResponseString}`);
+    } catch (error) {
+      const statusString = `'HTTP/1.1 500`;
+      const errorString = `{"error": ${error.message ? error.message.split(":")[0] : "Error"},"error_description":${error.message ? error.message.split(":")[1] : "Error in exchange, please try again"}}`;
+      const jsonErrorString = `Content-Type: application/json\n${JSON.stringify(errorString, null, 2)}`;
+      setErrorMessage(`${statusString}\n${jsonErrorString}`);
+    }
   };
 
   return (
@@ -58,13 +73,19 @@ export const StepTwo = ({
         our server make a request to your token endpoint
       </p>
       <Codeblock title="Request" type="request" requestData={requestData} />
-      {!exchangeResult && (
+      {!exchangeResult && !errorMessage && (
         <Button label="Exchange" onClick={handleExchangeCode} />
       )}
       {exchangeResult && (
         <>
           <Codeblock type="rawJson" rawJson={exchangeResult} />
           <Button label="Next" onClick={() => setCurrentStepIndex(2)} />
+        </>
+      )}
+      {errorMessage && (
+        <>
+          <Codeblock type="rawJson" rawJson={errorMessage} isError/>
+          <Button label="Restart" onClick={restartData} />
         </>
       )}
     </>
