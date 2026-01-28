@@ -53,7 +53,6 @@ export const DebuggerSteps = () => {
       ],
     };
   }, [debuggerStepsData, authData]);
-  console.log("current index", currentStepIndex);
 
   const requestDataStepTwo: RequestData = useMemo(() => {
     return {
@@ -79,10 +78,6 @@ export const DebuggerSteps = () => {
           key: "redirect_uri",
           value: authData?.redirectURI,
         },
-        {
-          key: "code",
-          value: authData?.authCode,
-        },
       ],
     };
   }, [authData, debuggerStepsData]);
@@ -102,6 +97,7 @@ export const DebuggerSteps = () => {
           requestData={requestDataStepTwo}
           setDebuggerStepsData={setDebuggerStepsData}
           setCurrentStepIndex={setCurrentStepIndex}
+          restartData={restartData}
         />
       ),
     },
@@ -118,6 +114,29 @@ export const DebuggerSteps = () => {
   ];
 
   const stepRefs = useRef<Record<number, HTMLDivElement | null>>({});
+
+  const restartData = () => {
+    const restartDebuggerStepsData: DebuggerStepsData = {
+      ...debuggerStepsData,
+      currentStep: 0,
+      accessToken: null,
+      idToken: null,
+      idTokenDecoded: null,
+      idTokenHeader: null,
+    };
+    const restartAuthData: AuthData = {
+      ...authData,
+      authCode: null,
+      stateToken: null,
+    };
+    localStorage.setItem(
+      "app-state",
+      JSON.stringify({ ...restartDebuggerStepsData, ...restartAuthData }),
+    );
+    setAuthData(restartAuthData)
+    setDebuggerStepsData(debuggerStepsData)
+    setCurrentStepIndex(0)
+  };
 
   useEffect(() => {
     const savedData = localStorage.getItem("app-state");
