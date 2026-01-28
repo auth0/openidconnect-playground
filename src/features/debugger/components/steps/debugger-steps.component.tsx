@@ -53,7 +53,6 @@ export const DebuggerSteps = () => {
       ],
     };
   }, [debuggerStepsData, authData]);
-  console.log("current index", currentStepIndex);
 
   const requestDataStepTwo: RequestData = useMemo(() => {
     return {
@@ -78,10 +77,6 @@ export const DebuggerSteps = () => {
         {
           key: "redirect_uri",
           value: authData?.redirectURI,
-        },
-        {
-          key: "code",
-          value: authData?.authCode,
         },
       ],
     };
