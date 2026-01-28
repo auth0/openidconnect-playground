@@ -17,7 +17,7 @@ type CodeBlockMap = {
   request: { requestData: RequestData };
   json: { json: string };
   token: { token: string };
-  rawJson: { rawJson: string };
+  rawJson: { rawJson: string; isError?: boolean };
 };
 
 type CodeBlockProps = {
@@ -32,7 +32,12 @@ type CodeBlockProps = {
 export const Codeblock = (props: CodeBlockProps) => {
   const { title, type, HeaderRightComponent } = props;
   return (
-    <div className={styles.container}>
+    <div
+      className={clsx(
+        styles.container,
+        props.type === "rawJson" && props.isError && styles.raw_json_error,
+      )}
+    >
       {title && (
         <div className={styles.header_container}>
           <div className={styles.title_container}>{title}</div>
