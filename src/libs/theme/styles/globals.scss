@@ -170,6 +170,8 @@ a {
   --color_bg_state_success: #10783f;
   --color_fg_on_state_success: #fff;
 
+  --color_bg_state_error: rgba(253, 78, 45, 0.10);
+
   --color_fg_strong: #99a7f1;
   --color_fg_button_transparent: #f1f1f1;
 
@@ -251,6 +253,8 @@ body[data-theme="light"] {
   --color_border_light: #dcdde1;
   --color_border_bold: var(--functional-gray-250);
   --color_border_inverse_static: var(--functional-gray-550);
+
+  --color_bg_state_error:rgba(253, 78, 45, 0.10);
 
   --color_bg_disabled: var(--functional-gray-150);
 
