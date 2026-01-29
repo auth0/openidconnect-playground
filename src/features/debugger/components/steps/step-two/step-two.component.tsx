@@ -59,8 +59,14 @@ export const StepTwo = ({
       setExchangeResult(`${statusString}\n${jsonResponseString}`);
     } catch (error) {
       const statusString = `'HTTP/1.1 500`;
-      const errorString = `{"error": ${error.message ? error.message.split(":")[0] : "Error"},"error_description":${error.message ? error.message.split(":")[1] : "Error in exchange, please try again"}}`;
-      const jsonErrorString = `Content-Type: application/json\n${JSON.stringify(errorString, null, 2)}`;
+      const [errorTitle, errorDescription] = error.message.split(":");
+      const errorObject = {
+        error: errorTitle ? errorTitle : "Error",
+        error_description: errorDescription
+          ? errorDescription
+          : "Error in exchange, please try again",
+      };
+      const jsonErrorString = `Content-Type: application/json\n${JSON.stringify(errorObject, null, 2)}`;
       setErrorMessage(`${statusString}\n${jsonErrorString}`);
     }
   };
@@ -84,7 +90,7 @@ export const StepTwo = ({
       )}
       {errorMessage && (
         <>
-          <Codeblock type="rawJson" rawJson={errorMessage} isError/>
+          <Codeblock type="rawJson" rawJson={errorMessage} isError />
           <Button label="Restart" onClick={restartData} />
         </>
       )}
