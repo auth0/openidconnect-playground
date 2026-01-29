@@ -78,6 +78,10 @@ export const DebuggerSteps = () => {
           key: "redirect_uri",
           value: authData?.redirectURI,
         },
+        {
+          key: "code",
+          value: authData?.authCode
+        }
       ],
     };
   }, [authData, debuggerStepsData]);
