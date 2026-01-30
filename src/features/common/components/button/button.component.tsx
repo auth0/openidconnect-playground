@@ -16,12 +16,14 @@ const ButtonBase = ({ label }: BaseButtonProps) => {
 
 type ButtonProps = {
   onClick?: () => void;
+  isLoading?: boolean;
 } & CommonButtonProps;
 
 export const Button = ({
   label,
   onClick,
   variant = "default",
+  isLoading = false,
 }: ButtonProps) => {
   return (
     <button
@@ -33,10 +35,18 @@ export const Button = ({
       )}
       onClick={onClick}
     >
-      <ButtonBase label={label} />
-      <div className={styles.button_arrow}>
-        <ArrowIcon />
-      </div>
+      {isLoading ? (
+        <div className={styles.spinner} role="status">
+          <span className={styles.visually_hidden}>Loading...</span>
+        </div>
+      ) : (
+        <>
+          <ButtonBase label={label} />
+          <div className={styles.button_arrow}>
+            <ArrowIcon />
+          </div>{" "}
+        </>
+      )}
     </button>
   );
 };
