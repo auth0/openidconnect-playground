@@ -39,7 +39,7 @@ export const InitialDebuggerStepsData: DebuggerStepsData = {
   domain: "samples.auth0.com",
   authEndpoint: "https://samples.auth0.com/authorize",
   tokenEndpoint: "https://samples.auth0.com/oauth/token",
-  tokenKeysEndpoint: "",
+  tokenKeysEndpoint: "https://samples.auth0.com/.well-known/jwks.json",
   userInfoEndpoint: "https://samples.auth0.com/userinfo",
   scopes: "openid profile email phone address",
   idTokenHeader: "",
@@ -105,3 +105,14 @@ export const getCompleteUrlFromRequestData = (
   });
   return `${url}?${searchParams.toString()}`;
 };
+
+export const bodyFromRequestData = (requestData: RequestData) => {
+    const body = {
+      tokenEndpoint: requestData.url,
+    };
+    requestData.params.forEach((param) => {
+      body[`${param.key}`] = param.value;
+    });
+
+    return body;
+  };
