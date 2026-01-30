@@ -1,54 +1,37 @@
 import { Button } from "features/common/components/button/button.component";
 import { Codeblock } from "../../codeblock/codeblock.component";
-import styles from "./step-four.module.scss"
+import styles from "./step-four.module.scss";
+import { ErrorIcon } from "features/common/icons/error.icon";
 
-const JSON_EXAMPLE = `{
- "email": "julian.leiss@auth0.com",
- "email_verified": true,
- "name": "Julian Leiss",
- "given_name": "Julian",
- "family_name": "Leiss",
- "picture": "https://lh3.googleusercontent.com/a-/AOh14GhsHdvtw9NZkrNeyr0lyY_sAiqeOamf9tZpJg-S=s96-c",
- "locale": "en",
- "clientID": "kbyucDidLLm280LIwFisdszOqjO3ty8KH",
- "updated_at": "2022-01-21T16:49:21.591Z",
- "user_id": "google-oauth2|112520938745470371306",
- "nickname": "julian.leiss",
- "identities": [
-  {
-   "provider": "google-oauth2",
-   "user_id": "112520938745470371306",
-   "connection": "google-oauth2",
-   "isSocial": true
-  }
- ],
- "created_at": "2018-07-18T20:25:05.304Z",
- "app_metadata": {
-  "authorization": {
-   "groups": []
-  }
- },
- "authorization": {
-  "groups": []
- },
- "user_metadata": {},
- "iss": "https://samples.auth0.com/",
- "sub": "google-oauth2|112538938745470371306",
- "aud": "kbyuFDidLLm2119IwV22iazOqjO3ty8KH",
- "iat": 1642712938,
- "exp": 1142819938
-}`;
+export const StepFour = ({
+  decodedToken,
+  onRestart,
+  validated,
+}: {
+  decodedToken: string;
+  onRestart: () => void;
+  validated: boolean;
+}) => {
 
-export const StepFour = () => {
   return (
     <>
-      <Codeblock
-        title="Decoded Token Payload"
-        type="json"
-        json={JSON_EXAMPLE}
-      />
-      <div className={styles.buttonsContainer }>
-        <Button label="Start Over" />
+      {validated ? (
+        <Codeblock
+          title="Decoded Token Payload"
+          type="json"
+          json={JSON.parse(decodedToken)}
+        />
+      ) : (
+        <div className={styles.error_container}>
+          <div className={styles.error_content_container}>
+            <ErrorIcon />
+            <p>The token is invalid. Check your parameters and try again</p>
+          </div>
+        </div>
+      )}
+
+      <div className={styles.buttons_container}>
+        <Button label="Start Over" onClick={onRestart} />
         <Button label="Log Out" variant="transparent"/>
       </div>
     </>
