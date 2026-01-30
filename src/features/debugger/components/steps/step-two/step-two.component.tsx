@@ -2,7 +2,7 @@ import { Button } from "features/common/components/button/button.component";
 import { Codeblock, RequestData } from "../../codeblock/codeblock.component";
 import styles from "../debugger-steps.module.scss";
 import { Dispatch, SetStateAction, useState } from "react";
-import { DebuggerStepsData } from "../utils";
+import { bodyFromRequestData, DebuggerStepsData } from "../utils";
 
 export const StepTwo = ({
   authCode,
@@ -19,24 +19,12 @@ export const StepTwo = ({
 }) => {
   const [exchangeResult, setExchangeResult] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const bodyFromRequestData = () => {
-    const body: Record<string, string> = {
-      tokenEndpoint: requestData.url,
-    };
-    requestData.params.forEach((param) => {
-      body[`${param.key}`] = param.value;
-    });
 
-    return body;
-  };
   const handleExchangeCode = async () => {
     try {
       const response = await fetch("api/code_to_token", {
         method: requestData.method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bodyFromRequestData()),
+        body: JSON.stringify(bodyFromRequestData(requestData)),
       });
       if (!response.ok) {
         const errorData = await response.json();
