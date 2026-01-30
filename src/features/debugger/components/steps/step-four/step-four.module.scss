@@ -20,3 +20,25 @@
    }
   }
 }
+
+.error_container {
+  padding: 24px 8px;
+  margin: auto;
+  max-width: 544px;
+  align-self: stretch;
+  border-radius: 6px;
+  border: 1px solid var(--tangerine);
+  color: var(--color_fg_neutral);
+  background: rgba(253, 78, 45, 0.20);
+  backdrop-filter: blur(40px);
+}
+
+.error_content_container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+    svg {
+    min-width: 18px;  
+    color: var(--tangerine);
+  }
+}
