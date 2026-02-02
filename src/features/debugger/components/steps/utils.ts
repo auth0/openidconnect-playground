@@ -59,6 +59,7 @@ export function getAppData(savedData: string | null) {
     audience: validated.audience ?? InitialDebuggerStepsData.audience,
     authEndpoint:
       validated.authEndpoint ?? InitialDebuggerStepsData.authEndpoint,
+    currentStep: validated.currentStep ?? InitialDebuggerStepsData.currentStep,  
     discoveryURL:
       validated.discoveryURL ?? InitialDebuggerStepsData.discoveryURL,
     domain: validated.domain ?? InitialDebuggerStepsData.domain,
