@@ -126,6 +126,9 @@ a {
   --color_bg_auth0-cta: linear-gradient(251deg, #1e1e1e 2.29%, #191919 87.03%);
   --color_bg_button_primary_hero:#1a1a1a;
 
+  --color_bg_modal: linear-gradient(126deg, rgba(24, 24, 25, 0.77) 0%, rgba(24, 24, 25, 0.50) 100%);
+  --color_border_modal_input: rgba(220, 221, 225, 0.36);
+
   --color_bg_layer: var(--functional-gray-950);
   --color_bg_layer_bold: var(--functional-gray-700);
   --color_bg_layer_boldest: var(--functional-gray-50);
@@ -236,6 +239,9 @@ body[data-theme="light"] {
 
   --color_bg_auth0-cta: var(--functional-gray-150);
   --color_bg_button_primary_hero: #F1F1F1;
+
+  --color_bg_modal: rgba(250, 250, 250, 0.80);
+  --color_border_modal_input: #e5e5e5;
 
   --color_bg_layer: var(--functional-gray-0);
   --color_bg_layer_bold: var(--functional-gray-250);
