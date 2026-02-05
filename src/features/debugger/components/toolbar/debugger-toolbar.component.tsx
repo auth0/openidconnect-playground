@@ -2,6 +2,8 @@
 import { DebuggerPickerComponent } from "features/common/components/debugger-picker/debugger-picker.component";
 import styles from "./debugger-toolbar.module.scss";
 import ConfigurationIcon from "features/common/icons/configuration-icon";
+import { useState } from "react";
+import { ConfigurationModal } from "../configuration-modal/configuration-modal.component";
 
 type DebugerToolbarProps = {
   openModal: () => void;
