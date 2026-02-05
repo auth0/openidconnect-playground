@@ -17,6 +17,7 @@ const ButtonBase = ({ label }: BaseButtonProps) => {
 type ButtonProps = {
   onClick?: () => void;
   isLoading?: boolean;
+  showIcon?: boolean;
 } & CommonButtonProps;
 
 export const Button = ({
@@ -24,6 +25,7 @@ export const Button = ({
   onClick,
   variant = "default",
   isLoading = false,
+  showIcon = true,
 }: ButtonProps) => {
   return (
     <button
@@ -43,9 +45,11 @@ export const Button = ({
       ) : (
         <>
           <ButtonBase label={label} />
-          <div className={styles.button_arrow}>
-            <ArrowIcon />
-          </div>{" "}
+          {showIcon && (
+            <div className={styles.button_arrow}>
+              <ArrowIcon />
+            </div>
+          )}
         </>
       )}
     </button>
