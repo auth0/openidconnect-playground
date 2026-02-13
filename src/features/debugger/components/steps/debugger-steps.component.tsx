@@ -10,6 +10,11 @@ import {
   InitialDebuggerStepsData,
 } from "./utils";
 import { RequestData } from "../codeblock/codeblock.component";
+import { DebuggerToolbar } from "../toolbar/debugger-toolbar.component";
+import {
+  ConfigurationModal,
+  InitialModalData,
+} from "../configuration-modal/configuration-modal.component";
 
 type Steps = {
   id: string;
@@ -18,6 +23,7 @@ type Steps = {
 };
 
 export const DebuggerSteps = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [debuggerStepsData, setDebuggerStepsData] = useState<DebuggerStepsData>(
     InitialDebuggerStepsData,
@@ -116,7 +122,7 @@ export const DebuggerSteps = () => {
     {
       id: "step-one",
       label: "Redirect to OpenID Connect Server",
-      render: () => <StepOne requestData={requestDataStepOne} />,
+      render: () => <StepOne requestData={requestDataStepOne} openModal={() => setIsOpenModal(true)}/>,
     },
     {
       id: "step-two",
@@ -158,6 +164,19 @@ export const DebuggerSteps = () => {
 
   const stepRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
+  const initialModalData: InitialModalData = useMemo(() => {
+    return {
+      audience: debuggerStepsData.audience,
+      authEndpoint: debuggerStepsData.authEndpoint,
+      clientId: authData?.clientID,
+      clientSecret: authData?.clientSecret,
+      domain: debuggerStepsData.domain,
+      tokenEndpoint: debuggerStepsData.tokenEndpoint,
+      scope: debuggerStepsData.scopes,
+      serverTemplate: debuggerStepsData.server,
+    };
+  }, [authData, debuggerStepsData]);
+
   const restartData = () => {
     const restartDebuggerStepsData: DebuggerStepsData = {
       ...debuggerStepsData,
@@ -180,6 +199,33 @@ export const DebuggerSteps = () => {
     setAuthData(restartAuthData);
     setDebuggerStepsData(debuggerStepsData);
     setCurrentStepIndex(0);
+  };
+
+  const onSaveData = (updatedData: InitialModalData) => {
+    const {
+      audience,
+      authEndpoint,
+      clientId,
+      clientSecret,
+      domain,
+      scope,
+      serverTemplate,
+      tokenEndpoint,
+    } = updatedData;
+    setDebuggerStepsData((prev) => ({
+      ...prev,
+      audience,
+      authEndpoint,
+      domain,
+      scopes: scope,
+      server: serverTemplate,
+      tokenEndpoint,
+    }));
+    setAuthData((prev) => ({
+      ...prev,
+      clientID: clientId,
+      clientSecret,
+    }));
   };
 
   useEffect(() => {
@@ -250,46 +296,56 @@ export const DebuggerSteps = () => {
   }, [debuggerStepsData, authData]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <div className={styles.content}>
-          {stepsList.map(({ id, label, render }, index) => {
-            const state =
-              index < currentStepIndex
-                ? "completed"
-                : index === currentStepIndex
-                  ? "current"
-                  : "upcoming";
-            return (
-              <div key={id} className={styles.stepContainer}>
-                <div
-                  className={styles.stepTitleContainer}
-                  data-state={state}
-                  aria-current={state === "current" ? "step" : undefined}
-                  aria-label={`${label} ${state}`}
-                >
-                  <div className={styles.stepTitleContent}>
-                    {" "}
-                    <div className={styles.stepNumber}>{index + 1}</div>
-                    <p>{label}</p>
+    <>
+      <DebuggerToolbar openModal={() => setIsOpenModal(true)} />
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <div className={styles.content}>
+            {stepsList.map(({ id, label, render }, index) => {
+              const state =
+                index < currentStepIndex
+                  ? "completed"
+                  : index === currentStepIndex
+                    ? "current"
+                    : "upcoming";
+              return (
+                <div key={id} className={styles.step_container}>
+                  <div
+                    className={styles.step_title_container}
+                    data-state={state}
+                    aria-current={state === "current" ? "step" : undefined}
+                    aria-label={`${label} ${state}`}
+                  >
+                    <div className={styles.step_title_content}>
+                      {" "}
+                      <div className={styles.step_number}>{index + 1}</div>
+                      <p>{label}</p>
+                    </div>
+                  </div>
+
+                  <div
+                    className={styles.step_content}
+                    data-open={state === "current"}
+                    aria-hidden={state !== "current"}
+                    ref={(el) => {
+                      stepRefs.current[index] = el;
+                    }}
+                  >
+                    {render()}
                   </div>
                 </div>
-
-                <div
-                  className={styles.stepContent}
-                  data-open={state === "current"}
-                  aria-hidden={state !== "current"}
-                  ref={(el) => {
-                    stepRefs.current[index] = el;
-                  }}
-                >
-                  {render()}
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
+      <ConfigurationModal
+        onClose={() => setIsOpenModal(false)}
+        isOpen={isOpenModal}
+        initialData={initialModalData}
+        key={initialModalData.clientId}
+        onSaveData={onSaveData}
+      />
+    </>
   );
 };
