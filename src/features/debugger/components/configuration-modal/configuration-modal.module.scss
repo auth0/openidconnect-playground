@@ -75,7 +75,7 @@
         line-height: 20px;
         letter-spacing: 0.15px;
     }
-    .input {
+    .input, select  {
         width: 100%;
         border-radius: 4px;
         color: var(--color_fg_link);
@@ -86,6 +86,11 @@
         justify-content: space-between;
         align-items: center;
         align-self: stretch;
+    }
+
+    .input:read-only {
+      background-color: var(--color_border_light);
+      cursor: not-allowed;
     }
 }
 
