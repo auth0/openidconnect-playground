@@ -1,0 +1,71 @@
+@use "libs/theme/styles/variables" as *;
+@use "libs/theme/styles/mixins" as *;
+
+.container {
+  @include Container;
+  font-family: Aeonik;
+  
+}
+
+.wrapper {
+  @include ExtendedGrid;
+}
+
+.content {
+  margin: 4rem 2rem 20px;
+  color: var(--color_fg_link);
+  justify-content: space-between;  
+  align-items: center;
+  border-radius: 24px;
+  border: 0.5px solid var(--color_border_light);
+  background: var(--color_bg_layer_alternate);
+
+  @media #{$breakpoint-dimension-sm} {
+    display: flex;
+    flex-direction: row;
+  }
+  
+}
+
+.left_container {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media #{$breakpoint-dimension-sm} {
+       align-items: flex-start;
+    }
+   
+  
+}
+
+.right_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    padding: 32px 72px 0px;
+    @media #{$breakpoint-dimension-md} {
+      padding: 60px 160px 0px;
+    }
+}
+
+.button_container {
+  width: 100%;
+}
+
+.title {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    overflow: hidden;
+    color: var(--color_fg_neutral);
+    text-overflow: ellipsis;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: -0.05px;
+    margin-bottom: 24px;
+}
