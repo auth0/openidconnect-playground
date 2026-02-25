@@ -8,6 +8,7 @@ type BaseButtonProps = {
 
 type CommonButtonProps = {
   variant?: "default" | "transparent";
+  showIcon?: boolean;
 } & BaseButtonProps;
 
 const ButtonBase = ({ label }: BaseButtonProps) => {
@@ -17,7 +18,6 @@ const ButtonBase = ({ label }: BaseButtonProps) => {
 type ButtonProps = {
   onClick?: () => void;
   isLoading?: boolean;
-  showIcon?: boolean;
 } & CommonButtonProps;
 
 export const Button = ({
@@ -63,6 +63,7 @@ type LinkButtonProps = {
 export const LinkButton = ({
   label,
   href,
+  showIcon = true,
   variant = "default",
 }: LinkButtonProps) => {
   return (
@@ -76,9 +77,11 @@ export const LinkButton = ({
       href={href}
     >
       <ButtonBase label={label} />
-      <div className={styles.button_arrow}>
-        <ArrowIcon />
-      </div>
+      {showIcon && (
+        <div className={styles.button_arrow}>
+          <ArrowIcon />
+        </div>
+      )}
     </a>
   );
 };
