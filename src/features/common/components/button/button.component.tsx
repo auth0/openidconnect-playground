@@ -18,7 +18,6 @@ const ButtonBase = ({ label }: BaseButtonProps) => {
 type ButtonProps = {
   onClick?: () => void;
   isLoading?: boolean;
-  showIcon?: boolean;
 } & CommonButtonProps;
 
 export const Button = ({
