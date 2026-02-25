@@ -1,3 +1,4 @@
+import { Auth0Banner } from "features/common/components/auth0-banner/auth0-banner.component";
 import { HandbookBanner } from "features/common/components/handbook-banner/handbook-banner.component";
 import { HeroJumbotronComponent } from "features/common/components/hero-jumbotron/hero-jumbotron.component";
 import { DebuggerSteps } from "features/debugger/components/steps/debugger-steps.component";
@@ -9,6 +10,7 @@ export default function Page() {
       <HeroJumbotronComponent />
       <DebuggerSteps />
       <HandbookBanner />
+      <Auth0Banner />
     </>
   );
 }
