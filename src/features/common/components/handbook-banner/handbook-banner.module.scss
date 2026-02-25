@@ -35,8 +35,6 @@
     @media #{$breakpoint-dimension-sm} {
        align-items: flex-start;
     }
-   
-  
 }
 
 .right_container {
@@ -50,7 +48,10 @@
 }
 
 .button_container {
-  width: 100%;
+    width: 100%;
+    @media #{$breakpoint-dimension-md} {
+     width: auto;
+    }
 }
 
 .title {
