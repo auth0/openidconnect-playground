@@ -37,7 +37,6 @@ export const StepTwo = ({
       });
       if (!response.ok) {
         const errorData = await response.json();
-        console.log("The error data is", errorData);
         throw new Error(
           errorData.message || "The exchange could not be performed",
         );
