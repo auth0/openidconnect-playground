@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     const isInvalidProtocol =
       providedUrl.protocol !== "http:" && providedUrl.protocol !== "https:";
 
-    if (isInvalidProtocol) {
+    if (isInvalidProtocol || !isAllowedHostname(providedUrl.hostname)) {
       throw new Error("Invalid URL: The provided URL is not allowed");
     }
 
