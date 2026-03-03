@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HeaderComponent } from "features/common/components/header/header.component";
 import {
   DEFAULT_THEME,
@@ -6,9 +7,18 @@ import {
 import { MonoFont, PrimaryFont, SecondaryFont } from "libs/theme/fonts";
 import { cookies } from "next/headers";
 import "libs/theme/styles/globals.scss";
-import styles from "./layout.module.scss"
+import styles from "./layout.module.scss";
 import { MobileHeaderComponent } from "features/common/components/mobile-header/mobile-header.component";
+import { FooterComponent } from "features/common/components/footer/footer.component";
+import { enLayoutDictionary } from "features/common/components/cookie-consent-modal/dictionary.model";
 import { Metadata } from "next";
+
+declare global {
+  interface Window {
+    OneTrust: any;
+    OnetrustActiveGroups: any;
+  }
+}
 
 const title = "OpenID Connect Playground";
 const description =
@@ -103,7 +113,22 @@ export default async function RootLayout({
       <body className={`${PrimaryFont.className} ${SecondaryFont.variable} ${MonoFont.variable}`} data-theme={theme}>
         <HeaderComponent theme={theme} />
         <MobileHeaderComponent theme={theme} />
-        <main className={styles.main} >{children}</main>
+        <main className={styles.main}>{children}</main>
+        <FooterComponent
+          dictionary={enLayoutDictionary.footer}
+          auth0Logo={enLayoutDictionary.logos.auth0}
+          siteLogo={enLayoutDictionary.logos.site}
+        />
+        {/*  <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6KSGFBD" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript> */}
+        {/* <script>
+      window.clientId=JSON.stringify(clientId);
+	  window.clientSecret=JSON.stringify(clientSecret);
+    </script>
+    <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8" data-domain-script="642ff5cd-0d1e-4865-bef1-2167332ca61a" id="consent-script"></script>
+    <script src="https://assets.adobedtm.com/6bb3f7663515/fea558f43eb7/launch-be034d63605e.min.js" async></script>
+    <script src="cookie-consent.js"></script> */}
       </body>
     </html>
   );
