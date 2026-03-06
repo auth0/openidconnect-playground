@@ -1,7 +1,7 @@
 @use "libs/theme/styles/variables" as *;
 @use "libs/theme/styles/mixins" as *;
 
-.container {
+.toggleContainer {
     display: flex;
     width: 44px;
     height: 24px;
@@ -15,7 +15,7 @@
     cursor: pointer;
 }
 
-.toggle_input {
+.toggleInput {
     position: absolute;
     opacity: 0;
     width: 0;
@@ -60,20 +60,20 @@
     margin-top: 6px;
 }
 
-.toggle_input:not(:checked) + .toggle .sun {
+.toggleInput:not(:checked) + .toggle .sun {
     opacity: 1;
     transform: translate(-18px, -16px)
 }
 
-.toggle_input:not(:checked) + .toggle .thumb {
+.toggleInput:not(:checked) + .toggle .thumb {
     transform: translateX(-20px)
 }
 
-.toggle_input:checked + .toggle .moon {
+.toggleInput:checked + .toggle .moon {
     opacity: 1;
     transform: translateY(0)
 }
 
-.toggle_input:checked + .toggle .thumb {
+.toggleInput:checked + .toggle .thumb {
     transform: translateX(-2px)
 }
