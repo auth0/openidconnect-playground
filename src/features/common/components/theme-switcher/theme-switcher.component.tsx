@@ -26,7 +26,7 @@ export const ThemeSwitcherComponent: React.FC<ThemeSwitcherComponentProps> = ({
       <label className={styles.container}>
         <input
           type="checkbox"
-          checked={theme === DEFAULT_THEME}
+          checked={theme !== DEFAULT_THEME}
           onChange={(e) => {
             selectTheme(!e.target.checked ? THEMES[0] : THEMES[1]);
           }}
