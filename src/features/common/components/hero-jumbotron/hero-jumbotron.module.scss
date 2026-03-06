@@ -20,13 +20,13 @@
     height: 100%;
     background-size: contain;
 
-    background: url("https://cdn.auth0.com/website/cic-homepage/bg-mobile/BG_Mobile.svg")
+    background: url("/images/BG_Mobile.svg")
       center top no-repeat;
     background-size: cover;
   }
 
   :global(body[data-theme="light"]) &:before {
-    background: url("https://cdn.auth0.com/website/passkeys-playground/assets/light.hero-banner-bg.png")
+    background: url("/images/light.hero-banner-bg.png")
       center top no-repeat;
     background-size: cover;
   }
@@ -70,10 +70,10 @@
     backdrop-filter: blur(4rem);
     border-radius: 0 0 1.5rem 1.5rem;
 
-    background-color: #191919;
+    background-color: var(--charcoal2);
 
     :global(body[data-theme="light"]) & {
-      background-color: #f1f1f1;
+      background-color: var(--functional-gray-150);
     }
 
     &:before {
@@ -85,13 +85,13 @@
       height: 100%;
       background-size: contain;
 
-      background: url("https://cdn.auth0.com/website/cic-homepage/bg-mobile/BG_Mobile.svg")
+      background: url("/images/BG_Mobile.svg")
         center top / 120% no-repeat;
     }
 
     :global(body[data-theme="light"]) &:before {
       background-size: cover;
-      background: url("https://cdn.auth0.com/website/passkeys-playground/assets/light.hero-banner-bg.png")
+      background: url("/images/light.hero-banner-bg.png")
         center top / 140% no-repeat;
     }
   }
@@ -122,7 +122,7 @@
   }
 }
 
-.hero__copy {
+.heroCopy {
   grid-column: 1 / span 4;
   display: flex;
   flex-direction: column;
@@ -134,14 +134,14 @@
   }
 }
 
-.hero__text {
+.heroText {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.hero__title {
+.heroTitle {
   width: 100%;
   margin: 0;
   text-align: left;
@@ -166,7 +166,7 @@
   }
 }
 
-.hero__description {
+.heroDescription {
   color: var(--color_fg_default);
   font-size: 0.875rem;
   line-height: 1.375rem;
@@ -187,7 +187,7 @@
   }
 }
 
-.hero__media {
+.heroMedia {
   position: relative;
   grid-column: 1 / span 4;
   align-self: center;
@@ -209,7 +209,7 @@
   }
 }
 
-.hero__image {
+.heroImage {
   max-width: 30rem;
 
   @media #{$breakpoint-dimension-sm} {
@@ -217,7 +217,7 @@
   }
 }
 
-.hero__ctaButton {
+.heroCtaButton {
   display: flex;
   padding: 1rem 2rem;
   justify-content: center;
@@ -241,7 +241,7 @@
   }
 }
 
-.hero__ctaArrow {
+.heroCtaArrow {
   flex-shrink: 0;
   display: flex;
   align-items: center;
