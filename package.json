@@ -20,6 +20,7 @@
     "license": "ISC",
     "dependencies": {
         "body-parser": "^1.15.0",
+        "clsx": "^2.1.1",
         "cookie": "^1.0.2",
         "cookie-signature": "^1.2.2",
         "document-offset": "^1.0.4",
@@ -35,6 +36,7 @@
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
         "react-router-dom": "^6.2.1",
+        "sass": "^1.97.2",
         "serverless-http": "^3.2.0",
         "sha1": "^1.1.1",
         "simple-ajax": "^2.5.0",

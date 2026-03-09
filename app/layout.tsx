@@ -1,4 +1,12 @@
+import { HeaderComponent } from "features/common/components/header/header.component";
+import {
+  DEFAULT_THEME,
+  PREFERRED_THEME_NAME,
+} from "features/theme/theme.config";
+import { PrimaryFont } from "libs/theme/fonts";
+import { cookies } from "next/headers";
 import "libs/theme/styles/globals.scss";
+import { MobileHeaderComponent } from "features/common/components/mobile-header/mobile-header.component";
 import { Metadata } from "next";
 
 const title = "OpenID Connect Playground";
@@ -36,14 +44,20 @@ export const metadata: Metadata = {
     "google-site-verification": "tLAuc_2L4oGIS68FVPW-FvFdIxLNYkLBCAb-9PseeWY",
   },
 };
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const preferredThemeCookie = cookieStore.get(PREFERRED_THEME_NAME);
+  const theme = preferredThemeCookie?.value || DEFAULT_THEME;
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={PrimaryFont.className} data-theme={theme}>
+        <HeaderComponent theme={theme} />
+        <MobileHeaderComponent theme={theme} />
+      </body>
     </html>
   );
 }
