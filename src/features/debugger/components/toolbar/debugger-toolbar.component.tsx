@@ -14,7 +14,6 @@ export const DebuggerToolbar = () => {
               label="Mode"
               options={[{ value: "OAuth2", label: "OpenID Connect + OAuth2" }]}
               minWidth={"180px"}
-              placeholder=""
             />
             <div className={styles.toolbarSeparatorLine} />
             <button className={styles.toolbarButtonContainer}>

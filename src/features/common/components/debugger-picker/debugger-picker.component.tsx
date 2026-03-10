@@ -17,13 +17,13 @@ const PickerLabel: React.FC<PickerLabelProps> = ({ label }) => {
 };
 
 interface DebuggerPickerComponentProps {
-  label: string | null;
+  label?: string;
   options: {
     value: string;
     label: string;
   }[];
-  placeholder: string | null;
-  minWidth: string | null;
+  placeholder?: string;
+  minWidth?: string;
 }
 
 export const DebuggerPickerComponent: React.FC<
