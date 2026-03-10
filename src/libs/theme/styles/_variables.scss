@@ -149,7 +149,7 @@ $gradient-app-card---resting: linear-gradient(
 );
 
 $ribbon-height: 2.5rem;
-$ribbon-height-mobile: 2.5rem;
+$ribbon-height-mobile: 0.5rem;
 $navbar-height: 4rem;
 $navbar-height-mobile: 4rem;
 $main-nav-height: calc($ribbon-height + $navbar-height);
@@ -245,12 +245,6 @@ $color_border_default: $gray-75;
 
 $color_bg_button_primary: $Blue300;
 $color_fg_on_button_primary: $functional-gray-50;
-$color_bg_button_primary_gradient: linear-gradient(
-  120deg,
-  #191919 -29.78%,
-  #4016a0 11.61%,
-  #3f59e4 100.07%
-);
 
 body[data-theme="light"] {
   $color_bg_page: $functional-gray-950;
@@ -270,10 +264,4 @@ body[data-theme="light"] {
 
   $color_bg_button_primary: $Blue300;
   $color_fg_on_button_primary: $functional-gray-50;
-  $color_bg_button_primary_gradient: linear-gradient(
-    120deg,
-    #191919 -29.78%,
-    #4016a0 11.61%,
-    #3f59e4 100.07%
-  );
 }

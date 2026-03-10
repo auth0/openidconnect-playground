@@ -6,6 +6,7 @@ import {
 import { PrimaryFont } from "libs/theme/fonts";
 import { cookies } from "next/headers";
 import "libs/theme/styles/globals.scss";
+import styles from "./layout.module.scss"
 import { MobileHeaderComponent } from "features/common/components/mobile-header/mobile-header.component";
 import { Metadata } from "next";
 
@@ -57,6 +58,7 @@ export default async function RootLayout({
       <body className={PrimaryFont.className} data-theme={theme}>
         <HeaderComponent theme={theme} />
         <MobileHeaderComponent theme={theme} />
+        <main className={styles.main} >{children}</main>
       </body>
     </html>
   );
