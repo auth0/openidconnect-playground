@@ -3,12 +3,12 @@ import { ComponentType, useState } from "react";
 import styles from "./debugger-steps.module.scss";
 import { StepOne, StepTwo, StepThree, StepFour } from "./index";
 
-type Steps = {
+type Step = {
   id: string;
   label: string;
   component: ComponentType;
 };
-const stepsList: Steps[] = [
+const stepsList: Step[] = [
   {
     id: "step-one",
     label: "Redirect to OpenID Connect Server",
@@ -16,7 +16,7 @@ const stepsList: Steps[] = [
   },
   {
     id: "step-two",
-    label: "Exchange Code from Token",
+    label: "Exchange Code for Token",
     component: StepTwo,
   },
   {
@@ -48,14 +48,14 @@ export const DebuggerSteps = () => {
             return (
               <div
                 key={step.id}
-                className={styles.step_container}
+                className={styles.stepContainer}
                 data-state={state}
                 aria-current={state === "current" ? "step" : undefined}
                 aria-label={`${step.label} ${state}`}
               >
-                <div className={styles.step_content}>
+                <div className={styles.stepContent}>
                   {" "}
-                  <div className={styles.step_number}>{index + 1}</div>
+                  <div className={styles.stepNumber}>{index + 1}</div>
                   <p>{step.label}</p>
                 </div>
               </div>
