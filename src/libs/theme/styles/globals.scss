@@ -137,6 +137,7 @@ a {
   --color_bg_layer_highlight3: var(--eggplant);
 
   --color_border_default: var(--functional-gray-750);
+  --color_border_light: #dcdde129;  
   --color_border_bold: var(--functional-gray-700);
   --color_border_inverse_static: var(--functional-gray-550);
 
@@ -241,6 +242,7 @@ body[data-theme="light"] {
   --color_bg_layer_highlight3: var(--violet);
 
   --color_border_default: #e8e8e8;
+  --color_border_light: #ABABAB;
   --color_border_bold: var(--functional-gray-250);
   --color_border_inverse_static: var(--functional-gray-550);
 
@@ -279,3 +281,165 @@ code {
   overflow: hidden;
   margin-right: 20rem;
 }
+
+// START: Debugger Picker
+
+$picker-width-sm: 3.25rem;
+$picker-list-width-sm: 4.75rem;
+$picker-list-offset-sm: calc(($picker-list-width-sm - $picker-width-sm) / 2);
+
+$picker-width-md: 3.25rem;
+$picker-list-width-md: 7rem;
+$picker-list-offset-md: calc(($picker-list-width-md - $picker-width-md) / 2);
+
+$picker-width-lg: 5rem;
+$picker-list-width-lg: 7rem;
+$picker-list-offset-lg: calc(($picker-list-width-lg - $picker-width-lg) / 2);
+
+.react-select-placeholder {
+  flex-shrink: 0 !important;
+  background: transparent;
+  color: var(--color_fg_bold);
+  font-family: var(--font-primary), monospace !important;
+  border: 1px solid var(--color_border_button) !important;
+  min-width: 6.125rem;
+  height: 1.75rem;
+  border-radius: 0.25rem;
+}
+
+.react-select-container {
+  flex-shrink: 0 !important;
+  background: transparent;
+  color: var(--color_fg_bold);
+  font-family: var(--font-primary), monospace !important;
+  display: flex;
+}
+
+.react-select__control {
+  background-color: transparent !important;
+  border-color: var(--color_border_button) !important;
+  height: 100% !important;
+}
+
+.react-select__control--is-focused {
+  border-color: var(--color_border_focus) !important;
+  box-shadow: 0 0 0 1px var(--color_border_focus) !important;
+}
+
+.react-select__value-container {
+  height: 100% !important;
+  padding: 0;
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.3125rem;
+  font-family: var(--font-primary), monospace !important;
+  color: var(--color_fg_default) !important;
+}
+
+.react-select__single-value {
+  font-family: var(--font-primary), monospace !important;
+  color: var(--color_fg_bold) !important;
+}
+
+.react-select__indicators {
+  height: 100% !important;
+}
+
+.react-select__menu {
+  background-color: var(--color_bg_layer_alternate-bold) !important;
+  color: var(--color_fg_bold) !important;
+  border: 1px solid var(--color_border_bold) !important;
+  font-size: 0.875rem !important;
+  font-family: var(--font-primary), monospace !important;
+  width: max-content !important;
+  min-width: 100% !important;
+}
+
+.react-select__menu-portal {
+}
+
+.react-select__menu-list {
+  font-family: var(--font-primary), monospace !important;
+  padding: 0 !important;
+
+  &::-webkit-scrollbar {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2rem transparent;
+    cursor: pointer !important;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 0.25rem solid transparent;
+    background-clip: padding-box;
+    border-radius: 9999px;
+    background-color: var(--color_bg_scrollbar);
+  }
+
+  &::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+}
+
+.react-select__option {
+  display: flex !important;
+  align-items: center !important;
+  color: var(--color_fg_default) !important;
+  position: relative !important;
+  height: 2.5rem !important;
+  border-bottom: 1px solid var(--color_border_bold) !important;
+  padding: 0.25rem 1rem !important;
+  background-color: transparent !important;
+  font-family: var(--font-primary), monospace !important;
+
+  gap: 0.5rem !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.3125rem !important;
+  letter-spacing: -0.05px !important;
+
+  &:last-child {
+    border-bottom: unset;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.react-select__option--is-selected {
+  color: var(--color_fg_bold) !important;
+  font-weight: 500;
+
+  &:before {
+    position: absolute;
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    left: calc((1rem - (0.375rem) / 2) / 2);
+    //top: calc((2.5rem - (0.375rem) / 2) / 2);
+    top: 50%;
+    transform: translateY(-50%);
+    height: 0.375rem;
+    width: 0.375rem;
+    background-color: var(--color_fg_selected);
+    border-radius: 50%;
+  }
+}
+
+.react-select__option--is-disabled {
+  color: var(--color_fg_bold) !important;
+  font-weight: 500;
+  opacity: 0.32;
+  cursor: not-allowed !important;
+}
+
+.react-select__placeholder {
+  color: var(--color_fg_bold) !important;
+  letter-spacing: 0 !important;
+  font-size: 0.875rem !important;
+}
+
+// END: Debugger Picker
