@@ -1,15 +1,15 @@
 @use "libs/theme/styles/variables" as *;
 @use "libs/theme/styles/mixins" as *;
 
-.container {
+.toolbar {
   @include Container
 }
 
-.wrapper {
+.toolbarWrapper {
   @include ExtendedGrid;
 }
 
-.content {
+.toolbarContent {
   margin: 4rem 2rem 0px;
   padding: 2rem;
   border-top: 0.5px solid var(--color_border_light);
@@ -24,7 +24,7 @@
   
 }
 
-.title {
+.toolbarTitle {
   font-size: 14px;
   font-style: normal;
   line-height: 20px;
@@ -37,7 +37,7 @@
   }
 }
 
-.container_options {
+.toolbarOptionsContainer {
   @media #{$breakpoint-dimension-sm} {
     display: flex;
     flex-direction: row;
@@ -52,7 +52,7 @@
    }
 }
 
-.separator_line {
+.toolbarSeparatorLine {
   border-left: 1px solid var(--color_border_light);
   height: auto;
   display: none;
@@ -61,16 +61,21 @@
   }
 }
 
-.button_container {
+.toolbarButtonContainer {
   display: flex;
   flex-direction: row;
   gap: 8px;
   align-items: center;
   cursor: pointer;
   margin-top: 2rem;
+  background: transparent;
+  border: 0px;
 
   @media #{$breakpoint-dimension-sm} {
     margin-top: 0;
+  }
+  p {
+    color: var(--color_fg_link);
   }
 
   svg {

@@ -5,22 +5,21 @@ import ConfigurationIcon from "features/common/icons/configuration-icon";
 
 export const DebuggerToolbar = () => {
   return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <div className={styles.content}>
-          <p className={styles.title}>Debugger</p>
-          <div className={styles.container_options}>
+    <div className={styles.toolbar}>
+      <div className={styles.toolbarWrapper}>
+        <div className={styles.toolbarContent}>
+          <p className={styles.toolbarTitle}>Debugger</p>
+          <div className={styles.toolbarOptionsContainer}>
             <DebuggerPickerComponent
               label="Mode"
               options={[{ value: "OAuth2", label: "OpenID Connect + OAuth2" }]}
               minWidth={"180px"}
-              placeholder=""
             />
-            <div className={styles.separator_line} />
-            <div className={styles.button_container}>
+            <div className={styles.toolbarSeparatorLine} />
+            <button className={styles.toolbarButtonContainer}>
               <ConfigurationIcon />
               <p>Configuration</p>
-            </div>
+            </button>
           </div>
         </div>
       </div>
