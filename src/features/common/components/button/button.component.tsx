@@ -9,7 +9,7 @@ export const Button = ({
   onClick?: () => void;
 }) => {
   return (
-    <button className={styles.button} onClick={onClick}>
+    <button type="button" className={styles.button} onClick={onClick}>
       {label}
       <div className={styles.button_arrow}>
         <ArrowIcon />
