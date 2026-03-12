@@ -1,7 +1,7 @@
 @use "libs/theme/styles/variables" as *;
 @use "libs/theme/styles/mixins" as *;
 
-.container {
+.header {
   display: none;
   width: 100%;
   position: fixed;
@@ -25,7 +25,7 @@
   
 }
 
-.logo_title { 
+.headerLogoTitle { 
     font-size: 1rem;
     font-style: normal;
     font-weight: 500;
@@ -35,19 +35,19 @@
   }
 }
 
-.logo_small_title {
+.headerLogoSmallTitle {
     font-size: 11px;
     font-style: normal;
     font-weight: 500;
     line-height: 11px;
 }
 
-.wrapper {
+.headerWrapper {
   @include ExtendedGrid;
   height: $navbar-height;
 }
 
-.content {
+.headerContent {
   display: flex;
   width: 100%;
   margin: 0 auto;
@@ -57,17 +57,17 @@
   justify-content: space-between;
 }
 
-.nav_container {
+.headerNav {
     display: flex;
     flex-direction: row;
     align-items: center;
 
-    & .logo_img {
+    & .headerLogo {
         margin-right: 8px;
     }
 }
 
-.navTabs {
+.headerTabs {
   flex: 1;
   display: flex;
   align-items: center;
@@ -83,7 +83,7 @@
   }
 }
 
-.navList {
+.headerNavList {
   display: flex;
   padding: 0;
   list-style-type: none;
@@ -100,7 +100,7 @@
   }
 }
 
-.navList__item {
+.headerItem {
   position: relative;
   border-bottom: 2px solid transparent;
   color: var(--color_fg_link);
@@ -110,8 +110,8 @@
   }
 }
 
-.navList__item,
-.navList__item > a {
+.headerItem,
+.headerItem > a {
   display: flex;
   align-items: center;
 
@@ -126,7 +126,7 @@
   }
 }
 
-.navList__link {
+.headerLink {
   height: 100%;
   display: flex;
   align-items: center;
@@ -140,11 +140,11 @@
   }
 }
 
-.navList__external__link {
+.headerExternalLink {
   color: $link-resting-color
 }
 
-.icon__container {
+.headerIcons {
   display: flex;
   flex-direction: row;
   gap: 2rem;

@@ -22,17 +22,17 @@ export const ThemeSwitcherComponent: React.FC<ThemeSwitcherComponentProps> = ({
   };
 
   return (
-    <div className={styles.wrapper}>
-      <label className={styles.container}>
+    <div>
+      <label className={styles.toggleContainer}>
         <input
           type="checkbox"
-          checked={theme === DEFAULT_THEME}
+          checked={theme !== DEFAULT_THEME}
           onChange={(e) => {
             selectTheme(!e.target.checked ? THEMES[0] : THEMES[1]);
           }}
           aria-label="Toggle Theme"
           disabled={isDisabled}
-          className={styles.toggle_input}
+          className={styles.toggleInput}
         />
         <span className={styles.toggle}>
           <span className={styles.thumb}></span>

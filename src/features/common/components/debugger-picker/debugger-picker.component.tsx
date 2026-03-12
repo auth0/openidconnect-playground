@@ -1,13 +1,12 @@
 "use client";
 import React from "react";
 import styles from "./debugger-picker.module.scss";
-import dynamic from "next/dynamic";
+import ReactSelect from "react-select";
 
 interface PickerLabelProps {
-  label: string | null;
+  label?: string;
 }
 
-const Select = dynamic(() => import("react-select"), { ssr: false });
 
 const PickerLabel: React.FC<PickerLabelProps> = ({ label }) => {
   return (
@@ -18,11 +17,13 @@ const PickerLabel: React.FC<PickerLabelProps> = ({ label }) => {
 };
 
 interface DebuggerPickerComponentProps {
-  label: string | null;
-  options;
-  isGrouped?: boolean;
-  placeholder: string | null;
-  minWidth: string | null;
+  label?: string;
+  options: {
+    value: string;
+    label: string;
+  }[];
+  placeholder?: string;
+  minWidth?: string;
 }
 
 export const DebuggerPickerComponent: React.FC<
@@ -37,7 +38,7 @@ export const DebuggerPickerComponent: React.FC<
   return (
     <div className={styles.picker} data-has-label={label !== null}>
       {label && <PickerLabel label={label} />}
-      <Select
+      <ReactSelect
         aria-label={"Debugger picker"}
         className="react-select-container"
         options={options}
@@ -72,7 +73,7 @@ export const DebuggerPickerComponent: React.FC<
             height: "1.75rem",
           }),
         }}
-      ></Select>
+      ></ReactSelect>
     </div>
   );
 };
