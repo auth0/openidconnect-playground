@@ -9,25 +9,25 @@ export const HeroJumbotronComponent: React.FC = () => {
       <div className={styles.wrapper}>
         <div className={styles.content}>
           <div className={styles.hero}>
-            <div className={styles.hero__copy}>
-              <div className={styles.hero__text}>
-                <h1 className={styles.hero__title}>
+            <div className={styles.heroCopy}>
+              <div className={styles.heroText}>
+                <h1 className={styles.heroTitle}>
                   OpenID Connect Playground
                 </h1>
-                <p className={styles.hero__description}>
+                <p className={styles.heroDescription}>
                   The OIDC playground is for developers to test and work with
                   OpenID Connect calls step-by-step, giving them more insight
                   into how OpenID Connect works.
                 </p>
               </div>
 
-              <Link className={styles.hero__ctaButton} href={"/test"}>
+              <Link className={styles.heroCtaButton} href={"/test"}>
                 Try it now
               </Link>
             </div>
-            <div className={styles.hero__media}>
+            <div className={styles.heroMedia}>
               <Image
-                className={styles.hero__image}
+                className={styles.heroImage}
                 src={"/images/castle.png"}
                 alt={"Castle"}
                 sizes="100vw"

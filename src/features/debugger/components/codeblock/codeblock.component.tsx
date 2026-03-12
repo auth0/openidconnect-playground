@@ -12,31 +12,31 @@ export type RequestData = {
 };
 interface CodeBlockProps {
   title: string;
-  type: "request" | "json" | "token";
+  type: "request" | "json" | "code";
   requestData?: RequestData;
-  token?: string;
+  code?: string;
 }
 
 export const Codeblock = (props: CodeBlockProps) => {
-  const { title, type, requestData, token } = props;
+  const { title, type, requestData, code } = props;
   return (
-    <div className={styles.scroll_container}>
+    <div className={styles.scrollContainer}>
       <div className={styles.container}>
-        <div className={styles.title_container}>{title}</div>
-        <div className={styles.code_block}>
+        <div className={styles.titleContainer}>{title}</div>
+        <div className={styles.codeBlock}>
           {type === "request" && requestData ? (
             <>
-              <div className={styles.code_line}>
-                <p className={styles.code_line_number}>01</p>
-                <p className={styles.param_value} data-editable={requestData.isEditable}>
+              <div className={styles.codeLine}>
+                <p className={styles.codeLineNumber}>01</p>
+                <p className={styles.paramValue} data-editable={"true"}>
                   <span>{`${requestData.method ? requestData.method: ""} ${requestData.url}?`}</span>
                 </p>
               </div>
               {requestData.params.map((data, idx) => (
-                <div key={idx} className={styles.code_line}>
-                  <p className={styles.code_line_number}>{`0${idx + 2}`}</p>
+                <div key={idx} className={styles.codeLine}>
+                  <p className={styles.codeLineNumber}>{`0${idx + 2}`}</p>
                   <p
-                    className={styles.param_value}
+                    className={styles.paramValue}
                     data-editable={data.isEditable ? "true" : "false"}
                   >
                     {`${idx > 0 ? "&" : ""}${data.key}=`}
@@ -46,7 +46,7 @@ export const Codeblock = (props: CodeBlockProps) => {
               ))}
             </>
           ) : null}
-          {type === "token" && token ? <p>{token}</p> : null}
+          {type === "code" && code ? <p>{code}</p> : null}
         </div>
       </div>
     </div>

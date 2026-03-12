@@ -51,26 +51,24 @@ export const MobileHeaderComponent: React.FC<MobileHeaderComponentProps> = ({
     },
     [closeMobileMenu]
   );
-
-  useEffect(() => {
+useEffect(() => {
     if (currentPathname !== pathname) {
-      //closeMobileMenu();
-      //setCurrentPathname(pathname);
+      closeMobileMenu();
+      setCurrentPathname(pathname);
     }
   }, [closeMobileMenu, currentPathname, pathname]);
-
   return (
     <>
-      <div className={styles.container}>
-        <div className={styles.wrapper}>
-          <nav className={styles.content}>
-            <div className={styles.logo}>
+      <div className={styles.header}>
+        <div className={styles.headerWrapper}>
+          <nav className={styles.headerContent}>
+            <div className={styles.headerLogo}>
               <Image
                 src={"/images/openid-logo.svg"}
                 alt="openid-connect logo"
                 width={36}
                 height={36}
-                className={styles.logo_img}
+                className={styles.headerImageLogo}
               />
               <div>
                 <h1 className={styles.logo_title}>OpenID Connect</h1>
@@ -102,7 +100,7 @@ export const MobileHeaderComponent: React.FC<MobileHeaderComponentProps> = ({
       >
         <div className={styles.menuContainer}>
           <div className={styles.menuContent}>
-            <ul className={styles.menu__list}>
+            <ul className={styles.menuList}>
               {linkPagesInfo.map((link) => {
                 const linkPath = link.pathname;
 
@@ -111,7 +109,7 @@ export const MobileHeaderComponent: React.FC<MobileHeaderComponentProps> = ({
                 return (
                   <li
                     key={link.label}
-                    className={styles.menu__item}
+                    className={styles.menuItem}
                     role="menuitem"
                   >
                     <Link
@@ -119,7 +117,7 @@ export const MobileHeaderComponent: React.FC<MobileHeaderComponentProps> = ({
                         ? { target: "_blank", rel: "noopener noreferrer" }
                         : {})}
                       href={linkPath}
-                      className={styles.menu__item__link}
+                      className={styles.menuItemLink}
                       data-active={isActiveLink}
                       onClick={() => handleLinkClick(isActiveLink)}
                     >
@@ -128,7 +126,7 @@ export const MobileHeaderComponent: React.FC<MobileHeaderComponentProps> = ({
                   </li>
                 );
               })}
-              <li className={styles.menu__item__action} role="menuitem">
+              <li className={styles.menuItemAction} role="menuitem">
                 <p>Switch Theme</p>
                 <ThemeSwitcherComponent theme={theme} />
               </li>

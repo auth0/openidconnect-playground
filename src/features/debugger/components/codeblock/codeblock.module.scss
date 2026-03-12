@@ -2,7 +2,7 @@
 @use "libs/theme/styles/mixins" as *;
 
 
-.scroll_container {
+.scrollContainer {
   overflow-x: auto;
   overflow-y: hidden;
   max-width: 100%;
@@ -13,7 +13,7 @@
   background-color: var(--color_bg_light);
 }
 
-.title_container {
+.titleContainer {
     padding: 24px;
     color: var(--color_fg_bold);
     text-transform: uppercase;
@@ -23,10 +23,10 @@
     border-bottom: 0.5px solid var(--color_border_light);
 }
 
-.code_block {
+.codeBlock {
   color: var(--color_fg_link);
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "Roboto Mono";
+  font-family: var(--font-mono);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -36,7 +36,7 @@
   padding: 1.5rem 0;
 }
 
-.code_line {
+.codeLine {
   display: flex;
   &:first-child {
     gap: 1rem;
@@ -46,11 +46,11 @@
   }
 }
 
-.code_line_number {
+.codeLineNumber {
   color: var(--functional-gray-550);
 }
 
-.param_value {
+.paramValue {
    &[data-editable="true"] span{
     border: 1px solid var(--seafoam);
     padding: 0 0.5rem;

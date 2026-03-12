@@ -1,7 +1,8 @@
 @use "libs/theme/styles/variables" as *;
 @use "libs/theme/styles/mixins" as *;
 
-.container {
+.header {
+  width: calc(100% - 2rem);
   position: fixed;
   top: 0;
   right: 0;
@@ -17,12 +18,12 @@
   }
 }
 
-.wrapper {
+.headerWrapper {
   @include ExtendedGrid;
   height: $navbar-height-mobile;
 }
 
-.content {
+.headerContent {
   @include InnerContentFlex;
 
   height: 100%;
@@ -35,7 +36,7 @@
   
 }
 
-.logo {
+.headerLogo {
   display: flex;
   align-items: center;
   height: 1.75rem;
@@ -57,7 +58,7 @@
     line-height: 11px;
   }
 
-  & .logo_img {
+  & .headerImageLogo {
         margin-right: 8px;
   }
 
@@ -155,20 +156,20 @@
   padding: .25rem; 
 }
 
-.menu__list {
+.menuList {
   width: 100%;
   padding: 0;
   margin: 0;
 }
 
-.menu__item {
+.menuItem {
   position: relative;
   list-style: none;
   width: 100%;
   margin: 0;
 }
 
-.menu__item__action {
+.menuItemAction {
   position: relative;
   list-style: none;
   width: 100%;
@@ -193,7 +194,7 @@
   }
 }
 
-.menu__item__link {
+.menuItemLink {
   display: flex;
   align-items: center;  
   border-radius: .75rem;
@@ -210,6 +211,5 @@
 
   &[data-active="true"] {
     background-color: var(--color_bg_layer_alternate-bold);
-    //box-shadow: 0 0 1px 2px rgba(0, 0, 0, .04);
   }
 }

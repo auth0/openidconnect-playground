@@ -18,27 +18,27 @@ export const HeaderComponent: React.FC<HeaderComponentProps> = ({ theme }) => {
   const pathname = usePathname();
 
   return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <nav className={styles.content}>
-          <div className={styles.nav_container}>
+    <div className={styles.header}>
+      <div className={styles.headerWrapper}>
+        <nav className={styles.headerContent}>
+          <div className={styles.headerNav}>
             <Image
               src={"/images/openid-logo.svg"}
               alt="openid-connect logo"
               width={36}
               height={36}
-              className={styles.logo_img}
+              className={styles.headerLogo}
             />
             <div>
-              <h1 className={styles.logo_title}>OpenID Connect</h1>
-              <h3 className={styles.logo_small_title}>Playground</h3>
+              <h1 className={styles.headerLogoTitle}>OpenID Connect</h1>
+              <h3 className={styles.headerLogoSmallTitle}>Playground</h3>
             </div>
-            <div className={styles.navTabs}>
-              <ul className={styles.navList}>
+            <div className={styles.headerTabs}>
+              <ul className={styles.headerNavList}>
                 {linkPagesInfo.map((linkInfo) => {
                   return !linkInfo.isExternal ? (
                     <li
-                      className={styles.navList__item}
+                      className={styles.headerItem}
                       role="menuitem"
                       key={linkInfo.id}
                       data-active={pathname === linkInfo.pathname}
@@ -48,9 +48,9 @@ export const HeaderComponent: React.FC<HeaderComponentProps> = ({ theme }) => {
                   ) : (
                     <li
                       className={clsx(
-                        styles.navList__item,
+                        styles.headerItem,
                         linkInfo.id === "shop"
-                          && styles.navList__external__link
+                          && styles.headerExternalLink
                       )}
                       role="menuitem"
                       key={linkInfo.label}
@@ -64,7 +64,7 @@ export const HeaderComponent: React.FC<HeaderComponentProps> = ({ theme }) => {
               </ul>
             </div>
           </div>
-          <div className={styles.icon__container}>
+          <div className={styles.headerIcons}>
             <ThemeSwitcherComponent theme={theme} />
             <ControlIcon />
           </div>
