@@ -36,7 +36,7 @@ const REQUEST_DATA: RequestData = {
 export const StepTwo = () => {
   return (
     <>
-      <Codeblock title="Your Code" type="token" token="asdfasdfasdfsadfsdf" />
+      <Codeblock title="Your Code" type="code" code="asdfasdfasdfsadfsdf" />
       <p className={styles.description}>
         Now, we need to turn that access code into an access token, by having
         our server make a request to your token endpoint
