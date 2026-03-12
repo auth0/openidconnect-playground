@@ -42,11 +42,8 @@ export const Codeblock = (props: CodeBlockProps) => {
           {type === "request" && requestData ? (
             <>
               <div className={styles.codeLine}>
-                <p className={styles.codeLineNumber}>01</p>
-                <p
-                  className={styles.paramValue}
-                  data-editable={requestData.isEditable}
-                >
+                <p className={styles.codeLineNumber}>{formatLineNumber(1)}</p>
+                <p className={styles.paramValue} data-editable={"true"}>
                   <span>{`${requestData.method ? requestData.method : ""} ${requestData.url}?`}</span>
                 </p>
               </div>
