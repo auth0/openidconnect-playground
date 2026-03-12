@@ -1,10 +1,17 @@
 import localFont from "next/font/local";
-import { Inter } from "next/font/google";
+import { Inter, Roboto_Mono } from "next/font/google";
 
 export const PrimaryFont = Inter({
   style: ["normal"],
   weight: ["400", "500", "600"],
   subsets: ["latin", "latin-ext"],
+});
+
+export const MonoFont = Roboto_Mono({
+  style: ["normal"],
+  weight: ["400", "500", "600"],
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-mono",
 });
 
 export const SecondaryFont = localFont({
@@ -25,15 +32,4 @@ export const SecondaryFont = localFont({
       style: "normal",
     },
   ],
-});
-
-export const MonoFont = localFont({
-  src: [
-    {
-      path: "./fonts/AeonikMono-Medium.woff2",
-      weight: "400",
-      style: "normal",
-    },
-  ],
-  variable: "--font-mono",
 });

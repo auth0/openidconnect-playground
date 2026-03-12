@@ -136,8 +136,9 @@ a {
   --color_bg_layer_highlight2: var(--cobalt);
   --color_bg_layer_highlight3: var(--eggplant);
 
+  --color_bg_light: #181819;
   --color_border_default: var(--functional-gray-750);
-  --color_border_light: #dcdde129;  
+  --color_border_light: #DCDDE129;  
   --color_border_bold: var(--functional-gray-700);
   --color_border_inverse_static: var(--functional-gray-550);
 
@@ -241,8 +242,9 @@ body[data-theme="light"] {
   --color_bg_layer_highlight2: var(--sky);
   --color_bg_layer_highlight3: var(--violet);
 
+  --color_bg_light: #fafafacc;
   --color_border_default: #e8e8e8;
-  --color_border_light: #ABABAB;
+  --color_border_light: #dcdde1;
   --color_border_bold: var(--functional-gray-250);
   --color_border_inverse_static: var(--functional-gray-550);
 

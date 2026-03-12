@@ -1,14 +1,14 @@
-"use client"
+"use client";
 import { ComponentType, useState } from "react";
 import styles from "./debugger-steps.module.scss";
 import { StepOne, StepTwo, StepThree, StepFour } from "./index";
 
-type Step = {
+type Steps = {
   id: string;
   label: string;
   component: ComponentType;
 };
-const stepsList: Step[] = [
+const stepsList: Steps[] = [
   {
     id: "step-one",
     label: "Redirect to OpenID Connect Server",
@@ -16,7 +16,7 @@ const stepsList: Step[] = [
   },
   {
     id: "step-two",
-    label: "Exchange Code for Token",
+    label: "Exchange Code from Token",
     component: StepTwo,
   },
   {
@@ -38,7 +38,7 @@ export const DebuggerSteps = () => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.content}>
-          {stepsList.map((step, index) => {
+          {stepsList.map(({ id, label, component: Component }, index) => {
             const state =
               index < currentStepIndex
                 ? "completed"
@@ -46,17 +46,26 @@ export const DebuggerSteps = () => {
                 ? "current"
                 : "upcoming";
             return (
-              <div
-                key={step.id}
-                className={styles.stepContainer}
-                data-state={state}
-                aria-current={state === "current" ? "step" : undefined}
-                aria-label={`${step.label} ${state}`}
-              >
-                <div className={styles.stepContent}>
-                  {" "}
-                  <div className={styles.stepNumber}>{index + 1}</div>
-                  <p>{step.label}</p>
+              <div key={id} className={styles.stepContainer}>
+                <div
+                  className={styles.stepTitleContainer}
+                  data-state={state}
+                  aria-current={state === "current" ? "step" : undefined}
+                  aria-label={`${label} ${state}`}
+                >
+                  <div className={styles.stepTitleContent}>
+                    {" "}
+                    <div className={styles.stepNumber}>{index + 1}</div>
+                    <p>{label}</p>
+                  </div>
+                </div>
+
+                <div
+                  className={styles.stepContent}
+                  data-open={state === "current"}
+                  aria-hidden={state !== "current"}
+                >
+                  <Component />
                 </div>
               </div>
             );

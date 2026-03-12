@@ -1,0 +1,59 @@
+@use "libs/theme/styles/variables" as *;
+@use "libs/theme/styles/mixins" as *;
+
+
+.scrollContainer {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+.container {
+  width: 544px;
+  border: 0.5px solid var(--color_border_light);
+  background-color: var(--color_bg_light);
+}
+
+.titleContainer {
+    padding: 24px;
+    color: var(--color_fg_bold);
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    border-bottom: 0.5px solid var(--color_border_light);
+}
+
+.codeBlock {
+  color: var(--color_fg_link);
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: 0.15px;
+  margin-left: 1.5rem;
+  padding: 1.5rem 0;
+}
+
+.codeLine {
+  display: flex;
+  &:first-child {
+    gap: 1rem;
+  }
+  &:not(:first-child) {
+    gap: 2rem;
+  }
+}
+
+.codeLineNumber {
+  color: var(--functional-gray-550);
+}
+
+.paramValue {
+   &[data-editable="true"] span{
+    border: 1px solid var(--seafoam);
+    padding: 0 0.5rem;
+    cursor: pointer;
+  }
+}

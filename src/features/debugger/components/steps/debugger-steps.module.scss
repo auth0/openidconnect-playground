@@ -3,6 +3,7 @@
 
 .container {
   @include Container;
+  margin-bottom: 100px;
 }
 
 .wrapper {
@@ -17,7 +18,7 @@
   backdrop-filter: blur(40px);
 }
 
-.stepContainer {
+.stepTitleContainer {
   display: flex;
   padding: 0 24px;
   align-items: center;
@@ -31,7 +32,7 @@
   }
 }
 
-.stepContent {
+.stepTitleContent {
     display: flex;
     padding: 16px 40px 16px 0;
     align-items: center;
@@ -39,7 +40,7 @@
     color: var(--color_fg_bold);
 }
 
-.stepContainer:not(:last-child) {
+.stepContainer:not(:last-child) .step_title_container {
     border-bottom: 0.5px solid var(--color_border_light);
 }
 
@@ -53,4 +54,20 @@
   background-color: var(--color_fg_default);
   color: var(--color_bg_layer);
   flex-shrink: 0;
+}
+
+.stepContent {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin: 0;
+  max-height: 0; 
+  overflow: hidden;
+  transition: max-height 0.5s ease-out;
+  &[data-open="true"] {
+    max-height: fit-content;
+    margin: 2rem 1rem;
+  }
 }
