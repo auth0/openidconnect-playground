@@ -28,10 +28,10 @@ export const Codeblock = (props: CodeBlockProps) => {
         <div className={styles.codeBlock}>
           {type === "request" && requestData ? (
             <>
-              <div className={styles.code_line}>
-                <p className={styles.code_line_number}>01</p>
-                <p className={styles.param_value} data-editable={requestData.isEditable}>
-                  <span>{`${requestData.method ? requestData.method: ""} ${requestData.url}?`}</span>
+              <div className={styles.codeLine}>
+                <p className={styles.codeLineNumber}>{formatLineNumber(1)}</p>
+                <p className={styles.paramValue} data-editable={"true"}>
+                  <span>{`${requestData.method ? requestData.method : ""} ${requestData.url}?`}</span>
                 </p>
               </div>
               {requestData.params.map((data, idx) => (
