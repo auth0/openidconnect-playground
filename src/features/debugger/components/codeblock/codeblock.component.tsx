@@ -17,6 +17,8 @@ interface CodeBlockProps {
   code?: string;
 }
 
+const formatLineNumber = (num: number) => num.toString().padStart(2, "0");
+
 export const Codeblock = (props: CodeBlockProps) => {
   const { title, type, requestData, code } = props;
   return (
@@ -27,14 +29,16 @@ export const Codeblock = (props: CodeBlockProps) => {
           {type === "request" && requestData ? (
             <>
               <div className={styles.codeLine}>
-                <p className={styles.codeLineNumber}>01</p>
+                <p className={styles.codeLineNumber}>{formatLineNumber(1)}</p>
                 <p className={styles.paramValue} data-editable={"true"}>
-                  <span>{`${requestData.method ? requestData.method: ""} ${requestData.url}?`}</span>
+                  <span>{`${requestData.method ? requestData.method : ""} ${requestData.url}?`}</span>
                 </p>
               </div>
               {requestData.params.map((data, idx) => (
                 <div key={idx} className={styles.codeLine}>
-                  <p className={styles.codeLineNumber}>{`0${idx + 2}`}</p>
+                  <p className={styles.codeLineNumber}>
+                    {formatLineNumber(idx + 2)}
+                  </p>
                   <p
                     className={styles.paramValue}
                     data-editable={data.isEditable ? "true" : "false"}
