@@ -34,11 +34,12 @@ export const DebuggerPickerComponent: React.FC<
   placeholder,
   minWidth,
 }) => {
-  
+
   return (
     <div className={styles.picker} data-has-label={label !== null}>
       {label && <PickerLabel label={label} />}
       <ReactSelect
+        instanceId={`debugger-picker-${label ?? "default"}`}
         aria-label={"Debugger picker"}
         className="react-select-container"
         options={options}
