@@ -32,4 +32,5 @@ export const SecondaryFont = localFont({
       style: "normal",
     },
   ],
+  variable: "--font-secondary",
 });
