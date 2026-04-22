@@ -15,6 +15,7 @@ export const MonoFont = Roboto_Mono({
 });
 
 export const SecondaryFont = localFont({
+  variable: "--font-secondary",
   src: [
     {
       path: "./fonts/Aeonik-Regular.woff2",
