@@ -89,14 +89,13 @@
   align-items: center;
   cursor: pointer;
   color: var(--color_fg_link);
-  p {
-    font-family: var(--font-secondary);
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 20px;
-    letter-spacing: 0.28px;
-  }
+  text-decoration: none;
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.28px;
 
   svg {
     path {
