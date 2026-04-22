@@ -3,7 +3,7 @@ import {
   DEFAULT_THEME,
   PREFERRED_THEME_NAME,
 } from "features/theme/theme.config";
-import { PrimaryFont, MonoFont, SecondaryFont } from "libs/theme/fonts";
+import { MonoFont, PrimaryFont, SecondaryFont } from "libs/theme/fonts";
 import { cookies } from "next/headers";
 import "libs/theme/styles/globals.scss";
 import styles from "./layout.module.scss"
@@ -55,7 +55,52 @@ export default async function RootLayout({
   const theme = preferredThemeCookie?.value || DEFAULT_THEME;
   return (
     <html lang="en">
-      <body className={`${PrimaryFont.className} ${MonoFont.variable} ${SecondaryFont.variable}`} data-theme={theme}>
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>OpenID Connect Playground</title>
+        <meta
+          name="description"
+          content="The OIDC playground is for developers to test and work with OpenID Connect calls step-by-step, giving them more insight into how OpenID Connect works."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="OpenID Connect Playground" />
+        <meta property="og:site_name" content="OpenID Connect Playground" />
+        <meta
+          property="og:description"
+          content="The OIDC playground is for developers to test and work with OpenID Connect calls step-by-step, giving them more insight into how OpenID Connect works."
+        />
+        <meta property="og:url" content="https://openidconnect.net/" />
+        <meta
+          property="og:image"
+          content="https://openidconnect.net/images/sm-share.png"
+        />
+        <meta
+          property="og:image:secure_url"
+          content="https://openidconnect.net/images/sm-share.png"
+        />
+        <meta property="fb:app_id" content="507756515938786" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@auth0" />
+        <meta name="twitter:creator" content="@auth0" />
+        <meta name="twitter:title" content="OpenID Connect Playground" />
+        <meta
+          name="twitter:description"
+          content="The OIDC playground is for developers to test and work with OpenID Connect calls step-by-step, giving them more insight into how OpenID Connect works."
+        />
+        <meta
+          name="twitter:image:src"
+          content="https://openidconnect.net/images/sm-share.png"
+        />
+        <meta name="twitter:image:width" content="1200" />
+        <meta name="twitter:image:height" content="630" />
+        <meta
+          name="google-site-verification"
+          content="tLAuc_2L4oGIS68FVPW-FvFdIxLNYkLBCAb-9PseeWY"
+        />
+        {/* <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script> */}
+      </head>
+      <body className={`${PrimaryFont.className} ${SecondaryFont.variable} ${MonoFont.variable}`} data-theme={theme}>
         <HeaderComponent theme={theme} />
         <MobileHeaderComponent theme={theme} />
         <main className={styles.main} >{children}</main>
