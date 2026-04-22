@@ -63,7 +63,7 @@
   align-items: center;
   gap: 2rem;
   margin: 0;
-  max-height: 0; 
+  max-height: 0;
   overflow: hidden;
   transition: max-height 0.5s ease-out;
   &[data-open="true"] {
@@ -97,7 +97,7 @@
     line-height: 20px;
     letter-spacing: 0.28px;
   }
-  
+
   svg {
     path {
       stroke: var(--color_fg_link);

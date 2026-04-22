@@ -20,7 +20,7 @@ export const StepThree = () => {
       />
 
       <p className={styles.description}>
-        This token is cryptographically signed with the HS256 algorithim.
+        This token is cryptographically signed with the HS256 algorithm.
         We&apos;ll use the client secret to validate it.
       </p>
       <Button label="Verify" />
