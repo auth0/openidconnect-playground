@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import jose from "node-jose";
+import { importJWK, exportSPKI, type JWK } from "jose";
 import jwt from "jsonwebtoken";
 
-async function convertJwkToPem(jwk) {
-  const keyStore = jose.JWK.createKeyStore();
-  const key = await keyStore.add(jwk, "json");
-  return key.toPEM();
+async function convertJwkToPem(jwk: JWK): Promise<string> {
+  const key = await importJWK(jwk, "RS256");
+  return exportSPKI(key as CryptoKey);
 }
 
 export async function POST(request: NextRequest) {
