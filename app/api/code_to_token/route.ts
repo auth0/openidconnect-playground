@@ -6,7 +6,7 @@ const ALLOWED_HOSTNAMES = new Set([
   "oauth2.googleapis.com",
 ]);
 
-function isAllowedHostname(hostname) {
+function isAllowedHostname(hostname: string): boolean {
   return ALLOWED_HOSTNAMES.has(hostname);
 }
 
