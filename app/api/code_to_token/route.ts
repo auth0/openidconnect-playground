@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     };
 
     return NextResponse.json({ result: result }, { status: 200 });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error fetching token:", error);
     return NextResponse.json(
       { message: "Failed to retrieve token" },

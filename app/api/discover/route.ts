@@ -49,10 +49,10 @@ export async function GET(request: NextRequest) {
         { status: 400 },
       );
     }
-  } catch (error) {
+  } catch (error: unknown) {
     return NextResponse.json(
       {
-        message: error.message || "An unexpected error occurred.",
+        message: error instanceof Error ? error.message : "An unexpected error occurred.",
       },
       {
         status: 500,
