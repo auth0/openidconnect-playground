@@ -30,8 +30,14 @@ const isJson = (str) => {
 
 export async function GET(request: NextRequest) {
   try {
-    const data = await request.json();
-    const response = await fetch(data.url);
+    const url = request.nextUrl.searchParams.get("url");
+    if (!url) {
+      return NextResponse.json(
+        { message: 'Missing required query parameter "url"' },
+        { status: 400 },
+      );
+    }
+    const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error(
