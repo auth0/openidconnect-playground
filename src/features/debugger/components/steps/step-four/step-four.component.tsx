@@ -45,7 +45,7 @@ export const StepFour = () => {
       <Codeblock
         title="Decoded Token Payload"
         type="json"
-        json={JSON.parse(JSON_EXAMPLE)}
+        json={JSON_EXAMPLE}
       />
       <div className={styles.buttons_container }>
         <Button label="Start Over" />

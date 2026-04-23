@@ -78,7 +78,7 @@ export const Codeblock = (props: CodeBlockProps) => {
           ) : null}
           {type === "json" ? (
             <pre className={styles.json}>
-              {JSON.stringify(props.json, null, 2)
+              {JSON.stringify(JSON.parse(props.json), null, 2)
                 .split("\n")
                 .map((line, index) => (
                   <div key={index} className={styles.code_line}>
