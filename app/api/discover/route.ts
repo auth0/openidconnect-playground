@@ -1,32 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
-import { Validator } from "jsonschema";
+import { z } from "zod";
 
-const valid = new Validator();
-
-const discoverySchema = {
-  type: "object",
-  properties: {
-    authorization_endpoint: { type: "string", format: "uri" },
-    token_endpoint: { type: "string", format: "uri" },
-    userinfo_endpoint: { type: "string", format: "uri" },
-    jwks_uri: { type: "string", format: "uri" },
-  },
-  required: [
-    "authorization_endpoint",
-    "token_endpoint",
-    "userinfo_endpoint",
-    "jwks_uri",
-  ],
-};
-
-const isJson = (str) => {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-  return true;
-};
+const discoverySchema = z.object({
+  authorization_endpoint: z.url(),
+  token_endpoint: z.url(),
+  userinfo_endpoint: z.url(),
+  jwks_uri: z.url(),
+});
 
 export async function GET(request: NextRequest) {
   try {
@@ -45,45 +25,28 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const body = await response.text();
+    const body = await response.json().catch(() => null);
 
-    if (isJson(body)) {
-      const jsonBody = JSON.parse(body);
-      const validationResult = valid.validate(jsonBody, discoverySchema);
+    if (!body) {
+      return NextResponse.json(
+        { message: "Discovery document is not a JSON file." },
+        { status: 400 },
+      );
+    }
 
-      if (validationResult.valid) {
-        return NextResponse.json(
-          {
-            authorization_endpoint: jsonBody.authorization_endpoint,
-            token_endpoint: jsonBody.token_endpoint,
-            userinfo_endpoint: jsonBody.userinfo_endpoint,
-            jwks_uri: jsonBody.jwks_uri,
-          },
-          {
-            status: 200,
-          },
-        );
-      } else {
-        return NextResponse.json(
-          {
-            message: "Discovery document is not valid.",
-            errors: validationResult.errors.map(
-              (e) => `The ${e.property.replace("instance.", "")} ${e.message}`,
-            ),
-          },
-          {
-            status: 500,
-          },
-        );
-      }
+    const result = discoverySchema.safeParse(body);
+
+    if (result.success) {
+      return NextResponse.json(result.data, { status: 200 });
     } else {
       return NextResponse.json(
         {
-          message: "Discovery document is not a JSON file.",
+          message: "Discovery document is not valid.",
+          errors: result.error.issues.map(
+            (e) => `The ${e.path.join(".")} ${e.message}`,
+          ),
         },
-        {
-          status: 400,
-        },
+        { status: 400 },
       );
     }
   } catch (error) {
