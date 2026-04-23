@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
   }
 
   // A nested function to handle the final verification step
-  function verify(secret) {
+  function verify(secret: string | Buffer) {
     jwt.verify(data.idToken, secret, (err, decoded) => {
       if (err) {
         return NextResponse.json({ message: err.message }, { status: 400 });
@@ -106,9 +106,9 @@ export async function POST(request: NextRequest) {
         status: 400,
       },
     );
-  } catch (error) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { message: error.message || "An unexpected error occurred." },
+      { message: error instanceof Error ? error.message : "An unexpected error occurred." },
       { status: 500 },
     );
   }
