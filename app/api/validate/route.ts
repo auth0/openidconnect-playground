@@ -19,13 +19,16 @@ export async function POST(request: NextRequest) {
   }
 
   // A nested function to handle the final verification step
-  function verify(secret: string | Buffer) {
-    jwt.verify(data.idToken, secret, (err, decoded) => {
-      if (err) {
-        return NextResponse.json({ message: err.message }, { status: 400 });
-      }
+  function verify(secret: string | Buffer): NextResponse {
+    try {
+      const decoded = jwt.verify(data.idToken, secret);
       return NextResponse.json(decoded, { status: 200 });
-    });
+    } catch (err: unknown) {
+      return NextResponse.json(
+        { message: err instanceof Error ? err.message : "Verification failed" },
+        { status: 400 },
+      );
+    }
   }
 
   try {
@@ -40,9 +43,12 @@ export async function POST(request: NextRequest) {
     // RS256 = validation with public key fetched from an endpoint
     if (tokenHeader.alg === "RS256") {
       if (!data.tokenKeysEndpoint) {
-        return NextResponse.json({
-          message: `idToken algorithm is ${tokenHeader.alg} but tokenKeysEndpoint param is missing.`,
-        });
+        return NextResponse.json(
+          {
+            message: `idToken algorithm is ${tokenHeader.alg} but tokenKeysEndpoint param is missing.`,
+          },
+          { status: 400 },
+        );
       }
       if (!tokenHeader.kid) {
         return NextResponse.json(
