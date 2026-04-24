@@ -100,7 +100,7 @@ export const DebuggerSteps = () => {
           };
           if (authDataResponse.authCode) {
             setCurrentStepIndex(1);
-            debuggerSteps.currentStep = 1;
+            setDebuggerStepsData(prev => ({ ...prev, currentStep: 1 }));
           }
           setAuthData(authDataResponse);
           localStorage.setItem(

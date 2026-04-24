@@ -78,6 +78,7 @@ export function getAppData(savedData: string | null) {
     userInfoEndpoint:
       validated.userInfoEndpoint ?? InitialDebuggerStepsData.userInfoEndpoint,
     validated: validated.validated ?? InitialDebuggerStepsData.validated,
+    currentStep: validated.currentStep ?? InitialDebuggerStepsData.currentStep,
   };
   let auth: AuthData = {
     authCode: validated.authCode,
