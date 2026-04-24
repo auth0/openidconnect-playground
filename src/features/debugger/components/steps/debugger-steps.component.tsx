@@ -106,6 +106,10 @@ export const DebuggerSteps = () => {
             setDebuggerStepsData(prev => ({ ...prev, currentStep: 1 }));
           }
           setAuthData(authDataResponse);
+          localStorage.setItem(
+            "app-state",
+            JSON.stringify({ ...debuggerSteps, ...authDataResponse }),
+          );
         })
         .catch((error) => {
           console.error("Failed to fetch auth data:", error);
