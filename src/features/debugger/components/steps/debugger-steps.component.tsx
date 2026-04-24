@@ -138,7 +138,7 @@ export const DebuggerSteps = () => {
       JSON.stringify({ ...restartDebuggerStepsData, ...restartAuthData }),
     );
     setAuthData(restartAuthData)
-    setDebuggerStepsData(debuggerStepsData)
+    setDebuggerStepsData(restartDebuggerStepsData)
     setCurrentStepIndex(0)
   };
 
