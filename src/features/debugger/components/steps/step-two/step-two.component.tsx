@@ -33,6 +33,9 @@ export const StepTwo = ({
     try {
       const response = await fetch("api/code_to_token", {
         method: requestData.method,
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(bodyFromRequestData()),
       });
       if (!response.ok) {
@@ -43,9 +46,9 @@ export const StepTwo = ({
       }
       const data = await response.json();
       const result = data.result.response.body;
-      const payload = result.id_token.split(".")[0];
-      const decodedPayload = atob(payload);
-      const idTokenHeader = JSON.parse(decodedPayload).alg;
+      const header = result.id_token.split(".")[0];
+      const decodedHeader = atob(header);
+      const idTokenHeader = JSON.parse(decodedHeader).alg;
       setDebuggerStepsData((prev) => {
         return {
           ...prev,
@@ -53,11 +56,11 @@ export const StepTwo = ({
           idTokenHeader,
         };
       });
-      const statusString = `'HTTP/1.1 ${data.result.response.statusCode}`;
+      const statusString = `HTTP/1.1 ${data.result.response.statusCode}`;
       const jsonResponseString = `Content-Type: application/json\n${JSON.stringify(result, null, 2)}`;
       setExchangeResult(`${statusString}\n${jsonResponseString}`);
     } catch (error) {
-      const statusString = `'HTTP/1.1 500`;
+      const statusString = `HTTP/1.1 500`;
       const [errorTitle, errorDescription] = error.message.split(":");
       const errorObject = {
         error: errorTitle ? errorTitle : "Error",
