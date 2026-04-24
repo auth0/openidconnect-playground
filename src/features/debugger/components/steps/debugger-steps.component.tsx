@@ -133,10 +133,12 @@ export const DebuggerSteps = () => {
       authCode: null,
       stateToken: null,
     };
-    localStorage.setItem(
-      "app-state",
-      JSON.stringify({ ...restartDebuggerStepsData, ...restartAuthData }),
-    );
+    try {
+      localStorage.setItem(
+        "app-state",
+        JSON.stringify({ ...restartDebuggerStepsData, ...restartAuthData }),
+      );
+    } catch {}
     setAuthData(restartAuthData)
     setDebuggerStepsData(restartDebuggerStepsData)
     setCurrentStepIndex(0)
