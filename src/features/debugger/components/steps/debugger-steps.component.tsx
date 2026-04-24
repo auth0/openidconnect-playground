@@ -89,7 +89,10 @@ export const DebuggerSteps = () => {
     if (auth) setAuthData(auth);
     if (!auth) {
       fetch("api/auth_data")
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) throw new Error(`auth_data responded with ${res.status}`);
+          return res.json();
+        })
         .then((data) => {
           const authDataResponse: AuthData = {
             clientID: data.clientId,
@@ -107,6 +110,9 @@ export const DebuggerSteps = () => {
             "app-state",
             JSON.stringify({ ...debuggerSteps, ...authDataResponse }),
           );
+        })
+        .catch((error) => {
+          console.error("Failed to fetch auth data:", error);
         });
     }
   }, []);

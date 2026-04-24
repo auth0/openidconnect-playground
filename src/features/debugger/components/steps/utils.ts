@@ -87,7 +87,7 @@ export function getAppData(savedData: string | null) {
     redirectURI: validated.redirectURI,
     stateToken: validated.stateToken,
   };
- 
+
   auth = Object.values(auth).some(
     (value) => value === null || value === undefined || value === "",
   )
@@ -100,6 +100,9 @@ export const getCompleteUrlFromRequestData = (
   requestData: RequestData,
 ): string => {
   const { url, params } = requestData;
-  const completeUrl = `${url}?${params.map((param, idx) => `${idx > 0 ? "&" : ""}${param.key}=${param.key === "scope" ? encodeURI(param.value) : param.value}`).join("")}`;
-  return completeUrl;
+  const searchParams = new URLSearchParams();
+  params.forEach(param => {
+    searchParams.append(param.key, param.value);
+  });
+  return `${url}?${searchParams.toString()}`;
 };
