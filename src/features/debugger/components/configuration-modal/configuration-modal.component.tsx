@@ -86,9 +86,21 @@ export const ConfigurationModal = ({ isOpen, onClose }: ModalProps) => {
             <div className={styles.alert_content_container}>
               <AlertIcon />
               <p>
-                Note. We store stuff like your keys in LocalStorage so that when
-                you redirect to authenticate, you don’t lose them. You can clear
-                them by clicking here: <strong>Clear Localstorage</strong>
+                <strong>Note.</strong> We store stuff like your keys in
+                LocalStorage so that when you redirect to authenticate, you
+                don&apos;t lose them.
+                <br />
+                You can clear them by clicking on this button:{" "}
+                <button
+                  className={styles.clear_storage_button}
+                  onClick={() => {
+                    localStorage.clear();
+                    onClose();
+                    window.location.reload();
+                  }}
+                >
+                  Clear Localstorage
+                </button>
               </p>
             </div>
           </div>
