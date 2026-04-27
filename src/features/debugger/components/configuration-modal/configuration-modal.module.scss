@@ -33,10 +33,10 @@
    width: 100%;
    border-bottom: 1px solid var(--background-Stroke-dark-2, rgba(220, 221, 225, 0.16));
    & .title {
-    font-family: Aeonik;
+    font-family: var(--font-secondary);
     font-size: 20px;
     font-weight: 500;
-    line-height: 24px; 
+    line-height: 24px;
     letter-spacing: -0.5px;
    }
 
@@ -69,7 +69,7 @@
     gap: 8px;
     align-self: stretch;
     label {
-        font-family: Aeonik;
+        font-family: var(--font-secondary);
         font-size: 14px;
         font-weight: 400;
         line-height: 20px;
@@ -108,7 +108,7 @@
     min-width: 18px;
   }
   p {
-    font-family: Aeonik;
+    font-family: var(--font-secondary);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
