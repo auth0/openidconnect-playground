@@ -118,6 +118,13 @@
   }
 }
 
+.clear_storage_button {
+  all: unset;
+  color: var(--color_fg_strong);
+  cursor: pointer;
+  font: inherit;
+}
+
 .button_container {
   margin-top: 40px;
   align-self: stretch;
