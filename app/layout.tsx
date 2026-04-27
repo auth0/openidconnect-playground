@@ -3,7 +3,7 @@ import {
   DEFAULT_THEME,
   PREFERRED_THEME_NAME,
 } from "features/theme/theme.config";
-import { MonoFont, PrimaryFont, SecondaryFont } from "libs/theme/fonts";
+import { PrimaryFont, SecondaryFont } from "libs/theme/fonts";
 import { cookies } from "next/headers";
 import "libs/theme/styles/globals.scss";
 import styles from "./layout.module.scss"
@@ -100,7 +100,7 @@ export default async function RootLayout({
         />
         {/* <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script> */}
       </head>
-      <body className={`${PrimaryFont.className} ${SecondaryFont.variable} ${MonoFont.variable}`} data-theme={theme}>
+      <body className={`${PrimaryFont.className} ${SecondaryFont.variable}`} data-theme={theme}>
         <HeaderComponent theme={theme} />
         <MobileHeaderComponent theme={theme} />
         <main className={styles.main} >{children}</main>
