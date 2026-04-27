@@ -42,12 +42,10 @@
 
    button {
     cursor: pointer;
-    color: var(--color_fg_link);;
-    border: 1.5px solid var(--color_fg_link);;
-    border-radius: 50%;
-    background-color: transparent;
-    width: 18px;
-    height: 18px;
+    color: var(--color_fg_link);
+    background: none;
+    border: none;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;

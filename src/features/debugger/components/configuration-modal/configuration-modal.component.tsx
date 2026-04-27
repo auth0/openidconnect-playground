@@ -1,4 +1,5 @@
 import { AlertIcon } from "features/common/icons/alert.icon";
+import { CloseCircleIcon } from "features/common/icons/close-circle.icon";
 import styles from "./configuration-modal.module.scss";
 import { Button } from "features/common/components/button/button.component";
 
@@ -65,7 +66,9 @@ export const ConfigurationModal = ({ isOpen, onClose }: ModalProps) => {
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.heading_container}>
           <p className={styles.title}>OpenID Connect Configuration</p>
-          <button onClick={onClose}>x</button>
+          <button onClick={onClose} aria-label="Close">
+            <CloseCircleIcon />
+          </button>
         </div>
         <div className={styles.content}>
           {MODAL_OPTIONS.map((modalOption, idx) => {
