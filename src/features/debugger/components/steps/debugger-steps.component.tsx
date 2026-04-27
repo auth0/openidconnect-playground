@@ -271,10 +271,14 @@ export const DebuggerSteps = () => {
   }, [currentStepIndex]);
 
   useEffect(() => {
-    localStorage.setItem(
-      "app-state",
-      JSON.stringify({ ...debuggerStepsData, ...authData }),
-    );
+    const timeout = setTimeout(() => {
+      localStorage.setItem(
+        "app-state",
+        JSON.stringify({ ...debuggerStepsData, ...authData }),
+      );
+    }, 300);
+
+    return () => clearTimeout(timeout);
   }, [debuggerStepsData, authData]);
 
   return (

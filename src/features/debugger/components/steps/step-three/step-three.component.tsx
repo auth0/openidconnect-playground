@@ -25,7 +25,6 @@ export const StepThree = ({
         method: requestData.method,
         body: JSON.stringify(bodyFromRequestData(requestData)),
       });
-      setIsLoading(false);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
@@ -51,6 +50,8 @@ export const StepThree = ({
         };
       });
       setCurrentStepIndex(3);
+    } finally {
+      setIsLoading(false);
     }
   };
 

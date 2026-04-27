@@ -34,6 +34,7 @@ export const Button = ({
           : styles.button_variant_transparent,
       )}
       onClick={onClick}
+      disabled={isLoading}
     >
       {isLoading ? (
         <div className={styles.spinner} role="status">
