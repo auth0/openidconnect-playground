@@ -1,5 +1,6 @@
 import { AlertIcon } from "features/common/icons/alert.icon";
 import { CloseCircleIcon } from "features/common/icons/close-circle.icon";
+import { ErrorIcon } from "features/common/icons/error.icon";
 import styles from "./configuration-modal.module.scss";
 import { Button } from "features/common/components/button/button.component";
 import { useState } from "react";
@@ -128,6 +129,7 @@ export const ConfigurationModal = ({
     tokenKeysEndpoint: initialData.tokenKeysEndpoint ?? "",
   }));
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [discoverError, setDiscoverError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -167,6 +169,7 @@ export const ConfigurationModal = ({
       return;
     }
     try {
+      setDiscoverError(null);
       setIsLoading(true);
       const queryString = new URLSearchParams({
         url: SERVER_URLS[value],
@@ -190,6 +193,12 @@ export const ConfigurationModal = ({
         };
       });
     } catch (error) {
+      setIsLoading(false);
+      setDiscoverError(
+        error instanceof Error
+          ? error.message
+          : "Couldn't fetch the server data. Try again",
+      );
       setFormValues((prev) => {
         return {
           ...prev,
@@ -260,6 +269,12 @@ export const ConfigurationModal = ({
               </div>
             );
           })}
+          {discoverError && (
+            <div className={styles.discover_error}>
+              <ErrorIcon />
+              <p>{discoverError}</p>
+            </div>
+          )}
           <div className={styles.alert_container}>
             <div className={styles.alert_content_container}>
               <AlertIcon />

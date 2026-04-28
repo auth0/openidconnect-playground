@@ -31,6 +31,7 @@ export const HeroJumbotronComponent: React.FC = () => {
                 src={"/images/castle.png"}
                 alt={"Castle"}
                 sizes="100vw"
+                priority
                 style={{
                   width: "100%",
                   height: "auto",

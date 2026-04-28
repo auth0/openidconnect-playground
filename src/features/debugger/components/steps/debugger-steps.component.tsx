@@ -329,7 +329,7 @@ export const DebuggerSteps = () => {
                   <div
                     className={styles.step_content}
                     data-open={state === "current"}
-                    aria-hidden={state !== "current"}
+                    inert={state !== "current" ? true : undefined}
                     ref={(el) => {
                       stepRefs.current[index] = el;
                     }}
