@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       }
 
       const secret =
-        data.server === "Auth0"
+        data.server?.toLowerCase() === "auth0"
           ? Buffer.from(data.clientSecret, "base64")
           : data.clientSecret;
 
