@@ -89,8 +89,24 @@ const MODAL_OPTIONS: ModalOptions[] = [
     title: "Audience",
     defaultValue: "",
     type: "input",
+    optional: true,
   },
 ];
+
+const REQUIRED_FIELDS = MODAL_OPTIONS
+  .filter((opt) => !opt.optional)
+  .map((opt) => opt.name);
+
+function validateForm(values: Record<string, string>): Record<string, string> {
+  const errors: Record<string, string> = {};
+  for (const field of REQUIRED_FIELDS) {
+    if (!values[field]?.trim()) {
+      const option = MODAL_OPTIONS.find((opt) => opt.name === field);
+      errors[field] = `${option?.title ?? field} is required`;
+    }
+  }
+  return errors;
+}
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -116,15 +132,27 @@ export const ConfigurationModal = ({
       ]),
     ),
   );
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { value, name } = e.target;
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormValues((prev) => {
+      const next = { ...prev, [name]: value };
+      if (name === "domain" && prev.serverTemplate === "auth0") {
+        next.authEndpoint = `https://${value}/authorize`;
+        next.tokenEndpoint = `https://${value}/oauth/token`;
+      }
+      return next;
+    });
+    if (errors[name]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
+    }
   };
   const handleServerChange = async (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -199,14 +227,19 @@ export const ConfigurationModal = ({
               <div className={styles.input_container} key={name}>
                 <label htmlFor={name}>{updatedTitle}</label>
                 {type === "input" ? (
-                  <input
-                    readOnly={updatedReadOnly}
-                    id={name}
-                    name={name}
-                    value={formValues[name] ?? ""}
-                    className={styles.input}
-                    onChange={handleInputChange}
-                  />
+                  <>
+                    <input
+                      readOnly={updatedReadOnly}
+                      id={name}
+                      name={name}
+                      value={formValues[name] ?? ""}
+                      className={`${styles.input} ${errors[name] ? styles.input_error : ""}`}
+                      onChange={handleInputChange}
+                    />
+                    {errors[name] && (
+                      <span className={styles.error_message}>{errors[name]}</span>
+                    )}
+                  </>
                 ) : (
                   <select
                     onChange={(e) => {
@@ -255,6 +288,11 @@ export const ConfigurationModal = ({
               label="Save"
               showIcon={false}
               onClick={() => {
+                const validationErrors = validateForm(formValues);
+                if (Object.keys(validationErrors).length > 0) {
+                  setErrors(validationErrors);
+                  return;
+                }
                 onSaveData(formValues as InitialModalData);
                 onClose();
               }}
