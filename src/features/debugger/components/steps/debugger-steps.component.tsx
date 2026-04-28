@@ -176,6 +176,7 @@ export const DebuggerSteps = () => {
       clientSecret: authData?.clientSecret,
       domain: debuggerStepsData.domain,
       tokenEndpoint: debuggerStepsData.tokenEndpoint,
+      tokenKeysEndpoint: debuggerStepsData.tokenKeysEndpoint,
       scope: debuggerStepsData.scopes,
       serverTemplate: debuggerStepsData.server,
     };
@@ -215,6 +216,7 @@ export const DebuggerSteps = () => {
       scope,
       serverTemplate,
       tokenEndpoint,
+      tokenKeysEndpoint,
     } = updatedData;
     setDebuggerStepsData((prev) => ({
       ...prev,
@@ -224,6 +226,7 @@ export const DebuggerSteps = () => {
       scopes: scope,
       server: serverTemplate,
       tokenEndpoint,
+      tokenKeysEndpoint,
     }));
     setAuthData((prev) => ({
       ...prev,
