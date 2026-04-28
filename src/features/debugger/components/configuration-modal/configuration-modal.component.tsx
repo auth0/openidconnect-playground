@@ -9,6 +9,7 @@ export type InitialModalData = {
   serverTemplate: string;
   authEndpoint: string;
   tokenEndpoint: string;
+  tokenKeysEndpoint: string;
   clientId: string;
   clientSecret: string;
   scope: string;
@@ -93,20 +94,13 @@ const MODAL_OPTIONS: ModalOptions[] = [
   },
 ];
 
-const REQUIRED_FIELDS = MODAL_OPTIONS
-  .filter((opt) => !opt.optional)
-  .map((opt) => opt.name);
-
-function validateForm(values: Record<string, string>): Record<string, string> {
-  const errors: Record<string, string> = {};
-  for (const field of REQUIRED_FIELDS) {
-    if (!values[field]?.trim()) {
-      const option = MODAL_OPTIONS.find((opt) => opt.name === field);
-      errors[field] = `${option?.title ?? field} is required`;
-    }
-  }
-  return errors;
-}
+const validateForm = (values: Record<string, string>): Record<string, string> =>
+  MODAL_OPTIONS
+    .filter((opt) => !opt.optional && !values[opt.name]?.trim())
+    .reduce<Record<string, string>>((errors, opt) => {
+      errors[opt.name] = `${opt.title} is required`;
+      return errors;
+    }, {});
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -124,14 +118,15 @@ export const ConfigurationModal = ({
     google: "https://accounts.google.com/.well-known/openid-configuration",
     custom: "",
   };
-  const [formValues, setFormValues] = useState<Record<string, string>>(() =>
-    Object.fromEntries(
+  const [formValues, setFormValues] = useState<Record<string, string>>(() => ({
+    ...Object.fromEntries(
       MODAL_OPTIONS.map((opt) => [
         opt.name,
         initialData[opt.name] ?? opt.defaultValue,
       ]),
     ),
-  );
+    tokenKeysEndpoint: initialData.tokenKeysEndpoint ?? "",
+  }));
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const handleInputChange = (
@@ -143,6 +138,7 @@ export const ConfigurationModal = ({
       if (name === "domain" && prev.serverTemplate === "auth0") {
         next.authEndpoint = `https://${value}/authorize`;
         next.tokenEndpoint = `https://${value}/oauth/token`;
+        next.tokenKeysEndpoint = `https://${value}/.well-known/jwks.json`;
       }
       return next;
     });
@@ -164,6 +160,7 @@ export const ConfigurationModal = ({
           ...prev,
           authEndpoint: "",
           tokenEndpoint: "",
+          tokenKeysEndpoint: "",
           domain: "",
         };
       });
@@ -188,6 +185,7 @@ export const ConfigurationModal = ({
           ...prev,
           authEndpoint: data.authorization_endpoint,
           tokenEndpoint: data.token_endpoint,
+          tokenKeysEndpoint: data.jwks_uri,
           domain: value !== "auth0" ? SERVER_URLS[value] : "samples.auth0.com",
         };
       });
@@ -197,6 +195,7 @@ export const ConfigurationModal = ({
           ...prev,
           authEndpoint: "",
           tokenEndpoint: "",
+          tokenKeysEndpoint: "",
         };
       });
     }
