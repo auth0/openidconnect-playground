@@ -23,14 +23,15 @@ export const Auth0Banner = () => {
             </div>
           </div>
           <div className={styles.right_container}>
-            <div className={styles.background_layout}></div>
-            <Image
-              src={"/images/auth0-banner.svg"}
-              width={365}
-              height={425}
-              alt="openid connect handbook"
-              className={styles.banner_image}
-            />
+            <div className={styles.image_shell}>
+              <Image
+                src={"/images/auth0-banner.svg"}
+                width={365}
+                height={434}
+                alt="Auth0 login form"
+                className={styles.banner_image}
+              />
+            </div>
           </div>
         </div>
       </div>

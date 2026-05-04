@@ -3,8 +3,7 @@
 
 .container {
   @include Container;
-  font-family: Aeonik;
-  
+  font-family: var(--font-secondary);
 }
 
 .wrapper {
@@ -12,79 +11,230 @@
 }
 
 .content {
-  margin: 4rem 2rem 20px;
+  margin: 60px 2rem 20px;
   color: var(--color_fg_link);
-  justify-content: space-between;  
-  align-items: center;
+  position: relative;
+  isolation: isolate;
   border-radius: 24px;
   border: 0.5px solid var(--color_border_light);
-  background: var(--color_bg_layer_alternate);
+  background-image:
+    url("/images/auth0-badge-rectangle-group-43882.svg"),
+    linear-gradient(198deg, #111 -16.57%, #191919 63.56%, #4016a0 96.77%, #3f59e4 119.35%);
+  background-repeat: no-repeat;
+  background-position: right -130px top -22px, center;
+  background-size: auto 165%, cover;
+  overflow: clip;
+
+  @media #{$breakpoint-dimension-sm} {
+    background-position: right -64px top -14px, center;
+    background-size: auto 148%, cover;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    margin-top: 100px;
+    background-position: right -18px top -6px, center;
+    background-size: auto 132%, cover;
+  }
 
   @media #{$breakpoint-dimension-sm} {
     display: flex;
     flex-direction: row;
+    align-items: center;
   }
-  
+
+  :global(body[data-theme="light"]) & {
+    color: var(--color_fg_bold);
+    background: var(--color_bg_layer_alternate);
+    background-image: none;
+    border-color: var(--color_border_light);
+  }
+
+  :global(body[data-theme="light"]) &:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    right: auto;
+    top: auto;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 417px;
+    max-width: 130%;
+    height: 360px;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    background: linear-gradient(163deg, #191919 -7.59%, #4016a0 33.77%, #3f59e4 64.58%, #4cb7a3 123.71%, #f6f1e7 165.82%);
+    z-index: 0;
+
+    @media #{$breakpoint-dimension-sm} {
+      left: 50%;
+      right: 0;
+      bottom: auto;
+      transform: none;
+      width: auto;
+      top: 72px;
+      height: calc(100% - 72px);
+      border-top-right-radius: 0;
+    }
+
+    @media #{$breakpoint-dimension-md} {
+      left: 50%;
+      width: auto;
+      top: 76px;
+      height: calc(100% - 76px);
+    }
+
+    @media #{$desktop} {
+      left: 50%;
+      width: auto;
+      top: 80px;
+      height: calc(100% - 80px);
+    }
+  }
 }
 
 .left_container {
-    padding: 5rem 2.5rem 5rem 2.5rem;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  z-index: 1;
+
+  @media #{$breakpoint-dimension-sm} {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    @media #{$breakpoint-dimension-sm} {
-       align-items: flex-start;
-    }
+    align-items: flex-start;
+    padding: 5rem 2.5rem;
+  }
 }
 
 .right_container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 1;
+  overflow: hidden;
+  min-height: 300px;
+  padding: 24px 16px 0;
+
+  @media #{$breakpoint-dimension-sm} {
     flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    @media #{$breakpoint-dimension-md} {
-      padding: 40px 0px 0px;
+    align-self: stretch;
+    border-radius: 0 24px 24px 0;
+    padding: 86px 20px 0;
+  }
+
+  @media #{$desktop} {
+    padding-top: 64px;
+  }
+
+  :global(body[data-theme="light"]) & {
+    align-items: flex-end;
+  }
+
+  @media #{$breakpoint-dimension-sm} {
+    :global(body[data-theme="light"]) & {
+      padding-top: 56px;
     }
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    :global(body[data-theme="light"]) & {
+      padding-top: 60px;
+    }
+  }
+
+  @media #{$desktop} {
+    :global(body[data-theme="light"]) & {
+      padding-top: 64px;
+    }
+  }
 }
 
 .button_container {
-    width: 100%;
-    @media #{$breakpoint-dimension-md} {
-     width: auto;
-    }
+  width: 100%;
+  @media #{$breakpoint-dimension-md} {
+    width: auto;
+  }
+
+  a {
+    background: $gradient-button;
+    margin: 0;
+  }
 }
 
-.background_layout {
-    border-radius: 24px 0 0 0;
-    background: linear-gradient(163deg, #191919 -7.59%, #4016A0 33.77%, #3F59E4 64.58%, #4CB7A3 123.71%, #F6F1E7 165.82%);
-    width: 100%;
-    height: 428px;
+.image_shell {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: clamp(280px, 82%, 365px);
+  height: 377px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 24px 24px 0 0;
+
+  @media #{$breakpoint-dimension-sm} {
+    width: clamp(286px, 76%, 365px);
+    height: 434px;
+  }
+
+  :global(body[data-theme="light"]) & {
+    border: 0.977px solid rgba(255, 254, 250, 0.6);
+  }
+
+  :global(body[data-theme="light"]) &::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -26px;
+    width: 78%;
+    height: 132px;
+    transform: translateX(-50%);
+    z-index: 0;
+    border-radius: 999px;
+    background:
+      radial-gradient(ellipse at center, rgba(171, 148, 255, 0.52) 0%, rgba(139, 114, 245, 0.24) 46%, rgba(96, 71, 204, 0) 100%),
+      linear-gradient(180deg, rgba(139, 114, 245, 0.32) 0%, rgba(139, 114, 245, 0) 100%);
+    filter: blur(20px);
+    opacity: 0.85;
+    pointer-events: none;
+  }
 }
 
 .banner_image {
-    position: absolute;
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  max-width: 365px;
+  max-height: 377px;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  margin: 0 auto;
+
+  @media #{$breakpoint-dimension-sm} {
+    max-height: 434px;
+  }
 }
 
 .title {
-    font-size: 24px;
-    line-height: 114%; 
-    letter-spacing: -1.12px;
-    margin-bottom: 12px;
-    @media #{$breakpoint-dimension-md} {
-        font-size: 56px;
-    }
+  font-size: 24px;
+  line-height: 114%;
+  letter-spacing: -1.12px;
+  margin-bottom: 12px;
+
+  @media #{$breakpoint-dimension-md} {
+    font-size: 56px;
+  }
 }
 
 .subtitle {
-    overflow: hidden;
-    color: var(--color_fg_neutral);
-    text-overflow: ellipsis;
-    font-size: 18px;
-    line-height: 27px;
-    letter-spacing: -0.05px;
-    margin-bottom: 24px;
+  overflow: hidden;
+  color: var(--color_fg_neutral);
+  text-overflow: ellipsis;
+  font-size: 18px;
+  line-height: 27px;
+  letter-spacing: -0.05px;
+  margin-bottom: 24px;
 }
