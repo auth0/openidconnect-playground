@@ -118,6 +118,7 @@ export default async function RootLayout({
           dictionary={enLayoutDictionary.footer}
           auth0Logo={enLayoutDictionary.logos.auth0}
           siteLogo={enLayoutDictionary.logos.site}
+          theme={theme}
         />
         {/*  <noscript>
       <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6KSGFBD" height="0" width="0" style="display:none;visibility:hidden"></iframe>

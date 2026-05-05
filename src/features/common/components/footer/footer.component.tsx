@@ -21,12 +21,14 @@ interface FooterComponentProps {
   dictionary: LayoutDictionaryModel["footer"];
   siteLogo: StaticImageMetadataModel;
   auth0Logo: StaticImageMetadataModel;
+  theme: string;
 }
 
 export const FooterComponent: React.FC<FooterComponentProps> = ({
   dictionary,
   siteLogo,
   auth0Logo,
+  theme,
 }) => {
   const communityLinks = [
     dictionary.social.links.twitter,
@@ -34,6 +36,10 @@ export const FooterComponent: React.FC<FooterComponentProps> = ({
   ];
 
   const [modalState, setModalState] = useState(ModalStateValues.CLOSED);
+  const auth0FooterLogoSrc =
+    theme === "light"
+      ? "/images/auth0-footer-logo-light.svg"
+      : auth0Logo.src;
 
   const closeModal = () => {
     document.body.classList.remove("mobile-scroll-lock");
@@ -168,7 +174,7 @@ export const FooterComponent: React.FC<FooterComponentProps> = ({
                   href="https://auth0.com/"
                 >
                   <Image
-                    src={auth0Logo.src}
+                    src={auth0FooterLogoSrc}
                     alt={auth0Logo.alt}
                     sizes="100vh"
                     style={{
