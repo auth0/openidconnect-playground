@@ -2,151 +2,225 @@
 @use "libs/theme/styles/mixins" as *;
 
 .container {
-  display: none;
+  display: block;
   width: 100%;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  color: var(--color_fg_link);
+  margin-top: 2.5rem;
+  color: var(--color_fg_default);
   background: var(--color_bg_layer);
-  z-index: 100;
-
-  @media #{$breakpoint-dimension-sm} {
-    display: block;
-    padding: 1rem 1.5rem
-  }
-   @media #{$breakpoint-dimension-md} {
-    padding: 1rem 3rem
-  }
-  @media #{$breakpoint-dimension-lg} {
-    padding: 1rem 10rem
-  }
-  
-}
-
-.logo_title { 
-    font-size: 1rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 24px;
-    @media #{$breakpoint-dimension-md} {
-    font-size: 1.5rem;
-  }
-}
-
-.logo_small_title {
-    font-size: 11px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 11px;
 }
 
 .wrapper {
   @include ExtendedGrid;
-  height: $navbar-height;
+  padding: 2.5rem 1.5rem 0;
+
+  @media #{$breakpoint-dimension-sm} {
+    padding: 2.5rem 2.75rem 0;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    padding: 2.5rem 3rem 0;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    padding: 2.5rem 10rem 0;
+  }
 }
 
 .content {
   display: flex;
-  width: 100%;
-  margin: 0 auto;
-  height: 100%;
-  position: relative;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 2.5rem;
 }
 
-.nav_container {
-    display: flex;
+.topSection {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  column-gap: 2.5rem;
+  row-gap: 1.5rem;
+
+  @media #{$breakpoint-dimension-sm} {
+    grid-template-columns: repeat(3, minmax(120px, 1fr));
+    column-gap: 2rem;
+    row-gap: 2rem;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    grid-template-columns: minmax(220px, 1.2fr) repeat(3, minmax(120px, 1fr));
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    gap: 3rem;
+  }
+}
+
+.siteLogo {
+  align-self: flex-start;
+  grid-column: 1 / -1;
+  margin-bottom: 0.5rem;
+
+  @media #{$breakpoint-dimension-sm} {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    grid-column: auto;
+  }
+}
+
+.resources {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.resources:first-of-type {
+  grid-column: 1 / -1;
+
+  @media #{$breakpoint-dimension-sm} {
+    grid-column: auto;
+  }
+}
+
+.resources__title {
+  color: var(--color_fg_neutral);
+  font-size: 0.875rem;
+  letter-spacing: 0.0875rem;
+  line-height: 1.25rem;
+  text-transform: uppercase;
+}
+
+.resource__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+}
+
+.resource__anchor,
+.resource__button {
+  color: var(--color_fg_default);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 400;
+  transition: color $mid-animation-time ease;
+
+  @media #{$breakpoint-dimension-md} {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  &:hover {
+    color: var(--color_fg_bold);
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--color_border_focus);
+    outline-offset: 0.125rem;
+  }
+}
+
+.resource__anchor {
+  text-decoration: none;
+}
+
+.resource__button {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  background: transparent;
+}
+
+.subFooter__container {
+  border-top: 0;
+}
+
+.subFooter__wrapper {
+  @include ExtendedGrid;
+  padding: $ribbon-height 1.5rem 1rem;
+
+  @media #{$breakpoint-dimension-sm} {
+    padding: $ribbon-height 2.75rem 1rem;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    padding: $ribbon-height 3rem 1.5rem;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    padding: $ribbon-height 10rem 1.5rem;
+  }
+}
+
+.subFooter__content {
+  display: flex;
+}
+
+.bottomSection {
+  display: flex;
+  width: 100%;
+  border-top: 1px solid var(--color_border_default);
+  padding-top: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+
+  @media #{$breakpoint-dimension-sm} {
     flex-direction: row;
     align-items: center;
-
-    & .logo_img {
-        margin-right: 8px;
-    }
-}
-
-.navTabs {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 3rem;
-  
-  @media #{$breakpoint-dimension-sm} {
-    margin-left: 1.5rem;
-  }
-
-  @media #{$breakpoint-dimension-md} {
-     margin-left: 3.5rem;
-  }
-}
-
-.navList {
-  display: flex;
-  padding: 0;
-  list-style-type: none;
-  margin: 0;
-
-  height: 100%;
-
-  @media #{$breakpoint-dimension-sm} {
+    justify-content: space-between;
     gap: 1.5rem;
   }
-
-  @media #{$breakpoint-dimension-md} {
-    gap: 2rem;
-  }
 }
 
-.navList__item {
-  position: relative;
-  border-bottom: 2px solid transparent;
-  color: var(--color_fg_link);
-
-  &[data-active="true"] {
-    border-bottom: 2px solid var(--color_fg_link);
-  }
-}
-
-.navList__item,
-.navList__item > a {
+.bottomSection__logo {
   display: flex;
   align-items: center;
+  height: 2.125rem;
+  margin-right: 0;
+}
 
+.bottomSection__copyright {
+  color: var(--color_fg_neutral);
   font-size: 0.875rem;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 2rem;
-  letter-spacing: 0.2px;
+  line-height: 1.25rem;
+}
 
-  @media #{$breakpoint-dimension-md} {
-    font-size: 1rem;
+.modalButton {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--color_fg_link_primary);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color_fg_strong);
   }
 }
 
-.navList__link {
-  height: 100%;
-  display: flex;
-  align-items: center;
+.modalLink {
+  color: var(--color_fg_link_primary);
 
-  text-align: center;
-  text-decoration: none;
-
-  @media #{$breakpoint-dimension-md} {
-    gap: 0.8rem;
-    padding-bottom: 0.8rem;
+  &:hover {
+    color: var(--color_fg_strong);
   }
 }
 
-.navList__external__link {
-  color: $link-resting-color
-}
+body[data-theme="light"] {
+  .container {
+    background: var(--color_bg_layer);
+  }
 
-.icon__container {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  align-items: center;
+  .resources__title {
+    color: var(--color_fg_neutral);
+  }
+
+  .bottomSection__copyright {
+    color: var(--color_fg_neutral);
+  }
 }

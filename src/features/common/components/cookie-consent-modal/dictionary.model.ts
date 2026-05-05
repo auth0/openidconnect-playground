@@ -1,6 +1,3 @@
-
-import auth0Logo from "../../../../../public/images/auth0-logo.png"
-
 export interface LinkMetadataModel {
   label: string;
   path: string;
@@ -63,6 +60,7 @@ export interface LayoutDictionaryModel {
         facebook: LinkMetadataModel;
         twitter: LinkMetadataModel;
         linkedin: LinkMetadataModel;
+        discord: LinkMetadataModel;
       };
     };
     modal: {
@@ -129,28 +127,28 @@ export const enLayoutDictionary: LayoutDictionaryModel = {
   },
   footer: {
     site: {
-      url: "https://learnpasskeys.io/",
-      label: "Passkeys for Developers",
+      url: "/",
+      label: "OpenID Playground",
     },
     copyright: `Copyright © ${new Date().getFullYear()} Okta. All rights reserved.`,
     resources: {
-      title: "PRESENTED BY AUTH0",
+      title: "Powered by Auth0",
       links: [
         {
-          label: "JWT Tool",
+          label: "JWT",
           path: "https://jwt.io/",
         },
         {
-          label: "WebAuthn Playground",
+          label: "Webauthn",
           path: "https://webauthn.me/",
         },
         {
-          label: "OIDC Playground",
-          path: "https://openidconnect.net/",
+          label: "Zanzibar Academy",
+          path: "https://academy.auth0.com/",
         },
         {
-          label: "SAML Tool",
-          path: "https://samltool.io/",
+          label: "OpenID",
+          path: "https://openidconnect.net/",
         },
       ],
     },
@@ -177,7 +175,7 @@ export const enLayoutDictionary: LayoutDictionaryModel = {
       ],
     },
     social: {
-      title: "SOCIAL",
+      title: "Community",
       links: {
         youtube: {
           label: "YouTube",
@@ -194,6 +192,10 @@ export const enLayoutDictionary: LayoutDictionaryModel = {
         linkedin: {
           label: "LinkedIn",
           path: "https://www.linkedin.com/company/oktadev/",
+        },
+        discord: {
+          label: "Discord",
+          path: "https://discord.gg/auth0",
         },
       },
     },
@@ -234,16 +236,16 @@ export const enLayoutDictionary: LayoutDictionaryModel = {
   },
   logos: {
     site: {
-      src: auth0Logo.src,
-      alt: "A symbol that represents the Passkeys Playground logo: crossed mediaeval keys, each one shaped like the letter P.",
-      width: auth0Logo.width,
-      height: auth0Logo.height,
+      src: "/images/openid-logo.svg",
+      alt: "OpenID Connect logo",
+      width: 36,
+      height: 36,
     },
     auth0: {
-      src: auth0Logo.src,
+      src: "/images/auth0-footer-logo-dark.svg",
       alt: "This logo has the word “Auth0” and a shield on its left side. The shield has a four-pointed star inside, which spans across its surface.",
-      width: auth0Logo.width,
-      height: auth0Logo.height,
+      width: 220,
+      height: 32,
     },
   },
 };
