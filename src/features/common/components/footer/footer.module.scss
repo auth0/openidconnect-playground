@@ -186,7 +186,7 @@
 }
 
 .bottomSection__copyright {
-  color: var(--color_fg_neutral);
+  color: var(--functional-gray-400);
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
@@ -217,10 +217,6 @@ body[data-theme="light"] {
   }
 
   .resources__title {
-    color: var(--color_fg_neutral);
-  }
-
-  .bottomSection__copyright {
     color: var(--color_fg_neutral);
   }
 }
