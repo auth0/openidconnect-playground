@@ -14,11 +14,15 @@ export interface StaticImageMetadataModel {
 interface SiteBrandComponentProps {
   siteLogo: StaticImageMetadataModel;
   path: string;
+  title?: string;
+  subtitle?: string;
 }
 
 export const SiteBrandComponent: React.FC<SiteBrandComponentProps> = ({
   siteLogo,
   path,
+  title = "OpenID",
+  subtitle = "Playground",
 }) => {
   return (
     <a className={styles.brand} href={path}>
@@ -35,8 +39,8 @@ export const SiteBrandComponent: React.FC<SiteBrandComponentProps> = ({
         height={siteLogo.height}
       />
       <div className={clsx(SecondaryFont.className, styles.brand__headline)}>
-        <span className={styles.brand__title}>Passkeys</span>
-        <span className={styles.brand__subtitle}>Playground</span>
+        <span className={styles.brand__title}>{title}</span>
+        <span className={styles.brand__subtitle}>{subtitle}</span>
       </div>
     </a>
   );

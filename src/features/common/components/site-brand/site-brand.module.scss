@@ -1,8 +1,9 @@
 .brand {
-  width: 100%;
+  width: fit-content;
   display: flex;
   align-items: center;
-  height: 2.5rem;
+  height: 2.375rem;
+  text-decoration: none;
 
   svg {
     height: inherit;
@@ -19,16 +20,21 @@
 .brand__headline {
   display: flex;
   flex-direction: column;
-  margin-left: 1rem;
+  margin-left: 0.75rem;
   color: var(--color_fg_bold);
 }
 
 .brand__title {
   display: flex;
-  font-size: 1.5rem;
-  line-height: 1.5rem;
+  font-size: 2rem;
+  line-height: 2rem;
   margin-top: 0;
   letter-spacing: 0.02rem;
+
+  @media (max-width: 420px) {
+    font-size: 1.75rem;
+    line-height: 1.75rem;
+  }
 }
 
 .brand__subtitle {
