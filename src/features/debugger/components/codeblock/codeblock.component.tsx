@@ -73,7 +73,7 @@ export const Codeblock = (props: CodeBlockProps) => {
                 <div key={idx} className={styles.codeLine}>
                   <p className={styles.codeLineNumber}>{`0${idx + 2}`}</p>
                   <p
-                    className={styles.paramValue}
+                    className={styles.param_value}
                     data-editable={data.isEditable ? "true" : "false"}
                     onClick={onClickHandler}
                   >
