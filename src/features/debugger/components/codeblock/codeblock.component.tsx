@@ -28,8 +28,6 @@ type CodeBlockProps = {
   HeaderRightComponent?: ComponentType;
 };
 
-const formatLineNumber = (num: number) => num.toString().padStart(2, "0");
-
 export const Codeblock = (props: CodeBlockProps) => {
   const { title, type, HeaderRightComponent } = props;
   return (
@@ -63,7 +61,7 @@ export const Codeblock = (props: CodeBlockProps) => {
                 <div key={idx} className={styles.code_line}>
                   <p className={styles.code_line_number}>{`0${idx + 2}`}</p>
                   <p
-                    className={styles.paramValue}
+                    className={styles.param_value}
                     data-editable={data.isEditable ? "true" : "false"}
                   >
                     {`${idx > 0 ? "&" : ""}${data.key}=`}
@@ -82,7 +80,7 @@ export const Codeblock = (props: CodeBlockProps) => {
                 .split("\n")
                 .map((line, index) => (
                   <div key={index} className={styles.code_line}>
-                    <p className={styles.code_line_number} >{`${
+                    <p className={styles.code_line_number}>{`${
                       index < 9 ? "0" : ""
                     }${index + 1}`}</p>
                     <p className={clsx(styles.param_value, styles.json_line)}>

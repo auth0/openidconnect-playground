@@ -54,7 +54,7 @@
   padding: 1.5rem 0;
 }
 
-.codeLine {
+.code_line{
   display: flex;
   &:first-child {
     gap: 1rem;
@@ -64,12 +64,12 @@
   }
 }
 
-.codeLineNumber {
+.code_line_number {
   color: var(--functional-gray-550);
   flex-shrink: 0;
 }
 
-.paramValue {
+.param_value {
    &[data-editable="true"] span{
     border: 1px solid var(--seafoam);
     padding: 0 0.5rem;
