@@ -1,27 +1,24 @@
-import jose from "node-jose";
-import jwt from "jsonwebtoken";
+import { exportSPKI, importJWK, type JWK } from "jose";
+import jwt, { type JwtPayload, type Secret } from "jsonwebtoken";
 
 type VerifyResult =
-  | { ok: true; decoded: string }
+  | { ok: true; decoded: JwtPayload | string }
   | { ok: false; error: string };
 
-export async function convertJwkToPem(jwk) {
-  const keyStore = jose.JWK.createKeyStore();
-  const key = await keyStore.add(jwk, "json");
-  return key.toPEM();
+export async function convertJwkToPem(jwk: JWK): Promise<string> {
+  const key = await importJWK(jwk, "RS256");
+  return exportSPKI(key as CryptoKey);
 }
 
-export async function verify(idToken, secret): Promise<VerifyResult> {
+export async function verify(
+  idToken: string,
+  secret: Secret,
+): Promise<VerifyResult> {
   try {
-    const decoded = await new Promise<string>((resolve, reject) => {
-      jwt.verify(idToken, secret, (err, decoded) => {
-        if (err) reject(err);
-        else resolve(decoded as string);
-      });
-    });
+    const decoded = jwt.verify(idToken, secret) as JwtPayload | string;
     return { ok: true, decoded };
-  } catch (error) {
-    const errorMessage = error?.message;
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : undefined;
     return {
       ok: false,
       error: errorMessage ?? "Invalid Token",
