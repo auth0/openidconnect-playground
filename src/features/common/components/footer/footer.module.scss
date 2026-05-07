@@ -191,26 +191,6 @@
   line-height: 1.25rem;
 }
 
-.modalButton {
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: var(--color_fg_link_primary);
-  cursor: pointer;
-
-  &:hover {
-    color: var(--color_fg_strong);
-  }
-}
-
-.modalLink {
-  color: var(--color_fg_link_primary);
-
-  &:hover {
-    color: var(--color_fg_strong);
-  }
-}
-
 body[data-theme="light"] {
   .container {
     background: var(--color_bg_layer);
