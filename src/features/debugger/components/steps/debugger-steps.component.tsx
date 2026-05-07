@@ -18,7 +18,7 @@ type Steps = {
 };
 
 export const DebuggerSteps = () => {
-  const [currentStepIndex, setCurrentStepIndex] = useState(1);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [debuggerStepsData, setDebuggerStepsData] = useState<DebuggerStepsData>(
     InitialDebuggerStepsData,
   );
