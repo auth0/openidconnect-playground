@@ -18,7 +18,7 @@ export type InitialModalData = {
 };
 
 type ModalOptions = {
-  name: string;
+  name: keyof InitialModalData;
   title: string;
   defaultValue: string | null;
   type: "input" | "select";
@@ -114,7 +114,7 @@ export const ConfigurationModal = ({
   initialData,
   onSaveData,
 }: ModalProps) => {
-  const SERVER_URLS = {
+  const SERVER_URLS: Record<string, string> = {
     auth0: "https://sample.auth0.com/.well-known/openid-configuration",
     google: "https://accounts.google.com/.well-known/openid-configuration",
     custom: "",
