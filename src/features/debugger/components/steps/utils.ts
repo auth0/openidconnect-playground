@@ -80,7 +80,7 @@ export function getAppData(savedData: string | null) {
     validated: validated.validated ?? InitialDebuggerStepsData.validated,
     currentStep: validated.currentStep ?? InitialDebuggerStepsData.currentStep,
   };
-  let auth: AuthData = {
+  let auth: AuthData | null = {
     authCode: validated.authCode,
     clientID: validated.clientID,
     clientSecret: validated.clientSecret,
