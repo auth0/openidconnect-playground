@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import styles from "../footer/footer.module.scss"
+import styles from "./cookie-consent-modal.module.scss"
 
 const CookiesModal: React.FC = () => {
   return (
@@ -9,8 +9,8 @@ const CookiesModal: React.FC = () => {
       If you wish to opt out of this sharing of your personal data in connection
       with cookies, please update your{" "}
       <button
-        className={styles.modalButton}
-        onClick={() => window.OneTrust.ToggleInfoDisplay()}
+        className={styles.modal_button}
+        onClick={() => window.OneTrust?.ToggleInfoDisplay()}
       >
         cookie settings
       </button>
@@ -25,7 +25,7 @@ const EmailModal: React.FC = () => {
       If you wish to opt out of email-based sharing, provide your email address
       at{" "}
       <a
-        className={styles.modalLink}
+        className={styles.modal_link}
         href="https://www.okta.com/your-privacy-choices"
         target="_blank"
         rel="noopener noreferrer"
