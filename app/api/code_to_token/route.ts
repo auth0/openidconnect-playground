@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
   } catch (error: unknown) {
     console.error("Error fetching token:", error);
     return NextResponse.json(
-      { message: error.message },
+      { message: error instanceof Error ? error.message : "An unexpected error occurred." },
       { status: 500 },
     );
   }

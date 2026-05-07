@@ -56,7 +56,7 @@ export const DebuggerSteps = () => {
 
   const requestDataStepTwo: RequestData = useMemo(() => {
     return {
-      url: debuggerStepsData.tokenEndpoint,
+      url: debuggerStepsData.tokenEndpoint ?? "",
       method: "POST",
       isEditable: false,
       params: [
@@ -66,21 +66,21 @@ export const DebuggerSteps = () => {
         },
         {
           key: "client_id",
-          value: authData?.clientID,
+          value: authData?.clientID ?? "",
           isEditable: true,
         },
         {
           key: "client_secret",
-          value: authData?.clientSecret,
+          value: authData?.clientSecret ?? "",
           isEditable: true,
         },
         {
           key: "redirect_uri",
-          value: authData?.redirectURI,
+          value: authData?.redirectURI ?? "",
         },
         {
           key: "code",
-          value: authData?.authCode
+          value: authData?.authCode ?? ""
         }
       ],
     };
@@ -97,7 +97,7 @@ export const DebuggerSteps = () => {
       label: "Exchange Code from Token",
       render: () => (
         <StepTwo
-          authCode={authData?.authCode}
+          authCode={authData?.authCode ?? ""}
           requestData={requestDataStepTwo}
           setDebuggerStepsData={setDebuggerStepsData}
           setCurrentStepIndex={setCurrentStepIndex}
