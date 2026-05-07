@@ -18,28 +18,28 @@ type Steps = {
 };
 
 export const DebuggerSteps = () => {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [currentStepIndex, setCurrentStepIndex] = useState(1);
   const [debuggerStepsData, setDebuggerStepsData] = useState<DebuggerStepsData>(
     InitialDebuggerStepsData,
   );
   const [authData, setAuthData] = useState<AuthData | null>(null);
   const requestData = useMemo<RequestData>(() => {
     return {
-      url: debuggerStepsData.authEndpoint,
+      url: debuggerStepsData.authEndpoint ?? "",
       isEditable: true,
       params: [
         {
           key: "client_id",
-          value: authData?.clientID,
+          value: authData?.clientID ?? "",
           isEditable: true,
         },
         {
           key: "redirect_uri",
-          value: authData?.redirectURI,
+          value: authData?.redirectURI ?? "",
         },
         {
           key: "scope",
-          value: debuggerStepsData.scopes,
+          value: debuggerStepsData.scopes ?? "",
           isEditable: true,
         },
         {
@@ -48,7 +48,7 @@ export const DebuggerSteps = () => {
         },
         {
           key: "state",
-          value: authData?.stateToken,
+          value: authData?.stateToken ?? "",
         },
       ],
     };
@@ -84,7 +84,7 @@ export const DebuggerSteps = () => {
     const { debuggerSteps, auth } = getAppData(savedData);
     if (debuggerSteps) {
       setDebuggerStepsData(debuggerSteps);
-      setCurrentStepIndex(debuggerSteps.currentStep)
+      setCurrentStepIndex(debuggerSteps.currentStep ?? 0);
     }
     if (auth) setAuthData(auth);
     if (!auth) {
@@ -106,16 +106,23 @@ export const DebuggerSteps = () => {
             setDebuggerStepsData(prev => ({ ...prev, currentStep: 1 }));
           }
           setAuthData(authDataResponse);
-          localStorage.setItem(
-            "app-state",
-            JSON.stringify({ ...debuggerSteps, ...authDataResponse }),
-          );
         })
         .catch((error) => {
           console.error("Failed to fetch auth data:", error);
         });
     }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "app-state",
+      JSON.stringify({
+        ...debuggerStepsData,
+        ...(authData ?? {}),
+        currentStep: currentStepIndex,
+      }),
+    );
+  }, [debuggerStepsData, authData, currentStepIndex]);
 
   useEffect(() => {
     if (currentStepIndex === 0) return;
