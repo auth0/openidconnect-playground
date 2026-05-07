@@ -20,7 +20,7 @@ export const StepTwo = ({
   const [exchangeResult, setExchangeResult] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const bodyFromRequestData = () => {
-    const body = {
+    const body: Record<string, string> = {
       tokenEndpoint: requestData.url,
     };
     requestData.params.forEach((param) => {
@@ -59,9 +59,13 @@ export const StepTwo = ({
       const statusString = `HTTP/1.1 ${data.result.response.statusCode}`;
       const jsonResponseString = `Content-Type: application/json\n${JSON.stringify(result, null, 2)}`;
       setExchangeResult(`${statusString}\n${jsonResponseString}`);
-    } catch (error) {
+    } catch (error: unknown) {
       const statusString = `HTTP/1.1 500`;
-      const [errorTitle, errorDescription] = error.message.split(":");
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Error in exchange, please try again";
+      const [errorTitle, errorDescription] = message.split(":");
       const errorObject = {
         error: errorTitle ? errorTitle : "Error",
         error_description: errorDescription
