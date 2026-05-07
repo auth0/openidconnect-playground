@@ -170,15 +170,15 @@ export const DebuggerSteps = () => {
 
   const initialModalData: InitialModalData = useMemo(() => {
     return {
-      audience: debuggerStepsData.audience,
-      authEndpoint: debuggerStepsData.authEndpoint,
-      clientId: authData?.clientID,
-      clientSecret: authData?.clientSecret,
-      domain: debuggerStepsData.domain,
-      tokenEndpoint: debuggerStepsData.tokenEndpoint,
-      tokenKeysEndpoint: debuggerStepsData.tokenKeysEndpoint,
-      scope: debuggerStepsData.scopes,
-      serverTemplate: debuggerStepsData.server,
+      audience: debuggerStepsData.audience ?? "",
+      authEndpoint: debuggerStepsData.authEndpoint ?? InitialDebuggerStepsData.authEndpoint!,
+      clientId: authData?.clientID ?? "",
+      clientSecret: authData?.clientSecret ?? "",
+      domain: debuggerStepsData.domain ?? InitialDebuggerStepsData.domain!,
+      tokenEndpoint: debuggerStepsData.tokenEndpoint ?? InitialDebuggerStepsData.tokenEndpoint!,
+      tokenKeysEndpoint: debuggerStepsData.tokenKeysEndpoint ?? InitialDebuggerStepsData.tokenKeysEndpoint!,
+      scope: debuggerStepsData.scopes ?? InitialDebuggerStepsData.scopes!,
+      serverTemplate: debuggerStepsData.server ?? InitialDebuggerStepsData.server!,
     };
   }, [authData, debuggerStepsData]);
 
