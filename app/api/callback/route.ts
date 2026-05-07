@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
   if (code) {
-    const secret = process.env.JWT_SECRET;
+    const secret = process.env.JWT_SECRET ?? "";
     const cookieStore = await cookies();
     const signedRefresh = "s:" + signature.sign("false", secret);
     const signedAuthCode = "s:" + signature.sign(code, secret);

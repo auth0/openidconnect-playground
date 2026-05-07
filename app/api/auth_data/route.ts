@@ -4,7 +4,7 @@ import signature from "cookie-signature";
 import crypto from "crypto";
 
 export async function GET() {
-  const secret = process.env.JWT_SECRET;
+  const secret = process.env.JWT_SECRET ?? "";
   const cookieStore = await cookies();
   const refreshValue = cookieStore.get("refresh")?.value;
   const authCodeValue = cookieStore.get("authCode")?.value;

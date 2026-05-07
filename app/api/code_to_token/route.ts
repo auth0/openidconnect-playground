@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       client_id: data.clientID,
       client_secret: data.clientSecret,
       grant_type: "authorization_code",
-      redirect_uri: process.env.REDIRECT_URI,
+      redirect_uri: process.env.REDIRECT_URI ?? "",
     };
 
     const providedUrl = new URL(data.tokenEndpoint);

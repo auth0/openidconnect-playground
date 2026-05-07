@@ -32,13 +32,14 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const tokenHeader = jwt.decode(data.idToken, { complete: true }).header;
-    if (!tokenHeader || !tokenHeader.alg) {
+    const decodedToken = jwt.decode(data.idToken, { complete: true });
+    if (!decodedToken || typeof decodedToken === "string" || !decodedToken.header?.alg) {
       return NextResponse.json(
         { message: "Invalid token header." },
         { status: 400 },
       );
     }
+    const tokenHeader = decodedToken.header;
 
     // RS256 = validation with public key fetched from an endpoint
     if (tokenHeader.alg === "RS256") {
@@ -75,7 +76,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Find the key with the matching 'kid'
-      const key = jwks.keys.find((k) => k.kid === tokenHeader.kid);
+      const key = jwks.keys.find((k: { kid?: string }) => k.kid === tokenHeader.kid);
       if (!key) {
         return NextResponse.json(
           {
