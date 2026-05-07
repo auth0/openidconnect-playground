@@ -31,8 +31,9 @@ export const FooterComponent: React.FC<FooterComponentProps> = ({
   theme,
 }) => {
   const communityLinks = [
+    dictionary.social.links.youtube,
     dictionary.social.links.twitter,
-    dictionary.social.links.discord,
+    dictionary.social.links.linkedin,
   ];
 
   const [modalState, setModalState] = useState(ModalStateValues.CLOSED);
