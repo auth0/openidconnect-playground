@@ -41,12 +41,16 @@ export const StepThree = ({
         };
       });
       setCurrentStepIndex(3);
-    } catch (error) {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "There was an error verifying the token. Try again.";
       setDebuggerStepsData((prev) => {
         return {
           ...prev,
           validated: false,
-          error: error.message,
+          error: errorMessage,
         };
       });
       setCurrentStepIndex(3);

@@ -168,7 +168,7 @@ export const DebuggerSteps = () => {
       label: "Verify User Token",
       render: () => (
         <StepThree
-          token={debuggerStepsData?.idToken}
+          token={debuggerStepsData?.idToken ?? ""}
           requestData={requestDataStepThree}
           setDebuggerStepsData={setDebuggerStepsData}
           setCurrentStepIndex={setCurrentStepIndex}
@@ -180,9 +180,9 @@ export const DebuggerSteps = () => {
       label: "The token is valid!",
       render: () => (
         <StepFour
-          decodedToken={debuggerStepsData?.idTokenDecoded}
+          decodedToken={debuggerStepsData?.idTokenDecoded ?? ""}
           onRestart={restartData}
-          validated={debuggerStepsData?.validated}
+          validated={debuggerStepsData?.validated ?? false}
         />
       ),
     },
