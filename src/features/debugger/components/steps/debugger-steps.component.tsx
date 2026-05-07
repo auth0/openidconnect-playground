@@ -18,7 +18,7 @@ type Steps = {
 };
 
 export const DebuggerSteps = () => {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [currentStepIndex, setCurrentStepIndex] = useState(1);
   const [debuggerStepsData, setDebuggerStepsData] = useState<DebuggerStepsData>(
     InitialDebuggerStepsData,
   );
@@ -171,10 +171,6 @@ export const DebuggerSteps = () => {
             setDebuggerStepsData(prev => ({ ...prev, currentStep: 1 }));
           }
           setAuthData(authDataResponse);
-          localStorage.setItem(
-            "app-state",
-            JSON.stringify({ ...debuggerSteps, ...authDataResponse }),
-          );
         })
         .catch((error) => {
           console.error("Failed to fetch auth data:", error);
