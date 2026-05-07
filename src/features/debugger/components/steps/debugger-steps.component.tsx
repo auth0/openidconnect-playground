@@ -261,22 +261,22 @@ export const DebuggerSteps = () => {
                   ? "current"
                   : "upcoming";
             return (
-              <div key={id} className={styles.stepContainer}>
+              <div key={id} className={styles.step_container}>
                 <div
-                  className={styles.stepTitleContainer}
+                  className={styles.step_title_container}
                   data-state={state}
                   aria-current={state === "current" ? "step" : undefined}
                   aria-label={`${label} ${state}`}
                 >
-                  <div className={styles.stepTitleContent}>
+                  <div className={styles.step_title_content}>
                     {" "}
-                    <div className={styles.stepNumber}>{index + 1}</div>
+                    <div className={styles.step_number}>{index + 1}</div>
                     <p>{label}</p>
                   </div>
                 </div>
 
                 <div
-                  className={styles.stepContent}
+                  className={styles.step_content}
                   data-open={state === "current"}
                   aria-hidden={state !== "current"}
                   ref={(el) => {
