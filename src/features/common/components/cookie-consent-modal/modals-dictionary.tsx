@@ -45,3 +45,5 @@ export const modalsDictionary = {
     Modal: EmailModal,
   },
 };
+
+export type ModalId = keyof typeof modalsDictionary;

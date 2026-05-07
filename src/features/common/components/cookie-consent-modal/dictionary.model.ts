@@ -1,3 +1,5 @@
+import type { ModalId } from "./modals-dictionary";
+
 export interface LinkMetadataModel {
   label: string;
   path: string;
@@ -67,7 +69,7 @@ export interface LayoutDictionaryModel {
       title: string;
       content: string;
       list: {
-        id: string;
+        id: ModalId;
       }[];
     };
   };
