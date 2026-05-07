@@ -109,7 +109,7 @@ export const DebuggerSteps = () => {
         },
         {
           key: "code",
-          value: authData?.authCode
+          value: authData?.authCode ?? ""
         }
       ],
     };
