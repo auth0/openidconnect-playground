@@ -76,7 +76,7 @@ export const ConfigurationModal = ({ isOpen, onClose }: ModalProps) => {
               <div className={styles.input_container} key={idx}>
                 <label>{modalOption.title}</label>
                 <input
-                  defaultValue={modalOption.defaultValue}
+                  defaultValue={modalOption.defaultValue ?? ""}
                   className={styles.input}
                 />
               </div>
