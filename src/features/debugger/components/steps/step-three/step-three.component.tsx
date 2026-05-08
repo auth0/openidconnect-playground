@@ -30,7 +30,7 @@ export const StepThree = () => {
 
 const ViewJWTButton = ({ token }: { token: string }) => {
   return (
-    <a href={`https://jwt.io/#token=${token}`} target="_blank" className={styles.button_container}>
+    <a href={`https://jwt.io/#token=${token}`} target="_blank" className={styles.buttonContainer}>
       <ConfigurationIcon />
       View on JWT.IO
     </a>

@@ -12,7 +12,7 @@
   background: var(--color_bg_layer);
   backdrop-filter: blur(2rem);
   z-index: 100;
-  
+
   @media #{$breakpoint-dimension-sm} {
     display: none;
   }
@@ -33,7 +33,6 @@
   align-items: center;
   justify-content: space-between;
   color: var(--color_fg_link);
-  
 }
 
 .headerLogo {
@@ -48,16 +47,6 @@
     width: auto;
   }
 
-  h1 {
-    font-size: 1.25rem;
-    line-height: 24px;
-  }
-
-  h3 {
-    font-size: 11px;
-    line-height: 11px;
-  }
-
   & .headerImageLogo {
         margin-right: 8px;
   }
@@ -65,6 +54,16 @@
   @media #{$breakpoint-dimension-xs} {
     display: flex;
   }
+}
+
+.logoTitle {
+  font-size: 1.25rem;
+  line-height: 24px;
+}
+
+.logoSmallTitle {
+  font-size: 11px;
+  line-height: 11px;
 }
 
 .burgerIconWrapper {
@@ -153,7 +152,7 @@
 .menuContent {
   @include InnerContentFlex;
   width: 100%;
-  padding: .25rem; 
+  padding: .25rem;
 }
 
 .menuList {
@@ -180,7 +179,7 @@
   align-items: center;
   p {
       display: flex;
-      align-items: center;  
+      align-items: center;
       border-radius: .75rem;
       width: 100%;
       font-size: 1rem;
@@ -196,7 +195,7 @@
 
 .menuItemLink {
   display: flex;
-  align-items: center;  
+  align-items: center;
   border-radius: .75rem;
   width: 100%;
   font-size: 1rem;

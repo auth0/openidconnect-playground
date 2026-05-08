@@ -12,6 +12,7 @@ export type RequestData = {
     isEditable?: boolean;
   }[];
 };
+
 interface CodeBlockProps {
   title: string;
   type: "request" | "json" | "token";
@@ -26,24 +27,24 @@ export const Codeblock = (props: CodeBlockProps) => {
   const { title, type, requestData, token, HeaderRightComponent } = props;
   return (
     <div className={styles.container}>
-      <div className={styles.header_container}>
-        <div className={styles.title_container}>{title}</div>
+      <div className={styles.headerContainer}>
+        <div className={styles.titleContainer}>{title}</div>
         {HeaderRightComponent && <HeaderRightComponent />}
       </div>
-      <div className={styles.scroll_container}>
+      <div className={styles.scrollContainer}>
         <div
           className={clsx(
-            styles.code_block,
-            type === "token" && styles.vertical_scroll_container,
-            type === "request" && styles.horizontal_scroll_container
+            styles.codeBlock,
+            type === "token" && styles.verticalScrollContainer,
+            type === "request" && styles.horizontalScrollContainer
           )}
         >
           {type === "request" && requestData ? (
             <>
-              <div className={styles.code_line}>
-                <p className={styles.code_line_number}>01</p>
+              <div className={styles.codeLine}>
+                <p className={styles.codeLineNumber}>01</p>
                 <p
-                  className={styles.param_value}
+                  className={styles.paramValue}
                   data-editable={requestData.isEditable}
                 >
                   <span>{`${requestData.method ? requestData.method : ""} ${requestData.url}?`}</span>

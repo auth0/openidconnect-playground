@@ -40,7 +40,7 @@
     color: var(--color_fg_bold);
 }
 
-.stepContainer:not(:last-child) .step_title_container {
+.stepContainer:not(:last-child) .stepTitleContainer {
     border-bottom: 0.5px solid var(--color_border_light);
 }
 
@@ -82,7 +82,7 @@
   }
 }
 
-.button_container {
+.buttonContainer {
   display: flex;
   flex-direction: row;
   gap: 8px;

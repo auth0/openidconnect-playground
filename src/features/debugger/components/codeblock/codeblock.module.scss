@@ -7,18 +7,18 @@
   background-color: var(--color_bg_light);
 }
 
-.horizontal_scroll_container {
+.horizontalScrollContainer {
   min-width: 544px;
 }
 
-.vertical_scroll_container {
+.verticalScrollContainer {
   max-height: 248px;
   @media #{$breakpoint-dimension-sm} {
     max-height: fit-content;
   }
 }
 
-.title_container {
+.titleContainer {
   color: var(--color_fg_bold);
   text-transform: uppercase;
   font-family: var(--font-secondary);
@@ -27,20 +27,20 @@
   line-height: 20px;
 }
 
-.header_container {
+.headerContainer {
   padding: 24px;
   display: flex;
   justify-content: space-between;
   border-bottom: 0.5px solid var(--color_border_light);
 }
 
-.scroll_container {
+.scrollContainer {
   overflow-x: auto;
   overflow-y: auto;
   max-width: 100%;
 }
 
-.code_block {
+.codeBlock {
   max-width: 544px;
   color: var(--color_fg_link);
   font-feature-settings: 'liga' off, 'clig' off;
