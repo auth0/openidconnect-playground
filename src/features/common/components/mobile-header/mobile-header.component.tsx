@@ -71,8 +71,8 @@ useEffect(() => {
                 className={styles.headerImageLogo}
               />
               <div>
-                <h1 className={styles.logo_title}>OpenID Connect</h1>
-                <h3 className={styles.logo_small_title}>Playground</h3>
+                <h1 className={styles.logoTitle}>OpenID Connect</h1>
+                <h3 className={styles.logoSmallTitle}>Playground</h3>
               </div>
             </div>
             <ControlIcon />
