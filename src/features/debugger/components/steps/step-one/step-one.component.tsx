@@ -4,6 +4,7 @@ import { Codeblock, RequestData } from "../../codeblock/codeblock.component";
 //TODO: replace with actual data coming from local state and api endpoint
 const REQUEST_DATA: RequestData = {
   url: "https://samples.auth0.com/authorize",
+  isEditable: true,
   params: [
     {
       key: "client_id",

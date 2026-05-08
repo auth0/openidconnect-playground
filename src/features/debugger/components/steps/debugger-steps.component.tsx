@@ -32,7 +32,7 @@ const stepsList: Steps[] = [
 ];
 
 export const DebuggerSteps = () => {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [currentStepIndex, setCurrentStepIndex] = useState(1);
 
   return (
     <div className={styles.container}>

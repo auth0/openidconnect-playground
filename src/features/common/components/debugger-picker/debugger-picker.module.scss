@@ -16,13 +16,22 @@ $picker-list-offset-lg: calc(($picker-list-width-lg - $picker-width-lg) / 2);
 .picker {
   position: relative;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   background: transparent;
   border: none;
   color: var(--color_fg_bold);
   cursor: pointer;
-  gap: 0.75rem;
+  gap: 8px;
+  width: 100%;
+
+  @media #{$breakpoint-dimension-sm} {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    width: auto;
+  }
 
   @media #{$breakpoint-dimension-md} {
     &[data-has-label="true"] {
@@ -39,11 +48,9 @@ $picker-list-offset-lg: calc(($picker-list-width-lg - $picker-width-lg) / 2);
   list-style-type: none;
   margin: 0;
   gap: 0.5rem;
-  font-size: 0.8125rem;
-  line-height: 1.3125rem;
-  letter-spacing: -0.05px;
-
-  
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.15px;
 
   height: 100%;
 
