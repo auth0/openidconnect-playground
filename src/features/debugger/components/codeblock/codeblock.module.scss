@@ -54,7 +54,7 @@
   padding: 1.5rem 0;
 }
 
-.code_line{
+.codeLine{
   display: flex;
   &:first-child {
     gap: 1rem;
@@ -64,12 +64,12 @@
   }
 }
 
-.code_line_number {
+.codeLineNumber {
   color: var(--functional-gray-550);
   flex-shrink: 0;
 }
 
-.param_value {
+.paramValue {
    &[data-editable="true"] span{
     border: 1px solid var(--seafoam);
     padding: 0 0.5rem;
@@ -86,6 +86,6 @@
   word-break: break-word;
 }
 
-.json_line {
+.jsonLine {
   color: #928eff;
 }

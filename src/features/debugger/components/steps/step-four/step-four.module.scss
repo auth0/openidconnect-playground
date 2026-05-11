@@ -1,7 +1,7 @@
 @use "libs/theme/styles/variables" as *;
 @use "libs/theme/styles/mixins" as *;
 
-.buttons_container {
+.buttonsContainer {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;

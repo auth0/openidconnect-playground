@@ -32,24 +32,24 @@ export const Codeblock = (props: CodeBlockProps) => {
   const { title, type, HeaderRightComponent } = props;
   return (
     <div className={styles.container}>
-      <div className={styles.header_container}>
-        <div className={styles.title_container}>{title}</div>
+      <div className={styles.headerContainer}>
+        <div className={styles.titleContainer}>{title}</div>
         {HeaderRightComponent && <HeaderRightComponent />}
       </div>
-      <div className={styles.scroll_container}>
+      <div className={styles.scrollContainer}>
         <div
           className={clsx(
-            styles.code_block,
-            (type === "token" || type === "json") && styles.vertical_scroll_container,
-            (type === "request" || type === "json") && styles.horizontal_scroll_container,
+            styles.codeBlock,
+            (type === "token" || type === "json") && styles.verticalScrollContainer,
+            (type === "request" || type === "json") && styles.horizontalScrollContainer,
           )}
         >
           {type === "request" && props.requestData ? (
             <>
-              <div className={styles.code_line}>
-                <p className={styles.code_line_number}>01</p>
+              <div className={styles.codeLine}>
+                <p className={styles.codeLineNumber}>01</p>
                 <p
-                  className={styles.param_value}
+                  className={styles.paramValue}
                   data-editable={props.requestData.isEditable}
                 >
                   <span>{`${
@@ -58,10 +58,10 @@ export const Codeblock = (props: CodeBlockProps) => {
                 </p>
               </div>
               {props.requestData.params.map((data, idx) => (
-                <div key={idx} className={styles.code_line}>
-                  <p className={styles.code_line_number}>{`0${idx + 2}`}</p>
+                <div key={idx} className={styles.codeLine}>
+                  <p className={styles.codeLineNumber}>{`0${idx + 2}`}</p>
                   <p
-                    className={styles.param_value}
+                    className={styles.paramValue}
                     data-editable={data.isEditable ? "true" : "false"}
                   >
                     {`${idx > 0 ? "&" : ""}${data.key}=`}
@@ -79,11 +79,11 @@ export const Codeblock = (props: CodeBlockProps) => {
               {JSON.stringify(JSON.parse(props.json), null, 2)
                 .split("\n")
                 .map((line, index) => (
-                  <div key={index} className={styles.code_line}>
-                    <p className={styles.code_line_number}>{`${
+                  <div key={index} className={styles.codeLine}>
+                    <p className={styles.codeLineNumber}>{`${
                       index < 9 ? "0" : ""
                     }${index + 1}`}</p>
-                    <p className={clsx(styles.param_value, styles.json_line)}>
+                    <p className={clsx(styles.paramValue, styles.jsonLine)}>
                       <span>{line}</span>
                     </p>
                   </div>

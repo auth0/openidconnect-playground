@@ -47,7 +47,7 @@ export const StepFour = () => {
         type="json"
         json={JSON_EXAMPLE}
       />
-      <div className={styles.buttons_container }>
+      <div className={styles.buttonsContainer }>
         <Button label="Start Over" />
         <Button label="Log Out" variant="transparent"/>
       </div>
