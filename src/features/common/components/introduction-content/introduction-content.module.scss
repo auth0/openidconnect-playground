@@ -34,14 +34,38 @@
   line-height: 2rem;
   letter-spacing: -0.03125rem;
   font-weight: 500;
+
+  @media #{$breakpoint-dimension-sm} {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    letter-spacing: -0.03125rem;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    letter-spacing: -0.03125rem;
+  }
 }
 
 .paragraph {
   color: var(--color_fg_default);
   font-family: var(--font-secondary);
-  font-size: 1.125rem;
-  line-height: 1.6875rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
   letter-spacing: -0.003125rem;
+
+  @media #{$breakpoint-dimension-sm} {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    letter-spacing: -0.003125rem;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    font-size: 1.125rem;
+    line-height: 1.6875rem;
+    letter-spacing: -0.003125rem;
+  }
 }
 
 .resourcesList {
@@ -64,11 +88,16 @@
 
   color: var(--color_fg_bold);
   font-family: var(--font-secondary);
-  font-size: 1rem;
-  line-height: 1.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.375rem;
   letter-spacing: 0.02rem;
   font-weight: 500;
   transition: border-color 0.2s ease;
+
+  @media #{$breakpoint-dimension-sm} {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
 
   &[data-featured="true"] {
     border-color: var(--color_border_selected);
