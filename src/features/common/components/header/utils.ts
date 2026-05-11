@@ -12,9 +12,9 @@ export const linkPagesInfo: Array<LinkInfo> = [
     pathname: "/",
   },
   {
-    id: "tutorial",
-    label: "Tutorial",
-    pathname: "/tutorial",
+    id: "introduction",
+    label: "Introduction",
+    pathname: "/introduction",
   },
   {
     id: "community",
