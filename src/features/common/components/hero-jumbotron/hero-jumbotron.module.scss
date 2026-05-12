@@ -26,9 +26,7 @@
   }
 
   :global(body[data-theme="light"]) &:before {
-    background: url("/images/light.hero-banner-bg.png")
-      center top no-repeat;
-    background-size: cover;
+    background: none;
   }
 
   @media #{$breakpoint-dimension-xxs} {
@@ -60,8 +58,9 @@
 }
 
 .wrapper {
-  @include ExtendedGrid;
-  justify-content: center;
+  width: calc(100% - 4rem);
+  max-width: calc(#{$extended-grid-max-width} - 4rem);
+  margin: 0 auto;
 
   border-radius: 0;
   overflow: hidden;
@@ -90,9 +89,7 @@
     }
 
     :global(body[data-theme="light"]) &:before {
-      background-size: cover;
-      background: url("/images/light.hero-banner-bg.png")
-        center top / 140% no-repeat;
+      background: unset;
     }
   }
 }
@@ -181,9 +178,9 @@
   }
 
   @media #{$breakpoint-dimension-md} {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    letter-spacing: 0.01rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    letter-spacing: -0.00625rem;
   }
 }
 

@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import styles from "./hero-jumbotron.module.scss";
 import Link from "next/link";
 
@@ -34,19 +33,22 @@ export const HeroJumbotronComponent: React.FC<HeroJumbotronComponentProps> = ({
               </Link>
             </div>
             <div className={styles.heroMedia}>
-              <Image
-                className={styles.heroImage}
-                src={"/images/castle.png"}
-                alt={"Castle"}
-                sizes="100vw"
-                priority
-                style={{
-                  width: "100%",
-                  height: "auto",
-                }}
-                height={1200}
-                width={1600}
-              />
+              <picture>
+                <source
+                  media="(min-width: 1024px)"
+                  srcSet="/images/auth0-castle.svg"
+                />
+                <source
+                  media="(min-width: 768px)"
+                  srcSet="/images/auth0-castle-tablet.svg"
+                />
+                <img
+                  className={styles.heroImage}
+                  src="/images/auth0-castle-mobile.svg"
+                  alt="Castle"
+                  style={{ width: "100%", height: "auto" }}
+                />
+              </picture>
             </div>
           </div>
         </div>
