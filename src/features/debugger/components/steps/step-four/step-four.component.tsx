@@ -6,10 +6,12 @@ import { ErrorIcon } from "features/common/icons/error.icon";
 export const StepFour = ({
   decodedToken,
   onRestart,
+  onLogOut,
   validated,
 }: {
   decodedToken: string;
   onRestart: () => void;
+  onLogOut: () => void;
   validated: boolean;
 }) => {
 
@@ -32,7 +34,7 @@ export const StepFour = ({
 
       <div className={styles.buttonsContainer}>
         <Button label="Start Over" onClick={onRestart} />
-        <Button label="Log Out" variant="transparent"/>
+        <Button label="Log Out" variant="transparent" onClick={onLogOut} />
       </div>
     </>
   );
