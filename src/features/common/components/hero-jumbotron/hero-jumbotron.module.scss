@@ -58,14 +58,16 @@
 }
 
 .wrapper {
-  width: calc(100% - 4rem);
-  max-width: calc(#{$extended-grid-max-width} - 4rem);
+  width: 100%;
+  max-width: none;
   margin: 0 auto;
 
   border-radius: 0;
   overflow: hidden;
 
   @media #{$breakpoint-dimension-md} {
+    width: calc(100% - 4rem);
+    max-width: calc(#{$extended-grid-max-width} - 4rem);
     backdrop-filter: blur(4rem);
     border-radius: 0 0 1.5rem 1.5rem;
 
@@ -108,7 +110,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 2rem 0;
+  padding: 2rem 0 0;
   align-items: center;
   gap: 2rem;
 
@@ -116,6 +118,10 @@
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: subgrid;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    padding: 2rem 0 0;
   }
 }
 
@@ -187,30 +193,86 @@
 .heroMedia {
   position: relative;
   grid-column: 1 / span 4;
-  align-self: center;
-  justify-self: center;
+  align-self: stretch;
+  justify-self: end;
   display: flex;
-  align-items: center;
-  max-width: 64rem;
-  justify-content: center;
-  gap: 2.4rem;
+  align-items: flex-end;
+  justify-content: flex-end;
+  isolation: isolate;
 
   overflow: hidden;
 
-  width: 100%;
+  width: calc(100% + $breakpoint-outer-margin-xxs);
+  margin-right: -$breakpoint-outer-margin-xxs;
 
   @media #{$breakpoint-dimension-sm} {
-    width: 100%;
+    width: calc(100% + $breakpoint-outer-margin-sm);
     height: 100%;
     grid-column: 7 / span 6;
+    margin-right: -$breakpoint-outer-margin-sm;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    width: calc(100% + $breakpoint-outer-margin-lg);
+    margin-right: -$breakpoint-outer-margin-lg;
+  }
+
+  :global(body[data-theme="light"]) &::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    right: 0;
+    top: 5rem;
+    bottom: 0;
+    width: min(100%, 39rem);
+    border-radius: 1.5rem 0 0 0;
+    background: linear-gradient(
+      38.5783deg,
+      #191919 12.789%,
+      #4016a0 14.885%,
+      #3f59e4 35.497%,
+      #4cb7a3 75.059%,
+      #f6f1e7 103.23%
+    );
+  }
+
+  @media #{$breakpoint-dimension-sm} {
+    :global(body[data-theme="light"]) &::before {
+      top: 2.5rem;
+    }
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    :global(body[data-theme="light"]) &::before {
+      top: 5rem;
+    }
+  }
+
+  picture {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 1;
+    width: 100%;
   }
 }
 
 .heroImage {
-  max-width: 30rem;
+  display: block;
+  width: min(100%, 22.5rem);
+  height: auto;
+  max-width: 100%;
+  margin-left: auto;
 
   @media #{$breakpoint-dimension-sm} {
-    max-width: unset;
+    width: min(100%, 22.5rem);
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    width: 96%;
+    max-width: none;
+    margin: 0;
   }
 }
 

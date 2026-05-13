@@ -46,7 +46,6 @@ export const HeroJumbotronComponent: React.FC<HeroJumbotronComponentProps> = ({
                   className={styles.heroImage}
                   src="/images/auth0-castle-mobile.svg"
                   alt="Castle"
-                  style={{ width: "100%", height: "auto" }}
                 />
               </picture>
             </div>
