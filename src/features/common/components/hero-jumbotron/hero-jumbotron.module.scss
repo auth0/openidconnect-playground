@@ -5,7 +5,16 @@
   @include Container;
   position: relative;
   overflow: hidden;
+  border-radius: 0 0 8px 8px;
   background-color: var(--charcoal2);
+
+  @media #{$breakpoint-dimension-sm} {
+    border-radius: 0 0 16px 16px;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    border-radius: 0 0 24px 24px;
+  }
 
   :global(body[data-theme="light"]) & {
     background-color: var(--functional-gray-150);
@@ -62,14 +71,18 @@
   max-width: none;
   margin: 0 auto;
 
-  border-radius: 0;
+  border-radius: 0 0 8px 8px;
   overflow: hidden;
+
+  @media #{$breakpoint-dimension-sm} {
+    border-radius: 0 0 16px 16px;
+  }
 
   @media #{$breakpoint-dimension-md} {
     width: calc(100% - 4rem);
     max-width: calc(#{$extended-grid-max-width} - 4rem);
     backdrop-filter: blur(4rem);
-    border-radius: 0 0 1.5rem 1.5rem;
+    border-radius: 0 0 24px 24px;
 
     background-color: var(--charcoal2);
 
@@ -110,14 +123,15 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 2rem 0 0;
-  align-items: center;
+  padding: 4.625rem 0 0;
+  align-items: flex-start;
   gap: 2rem;
 
   @media #{$breakpoint-dimension-sm} {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: subgrid;
+    align-items: center;
   }
 
   @media #{$breakpoint-dimension-md} {
@@ -131,9 +145,23 @@
   flex-direction: column;
   justify-content: center;
   gap: 1.5rem;
+  width: calc(100% - 3rem);
+  margin: 0 1.5rem;
 
   @media #{$breakpoint-dimension-sm} {
     grid-column: 1 / span 6;
+    width: auto;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    grid-column: 1 / span 5;
+    max-width: 31.25rem;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    max-width: 37.5rem;
   }
 }
 
@@ -142,15 +170,23 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media #{$breakpoint-dimension-md} {
+    max-width: 26rem;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    max-width: 32.5rem;
+  }
 }
 
 .heroTitle {
   width: 100%;
   margin: 0;
   text-align: left;
-  font-size: 3rem;
-  line-height: 3.25rem;
-  letter-spacing: -0.03rem;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  letter-spacing: -0.03125rem;
   font-weight: 400;
   color: var(--color_fg_bold);
   font-variant-numeric: lining-nums proportional-nums;
@@ -163,6 +199,12 @@
   }
 
   @media #{$breakpoint-dimension-md} {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    letter-spacing: -0.03125rem;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
     font-size: 3.5rem;
     line-height: 4rem;
     letter-spacing: -1px;
@@ -172,8 +214,8 @@
 .heroDescription {
   color: var(--color_fg_default);
   font-size: 0.875rem;
-  line-height: 1.375rem;
-  letter-spacing: 0.02rem;
+  line-height: 1.25rem;
+  letter-spacing: 0;
   font-weight: 400;
 
   @media #{$breakpoint-dimension-sm} {
@@ -184,6 +226,14 @@
   }
 
   @media #{$breakpoint-dimension-md} {
+    max-width: 24rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    letter-spacing: 0;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    max-width: 28rem;
     font-size: 1rem;
     line-height: 1.5rem;
     letter-spacing: -0.00625rem;
@@ -194,57 +244,103 @@
   position: relative;
   grid-column: 1 / span 4;
   align-self: stretch;
-  justify-self: end;
+  justify-self: stretch;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
   isolation: isolate;
 
-  overflow: hidden;
+  overflow: visible;
 
-  width: calc(100% + $breakpoint-outer-margin-xxs);
-  margin-right: -$breakpoint-outer-margin-xxs;
+  width: calc(100% - 0.5rem);
+  min-height: 13.0625rem;
+  margin: 0 -#{$breakpoint-outer-margin-xxs} 0 1.5rem;
 
   @media #{$breakpoint-dimension-sm} {
-    width: calc(100% + $breakpoint-outer-margin-sm);
+    align-self: stretch;
+    justify-content: flex-end;
+    overflow: hidden;
+    width: calc(100% + #{$breakpoint-outer-margin-sm});
     height: 100%;
     grid-column: 7 / span 6;
+    min-height: 0;
+    right: auto;
+    margin-left: 0;
     margin-right: -$breakpoint-outer-margin-sm;
   }
 
+  @media #{$breakpoint-dimension-md} {
+    grid-column: 7 / span 6;
+    width: calc(100% + #{$breakpoint-outer-margin-md});
+    right: auto;
+    margin-right: -$breakpoint-outer-margin-md;
+  }
+
   @media #{$breakpoint-dimension-lg} {
+    right: 0;
     width: calc(100% + $breakpoint-outer-margin-lg);
     margin-right: -$breakpoint-outer-margin-lg;
+  }
+
+  @media #{$breakpoint-dimension-xl} {
+    width: calc(100% + 5rem);
+    margin-right: calc(-5rem + 2px);
   }
 
   :global(body[data-theme="light"]) &::before {
     content: "";
     position: absolute;
     z-index: 0;
+    left: 0;
     right: 0;
-    top: 5rem;
     bottom: 0;
-    width: min(100%, 39rem);
-    border-radius: 1.5rem 0 0 0;
+    width: auto;
+    height: min(14.5rem, calc(100% - 0.75rem));
+    border-radius: 11.297px 0 0 0;
     background: linear-gradient(
-      38.5783deg,
-      #191919 12.789%,
-      #4016a0 14.885%,
+      39.8269deg,
+      #2a157a 0%,
+      #4016a0 18%,
       #3f59e4 35.497%,
       #4cb7a3 75.059%,
       #f6f1e7 103.23%
     );
   }
 
+  @media #{$breakpoint-dimension-xs} {
+    :global(body[data-theme="light"]) &::before {
+      height: min(15.75rem, calc(100% - 0.25rem));
+    }
+  }
+
   @media #{$breakpoint-dimension-sm} {
     :global(body[data-theme="light"]) &::before {
-      top: 2.5rem;
+      left: auto;
+      right: 0;
+      width: min(100%, 39rem);
+      height: 20rem;
+      border-radius: 1.5rem 0 0 0;
+      transform: none;
     }
   }
 
   @media #{$breakpoint-dimension-md} {
     :global(body[data-theme="light"]) &::before {
-      top: 5rem;
+      top: 2rem;
+      bottom: 0;
+      width: min(100%, 31.25rem);
+      height: auto;
+      transform: none;
+    }
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    :global(body[data-theme="light"]) &::before {
+      top: auto;
+      bottom: 0;
+      width: min(100%, 39rem);
+      height: 26.25rem;
+      transform: none;
     }
   }
 
@@ -255,6 +351,15 @@
     position: relative;
     z-index: 1;
     width: 100%;
+
+    @media #{$breakpoint-dimension-sm} {
+      justify-content: flex-end;
+      transform: none;
+    }
+
+    @media #{$breakpoint-dimension-lg} {
+      transform: none;
+    }
   }
 }
 
@@ -263,15 +368,26 @@
   width: min(100%, 22.5rem);
   height: auto;
   max-width: 100%;
-  margin-left: auto;
+  margin: 0 0 0 auto;
 
   @media #{$breakpoint-dimension-sm} {
     width: min(100%, 22.5rem);
+    max-width: 100%;
+    margin-left: auto;
   }
 
   @media #{$breakpoint-dimension-md} {
-    width: 96%;
+    width: 92%;
     max-width: none;
+    margin: 0;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    width: 88%;
+    margin: 0 -1% 0 0;
+  }
+
+  @media #{$breakpoint-dimension-xl} {
     margin: 0;
   }
 }
