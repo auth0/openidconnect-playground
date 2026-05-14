@@ -26,6 +26,11 @@
     align-items: center;
   }
 
+  @media #{$breakpoint-dimension-lg} {
+    margin: 4rem 2rem 0;
+    padding: 2rem 4rem;
+  }
+
   :global(.react-select-container) {
     width: 100%;
 

@@ -112,9 +112,11 @@
 .content {
   @include InnerContentFlex;
   justify-content: center;
+  width: 100%;
 
   @media #{$breakpoint-dimension-sm} {
     @include InnerContentGrid;
+    width: calc(100% - ($breakpoint-outer-margin-sm * 2));
   }
 }
 
@@ -145,14 +147,14 @@
   flex-direction: column;
   justify-content: center;
   gap: 1.5rem;
-  width: calc(100% - 3rem);
-  margin: 0 1.5rem;
+  width: 100%;
+  padding: 0 1.5rem;
 
   @media #{$breakpoint-dimension-sm} {
     grid-column: 1 / span 6;
     width: auto;
-    margin: 0;
     padding: 0;
+    margin: 0;
   }
 
   @media #{$breakpoint-dimension-md} {
@@ -252,9 +254,9 @@
 
   overflow: visible;
 
-  width: calc(100% - 0.5rem);
+  width: calc(100% - 1.5rem);
   min-height: 13.0625rem;
-  margin: 0 -#{$breakpoint-outer-margin-xxs} 0 1.5rem;
+  margin: 0 0 0 1.5rem;
 
   @media #{$breakpoint-dimension-sm} {
     align-self: stretch;
@@ -295,7 +297,7 @@
     right: 0;
     bottom: 0;
     width: auto;
-    height: min(14.5rem, calc(100% - 0.75rem));
+    height: min(15.75rem, calc(100% - 0.25rem));
     border-radius: 11.297px 0 0 0;
     background: linear-gradient(
       39.8269deg,
@@ -328,7 +330,7 @@
     :global(body[data-theme="light"]) &::before {
       top: 2rem;
       bottom: 0;
-      width: min(100%, 31.25rem);
+      width: min(100%, 33rem);
       height: auto;
       transform: none;
     }
@@ -338,8 +340,8 @@
     :global(body[data-theme="light"]) &::before {
       top: auto;
       bottom: 0;
-      width: min(100%, 39rem);
-      height: 26.25rem;
+      width: min(100%, 42rem);
+      height: min(26.75rem, calc(100% - 0.5rem));
       transform: none;
     }
   }
