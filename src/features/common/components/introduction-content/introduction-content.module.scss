@@ -29,8 +29,8 @@
   gap: 64px;
 
   @media #{$breakpoint-dimension-sm} {
-    width: auto;
-    max-width: 640px;
+    width: calc(100% - 4rem);
+    max-width: none;
     margin: 0 2rem;
   }
 
@@ -60,18 +60,6 @@
   line-height: 2rem;
   letter-spacing: -0.03125rem;
   font-weight: 500;
-
-  @media #{$breakpoint-dimension-sm} {
-    font-size: 1.5rem;
-    line-height: 2rem;
-    letter-spacing: -0.03125rem;
-  }
-
-  @media #{$breakpoint-dimension-md} {
-    font-size: 1.5rem;
-    line-height: 2rem;
-    letter-spacing: -0.03125rem;
-  }
 }
 
 .paragraph {
@@ -80,12 +68,6 @@
   font-size: 1rem;
   line-height: 1.5rem;
   letter-spacing: -0.003125rem;
-
-  @media #{$breakpoint-dimension-sm} {
-    font-size: 1rem;
-    line-height: 1.5rem;
-    letter-spacing: -0.003125rem;
-  }
 
   @media #{$breakpoint-dimension-md} {
     font-size: 1.125rem;

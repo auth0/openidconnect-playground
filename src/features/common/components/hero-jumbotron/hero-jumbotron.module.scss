@@ -300,19 +300,13 @@
     height: min(15.75rem, calc(100% - 0.25rem));
     border-radius: 11.297px 0 0 0;
     background: linear-gradient(
-      39.8269deg,
-      #2a157a 0%,
-      #4016a0 18%,
+      38.5783deg,
+      #191919 7.5%,
+      #4016a0 16.5%,
       #3f59e4 35.497%,
       #4cb7a3 75.059%,
       #f6f1e7 103.23%
     );
-  }
-
-  @media #{$breakpoint-dimension-xs} {
-    :global(body[data-theme="light"]) &::before {
-      height: min(15.75rem, calc(100% - 0.25rem));
-    }
   }
 
   @media #{$breakpoint-dimension-sm} {
@@ -341,7 +335,7 @@
       top: auto;
       bottom: 0;
       width: min(100%, 42rem);
-      height: min(26.75rem, calc(100% - 0.5rem));
+      height: min(27.25rem, calc(100% - 0.25rem));
       transform: none;
     }
   }
