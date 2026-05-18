@@ -6,7 +6,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 0 0 8px 8px;
-  background-color: var(--charcoal2);
+  background: linear-gradient(194deg, #171717 -23.81%, #191919 85.24%, #4016A0 130.44%, #3F59E4 161.16%);
 
   @media #{$breakpoint-dimension-sm} {
     border-radius: 0 0 16px 16px;
@@ -17,7 +17,7 @@
   }
 
   :global(body[data-theme="light"]) & {
-    background-color: var(--functional-gray-150);
+    background: var(--functional-gray-150);
   }
 
   &:before {
@@ -27,28 +27,20 @@
     content: "";
     width: 100%;
     height: 100%;
-    background-size: contain;
 
-    background: url("/images/BG_Mobile.svg")
-      center top no-repeat;
-    background-size: cover;
+    background: url("/images/bg-shape-mobile-dark.svg")
+      center top / 100% no-repeat;
   }
 
   :global(body[data-theme="light"]) &:before {
     background: none;
   }
 
-  @media #{$breakpoint-dimension-xxs} {
-    &:before {
-      background-size: cover;
-    }
-  }
-
   @media #{$breakpoint-dimension-md} {
-    background-color: unset;
+    background: unset;
 
     :global(body[data-theme="light"]) & {
-      background-color: unset;
+      background: unset;
     }
 
     &:before {
@@ -84,10 +76,10 @@
     backdrop-filter: blur(4rem);
     border-radius: 0 0 24px 24px;
 
-    background-color: var(--charcoal2);
+    background: linear-gradient(194deg, #171717 -23.81%, #191919 85.24%, #4016A0 130.44%, #3F59E4 161.16%);
 
     :global(body[data-theme="light"]) & {
-      background-color: var(--functional-gray-150);
+      background: var(--functional-gray-150);
     }
 
     &:before {
@@ -99,8 +91,19 @@
       height: 100%;
       background-size: contain;
 
-      background: url("/images/BG_Mobile.svg")
-        center top / 120% no-repeat;
+      background: url("/images/bg-shape-tablet-dark.svg")
+        center top / 100% no-repeat;
+    }
+
+    :global(body[data-theme="light"]) &:before {
+      background: unset;
+    }
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    &:before {
+      background: url("/images/bg-shape-dark.svg")
+        center top / 100% no-repeat;
     }
 
     :global(body[data-theme="light"]) &:before {
