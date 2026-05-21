@@ -35,23 +35,23 @@ export const Codeblock = (props: CodeBlockProps) => {
     <div
       className={clsx(
         styles.container,
-        props.type === "rawJson" && props.isError && styles.raw_json_error,
+        props.type === "rawJson" && props.isError && styles.rawJsonError,
       )}
     >
       {title && (
-        <div className={styles.header_container}>
-          <div className={styles.title_container}>{title}</div>
+        <div className={styles.headerContainer}>
+          <div className={styles.titleContainer}>{title}</div>
           {HeaderRightComponent && <HeaderRightComponent />}
         </div>
       )}
-      <div className={styles.scroll_container}>
+      <div className={styles.scrollContainer}>
         <div
           className={clsx(
-            styles.code_block,
+            styles.codeBlock,
             (type === "token" || type === "json" || type === "rawJson") &&
-              styles.vertical_scroll_container,
+              styles.verticalScrollContainer,
             (type === "request" || type === "json") &&
-              styles.horizontal_scroll_container,
+              styles.horizontalScrollContainer,
           )}
         >
           {type === "request" && props.requestData ? (
@@ -85,7 +85,7 @@ export const Codeblock = (props: CodeBlockProps) => {
             <p className={styles.token}>{props.token}</p>
           ) : null}
           {type === "rawJson" ? (
-            <pre className={clsx(styles.json, styles.raw_json)}>
+            <pre className={clsx(styles.json, styles.rawJson)}>
               {props.rawJson}
             </pre>
           ) : null}

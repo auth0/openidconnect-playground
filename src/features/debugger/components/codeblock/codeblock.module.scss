@@ -86,13 +86,14 @@
   word-break: break-word;
 }
 
-.raw_json {
+.rawJson {
   color: var(--color_fg_neutral)
 }
-.raw_json_error {
+
+.rawJsonError {
  background: var(--color_bg_state_error);
 }
 
-.json_line {
+.jsonLine {
   color: #928eff;
 }
