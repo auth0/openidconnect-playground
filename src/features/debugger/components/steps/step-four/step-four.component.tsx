@@ -22,15 +22,15 @@ export const StepFour = ({
           json={JSON.parse(decodedToken)}
         />
       ) : (
-        <div className={styles.error_container}>
-          <div className={styles.error_content_container}>
+        <div className={styles.errorContainer}>
+          <div className={styles.errorContentContainer}>
             <ErrorIcon />
             <p>The token is invalid. Check your parameters and try again</p>
           </div>
         </div>
       )}
 
-      <div className={styles.buttons_container}>
+      <div className={styles.buttonsContainer}>
         <Button label="Start Over" onClick={onRestart} />
         <Button label="Log Out" variant="transparent"/>
       </div>
