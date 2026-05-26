@@ -302,14 +302,21 @@
     width: auto;
     height: min(15.75rem, calc(100% - 0.25rem));
     border-radius: 11.297px 0 0 0;
-    background: linear-gradient(
-      38.5783deg,
-      #191919 7.5%,
-      #4016a0 16.5%,
-      #3f59e4 35.497%,
-      #4cb7a3 75.059%,
-      #f6f1e7 103.23%
-    );
+    background:
+      radial-gradient(
+        95% 72% at 100% 0%,
+        #8bc9bf 0%,
+        #5f8ca1 34%,
+        rgba(67, 90, 140, 0.58) 58%,
+        rgba(27, 32, 59, 0) 100%
+      ),
+      linear-gradient(
+        178deg,
+        #433da8 0%,
+        #322989 34%,
+        #1b1e43 68%,
+        #0f1117 100%
+      );
   }
 
   @media #{$breakpoint-dimension-sm} {
