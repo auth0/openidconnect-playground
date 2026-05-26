@@ -92,7 +92,7 @@
   }
 }
 
-.left_container {
+.leftContainer {
   padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
@@ -107,7 +107,7 @@
   }
 }
 
-.right_container {
+.rightContainer {
   position: relative;
   display: flex;
   justify-content: center;
@@ -151,7 +151,7 @@
   }
 }
 
-.button_container {
+.buttonContainer {
   width: 100%;
   @media #{$breakpoint-dimension-md} {
     width: auto;
@@ -163,7 +163,7 @@
   }
 }
 
-.image_shell {
+.imageShell {
   position: relative;
   z-index: 1;
   display: block;
@@ -201,7 +201,7 @@
   }
 }
 
-.banner_image {
+.bannerImage {
   position: relative;
   z-index: 1;
   display: block;

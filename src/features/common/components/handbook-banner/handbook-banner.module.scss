@@ -34,7 +34,7 @@
   }
 }
 
-.text_container {
+.textContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,7 +55,7 @@
   }
 }
 
-.text_group {
+.textGroup {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -74,7 +74,7 @@
   letter-spacing: -0.05px;
 }
 
-.button_container {
+.buttonContainer {
   width: 100%;
 
   @media #{$breakpoint-dimension-sm} {
@@ -86,7 +86,7 @@
   }
 }
 
-.image_container {
+.imageContainer {
   position: relative;
   display: flex;
   align-items: flex-end;
@@ -103,7 +103,7 @@
   }
 }
 
-.bg_pattern {
+.bgPattern {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -135,7 +135,7 @@
   }
 }
 
-.book_cover {
+.bookCover {
   display: block;
   width: 100%;
   height: auto;
@@ -147,7 +147,7 @@
     4px 0 0 0 #bbb;
 }
 
-.book_texture {
+.bookTexture {
   position: absolute;
   top: 0;
   left: 0;
