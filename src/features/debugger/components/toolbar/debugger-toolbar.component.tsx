@@ -11,10 +11,10 @@ export const DebuggerToolbar = ({ openModal }: DebugerToolbarProps) => {
   return (
     <>
       <div className={styles.toolbar}>
-        <div className={styles.toolbar_wrapper}>
-          <div className={styles.toolbar_content}>
-            <p className={styles.toolbar_title}>Debugger</p>
-            <div className={styles.toolbar_options_container}>
+        <div className={styles.toolbarWrapper}>
+          <div className={styles.toolbarContent}>
+            <p className={styles.toolbarTitle}>Debugger</p>
+            <div className={styles.toolbarOptionsContainer}>
               <DebuggerPickerComponent
                 label="Mode"
                 options={[
@@ -23,8 +23,8 @@ export const DebuggerToolbar = ({ openModal }: DebugerToolbarProps) => {
                 minWidth={"180px"}
                 placeholder=""
               />
-              <div className={styles.toolbar_separator_line} />
-              <div className={styles.toolbar_button_container} onClick={openModal}>
+              <div className={styles.toolbarSeparatorLine} />
+              <div className={styles.toolbarButtonContainer} onClick={openModal}>
                 <ConfigurationIcon />
                 <p>Configuration</p>
               </div>
