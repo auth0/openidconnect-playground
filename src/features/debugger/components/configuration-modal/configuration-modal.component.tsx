@@ -213,7 +213,7 @@ export const ConfigurationModal = ({
   return (
     <div className={styles.backdrop} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.heading_container}>
+        <div className={styles.headingContainer}>
           <p className={styles.title}>OpenID Connect Configuration</p>
           <button onClick={onClose} aria-label="Close">
             <CloseCircleIcon />
@@ -232,7 +232,7 @@ export const ConfigurationModal = ({
               updatedReadOnly = false;
             }
             return (
-              <div className={styles.input_container} key={name}>
+              <div className={styles.inputContainer} key={name}>
                 <label htmlFor={name}>{updatedTitle}</label>
                 {type === "input" ? (
                   <>
@@ -241,11 +241,11 @@ export const ConfigurationModal = ({
                       id={name}
                       name={name}
                       value={formValues[name] ?? ""}
-                      className={`${styles.input} ${errors[name] ? styles.input_error : ""}`}
+                      className={`${styles.input} ${errors[name] ? styles.inputError : ""}`}
                       onChange={handleInputChange}
                     />
                     {errors[name] && (
-                      <span className={styles.error_message}>{errors[name]}</span>
+                      <span className={styles.errorMessage}>{errors[name]}</span>
                     )}
                   </>
                 ) : (
@@ -270,13 +270,13 @@ export const ConfigurationModal = ({
             );
           })}
           {discoverError && (
-            <div className={styles.discover_error}>
+            <div className={styles.discoverError}>
               <ErrorIcon />
               <p>{discoverError}</p>
             </div>
           )}
-          <div className={styles.alert_container}>
-            <div className={styles.alert_content_container}>
+          <div className={styles.alertContainer}>
+            <div className={styles.alertContentContainer}>
               <AlertIcon />
               <p>
                 <strong>Note.</strong> We store stuff like your keys in
@@ -285,7 +285,7 @@ export const ConfigurationModal = ({
                 <br />
                 You can clear them by clicking on this button:{" "}
                 <button
-                  className={styles.clear_storage_button}
+                  className={styles.clearStorageButton}
                   onClick={() => {
                     localStorage.clear();
                     onClose();
@@ -297,7 +297,7 @@ export const ConfigurationModal = ({
               </p>
             </div>
           </div>
-          <div className={styles.button_container}>
+          <div className={styles.buttonContainer}>
             <Button
               label="Save"
               showIcon={false}
