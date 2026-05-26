@@ -7,14 +7,14 @@ export const Auth0Banner = () => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.content}>
-          <div className={styles.left_container}>
+          <div className={styles.leftContainer}>
             <p className={styles.title}>
               The OIDC playground is brought to you by Auth0
             </p>
             <p className={styles.subtitle}>
               A cloud service, APIs and tools that eliminate the friction of identity for your applications and APIs.
             </p>
-            <div className={styles.button_container}>
+            <div className={styles.buttonContainer}>
               <LinkButton
                 label="Try Auth0 for free"
                 href="https://auth0.com/signup/?utm_source=openidconnect.net&utm_medium=microsites&utm_campaign=devn_signup"
@@ -22,14 +22,14 @@ export const Auth0Banner = () => {
               />
             </div>
           </div>
-          <div className={styles.right_container}>
-            <div className={styles.image_shell}>
+          <div className={styles.rightContainer}>
+            <div className={styles.imageShell}>
               <Image
                 src={"/images/auth0-banner.svg"}
                 width={365}
                 height={434}
                 alt="Auth0 login form"
-                className={styles.banner_image}
+                className={styles.bannerImage}
               />
             </div>
           </div>
