@@ -93,17 +93,17 @@
       cursor: not-allowed;
     }
 
-    .input_error {
+    .inputError {
       border-color: var(--alerts-caution-0, #e74c3c);
     }
 
-    .error_message {
+    .errorMessage {
       font-size: 12px;
       color: #e74c3c;
     }
 }
 
-.discover_error {
+.discoverError {
   display: flex;
   gap: 12px;
   align-items: center;
@@ -121,7 +121,7 @@
   }
 }
 
-.alert_container {
+.alertContainer {
   padding: 24px 8px;
   margin-top: 1.5rem;
   max-width: 544px;
