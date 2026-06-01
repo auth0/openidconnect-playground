@@ -1,50 +1,151 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
-import { ComponentType, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./debugger-steps.module.scss";
 import { StepOne, StepTwo, StepThree, StepFour } from "./index";
+import {
+  AuthData,
+  DebuggerStepsData,
+  getAppData,
+  InitialDebuggerStepsData,
+} from "./utils";
+import { RequestData } from "../codeblock/codeblock.component";
 
 type Steps = {
   id: string;
   label: string;
-  component: ComponentType;
+  render: () => React.JSX.Element;
 };
-const stepsList: Steps[] = [
-  {
-    id: "step-one",
-    label: "Redirect to OpenID Connect Server",
-    component: StepOne,
-  },
-  {
-    id: "step-two",
-    label: "Exchange Code from Token",
-    component: StepTwo,
-  },
-  {
-    id: "step-three",
-    label: "Verify User Token",
-    component: StepThree,
-  },
-  {
-    id: "step-four",
-    label: "The token is valid!",
-    component: StepFour,
-  },
-];
 
 export const DebuggerSteps = () => {
-  const [currentStepIndex, setCurrentStepIndex] = useState(3);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [debuggerStepsData, setDebuggerStepsData] = useState<DebuggerStepsData>(
+    InitialDebuggerStepsData,
+  );
+  const [authData, setAuthData] = useState<AuthData | null>(null);
+  const requestData = useMemo<RequestData>(() => {
+    return {
+      url: debuggerStepsData.authEndpoint ?? "",
+      isEditable: true,
+      params: [
+        {
+          key: "client_id",
+          value: authData?.clientID ?? "",
+          isEditable: true,
+        },
+        {
+          key: "redirect_uri",
+          value: authData?.redirectURI ?? "",
+        },
+        {
+          key: "scope",
+          value: debuggerStepsData.scopes ?? "",
+          isEditable: true,
+        },
+        {
+          key: "response_type",
+          value: "code",
+        },
+        {
+          key: "state",
+          value: authData?.stateToken ?? "",
+        },
+      ],
+    };
+  }, [debuggerStepsData, authData]);
+
+  const stepsList: Steps[] = [
+    {
+      id: "step-one",
+      label: "Redirect to OpenID Connect Server",
+      render: () => <StepOne requestData={requestData} />,
+    },
+    {
+      id: "step-two",
+      label: "Exchange Code from Token",
+      render: () => <StepTwo />,
+    },
+    {
+      id: "step-three",
+      label: "Verify User Token",
+      render: () => <StepThree />,
+    },
+    {
+      id: "step-four",
+      label: "The token is valid!",
+      render: () => <StepFour />,
+    },
+  ];
+
+  const stepRefs = useRef<Record<number, HTMLDivElement | null>>({});
+
+  useEffect(() => {
+    const savedData = localStorage.getItem("app-state");
+    const { debuggerSteps, auth } = getAppData(savedData);
+    if (debuggerSteps) {
+      setDebuggerStepsData(debuggerSteps);
+      setCurrentStepIndex(debuggerSteps.currentStep ?? 0);
+    }
+    if (auth) setAuthData(auth);
+    if (!auth) {
+      fetch("api/auth_data")
+        .then((res) => {
+          if (!res.ok) throw new Error(`auth_data responded with ${res.status}`);
+          return res.json();
+        })
+        .then((data) => {
+          const authDataResponse: AuthData = {
+            clientID: data.clientId,
+            clientSecret: data.clientSecret,
+            stateToken: data.state,
+            redirectURI: data.redirect_uri,
+            authCode: data.code,
+          };
+          if (authDataResponse.authCode) {
+            setCurrentStepIndex(1);
+            setDebuggerStepsData(prev => ({ ...prev, currentStep: 1 }));
+          }
+          setAuthData(authDataResponse);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch auth data:", error);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "app-state",
+      JSON.stringify({
+        ...debuggerStepsData,
+        ...(authData ?? {}),
+        currentStep: currentStepIndex,
+      }),
+    );
+  }, [debuggerStepsData, authData, currentStepIndex]);
+
+  useEffect(() => {
+    if (currentStepIndex === 0) return;
+    const ref = stepRefs.current[currentStepIndex];
+    if (!ref) return;
+    const yOffset = ref.getBoundingClientRect().top + window.scrollY - 170;
+    window.scrollTo({
+      behavior: "smooth",
+      top: yOffset,
+    });
+  }, [currentStepIndex]);
 
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.content}>
-          {stepsList.map(({ id, label, component: Component }, index) => {
+          {stepsList.map(({ id, label, render }, index) => {
             const state =
               index < currentStepIndex
                 ? "completed"
                 : index === currentStepIndex
-                ? "current"
-                : "upcoming";
+                  ? "current"
+                  : "upcoming";
             return (
               <div key={id} className={styles.stepContainer}>
                 <div
@@ -64,8 +165,11 @@ export const DebuggerSteps = () => {
                   className={styles.stepContent}
                   data-open={state === "current"}
                   aria-hidden={state !== "current"}
+                  ref={(el) => {
+                    stepRefs.current[index] = el;
+                  }}
                 >
-                  <Component />
+                  {render()}
                 </div>
               </div>
             );
