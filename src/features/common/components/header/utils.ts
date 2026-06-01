@@ -4,6 +4,7 @@ type LinkInfo = {
   pathname: string;
   isExternal?: boolean;
 };
+
 export const linkPagesInfo: Array<LinkInfo> = [
   {
     id: "debugger",

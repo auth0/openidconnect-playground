@@ -22,10 +22,9 @@
   @media #{$breakpoint-dimension-lg} {
     padding: 1rem 10rem
   }
-  
 }
 
-.headerLogoTitle { 
+.headerLogoTitle {
     font-size: 1rem;
     font-style: normal;
     font-weight: 500;
@@ -73,7 +72,7 @@
   align-items: center;
   justify-content: flex-end;
   gap: 3rem;
-  
+
   @media #{$breakpoint-dimension-sm} {
     margin-left: 1.5rem;
   }

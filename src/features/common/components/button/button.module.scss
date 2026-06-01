@@ -14,14 +14,30 @@
   font-style: normal;
   font-weight: 500;
   letter-spacing: 0.2px;
-  background-color: var(--sky);
-  color: $color_fg_on_button_primary;
-  border: 0px;
+  
   cursor: pointer;
 
   @media #{$breakpoint-dimension-sm} {
     width: fit-content;
     margin: auto;
+  }
+}
+
+.button_variant_normal {
+  background-color: var(--sky);
+  color: $color_fg_on_button_primary;
+  border: 0px;
+  path {
+      fill: $color_fg_on_button_primary;
+  }
+}
+
+.button_variant_transparent {
+  color: var(--color_fg_button_transparent);
+  background-color: transparent;
+  border: 1px solid var(--color_fg_neutral);
+  svg path {
+      fill: var(--color_fg_button_transparent);
   }
 }
 
@@ -37,10 +53,6 @@
   svg {
     height: 0.75rem;
     width: 0.75rem;
-
-    path {
-      fill: $color_fg_on_button_primary;
-    }
   }
 
   @media #{$breakpoint-dimension-sm} {

@@ -1,0 +1,22 @@
+@use "libs/theme/styles/variables" as *;
+@use "libs/theme/styles/mixins" as *;
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  button {
+   width: 100%;
+  }
+  @media #{$breakpoint-dimension-sm} {
+   flex-direction: row;
+   justify-content: center;
+  }
+  @media #{$breakpoint-dimension-md} {
+   width: auto;
+   button {
+      width: fit-content;
+   }
+  }
+}

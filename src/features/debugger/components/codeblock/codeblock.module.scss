@@ -54,7 +54,7 @@
   padding: 1.5rem 0;
 }
 
-.codeLine {
+.codeLine{
   display: flex;
   &:first-child {
     gap: 1rem;
@@ -66,6 +66,7 @@
 
 .codeLineNumber {
   color: var(--functional-gray-550);
+  flex-shrink: 0;
 }
 
 .paramValue {
@@ -78,4 +79,13 @@
 
 .token {
   overflow-wrap: break-word;
+}
+
+.json {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.jsonLine {
+  color: #928eff;
 }
