@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { importJWK, exportSPKI, type JWK } from "jose";
 import jwt from "jsonwebtoken";
-
-async function convertJwkToPem(jwk: JWK): Promise<string> {
-  const key = await importJWK(jwk, "RS256");
-  return exportSPKI(key as CryptoKey);
-}
+import { convertJwkToPem, verify } from "./utils";
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
@@ -16,19 +11,6 @@ export async function POST(request: NextRequest) {
         status: 400,
       },
     );
-  }
-
-  // A nested function to handle the final verification step
-  function verify(secret: string | Buffer): NextResponse {
-    try {
-      const decoded = jwt.verify(data.idToken, secret);
-      return NextResponse.json(decoded, { status: 200 });
-    } catch (err: unknown) {
-      return NextResponse.json(
-        { message: err instanceof Error ? err.message : "Verification failed" },
-        { status: 400 },
-      );
-    }
   }
 
   try {
@@ -87,7 +69,26 @@ export async function POST(request: NextRequest) {
       }
 
       const pem = await convertJwkToPem(key);
-      return verify(pem);
+      const result = await verify(data.idToken, pem);
+
+      if (result.ok === false) {
+        return NextResponse.json(
+          {
+            message: result.error,
+          },
+          {
+            status: 401,
+          },
+        );
+      }
+      return NextResponse.json(
+        {
+          decoded: result.decoded,
+        },
+        {
+          status: 200,
+        },
+      );
 
       // HS256 = validation with client secret
     } else if (tokenHeader.alg === "HS256") {
@@ -104,7 +105,27 @@ export async function POST(request: NextRequest) {
         data.server === "Auth0"
           ? Buffer.from(data.clientSecret, "base64")
           : data.clientSecret;
-      return verify(secret);
+
+      const result = await verify(data.idToken, secret);
+
+      if (result.ok === false) {
+        return NextResponse.json(
+          {
+            message: result.error,
+          },
+          {
+            status: 401,
+          },
+        );
+      }
+      return NextResponse.json(
+        {
+          decoded: result.decoded,
+        },
+        {
+          status: 200,
+        },
+      );
     }
 
     return NextResponse.json(

@@ -53,6 +53,7 @@ export const DebuggerSteps = () => {
       ],
     };
   }, [debuggerStepsData, authData]);
+  console.log("current index", currentStepIndex);
 
   const requestDataStepTwo: RequestData = useMemo(() => {
     return {
@@ -80,8 +81,33 @@ export const DebuggerSteps = () => {
         },
         {
           key: "code",
-          value: authData?.authCode ?? ""
-        }
+          value: authData?.authCode ?? "",
+        },
+      ],
+    };
+  }, [authData, debuggerStepsData]);
+
+  const requestDataStepThree: RequestData = useMemo(() => {
+    return {
+      url: "api/validate",
+      method: "POST",
+      params: [
+        {
+          key: "clientSecret",
+          value: authData?.clientSecret ?? "",
+        },
+        {
+          key: "idToken",
+          value: debuggerStepsData?.idToken ?? "",
+        },
+        {
+          key: "tokenKeysEndpoint",
+          value: debuggerStepsData?.tokenKeysEndpoint ?? "",
+        },
+        {
+          key: "server",
+          value: debuggerStepsData?.server ?? "",
+        },
       ],
     };
   }, [authData, debuggerStepsData]);
@@ -108,12 +134,25 @@ export const DebuggerSteps = () => {
     {
       id: "step-three",
       label: "Verify User Token",
-      render: () => <StepThree />,
+      render: () => (
+        <StepThree
+          token={debuggerStepsData?.idToken ?? ""}
+          requestData={requestDataStepThree}
+          setDebuggerStepsData={setDebuggerStepsData}
+          setCurrentStepIndex={setCurrentStepIndex}
+        />
+      ),
     },
     {
       id: "step-four",
       label: "The token is valid!",
-      render: () => <StepFour />,
+      render: () => (
+        <StepFour
+          decodedToken={debuggerStepsData?.idTokenDecoded ?? ""}
+          onRestart={restartData}
+          validated={debuggerStepsData?.validated ?? false}
+        />
+      ),
     },
   ];
 
@@ -127,21 +166,20 @@ export const DebuggerSteps = () => {
       idToken: null,
       idTokenDecoded: null,
       idTokenHeader: null,
+      validated: false,
     };
     const restartAuthData: AuthData = {
       ...authData,
       authCode: null,
       stateToken: null,
     };
-    try {
-      localStorage.setItem(
-        "app-state",
-        JSON.stringify({ ...restartDebuggerStepsData, ...restartAuthData }),
-      );
-    } catch {}
-    setAuthData(restartAuthData)
-    setDebuggerStepsData(restartDebuggerStepsData)
-    setCurrentStepIndex(0)
+    localStorage.setItem(
+      "app-state",
+      JSON.stringify({ ...restartDebuggerStepsData, ...restartAuthData }),
+    );
+    setAuthData(restartAuthData);
+    setDebuggerStepsData(debuggerStepsData);
+    setCurrentStepIndex(0);
   };
 
   useEffect(() => {
@@ -199,6 +237,17 @@ export const DebuggerSteps = () => {
       top: yOffset,
     });
   }, [currentStepIndex]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      localStorage.setItem(
+        "app-state",
+        JSON.stringify({ ...debuggerStepsData, ...authData }),
+      );
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [debuggerStepsData, authData]);
 
   return (
     <div className={styles.container}>

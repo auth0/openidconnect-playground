@@ -39,7 +39,7 @@ export const InitialDebuggerStepsData: DebuggerStepsData = {
   domain: "samples.auth0.com",
   authEndpoint: "https://samples.auth0.com/authorize",
   tokenEndpoint: "https://samples.auth0.com/oauth/token",
-  tokenKeysEndpoint: "",
+  tokenKeysEndpoint: "https://samples.auth0.com/.well-known/jwks.json",
   userInfoEndpoint: "https://samples.auth0.com/userinfo",
   scopes: "openid profile email phone address",
   idTokenHeader: "",
@@ -59,6 +59,7 @@ export function getAppData(savedData: string | null) {
     audience: validated.audience ?? InitialDebuggerStepsData.audience,
     authEndpoint:
       validated.authEndpoint ?? InitialDebuggerStepsData.authEndpoint,
+    currentStep: validated.currentStep ?? InitialDebuggerStepsData.currentStep,
     discoveryURL:
       validated.discoveryURL ?? InitialDebuggerStepsData.discoveryURL,
     domain: validated.domain ?? InitialDebuggerStepsData.domain,
@@ -78,7 +79,6 @@ export function getAppData(savedData: string | null) {
     userInfoEndpoint:
       validated.userInfoEndpoint ?? InitialDebuggerStepsData.userInfoEndpoint,
     validated: validated.validated ?? InitialDebuggerStepsData.validated,
-    currentStep: validated.currentStep ?? InitialDebuggerStepsData.currentStep,
   };
   let auth: AuthData | null = {
     authCode: validated.authCode,
@@ -105,3 +105,14 @@ export const getCompleteUrlFromRequestData = (
   });
   return `${url}?${searchParams.toString()}`;
 };
+
+export const bodyFromRequestData = (requestData: RequestData) => {
+    const body: Record<string, string> = {
+      tokenEndpoint: requestData.url,
+    };
+    requestData.params.forEach((param) => {
+      body[`${param.key}`] = param.value;
+    });
+
+    return body;
+  };
