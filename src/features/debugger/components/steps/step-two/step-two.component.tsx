@@ -19,7 +19,6 @@ export const StepTwo = ({
 }) => {
   const [exchangeResult, setExchangeResult] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
   const handleExchangeCode = async () => {
     try {
       const response = await fetch("api/code_to_token", {

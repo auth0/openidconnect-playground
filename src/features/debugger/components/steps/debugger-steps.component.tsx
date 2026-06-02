@@ -108,6 +108,10 @@ export const DebuggerSteps = () => {
           key: "server",
           value: debuggerStepsData?.server ?? "",
         },
+        {
+          key: "code",
+          value: authData?.authCode ?? ""
+        }
       ],
     };
   }, [authData, debuggerStepsData]);
