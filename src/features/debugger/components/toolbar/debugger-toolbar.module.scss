@@ -5,11 +5,11 @@
   @include Container
 }
 
-.toolbar_wrapper {
+.toolbarWrapper {
   @include ExtendedGrid;
 }
 
-.toolbar_content {
+.toolbarContent {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -50,7 +50,7 @@
   }
 }
 
-.toolbar_title {
+.toolbarTitle {
   font-size: 14px;
   font-style: normal;
   line-height: 20px;
@@ -60,7 +60,7 @@
   color: var(--color_fg_default);
 }
 
-.toolbar_options_container {
+.toolbarOptionsContainer {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -81,7 +81,7 @@
   }
 }
 
-.toolbar_separator_line {
+.toolbarSeparatorLine {
   border-top: 1px solid var(--color_border_light);
   width: 100%;
 
@@ -94,7 +94,7 @@
   }
 }
 
-.toolbar_button_container {
+.toolbarButtonContainer {
   display: flex;
   flex-direction: row;
   gap: 8px;

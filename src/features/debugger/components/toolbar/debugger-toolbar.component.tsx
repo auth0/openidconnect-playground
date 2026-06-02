@@ -11,10 +11,10 @@ export const DebuggerToolbar = () => {
   return (
     <>
       <div className={styles.toolbar}>
-        <div className={styles.toolbar_wrapper}>
-          <div className={styles.toolbar_content}>
-            <p className={styles.toolbar_title}>Debugger</p>
-            <div className={styles.toolbar_options_container}>
+        <div className={styles.toolbarWrapper}>
+          <div className={styles.toolbarContent}>
+            <p className={styles.toolbarTitle}>Debugger</p>
+            <div className={styles.toolbarOptionsContainer}>
               <DebuggerPickerComponent
                 label="Mode"
                 options={[
@@ -23,9 +23,9 @@ export const DebuggerToolbar = () => {
                 minWidth={"180px"}
                 placeholder=""
               />
-              <div className={styles.toolbar_separator_line} />
+              <div className={styles.toolbarSeparatorLine} />
               <div
-                className={styles.toolbar_button_container}
+                className={styles.toolbarButtonContainer}
                 onClick={() => setIsOpen(true)}
               >
                 <ConfigurationIcon />

@@ -64,7 +64,7 @@ export const ConfigurationModal = ({ isOpen, onClose }: ModalProps) => {
   return (
     <div className={styles.backdrop} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.heading_container}>
+        <div className={styles.headingContainer}>
           <p className={styles.title}>OpenID Connect Configuration</p>
           <button onClick={onClose} aria-label="Close">
             <CloseCircleIcon />
@@ -73,7 +73,7 @@ export const ConfigurationModal = ({ isOpen, onClose }: ModalProps) => {
         <div className={styles.content}>
           {MODAL_OPTIONS.map((modalOption, idx) => {
             return (
-              <div className={styles.input_container} key={idx}>
+              <div className={styles.inputContainer} key={idx}>
                 <label>{modalOption.title}</label>
                 <input
                   defaultValue={modalOption.defaultValue ?? ""}
@@ -82,8 +82,8 @@ export const ConfigurationModal = ({ isOpen, onClose }: ModalProps) => {
               </div>
             );
           })}
-          <div className={styles.alert_container}>
-            <div className={styles.alert_content_container}>
+          <div className={styles.alertContainer}>
+            <div className={styles.alertContentContainer}>
               <AlertIcon />
               <p>
                 <strong>Note.</strong> We store stuff like your keys in
@@ -92,7 +92,7 @@ export const ConfigurationModal = ({ isOpen, onClose }: ModalProps) => {
                 <br />
                 You can clear them by clicking on this button:{" "}
                 <button
-                  className={styles.clear_storage_button}
+                  className={styles.clearStorageButton}
                   onClick={() => {
                     localStorage.clear();
                     onClose();
@@ -104,7 +104,7 @@ export const ConfigurationModal = ({ isOpen, onClose }: ModalProps) => {
               </p>
             </div>
           </div>
-          <div className={styles.button_container}>
+          <div className={styles.buttonContainer}>
             <Button label="Save" showIcon={false} />
           </div>
         </div>
