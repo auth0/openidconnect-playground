@@ -87,7 +87,6 @@ export function getAppData(savedData: string | null) {
     redirectURI: validated.redirectURI,
     stateToken: validated.stateToken,
   };
-
   auth = Object.values(auth).some(
     (value) => value === null || value === undefined || value === "",
   )

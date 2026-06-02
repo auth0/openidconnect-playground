@@ -17,11 +17,12 @@ type CodeBlockMap = {
   request: { requestData: RequestData };
   json: { json: string };
   token: { token: string };
+  rawJson: { rawJson: string; isError?: boolean };
 };
 
 type CodeBlockProps = {
   [K in keyof CodeBlockMap]: {
-    title: string;
+    title?: string;
     type: K;
   } & CodeBlockMap[K];
 }[keyof CodeBlockMap] & {
@@ -31,17 +32,26 @@ type CodeBlockProps = {
 export const Codeblock = (props: CodeBlockProps) => {
   const { title, type, HeaderRightComponent } = props;
   return (
-    <div className={styles.container}>
-      <div className={styles.headerContainer}>
-        <div className={styles.titleContainer}>{title}</div>
-        {HeaderRightComponent && <HeaderRightComponent />}
-      </div>
+    <div
+      className={clsx(
+        styles.container,
+        props.type === "rawJson" && props.isError && styles.rawJsonError,
+      )}
+    >
+      {title && (
+        <div className={styles.headerContainer}>
+          <div className={styles.titleContainer}>{title}</div>
+          {HeaderRightComponent && <HeaderRightComponent />}
+        </div>
+      )}
       <div className={styles.scrollContainer}>
         <div
           className={clsx(
             styles.codeBlock,
-            (type === "token" || type === "json") && styles.verticalScrollContainer,
-            (type === "request" || type === "json") && styles.horizontalScrollContainer,
+            (type === "token" || type === "json" || type === "rawJson") &&
+              styles.verticalScrollContainer,
+            (type === "request" || type === "json") &&
+              styles.horizontalScrollContainer,
           )}
         >
           {type === "request" && props.requestData ? (
@@ -73,6 +83,11 @@ export const Codeblock = (props: CodeBlockProps) => {
           ) : null}
           {type === "token" ? (
             <p className={styles.token}>{props.token}</p>
+          ) : null}
+          {type === "rawJson" ? (
+            <pre className={clsx(styles.json, styles.rawJson)}>
+              {props.rawJson}
+            </pre>
           ) : null}
           {type === "json" ? (
             <pre className={styles.json}>

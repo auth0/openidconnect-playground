@@ -15,8 +15,8 @@ export async function POST(request: NextRequest) {
     const data = await request.json();
     const reqData = {
       code: data.code,
-      client_id: data.clientID,
-      client_secret: data.clientSecret,
+      client_id: data.client_id,
+      client_secret: data.client_secret,
       grant_type: "authorization_code",
       redirect_uri: process.env.REDIRECT_URI ?? "",
     };
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       providedUrl.protocol !== "http:" && providedUrl.protocol !== "https:";
 
     if (isInvalidProtocol || !isAllowedHostname(providedUrl.hostname)) {
-      throw new Error(`Invalid URL`);
+      throw new Error("Invalid URL: The provided URL is not allowed");
     }
 
     const response = await fetch(data.tokenEndpoint, {
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      throw new Error(`Invalid request: The access is forbidden. Check for missing parameters`);
     }
 
     const tokenData = await response.json();
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
   } catch (error: unknown) {
     console.error("Error fetching token:", error);
     return NextResponse.json(
-      { message: "Failed to retrieve token" },
+      { message: error instanceof Error ? error.message : "An unexpected error occurred." },
       { status: 500 },
     );
   }

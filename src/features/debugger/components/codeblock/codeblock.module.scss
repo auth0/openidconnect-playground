@@ -86,6 +86,14 @@
   word-break: break-word;
 }
 
+.rawJson {
+  color: var(--color_fg_neutral)
+}
+
+.rawJsonError {
+ background: var(--color_bg_state_error);
+}
+
 .jsonLine {
   color: #928eff;
 }
