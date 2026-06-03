@@ -5,10 +5,19 @@
   @include Container;
   position: relative;
   overflow: hidden;
-  background-color: var(--charcoal2);
+  border-radius: 0 0 8px 8px;
+  background: linear-gradient(194deg, #171717 -23.81%, #191919 85.24%, #4016A0 130.44%, #3F59E4 161.16%);
+
+  @media #{$breakpoint-dimension-sm} {
+    border-radius: 0 0 16px 16px;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    border-radius: 0 0 24px 24px;
+  }
 
   :global(body[data-theme="light"]) & {
-    background-color: var(--functional-gray-150);
+    background: var(--functional-gray-150);
   }
 
   &:before {
@@ -18,30 +27,20 @@
     content: "";
     width: 100%;
     height: 100%;
-    background-size: contain;
 
-    background: url("/images/BG_Mobile.svg")
-      center top no-repeat;
-    background-size: cover;
+    background: url("/images/bg-shape-mobile-dark.svg")
+      center top / 100% no-repeat;
   }
 
   :global(body[data-theme="light"]) &:before {
-    background: url("/images/light.hero-banner-bg.png")
-      center top no-repeat;
-    background-size: cover;
-  }
-
-  @media #{$breakpoint-dimension-xxs} {
-    &:before {
-      background-size: cover;
-    }
+    background: none;
   }
 
   @media #{$breakpoint-dimension-md} {
-    background-color: unset;
+    background: unset;
 
     :global(body[data-theme="light"]) & {
-      background-color: unset;
+      background: unset;
     }
 
     &:before {
@@ -60,20 +59,27 @@
 }
 
 .wrapper {
-  @include ExtendedGrid;
-  justify-content: center;
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
 
-  border-radius: 0;
+  border-radius: 0 0 8px 8px;
   overflow: hidden;
 
-  @media #{$breakpoint-dimension-md} {
-    backdrop-filter: blur(4rem);
-    border-radius: 0 0 1.5rem 1.5rem;
+  @media #{$breakpoint-dimension-sm} {
+    border-radius: 0 0 16px 16px;
+  }
 
-    background-color: var(--charcoal2);
+  @media #{$breakpoint-dimension-md} {
+    width: calc(100% - 4rem);
+    max-width: calc(#{$extended-grid-max-width} - 4rem);
+    backdrop-filter: blur(4rem);
+    border-radius: 0 0 24px 24px;
+
+    background: linear-gradient(194deg, #171717 -23.81%, #191919 85.24%, #4016A0 130.44%, #3F59E4 161.16%);
 
     :global(body[data-theme="light"]) & {
-      background-color: var(--functional-gray-150);
+      background: var(--functional-gray-150);
     }
 
     &:before {
@@ -85,14 +91,23 @@
       height: 100%;
       background-size: contain;
 
-      background: url("/images/BG_Mobile.svg")
-        center top / 120% no-repeat;
+      background: url("/images/bg-shape-tablet-dark.svg")
+        center top / 100% no-repeat;
     }
 
     :global(body[data-theme="light"]) &:before {
-      background-size: cover;
-      background: url("/images/light.hero-banner-bg.png")
-        center top / 140% no-repeat;
+      background: unset;
+    }
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    &:before {
+      background: url("/images/bg-shape-dark.svg")
+        center top / 100% no-repeat;
+    }
+
+    :global(body[data-theme="light"]) &:before {
+      background: unset;
     }
   }
 }
@@ -100,9 +115,11 @@
 .content {
   @include InnerContentFlex;
   justify-content: center;
+  width: 100%;
 
   @media #{$breakpoint-dimension-sm} {
     @include InnerContentGrid;
+    width: calc(100% - ($breakpoint-outer-margin-sm * 2));
   }
 }
 
@@ -111,14 +128,19 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 2rem 0;
-  align-items: center;
+  padding: 4.625rem 0 0;
+  align-items: flex-start;
   gap: 2rem;
 
   @media #{$breakpoint-dimension-sm} {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: subgrid;
+    align-items: center;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    padding: 2rem 0 0;
   }
 }
 
@@ -128,9 +150,23 @@
   flex-direction: column;
   justify-content: center;
   gap: 1.5rem;
+  width: 100%;
+  padding: 0 1.5rem;
 
   @media #{$breakpoint-dimension-sm} {
     grid-column: 1 / span 6;
+    width: auto;
+    padding: 0;
+    margin: 0;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    grid-column: 1 / span 5;
+    max-width: 31.25rem;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    max-width: 37.5rem;
   }
 }
 
@@ -139,15 +175,23 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media #{$breakpoint-dimension-md} {
+    max-width: 26rem;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    max-width: 32.5rem;
+  }
 }
 
 .heroTitle {
   width: 100%;
   margin: 0;
   text-align: left;
-  font-size: 3rem;
-  line-height: 3.25rem;
-  letter-spacing: -0.03rem;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  letter-spacing: -0.03125rem;
   font-weight: 400;
   color: var(--color_fg_bold);
   font-variant-numeric: lining-nums proportional-nums;
@@ -160,6 +204,12 @@
   }
 
   @media #{$breakpoint-dimension-md} {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    letter-spacing: -0.03125rem;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
     font-size: 3.5rem;
     line-height: 4rem;
     letter-spacing: -1px;
@@ -169,8 +219,8 @@
 .heroDescription {
   color: var(--color_fg_default);
   font-size: 0.875rem;
-  line-height: 1.375rem;
-  letter-spacing: 0.02rem;
+  line-height: 1.25rem;
+  letter-spacing: 0;
   font-weight: 400;
 
   @media #{$breakpoint-dimension-sm} {
@@ -181,39 +231,170 @@
   }
 
   @media #{$breakpoint-dimension-md} {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    letter-spacing: 0.01rem;
+    max-width: 24rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    letter-spacing: 0;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    max-width: 28rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    letter-spacing: -0.00625rem;
   }
 }
 
 .heroMedia {
   position: relative;
   grid-column: 1 / span 4;
-  align-self: center;
-  justify-self: center;
+  align-self: stretch;
+  justify-self: stretch;
   display: flex;
-  align-items: center;
-  max-width: 64rem;
-  justify-content: center;
-  gap: 2.4rem;
+  align-items: flex-end;
+  justify-content: flex-end;
+  isolation: isolate;
 
-  overflow: hidden;
+  overflow: visible;
 
-  width: 100%;
+  width: calc(100% - 1.5rem);
+  min-height: 13.0625rem;
+  margin: 0 0 0 1.5rem;
 
   @media #{$breakpoint-dimension-sm} {
-    width: 100%;
+    align-self: stretch;
+    justify-content: flex-end;
+    overflow: hidden;
+    width: calc(100% + #{$breakpoint-outer-margin-sm});
     height: 100%;
     grid-column: 7 / span 6;
+    min-height: 0;
+    right: auto;
+    margin-left: 0;
+    margin-right: -$breakpoint-outer-margin-sm;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    grid-column: 7 / span 6;
+    width: calc(100% + #{$breakpoint-outer-margin-md});
+    right: auto;
+    margin-right: -$breakpoint-outer-margin-md;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    right: 0;
+    width: calc(100% + $breakpoint-outer-margin-lg);
+    margin-right: -$breakpoint-outer-margin-lg;
+  }
+
+  @media #{$breakpoint-dimension-xl} {
+    width: calc(100% + 5rem);
+    margin-right: calc(-5rem + 2px);
+  }
+
+  :global(body[data-theme="light"]) &::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: min(15.75rem, calc(100% - 0.25rem));
+    border-radius: 11.297px 0 0 0;
+    background:
+      radial-gradient(
+        95% 72% at 100% 0%,
+        #8bc9bf 0%,
+        #5f8ca1 34%,
+        rgba(67, 90, 140, 0.58) 58%,
+        rgba(27, 32, 59, 0) 100%
+      ),
+      linear-gradient(
+        178deg,
+        #433da8 0%,
+        #322989 34%,
+        #1b1e43 68%,
+        #0f1117 100%
+      );
+  }
+
+  @media #{$breakpoint-dimension-sm} {
+    :global(body[data-theme="light"]) &::before {
+      left: auto;
+      right: 0;
+      width: min(100%, 39rem);
+      height: 20rem;
+      border-radius: 1.5rem 0 0 0;
+      transform: none;
+    }
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    :global(body[data-theme="light"]) &::before {
+      top: 2rem;
+      bottom: 0;
+      width: min(100%, 33rem);
+      height: auto;
+      transform: none;
+    }
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    :global(body[data-theme="light"]) &::before {
+      top: auto;
+      bottom: 0;
+      width: min(100%, 42rem);
+      height: min(27.25rem, calc(100% - 0.25rem));
+      transform: none;
+    }
+  }
+
+  picture {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+
+    @media #{$breakpoint-dimension-sm} {
+      justify-content: flex-end;
+      transform: none;
+    }
+
+    @media #{$breakpoint-dimension-lg} {
+      transform: none;
+    }
   }
 }
 
 .heroImage {
-  max-width: 30rem;
+  display: block;
+  width: min(100%, 22.5rem);
+  height: auto;
+  max-width: 100%;
+  margin: 0 0 0 auto;
 
   @media #{$breakpoint-dimension-sm} {
-    max-width: unset;
+    width: min(100%, 22.5rem);
+    max-width: 100%;
+    margin-left: auto;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    width: 92%;
+    max-width: none;
+    margin: 0;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    width: 88%;
+    margin: 0 -1% 0 0;
+  }
+
+  @media #{$breakpoint-dimension-xl} {
+    margin: 0;
   }
 }
 

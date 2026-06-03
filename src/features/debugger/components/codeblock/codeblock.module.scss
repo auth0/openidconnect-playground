@@ -2,19 +2,34 @@
 @use "libs/theme/styles/mixins" as *;
 
 .container {
+  width: 100%;
   max-width: 100%;
   border: 0.5px solid var(--color_border_light);
   background-color: var(--color_bg_light);
+
+  @media #{$breakpoint-dimension-md} {
+    width: auto;
+  }
 }
 
 .horizontalScrollContainer {
-  min-width: 544px;
+  min-width: 100%;
+
+  @media #{$breakpoint-dimension-md} {
+    min-width: 544px;
+  }
 }
 
 .verticalScrollContainer {
+  min-width: 100%;
   max-height: 248px;
+
   @media #{$breakpoint-dimension-sm} {
     max-height: fit-content;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    min-width: 544px;
   }
 }
 
@@ -41,7 +56,8 @@
 }
 
 .codeBlock {
-  max-width: 544px;
+  width: calc(100% - 3rem);
+  max-width: none;
   color: var(--color_fg_link);
   font-feature-settings: 'liga' off, 'clig' off;
   font-family: var(--font-mono);
@@ -52,6 +68,11 @@
   letter-spacing: 0.15px;
   margin: 0 1.5rem;
   padding: 1.5rem 0;
+
+  @media #{$breakpoint-dimension-md} {
+    width: auto;
+    max-width: 544px;
+  }
 }
 
 .codeLine{
@@ -78,12 +99,14 @@
 }
 
 .token {
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 .json {
   white-space: pre-wrap;
-  word-break: break-word;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 .rawJson {
