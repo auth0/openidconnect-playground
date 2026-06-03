@@ -23,8 +23,8 @@ export const DebuggerToolbar = ({ openModal }: DebugerToolbarProps) => {
                 minWidth={"180px"}
                 placeholder=""
               />
-              <div className={styles.toolbar_separator_line} />
-              <div className={styles.toolbar_button_container} onClick={openModal}>
+              <div className={styles.toolbarSeparatorLine} />
+              <div className={styles.toolbarButtonContainer} onClick={openModal}>
                 <ConfigurationIcon />
                 <p>Configuration</p>
               </div>
