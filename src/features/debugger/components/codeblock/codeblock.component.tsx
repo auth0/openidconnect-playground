@@ -27,10 +27,11 @@ type CodeBlockProps = {
   } & CodeBlockMap[K];
 }[keyof CodeBlockMap] & {
   HeaderRightComponent?: ComponentType;
+  onClickHandler?: () => void;
 };
 
 export const Codeblock = (props: CodeBlockProps) => {
-  const { title, type, HeaderRightComponent } = props;
+  const { title, type, HeaderRightComponent, onClickHandler } = props;
   return (
     <div
       className={clsx(
@@ -61,6 +62,7 @@ export const Codeblock = (props: CodeBlockProps) => {
                 <p
                   className={styles.paramValue}
                   data-editable={props.requestData.isEditable}
+                  onClick={onClickHandler}
                 >
                   <span>{`${
                     props.requestData.method ? props.requestData.method : ""
@@ -73,6 +75,7 @@ export const Codeblock = (props: CodeBlockProps) => {
                   <p
                     className={styles.paramValue}
                     data-editable={data.isEditable ? "true" : "false"}
+                    onClick={onClickHandler}
                   >
                     {`${idx > 0 ? "&" : ""}${data.key}=`}
                     <span>{data.value}</span>

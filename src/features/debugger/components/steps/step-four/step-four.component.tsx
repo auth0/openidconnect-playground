@@ -19,7 +19,7 @@ export const StepFour = ({
         <Codeblock
           title="Decoded Token Payload"
           type="json"
-          json={JSON.parse(decodedToken)}
+          json={decodedToken}
         />
       ) : (
         <div className={styles.errorContainer}>

@@ -35,7 +35,7 @@ export type DebuggerStepsData = z.infer<typeof DebuggerStepsDataSchema>;
 export type AppData = z.infer<typeof AppDataSchema>;
 
 export const InitialDebuggerStepsData: DebuggerStepsData = {
-  server: "Auth0",
+  server: "auth0",
   domain: "samples.auth0.com",
   authEndpoint: "https://samples.auth0.com/authorize",
   tokenEndpoint: "https://samples.auth0.com/oauth/token",

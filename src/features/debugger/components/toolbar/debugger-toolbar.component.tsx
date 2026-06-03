@@ -2,12 +2,12 @@
 import { DebuggerPickerComponent } from "features/common/components/debugger-picker/debugger-picker.component";
 import styles from "./debugger-toolbar.module.scss";
 import ConfigurationIcon from "features/common/icons/configuration-icon";
-import { useState } from "react";
-import { ConfigurationModal } from "../configuration-modal/configuration-modal.component";
 
-export const DebuggerToolbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+type DebugerToolbarProps = {
+  openModal: () => void;
+};
 
+export const DebuggerToolbar = ({ openModal }: DebugerToolbarProps) => {
   return (
     <>
       <div className={styles.toolbar}>
@@ -24,10 +24,7 @@ export const DebuggerToolbar = () => {
                 placeholder=""
               />
               <div className={styles.toolbarSeparatorLine} />
-              <div
-                className={styles.toolbarButtonContainer}
-                onClick={() => setIsOpen(true)}
-              >
+              <div className={styles.toolbarButtonContainer} onClick={openModal}>
                 <ConfigurationIcon />
                 <p>Configuration</p>
               </div>
@@ -35,7 +32,6 @@ export const DebuggerToolbar = () => {
           </div>
         </div>
       </div>
-      <ConfigurationModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   );
 };
