@@ -11,14 +11,23 @@
 }
 
 .content {
-  margin: 60px 2rem 20px;
+  margin: 60px 0 20px;
   color: var(--color_fg_link);
   position: relative;
   isolation: isolate;
-  border-radius: 24px;
+  border-radius: 8px;
+
+  @media #{$breakpoint-dimension-sm} {
+    border-radius: 16px;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    margin: 100px 2rem 20px;
+    border-radius: 24px;
+  }
   border: 0.5px solid var(--color_border_light);
   background-image:
-    url("/images/auth0-badge-rectangle-group-43882.svg"),
+    url("/images/auth0-badge-rectangle-group.svg"),
     linear-gradient(198deg, #111 -16.57%, #191919 63.56%, #4016a0 96.77%, #3f59e4 119.35%);
   background-repeat: no-repeat;
   background-position: right -130px top -22px, center;
@@ -31,7 +40,6 @@
   }
 
   @media #{$breakpoint-dimension-md} {
-    margin-top: 100px;
     background-position: right -18px top -6px, center;
     background-size: auto 132%, cover;
   }
@@ -52,28 +60,21 @@
   :global(body[data-theme="light"]) &:before {
     content: "";
     position: absolute;
-    left: 50%;
-    right: auto;
-    top: auto;
-    bottom: 0;
-    transform: translateX(-50%);
-    width: 417px;
-    max-width: 130%;
-    height: 360px;
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
-    background: linear-gradient(163deg, #191919 -7.59%, #4016a0 33.77%, #3f59e4 64.58%, #4cb7a3 123.71%, #f6f1e7 165.82%);
+    display: none;
     z-index: 0;
 
     @media #{$breakpoint-dimension-sm} {
+      display: block;
       left: 50%;
       right: 0;
-      bottom: auto;
       transform: none;
       width: auto;
+      bottom: auto;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 0;
       top: 72px;
       height: calc(100% - 72px);
-      border-top-right-radius: 0;
+      background: linear-gradient(163deg, #191919 -7.59%, #4016a0 33.77%, #3f59e4 64.58%, #4cb7a3 123.71%, #f6f1e7 165.82%);
     }
 
     @media #{$breakpoint-dimension-md} {
@@ -130,11 +131,30 @@
 
   :global(body[data-theme="light"]) & {
     align-items: flex-end;
+    border-radius: 0;
+    background: none;
+  }
+
+  :global(body[data-theme="light"]) &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 40px;
+    bottom: 0;
+    border-radius: 0;
+    background: linear-gradient(163deg, #191919 -7.59%, #4016a0 33.77%, #3f59e4 64.58%, #4cb7a3 123.71%, #f6f1e7 165.82%);
+    z-index: 0;
   }
 
   @media #{$breakpoint-dimension-sm} {
     :global(body[data-theme="light"]) & {
       padding-top: 56px;
+      background: none;
+    }
+
+    :global(body[data-theme="light"]) &::before {
+      display: none;
     }
   }
 
@@ -168,37 +188,23 @@
   z-index: 1;
   display: block;
   width: clamp(280px, 82%, 365px);
-  height: 377px;
+  aspect-ratio: 365 / 434;
   margin: 0 auto;
   overflow: hidden;
   border-radius: 24px 24px 0 0;
 
   @media #{$breakpoint-dimension-sm} {
     width: clamp(286px, 76%, 365px);
-    height: 434px;
   }
 
   :global(body[data-theme="light"]) & {
-    border: 0.977px solid rgba(255, 254, 250, 0.6);
+    border: 0.653px solid rgba(255, 254, 250, 0.6);
+    background-image: url("/images/auth0-banner-subtract.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center top;
   }
 
-  :global(body[data-theme="light"]) &::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: -26px;
-    width: 78%;
-    height: 132px;
-    transform: translateX(-50%);
-    z-index: 0;
-    border-radius: 999px;
-    background:
-      radial-gradient(ellipse at center, rgba(171, 148, 255, 0.52) 0%, rgba(139, 114, 245, 0.24) 46%, rgba(96, 71, 204, 0) 100%),
-      linear-gradient(180deg, rgba(139, 114, 245, 0.32) 0%, rgba(139, 114, 245, 0) 100%);
-    filter: blur(20px);
-    opacity: 0.85;
-    pointer-events: none;
-  }
 }
 
 .bannerImage {
@@ -206,16 +212,11 @@
   z-index: 1;
   display: block;
   width: 100%;
-  max-width: 365px;
-  max-height: 377px;
-  height: 100%;
-  object-fit: cover;
+  max-width: none;
+  height: auto;
+  object-fit: contain;
   object-position: center top;
   margin: 0 auto;
-
-  @media #{$breakpoint-dimension-sm} {
-    max-height: 434px;
-  }
 }
 
 .title {
@@ -224,7 +225,7 @@
   letter-spacing: -1.12px;
   margin-bottom: 12px;
 
-  @media #{$breakpoint-dimension-md} {
+  @media #{$breakpoint-dimension-lg} {
     font-size: 56px;
   }
 }

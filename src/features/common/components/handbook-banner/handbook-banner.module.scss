@@ -11,10 +11,20 @@
 }
 
 .content {
-  margin: -20px 2rem 20px;
+  margin: -20px 0 20px;
   display: flex;
   flex-direction: column;
-  border-radius: 24px;
+  border-radius: 8px;
+
+  @media #{$breakpoint-dimension-sm} {
+    margin: -20px 0 20px;
+    border-radius: 16px;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    margin: 20px 2rem 20px;
+    border-radius: 24px;
+  }
   border: 0.5px solid var(--color_border_light);
   background: var(--color_bg_layer_alternate);
   overflow: clip;
@@ -28,7 +38,6 @@
   }
 
   @media #{$breakpoint-dimension-md} {
-    margin-top: 20px;
     padding-left: 64px;
     min-height: 318px;
   }
