@@ -141,3 +141,9 @@
     color: var(--color_fg_strong);
   }
 }
+
+.modal_status {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--color_fg_danger, #b42318);
+}

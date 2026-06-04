@@ -19,6 +19,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@next/third-parties": "^16.2.7",
         "body-parser": "^1.15.0",
         "clsx": "^2.1.1",
         "cookie-signature": "^1.2.2",
