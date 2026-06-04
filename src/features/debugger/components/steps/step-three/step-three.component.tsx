@@ -5,14 +5,26 @@ import ConfigurationIcon from "features/common/icons/configuration-icon";
 import { bodyFromRequestData, DebuggerStepsData } from "../utils";
 import { Dispatch, SetStateAction, useState } from "react";
 
+const getSignatureCopy = (algorithm: string): string => {
+  if (algorithm === "RS256") {
+    return "This token is cryptographically signed with the RS256 algorithm. We'll use the public key of the OpenID Connect server to validate it.";
+  }
+  if (algorithm === "HS256") {
+    return "This token is cryptographically signed with the HS256 algorithm. We'll use the client secret to validate it.";
+  }
+  return "This token is cryptographically signed. We'll validate its signature.";
+};
+
 export const StepThree = ({
   requestData,
   token,
+  algorithm,
   setDebuggerStepsData,
   setCurrentStepIndex,
 }: {
   requestData: RequestData;
   token: string;
+  algorithm: string;
   setDebuggerStepsData: Dispatch<SetStateAction<DebuggerStepsData>>;
   setCurrentStepIndex: Dispatch<SetStateAction<number>>;
 }) => {
@@ -73,8 +85,7 @@ export const StepThree = ({
       />
 
       <p className={styles.description}>
-        This token is cryptographically signed with the HS256 algorithm.
-        We&apos;ll use the client secret to validate it.
+        {getSignatureCopy(algorithm)}
       </p>
       <Button
         label="Verify"

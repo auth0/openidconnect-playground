@@ -146,6 +146,7 @@ export const DebuggerSteps = () => {
       render: () => (
         <StepThree
           token={debuggerStepsData?.idToken ?? ""}
+          algorithm={debuggerStepsData?.idTokenHeader ?? ""}
           requestData={requestDataStepThree}
           setDebuggerStepsData={setDebuggerStepsData}
           setCurrentStepIndex={setCurrentStepIndex}
@@ -298,17 +299,6 @@ export const DebuggerSteps = () => {
       top: yOffset,
     });
   }, [currentStepIndex]);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      localStorage.setItem(
-        "app-state",
-        JSON.stringify({ ...debuggerStepsData, ...authData }),
-      );
-    }, 300);
-
-    return () => clearTimeout(timeout);
-  }, [debuggerStepsData, authData]);
 
   return (
     <>
