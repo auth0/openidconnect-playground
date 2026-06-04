@@ -3,11 +3,13 @@ import {
   DEFAULT_THEME,
   PREFERRED_THEME_NAME,
 } from "features/theme/theme.config";
-import { MonoFont, PrimaryFont, SecondaryFont } from "libs/theme/fonts";
 import { cookies } from "next/headers";
 import "libs/theme/styles/globals.scss";
-import styles from "./layout.module.scss"
+import styles from "./layout.module.scss";
 import { MobileHeaderComponent } from "features/common/components/mobile-header/mobile-header.component";
+import { FooterComponent } from "features/common/components/footer/footer.component";
+import { enLayoutDictionary } from "features/common/components/cookie-consent-modal/dictionary.model";
+import { ShellComponent } from "features/common/components/shell/shell.component";
 import { Metadata } from "next";
 
 const title = "OpenID Connect Playground";
@@ -98,13 +100,18 @@ export default async function RootLayout({
           name="google-site-verification"
           content="tLAuc_2L4oGIS68FVPW-FvFdIxLNYkLBCAb-9PseeWY"
         />
-        {/* <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script> */}
       </head>
-      <body className={`${PrimaryFont.className} ${SecondaryFont.variable} ${MonoFont.variable}`} data-theme={theme}>
+      <ShellComponent theme={theme}>
         <HeaderComponent theme={theme} />
         <MobileHeaderComponent theme={theme} />
-        <main className={styles.main} >{children}</main>
-      </body>
+        <main className={styles.main}>{children}</main>
+        <FooterComponent
+          dictionary={enLayoutDictionary.footer}
+          auth0Logo={enLayoutDictionary.logos.auth0}
+          siteLogo={enLayoutDictionary.logos.site}
+          theme={theme}
+        />
+      </ShellComponent>
     </html>
   );
 }

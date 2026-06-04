@@ -59,7 +59,6 @@ export const DebuggerSteps = () => {
       ],
     };
   }, [debuggerStepsData, authData]);
-  console.log("current index", currentStepIndex);
 
   const requestDataStepTwo: RequestData = useMemo(() => {
     return {
@@ -137,7 +136,7 @@ export const DebuggerSteps = () => {
           requestData={requestDataStepTwo}
           setDebuggerStepsData={setDebuggerStepsData}
           setCurrentStepIndex={setCurrentStepIndex}
-          restartData={restartData}
+          restartData={clearAuthState}
         />
       ),
     },
@@ -147,6 +146,7 @@ export const DebuggerSteps = () => {
       render: () => (
         <StepThree
           token={debuggerStepsData?.idToken ?? ""}
+          algorithm={debuggerStepsData?.idTokenHeader ?? ""}
           requestData={requestDataStepThree}
           setDebuggerStepsData={setDebuggerStepsData}
           setCurrentStepIndex={setCurrentStepIndex}
@@ -159,7 +159,8 @@ export const DebuggerSteps = () => {
       render: () => (
         <StepFour
           decodedToken={debuggerStepsData?.idTokenDecoded ?? ""}
-          onRestart={restartData}
+          onRestart={clearAuthState}
+          onLogOut={logOut}
           validated={debuggerStepsData?.validated ?? false}
         />
       ),
@@ -182,8 +183,8 @@ export const DebuggerSteps = () => {
     };
   }, [authData, debuggerStepsData]);
 
-  const restartData = () => {
-    const restartDebuggerStepsData: DebuggerStepsData = {
+  const clearAuthState = () => {
+    const resetSteps: DebuggerStepsData = {
       ...debuggerStepsData,
       currentStep: 0,
       accessToken: null,
@@ -192,18 +193,26 @@ export const DebuggerSteps = () => {
       idTokenHeader: null,
       validated: false,
     };
-    const restartAuthData: AuthData = {
+    const resetAuth: AuthData = {
       ...authData,
       authCode: null,
       stateToken: null,
     };
     localStorage.setItem(
       "app-state",
-      JSON.stringify({ ...restartDebuggerStepsData, ...restartAuthData }),
+      JSON.stringify({ ...resetSteps, ...resetAuth }),
     );
-    setAuthData(restartAuthData);
-    setDebuggerStepsData(debuggerStepsData);
+    setAuthData(resetAuth);
+    setDebuggerStepsData(resetSteps);
     setCurrentStepIndex(0);
+  };
+
+  const logOut = () => {
+    clearAuthState();
+
+    if (debuggerStepsData.server?.toLowerCase() === "auth0" && debuggerStepsData.domain && authData?.clientID) {
+      window.location.href = `https://${debuggerStepsData.domain}/v2/logout?client_id=${authData.clientID}&returnTo=${encodeURIComponent(window.location.origin)}`;
+    }
   };
 
   const onSaveData = (updatedData: InitialModalData) => {
@@ -290,17 +299,6 @@ export const DebuggerSteps = () => {
       top: yOffset,
     });
   }, [currentStepIndex]);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      localStorage.setItem(
-        "app-state",
-        JSON.stringify({ ...debuggerStepsData, ...authData }),
-      );
-    }, 300);
-
-    return () => clearTimeout(timeout);
-  }, [debuggerStepsData, authData]);
 
   return (
     <>
