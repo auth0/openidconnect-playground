@@ -30,7 +30,7 @@
         "jose": "^6.2.2",
         "jsonwebtoken": "^9.0.2",
         "lodash": "^4.17.21",
-        "next": "^16.0.1",
+        "next": "^16.2.7",
         "query-parser": "0.0.1",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
