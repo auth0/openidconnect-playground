@@ -29,6 +29,10 @@ export const DebuggerSteps = () => {
     InitialDebuggerStepsData,
   );
   const [authData, setAuthData] = useState<AuthData | null>(null);
+  const [authError, setAuthError] = useState<{
+    error: string;
+    error_description: string;
+  } | null>(null);
   const requestDataStepOne = useMemo<RequestData>(() => {
     return {
       url: debuggerStepsData.authEndpoint ?? "",
@@ -125,7 +129,7 @@ export const DebuggerSteps = () => {
     {
       id: "step-one",
       label: "Redirect to OpenID Connect Server",
-      render: () => <StepOne requestData={requestDataStepOne} openModal={() => setIsOpenModal(true)}/>,
+      render: () => <StepOne requestData={requestDataStepOne} openModal={() => setIsOpenModal(true)} authError={authError}/>,
     },
     {
       id: "step-two",
@@ -245,6 +249,16 @@ export const DebuggerSteps = () => {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get("error");
+    if (error) {
+      setAuthError({
+        error,
+        error_description: params.get("error_description") ?? "",
+      });
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+
     const savedData = localStorage.getItem("app-state");
     const { debuggerSteps, auth } = getAppData(savedData);
     if (debuggerSteps) {

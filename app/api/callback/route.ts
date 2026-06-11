@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
+  const error = request.nextUrl.searchParams.get("error");
   if (code) {
     const secret = process.env.JWT_SECRET ?? "";
     const cookieStore = await cookies();
@@ -22,6 +23,15 @@ export async function GET(request: NextRequest) {
       sameSite: "lax",
     });
     const urlHomepage = new URL("/", request.url)
+    return NextResponse.redirect(urlHomepage, { status: 302 });
+  } else if (error) {
+    const errorParams = new URLSearchParams({ error });
+    const errorDescription =
+      request.nextUrl.searchParams.get("error_description");
+    if (errorDescription) {
+      errorParams.set("error_description", errorDescription);
+    }
+    const urlHomepage = new URL(`/?${errorParams.toString()}`, request.url);
     return NextResponse.redirect(urlHomepage, { status: 302 });
   } else {
     return NextResponse.json(
