@@ -185,12 +185,16 @@ a {
   --color_bg_state_info_subtle: #161f50;
   --color_fg_on_state_info_subtle: #b9c3f5;
   --color_border_state_info: #99a7f1;
+
+  --alerts-caution-0: #f4d594;
 }
 
 body[data-theme="light"] {
   --color_bg_state_info_subtle: #eef0fd;
   --color_fg_on_state_info_subtle: #263588;
   --color_border_state_info: #3f59e4;
+
+  --alerts-caution-0: #e0ba5a;
 
   --surface-tertiary: var(--functional-gray-150);
   --border-faint: #E8E8E8;

@@ -279,7 +279,7 @@ export const ConfigurationModal = ({
             <div className={styles.alertContentContainer}>
               <AlertIcon />
               <p>
-                <strong>Note.</strong> We store stuff like your keys in
+                <strong>Note.</strong>{" "}We store stuff like your keys in
                 LocalStorage so that when you redirect to authenticate, you
                 don&apos;t lose them.
                 <br />

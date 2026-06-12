@@ -138,6 +138,7 @@
   align-items: center;
     svg {
     min-width: 18px;
+    color: var(--alerts-caution-0, #f4d594);
   }
   p {
     font-family: var(--font-secondary);
@@ -147,6 +148,9 @@
     line-height: 20px;
     letter-spacing: 0.15px;
 
+    strong {
+      font-weight: 700;
+    }
   }
 }
 
