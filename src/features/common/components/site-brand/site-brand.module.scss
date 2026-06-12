@@ -1,0 +1,46 @@
+.brand {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  height: 2.375rem;
+  text-decoration: none;
+
+  svg {
+    height: inherit;
+    width: auto;
+  }
+}
+
+.brand__logo {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.brand__headline {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0.75rem;
+  color: var(--color_fg_bold);
+}
+
+.brand__title {
+  display: flex;
+  font-size: 2rem;
+  line-height: 2rem;
+  margin-top: 0;
+  letter-spacing: 0.02rem;
+
+  @media (max-width: 420px) {
+    font-size: 1.75rem;
+    line-height: 1.75rem;
+  }
+}
+
+.brand__subtitle {
+  display: flex;
+  font-size: 0.875rem;
+  line-height: 1;
+  margin-top: 1px;
+  letter-spacing: 0.02rem;
+}

@@ -1,0 +1,370 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+"use client";
+import { useEffect, useMemo, useRef, useState } from "react";
+import styles from "./debugger-steps.module.scss";
+import { StepOne, StepTwo, StepThree, StepFour } from "./index";
+import {
+  AuthData,
+  DebuggerStepsData,
+  getAppData,
+  InitialDebuggerStepsData,
+} from "./utils";
+import { RequestData } from "../codeblock/codeblock.component";
+import { DebuggerToolbar } from "../toolbar/debugger-toolbar.component";
+import {
+  ConfigurationModal,
+  InitialModalData,
+} from "../configuration-modal/configuration-modal.component";
+
+type Steps = {
+  id: string;
+  label: string;
+  render: () => React.JSX.Element;
+};
+
+export const DebuggerSteps = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [debuggerStepsData, setDebuggerStepsData] = useState<DebuggerStepsData>(
+    InitialDebuggerStepsData,
+  );
+  const [authData, setAuthData] = useState<AuthData | null>(null);
+  const [authError, setAuthError] = useState<{
+    error: string;
+    error_description: string;
+  } | null>(null);
+  const requestDataStepOne = useMemo<RequestData>(() => {
+    return {
+      url: debuggerStepsData.authEndpoint ?? "",
+      isEditable: true,
+      params: [
+        {
+          key: "client_id",
+          value: authData?.clientID ?? "",
+          isEditable: true,
+        },
+        {
+          key: "redirect_uri",
+          value: authData?.redirectURI ?? "",
+        },
+        {
+          key: "scope",
+          value: debuggerStepsData.scopes ?? "",
+          isEditable: true,
+        },
+        {
+          key: "response_type",
+          value: "code",
+        },
+        {
+          key: "state",
+          value: authData?.stateToken ?? "",
+        },
+      ],
+    };
+  }, [debuggerStepsData, authData]);
+
+  const requestDataStepTwo: RequestData = useMemo(() => {
+    return {
+      url: debuggerStepsData.tokenEndpoint ?? "",
+      method: "POST",
+      isEditable: false,
+      params: [
+        {
+          key: "grant_type",
+          value: "authorization_code",
+        },
+        {
+          key: "client_id",
+          value: authData?.clientID ?? "",
+          isEditable: true,
+        },
+        {
+          key: "client_secret",
+          value: authData?.clientSecret ?? "",
+          isEditable: true,
+        },
+        {
+          key: "redirect_uri",
+          value: authData?.redirectURI ?? "",
+        },
+        {
+          key: "code",
+          value: authData?.authCode ?? "",
+        },
+      ],
+    };
+  }, [authData, debuggerStepsData]);
+
+  const requestDataStepThree: RequestData = useMemo(() => {
+    return {
+      url: "api/validate",
+      method: "POST",
+      params: [
+        {
+          key: "clientSecret",
+          value: authData?.clientSecret ?? "",
+        },
+        {
+          key: "idToken",
+          value: debuggerStepsData?.idToken ?? "",
+        },
+        {
+          key: "tokenKeysEndpoint",
+          value: debuggerStepsData?.tokenKeysEndpoint ?? "",
+        },
+        {
+          key: "server",
+          value: debuggerStepsData?.server ?? "",
+        },
+        {
+          key: "code",
+          value: authData?.authCode ?? ""
+        }
+      ],
+    };
+  }, [authData, debuggerStepsData]);
+
+  const stepsList: Steps[] = [
+    {
+      id: "step-one",
+      label: "Redirect to OpenID Connect Server",
+      render: () => <StepOne requestData={requestDataStepOne} openModal={() => setIsOpenModal(true)} authError={authError}/>,
+    },
+    {
+      id: "step-two",
+      label: "Exchange Code from Token",
+      render: () => (
+        <StepTwo
+          authCode={authData?.authCode ?? ""}
+          requestData={requestDataStepTwo}
+          setDebuggerStepsData={setDebuggerStepsData}
+          setCurrentStepIndex={setCurrentStepIndex}
+          restartData={clearAuthState}
+        />
+      ),
+    },
+    {
+      id: "step-three",
+      label: "Verify User Token",
+      render: () => (
+        <StepThree
+          token={debuggerStepsData?.idToken ?? ""}
+          algorithm={debuggerStepsData?.idTokenHeader ?? ""}
+          requestData={requestDataStepThree}
+          setDebuggerStepsData={setDebuggerStepsData}
+          setCurrentStepIndex={setCurrentStepIndex}
+        />
+      ),
+    },
+    {
+      id: "step-four",
+      label: "The token is valid!",
+      render: () => (
+        <StepFour
+          decodedToken={debuggerStepsData?.idTokenDecoded ?? ""}
+          onRestart={clearAuthState}
+          onLogOut={logOut}
+          validated={debuggerStepsData?.validated ?? false}
+        />
+      ),
+    },
+  ];
+
+  const stepRefs = useRef<Record<number, HTMLDivElement | null>>({});
+
+  const initialModalData: InitialModalData = useMemo(() => {
+    return {
+      audience: debuggerStepsData.audience ?? "",
+      authEndpoint: debuggerStepsData.authEndpoint ?? InitialDebuggerStepsData.authEndpoint!,
+      clientId: authData?.clientID ?? "",
+      clientSecret: authData?.clientSecret ?? "",
+      domain: debuggerStepsData.domain ?? InitialDebuggerStepsData.domain!,
+      tokenEndpoint: debuggerStepsData.tokenEndpoint ?? InitialDebuggerStepsData.tokenEndpoint!,
+      tokenKeysEndpoint: debuggerStepsData.tokenKeysEndpoint ?? InitialDebuggerStepsData.tokenKeysEndpoint!,
+      scope: debuggerStepsData.scopes ?? InitialDebuggerStepsData.scopes!,
+      serverTemplate: debuggerStepsData.server ?? InitialDebuggerStepsData.server!,
+    };
+  }, [authData, debuggerStepsData]);
+
+  const clearAuthState = () => {
+    const resetSteps: DebuggerStepsData = {
+      ...debuggerStepsData,
+      currentStep: 0,
+      accessToken: null,
+      idToken: null,
+      idTokenDecoded: null,
+      idTokenHeader: null,
+      validated: false,
+    };
+    const resetAuth: AuthData = {
+      ...authData,
+      authCode: null,
+      stateToken: null,
+    };
+    localStorage.setItem(
+      "app-state",
+      JSON.stringify({ ...resetSteps, ...resetAuth }),
+    );
+    setAuthData(resetAuth);
+    setDebuggerStepsData(resetSteps);
+    setCurrentStepIndex(0);
+  };
+
+  const logOut = () => {
+    clearAuthState();
+
+    if (debuggerStepsData.server?.toLowerCase() === "auth0" && debuggerStepsData.domain && authData?.clientID) {
+      window.location.href = `https://${debuggerStepsData.domain}/v2/logout?client_id=${authData.clientID}&returnTo=${encodeURIComponent(window.location.origin)}`;
+    }
+  };
+
+  const onSaveData = (updatedData: InitialModalData) => {
+    const {
+      audience,
+      authEndpoint,
+      clientId,
+      clientSecret,
+      domain,
+      scope,
+      serverTemplate,
+      tokenEndpoint,
+      tokenKeysEndpoint,
+    } = updatedData;
+    setDebuggerStepsData((prev) => ({
+      ...prev,
+      audience,
+      authEndpoint,
+      domain,
+      scopes: scope,
+      server: serverTemplate,
+      tokenEndpoint,
+      tokenKeysEndpoint,
+    }));
+    setAuthData((prev) => ({
+      ...prev,
+      clientID: clientId,
+      clientSecret,
+    }));
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get("error");
+    if (error) {
+      setAuthError({
+        error,
+        error_description: params.get("error_description") ?? "",
+      });
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+
+    const savedData = localStorage.getItem("app-state");
+    const { debuggerSteps, auth } = getAppData(savedData);
+    if (debuggerSteps) {
+      setDebuggerStepsData(debuggerSteps);
+      setCurrentStepIndex(debuggerSteps.currentStep ?? 0);
+    }
+    if (auth) setAuthData(auth);
+    if (!auth) {
+      fetch("api/auth_data")
+        .then((res) => {
+          if (!res.ok) throw new Error(`auth_data responded with ${res.status}`);
+          return res.json();
+        })
+        .then((data) => {
+          const authDataResponse: AuthData = {
+            clientID: data.clientId,
+            clientSecret: data.clientSecret,
+            stateToken: data.state,
+            redirectURI: data.redirect_uri,
+            authCode: data.code,
+          };
+          if (authDataResponse.authCode) {
+            setCurrentStepIndex(1);
+            setDebuggerStepsData(prev => ({ ...prev, currentStep: 1 }));
+          }
+          setAuthData(authDataResponse);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch auth data:", error);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "app-state",
+      JSON.stringify({
+        ...debuggerStepsData,
+        ...(authData ?? {}),
+        currentStep: currentStepIndex,
+      }),
+    );
+  }, [debuggerStepsData, authData, currentStepIndex]);
+
+  useEffect(() => {
+    if (currentStepIndex === 0) return;
+    const ref = stepRefs.current[currentStepIndex];
+    if (!ref) return;
+    const yOffset = ref.getBoundingClientRect().top + window.scrollY - 170;
+    window.scrollTo({
+      behavior: "smooth",
+      top: yOffset,
+    });
+  }, [currentStepIndex]);
+
+  return (
+    <>
+      <DebuggerToolbar openModal={() => setIsOpenModal(true)} />
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <div className={styles.content}>
+            {stepsList.map(({ id, label, render }, index) => {
+              const state =
+                index < currentStepIndex
+                  ? "completed"
+                  : index === currentStepIndex
+                    ? "current"
+                    : "upcoming";
+              return (
+                <div key={id} className={styles.stepContainer}>
+                  <div
+                    className={styles.stepTitleContainer}
+                    data-state={state}
+                    aria-current={state === "current" ? "step" : undefined}
+                    aria-label={`${label} ${state}`}
+                  >
+                    <div className={styles.stepTitleContent}>
+                      {" "}
+                      <div className={styles.stepNumber}>{index + 1}</div>
+                      <p>{label}</p>
+                    </div>
+                  </div>
+
+                  <div
+                    className={styles.stepContent}
+                    data-open={state === "current"}
+                    inert={state !== "current" ? true : undefined}
+                    ref={(el) => {
+                      stepRefs.current[index] = el;
+                    }}
+                  >
+                    {render()}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+      <ConfigurationModal
+        onClose={() => setIsOpenModal(false)}
+        isOpen={isOpenModal}
+        initialData={initialModalData}
+        key={initialModalData.clientId}
+        onSaveData={onSaveData}
+      />
+    </>
+  );
+};

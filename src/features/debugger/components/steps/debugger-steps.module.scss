@@ -1,0 +1,124 @@
+@use "libs/theme/styles/variables" as *;
+@use "libs/theme/styles/mixins" as *;
+
+.container {
+  @include Container;
+  margin-bottom: 100px;
+}
+
+.wrapper {
+  @include ExtendedGrid;
+}
+
+.content {
+  margin: 0;
+  border-radius: 8px;
+  border: 0.5px solid var(--color_border_light);
+  background: var(--color_bg_layer_alternate);
+  backdrop-filter: blur(40px);
+
+  @media #{$breakpoint-dimension-sm} {
+    margin: 0;
+    border-radius: 16px;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    margin: 0 2rem;
+    border-radius: 24px;
+  }
+}
+
+.stepTitleContainer {
+  display: flex;
+  padding: 0 24px;
+  align-items: center;
+  &[data-state="upcoming"] .stepNumber {
+    color: var(--color_fg_bold);
+    border: 1px solid var(--color_fg_default);
+    background-color: transparent;
+  }
+  @media #{$breakpoint-dimension-sm} {
+    padding: 0 64px;
+  }
+}
+
+.stepTitleContent {
+    display: flex;
+    padding: 16px 40px 16px 0;
+    align-items: center;
+    gap: 12px;
+    color: var(--color_fg_bold);
+}
+
+.stepContainer:not(:last-child) .stepTitleContainer {
+    border-bottom: 0.5px solid var(--color_border_light);
+}
+
+.stepNumber {
+  display: flex;
+  width: 32px;
+  padding: 7px 0 5px 0;
+  justify-content: center;
+  align-items: center;
+  border-radius: 999px;
+  background-color: var(--color_fg_default);
+  color: var(--color_bg_layer);
+  flex-shrink: 0;
+}
+
+.stepContent {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-out;
+  &[data-open="true"] {
+    max-height: fit-content;
+    margin: 2rem 24px;
+
+    @media #{$breakpoint-dimension-sm} {
+      margin: 2rem 64px;
+    }
+  }
+  p.description {
+    width: 100%;
+    max-width: none;
+    color: var(--color_fg_neutral);
+    font-family: var(--font-secondary);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+    letter-spacing: -0.1px;
+
+    @media #{$breakpoint-dimension-md} {
+      max-width: 592px;
+    }
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+  color: var(--color_fg_link);
+  text-decoration: none;
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.28px;
+
+  svg {
+    path {
+      stroke: var(--color_fg_link);
+    }
+  }
+}
