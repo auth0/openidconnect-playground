@@ -4,7 +4,7 @@ import { z } from "zod";
 const discoverySchema = z.object({
   authorization_endpoint: z.url(),
   token_endpoint: z.url(),
-  userinfo_endpoint: z.url(),
+  userinfo_endpoint: z.url().optional(),
   jwks_uri: z.url(),
 });
 
