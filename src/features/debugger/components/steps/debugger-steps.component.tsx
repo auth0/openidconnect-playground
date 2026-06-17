@@ -266,30 +266,27 @@ export const DebuggerSteps = () => {
       setCurrentStepIndex(debuggerSteps.currentStep ?? 0);
     }
     if (auth) setAuthData(auth);
-    if (!auth) {
-      fetch("api/auth_data")
-        .then((res) => {
-          if (!res.ok) throw new Error(`auth_data responded with ${res.status}`);
-          return res.json();
-        })
-        .then((data) => {
-          const authDataResponse: AuthData = {
-            clientID: data.clientId,
-            clientSecret: data.clientSecret,
-            stateToken: data.state,
-            redirectURI: data.redirect_uri,
-            authCode: data.code,
-          };
-          if (authDataResponse.authCode) {
-            setCurrentStepIndex(1);
-            setDebuggerStepsData(prev => ({ ...prev, currentStep: 1 }));
-          }
-          setAuthData(authDataResponse);
-        })
-        .catch((error) => {
-          console.error("Failed to fetch auth data:", error);
-        });
-    }
+    fetch("api/auth_data")
+      .then((res) => {
+        if (!res.ok) throw new Error(`auth_data responded with ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        setAuthData((prev) => ({
+          clientID: prev?.clientID ?? data.clientId,
+          clientSecret: prev?.clientSecret ?? data.clientSecret,
+          stateToken: prev?.stateToken ?? data.state,
+          redirectURI: data.redirect_uri,
+          authCode: data.code ?? prev?.authCode ?? null,
+        }));
+        if (data.code) {
+          setCurrentStepIndex(1);
+          setDebuggerStepsData(prev => ({ ...prev, currentStep: 1 }));
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch auth data:", error);
+      });
   }, []);
 
   useEffect(() => {
