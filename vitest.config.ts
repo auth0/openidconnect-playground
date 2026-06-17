@@ -7,7 +7,7 @@ export default defineConfig({
     coverage: {
       provider: "istanbul",
     },
-    exclude: ["node_modules", ".next"],
+    exclude: ["node_modules", ".next", "e2e"],
   },
   plugins: [tsconfigPaths()],
 });
