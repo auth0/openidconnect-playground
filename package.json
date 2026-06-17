@@ -15,7 +15,8 @@
         "lint:fix": "eslint --fix",
         "test": "vitest",
         "test:run": "vitest run",
-        "coverage": "vitest run --coverage"
+        "coverage": "vitest run --coverage",
+        "test:e2e": "playwright test"
     },
     "keywords": [],
     "author": "",
@@ -47,6 +48,7 @@
         "zod": "^4.3.6"
     },
     "devDependencies": {
+        "@playwright/test": "^1.61.0",
         "@types/cookie-signature": "^1.1.2",
         "@types/jsonwebtoken": "^9.0.10",
         "@types/node": "24.9.2",
