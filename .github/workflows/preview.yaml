@@ -50,16 +50,25 @@ jobs:
           DEPLOYMENT_URL: ${{ needs.Deploy-Preview.outputs.deploymentUrl }}
         with:
           script: |
-            // Get pull requests that are open for current ref.
-            const pullRequests = await github.rest.pulls.list({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open',
-                head: `${context.repo.owner}:${context.ref.replace('refs/heads/', '')}`
-            })
+            // Resolve the PR number: from context on pull_request events, otherwise
+            // from the PR associated with the pushed commit. The commit-association
+            // lookup is deterministic for the pushed SHA, unlike the `pulls.list`
+            // head filter which intermittently returns an empty list.
+            let issueNumber = context.issue.number
 
-            // Set issue number for following calls from context (if on pull request event) or from above variable.
-            const issueNumber = context.issue.number || pullRequests.data[0].number
+            if (!issueNumber) {
+                const { data: associatedPrs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    commit_sha: context.sha,
+                })
+                issueNumber = associatedPrs.find((pr) => pr.state === 'open')?.number
+            }
+
+            if (!issueNumber) {
+                console.log('No open PR associated with this commit - skipping preview-URL comment.')
+                return
+            }
 
             // Retrieve existing bot comments for the PR
             const {data: comments} = await github.rest.issues.listComments({
