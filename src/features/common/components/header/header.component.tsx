@@ -7,7 +7,6 @@ import Image from "next/image";
 import { ThemeSwitcherComponent } from "../theme-switcher/theme-switcher.component";
 import { usePathname } from "next/navigation";
 import { linkPagesInfo } from "./utils";
-import ControlIcon from "features/common/icons/control-icon";
 import clsx from "clsx";
 
 interface HeaderComponentProps {
@@ -66,7 +65,6 @@ export const HeaderComponent: React.FC<HeaderComponentProps> = ({ theme }) => {
           </div>
           <div className={styles.headerIcons}>
             <ThemeSwitcherComponent theme={theme} />
-            <ControlIcon />
           </div>
         </nav>
       </div>
