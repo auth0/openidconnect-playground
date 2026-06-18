@@ -8,7 +8,6 @@ import Image from "next/image";
 import { MobileMenuStateValues } from "./mobile-header.utils";
 import { linkPagesInfo } from "../header/utils";
 import { ThemeSwitcherComponent } from "../theme-switcher/theme-switcher.component";
-import ControlIcon from "features/common/icons/control-icon";
 
 interface MobileHeaderComponentProps {
   theme: string;
@@ -75,7 +74,6 @@ useEffect(() => {
                 <h3 className={styles.logoSmallTitle}>Playground</h3>
               </div>
             </div>
-            <ControlIcon />
             <button
               className={styles.burgerIconWrapper}
               onClick={toggleMobileMenu}
