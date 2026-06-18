@@ -92,25 +92,28 @@ jobs:
                 repo: context.repo.repo,
                 issue_number: issueNumber,
             })
-            const botComment = comments.find(comment => {
+            const previousComments = comments.filter(comment => {
                 return comment.user.type === 'Bot' && comment.body.includes('Preview URL ')
             })
 
             const output = "Preview URL " + process.env.DEPLOYMENT_URL
 
-            // If we have a comment, update it, otherwise create a new one
-            if (botComment) {
-                github.rest.issues.updateComment({
+            // Delete any previous preview-URL comment(s), then post a fresh one.
+            // Creating a new comment - rather than editing in place - keeps it at
+            // the bottom of the timeline and notifies subscribers that a new
+            // preview is ready, while deleting the old ones avoids accumulating
+            // stale URLs. Net result: exactly one, always-current comment.
+            for (const comment of previousComments) {
+                await github.rest.issues.deleteComment({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
-                    comment_id: botComment.id,
-                    body: output
-                })
-            } else {
-                github.rest.issues.createComment({
-                    issue_number: issueNumber,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    body: output
+                    comment_id: comment.id,
                 })
             }
+
+            await github.rest.issues.createComment({
+                issue_number: issueNumber,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: output,
+            })
