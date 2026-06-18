@@ -50,70 +50,47 @@ jobs:
           DEPLOYMENT_URL: ${{ needs.Deploy-Preview.outputs.deploymentUrl }}
         with:
           script: |
-            // Resolve the PR number. On pull_request events it comes from context.
-            // On push events it does not, so use two lookups that are flaky in
-            // opposite situations, trying the fast one first:
-            //   1. open PRs filtered by head branch - resolves a fresh push
-            //      immediately (this is the long-standing, working behaviour).
-            //   2. commit association - covers job re-runs, where the head-branch
-            //      search index can return empty but the commit -> PR association
-            //      has since been indexed.
-            // Only skip when BOTH come back empty (i.e. there is genuinely no PR).
-            let issueNumber = context.issue.number
+            const { owner, repo } = context.repo
 
-            if (!issueNumber) {
+            // On push events context.issue.number is empty, so fall back to the
+            // head-branch lookup (fast on fresh pushes) then commit association
+            // (covers re-runs where the head-branch index lags).
+            const resolvePrNumber = async () => {
+                if (context.issue.number) return context.issue.number
+
                 const branch = context.ref.replace('refs/heads/', '')
                 const { data: openPrs } = await github.rest.pulls.list({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    state: 'open',
-                    head: `${context.repo.owner}:${branch}`,
+                    owner, repo, state: 'open', head: `${owner}:${branch}`,
                 })
-                issueNumber = openPrs[0]?.number
+                if (openPrs[0]) return openPrs[0].number
+
+                const { data: associatedPrs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                    owner, repo, commit_sha: context.sha,
+                })
+                return associatedPrs.find((pr) => pr.state === 'open')?.number
             }
 
-            if (!issueNumber) {
-                const { data: associatedPrs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    commit_sha: context.sha,
-                })
-                issueNumber = associatedPrs.find((pr) => pr.state === 'open')?.number
-            }
+            const issueNumber = await resolvePrNumber()
 
             if (!issueNumber) {
                 console.log('No open PR found for this commit/branch - skipping preview-URL comment.')
                 return
             }
 
-            // Retrieve existing bot comments for the PR
-            const {data: comments} = await github.rest.issues.listComments({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issueNumber,
+            const { data: comments } = await github.rest.issues.listComments({
+                owner, repo, issue_number: issueNumber,
             })
-            const previousComments = comments.filter(comment => {
-                return comment.user.type === 'Bot' && comment.body.includes('Preview URL ')
-            })
+            const previousComments = comments.filter(
+                (comment) => comment.user.type === 'Bot' && comment.body.includes('Preview URL ')
+            )
 
-            const output = "Preview URL " + process.env.DEPLOYMENT_URL
-
-            // Delete any previous preview-URL comment(s), then post a fresh one.
-            // Creating a new comment - rather than editing in place - keeps it at
-            // the bottom of the timeline and notifies subscribers that a new
-            // preview is ready, while deleting the old ones avoids accumulating
-            // stale URLs. Net result: exactly one, always-current comment.
-            for (const comment of previousComments) {
-                await github.rest.issues.deleteComment({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    comment_id: comment.id,
-                })
-            }
+            // Repost rather than edit in place, so the comment stays at the bottom
+            // and notifies; delete prior ones so stale URLs don't pile up.
+            await Promise.all(previousComments.map(
+                (comment) => github.rest.issues.deleteComment({ owner, repo, comment_id: comment.id })
+            ))
 
             await github.rest.issues.createComment({
-                issue_number: issueNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: output,
+                owner, repo, issue_number: issueNumber,
+                body: `Preview URL ${process.env.DEPLOYMENT_URL}`,
             })
