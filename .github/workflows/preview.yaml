@@ -50,11 +50,27 @@ jobs:
           DEPLOYMENT_URL: ${{ needs.Deploy-Preview.outputs.deploymentUrl }}
         with:
           script: |
-            // Resolve the PR number: from context on pull_request events, otherwise
-            // from the PR associated with the pushed commit. The commit-association
-            // lookup is deterministic for the pushed SHA, unlike the `pulls.list`
-            // head filter which intermittently returns an empty list.
+            // Resolve the PR number. On pull_request events it comes from context.
+            // On push events it does not, so use two lookups that are flaky in
+            // opposite situations, trying the fast one first:
+            //   1. open PRs filtered by head branch - resolves a fresh push
+            //      immediately (this is the long-standing, working behaviour).
+            //   2. commit association - covers job re-runs, where the head-branch
+            //      search index can return empty but the commit -> PR association
+            //      has since been indexed.
+            // Only skip when BOTH come back empty (i.e. there is genuinely no PR).
             let issueNumber = context.issue.number
+
+            if (!issueNumber) {
+                const branch = context.ref.replace('refs/heads/', '')
+                const { data: openPrs } = await github.rest.pulls.list({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    state: 'open',
+                    head: `${context.repo.owner}:${branch}`,
+                })
+                issueNumber = openPrs[0]?.number
+            }
 
             if (!issueNumber) {
                 const { data: associatedPrs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
@@ -66,7 +82,7 @@ jobs:
             }
 
             if (!issueNumber) {
-                console.log('No open PR associated with this commit - skipping preview-URL comment.')
+                console.log('No open PR found for this commit/branch - skipping preview-URL comment.')
                 return
             }
 
