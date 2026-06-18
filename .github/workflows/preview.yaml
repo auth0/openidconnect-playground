@@ -77,7 +77,7 @@ jobs:
                 issue_number: issueNumber,
             })
             const botComment = comments.find(comment => {
-                return comment.user.type === 'Bot' && comment.body.includes('Preview URL at')
+                return comment.user.type === 'Bot' && comment.body.includes('Preview URL ')
             })
 
             const output = "Preview URL " + process.env.DEPLOYMENT_URL
