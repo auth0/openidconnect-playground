@@ -8,6 +8,13 @@ on:
       - master
       - production
       - development
+  pull_request:
+    types: [opened, reopened]
+
+concurrency:
+  group: preview-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   Deploy-Preview:
     runs-on:

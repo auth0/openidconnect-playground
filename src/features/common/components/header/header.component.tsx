@@ -7,7 +7,6 @@ import Image from "next/image";
 import { ThemeSwitcherComponent } from "../theme-switcher/theme-switcher.component";
 import { usePathname } from "next/navigation";
 import { linkPagesInfo } from "./utils";
-import clsx from "clsx";
 
 interface HeaderComponentProps {
   theme: string;
@@ -46,11 +45,7 @@ export const HeaderComponent: React.FC<HeaderComponentProps> = ({ theme }) => {
                     </li>
                   ) : (
                     <li
-                      className={clsx(
-                        styles.headerItem,
-                        linkInfo.id === "shop"
-                          && styles.headerExternalLink
-                      )}
+                      className={styles.headerItem}
                       role="menuitem"
                       key={linkInfo.label}
                     >
