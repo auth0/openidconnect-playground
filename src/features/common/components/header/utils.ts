@@ -22,10 +22,4 @@ export const linkPagesInfo: Array<LinkInfo> = [
     pathname: "https://community.auth0.com/",
     isExternal: true,
   },
-  {
-    id: "shop",
-    label: "Get a T-Shirt!",
-    pathname: "https://auth0.myspreadshop.com/",
-    isExternal: true,
-  },
 ];
