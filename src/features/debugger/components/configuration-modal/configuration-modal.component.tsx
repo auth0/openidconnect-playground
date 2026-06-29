@@ -51,20 +51,20 @@ const MODAL_OPTIONS: ModalOptions[] = [
   {
     name: "domain",
     title: "Domain",
-    defaultValue: "sample.auth0.com",
+    defaultValue: "dev-tdga8e7vnn68zum5.us.auth0.com",
     type: "input",
   },
   {
     name: "authEndpoint",
     title: "Endpoint",
-    defaultValue: "sample.auth0.com/authorize",
+    defaultValue: "dev-tdga8e7vnn68zum5.us.auth0.com/authorize",
     type: "input",
     readOnly: true,
   },
   {
     name: "tokenEndpoint",
     title: "Token Endpoint",
-    defaultValue: "sample.auth0.com/oauth/token",
+    defaultValue: "dev-tdga8e7vnn68zum5.us.auth0.com/oauth/token",
     type: "input",
     readOnly: true,
   },
@@ -115,7 +115,7 @@ export const ConfigurationModal = ({
   onSaveData,
 }: ModalProps) => {
   const SERVER_URLS: Record<string, string> = {
-    auth0: "https://sample.auth0.com/.well-known/openid-configuration",
+    auth0: "https://dev-tdga8e7vnn68zum5.us.auth0.com/.well-known/openid-configuration",
     google: "https://accounts.google.com/.well-known/openid-configuration",
     custom: "",
   };
@@ -189,7 +189,7 @@ export const ConfigurationModal = ({
           authEndpoint: data.authorization_endpoint,
           tokenEndpoint: data.token_endpoint,
           tokenKeysEndpoint: data.jwks_uri,
-          domain: value !== "auth0" ? SERVER_URLS[value] : "samples.auth0.com",
+          domain: value !== "auth0" ? SERVER_URLS[value] : "dev-tdga8e7vnn68zum5.us.auth0.com",
         };
       });
     } catch (error) {
