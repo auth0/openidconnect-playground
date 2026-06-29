@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 
 const ALLOWED_HOSTNAMES = new Set([
   "samples.auth0.com",
+  "dev-tdga8e7vnn68zum5.us.auth0.com",
   "oauth2.googleapis.com",
 ]);
 
