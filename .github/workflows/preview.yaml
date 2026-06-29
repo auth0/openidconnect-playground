@@ -38,13 +38,9 @@ jobs:
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
       - name: Assign Custom Domain
-        if: ${{ steps.extract_branch.outputs.branch == 'remove-basepath-2' || steps.extract_branch.outputs.branch == 'test/vercel-deployment-qa' }}
+        if: ${{ steps.extract_branch.outputs.branch == 'remove-basepath-2' }}
         run: |
-          if [ "${{ steps.extract_branch.outputs.branch }}" = "remove-basepath-2" ]; then
-            vercel alias set --token=${{ secrets.VERCEL_ACCESS_TOKEN }} ${{ steps.deploy.outputs.deploymentUrl }} ab-test-next-jwt-io.vercel.app --scope=okta
-          elif [ "${{ steps.extract_branch.outputs.branch }}" = "test/vercel-deployment-qa" ]; then
-            vercel alias set --token=${{ secrets.VERCEL_ACCESS_TOKEN }} ${{ steps.deploy.outputs.deploymentUrl }} openidconnect-qa.vercel.app --scope=okta
-          fi
+          vercel alias set --token=${{ secrets.VERCEL_ACCESS_TOKEN }} ${{ steps.deploy.outputs.deploymentUrl }} ab-test-next-jwt-io.vercel.app --scope=okta
 
   Add-Comment:
     runs-on:
