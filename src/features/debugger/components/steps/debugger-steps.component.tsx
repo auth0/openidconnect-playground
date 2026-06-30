@@ -314,7 +314,7 @@ export const DebuggerSteps = () => {
   return (
     <>
       <DebuggerToolbar openModal={() => setIsOpenModal(true)} />
-      <div className={styles.container}>
+      <div id="debugger" className={styles.container}>
         <div className={styles.wrapper}>
           <div className={styles.content}>
             {stepsList.map(({ id, label, render }, index) => {

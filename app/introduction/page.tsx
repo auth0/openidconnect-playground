@@ -6,7 +6,7 @@ import { IntroductionContent } from "features/common/components/introduction-con
 export default function IntroductionPage() {
   return (
     <>
-      <HeroJumbotronComponent ctaLabel="Try it now" ctaHref="/" />
+      <HeroJumbotronComponent ctaLabel="Try it now" />
       <IntroductionContent />
       <HandbookBanner />
       <Auth0Banner />
