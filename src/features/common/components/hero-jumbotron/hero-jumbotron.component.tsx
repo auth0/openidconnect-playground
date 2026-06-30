@@ -2,6 +2,7 @@
 
 import React from "react";
 import styles from "./hero-jumbotron.module.scss";
+import { useRouter } from "next/navigation";
 
 type HeroJumbotronComponentProps = {
   ctaLabel?: string;
@@ -12,11 +13,15 @@ export const HeroJumbotronComponent: React.FC<HeroJumbotronComponentProps> = ({
   ctaLabel = "Try it now",
   ctaTargetId = "debugger",
 }) => {
+  const router = useRouter();
+
   const handleCtaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     const target = document.getElementById(ctaTargetId);
     if (target) {
-      e.preventDefault();
       target.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push(`/?scrollTo=${ctaTargetId}`);
     }
   };
 
@@ -37,7 +42,7 @@ export const HeroJumbotronComponent: React.FC<HeroJumbotronComponentProps> = ({
                 </p>
               </div>
 
-              <a className={styles.heroCtaButton} href={`/#${ctaTargetId}`} onClick={handleCtaClick}>
+              <a className={styles.heroCtaButton} href={`/?scrollTo=${ctaTargetId}`} onClick={handleCtaClick}>
                 {ctaLabel}
               </a>
             </div>
