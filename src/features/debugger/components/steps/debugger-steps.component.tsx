@@ -258,6 +258,13 @@ export const DebuggerSteps = () => {
       });
       window.history.replaceState(null, "", window.location.pathname);
     }
+    const scrollTo = params.get("scrollTo");
+    if (scrollTo) {
+      window.history.replaceState(null, "", window.location.pathname);
+      setTimeout(() => {
+        document.getElementById(scrollTo)?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
 
     const savedData = localStorage.getItem("app-state");
     const { debuggerSteps, auth } = getAppData(savedData);
@@ -314,7 +321,7 @@ export const DebuggerSteps = () => {
   return (
     <>
       <DebuggerToolbar openModal={() => setIsOpenModal(true)} />
-      <div className={styles.container}>
+      <div id="debugger" className={styles.container}>
         <div className={styles.wrapper}>
           <div className={styles.content}>
             {stepsList.map(({ id, label, render }, index) => {

@@ -1,16 +1,30 @@
+"use client";
+
 import React from "react";
 import styles from "./hero-jumbotron.module.scss";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type HeroJumbotronComponentProps = {
   ctaLabel?: string;
-  ctaHref?: string;
+  ctaTargetId?: string;
 };
 
 export const HeroJumbotronComponent: React.FC<HeroJumbotronComponentProps> = ({
   ctaLabel = "Try it now",
-  ctaHref = "/",
+  ctaTargetId = "debugger",
 }) => {
+  const router = useRouter();
+
+  const handleCtaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const target = document.getElementById(ctaTargetId);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push(`/?scrollTo=${ctaTargetId}`);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -28,9 +42,9 @@ export const HeroJumbotronComponent: React.FC<HeroJumbotronComponentProps> = ({
                 </p>
               </div>
 
-              <Link className={styles.heroCtaButton} href={ctaHref}>
+              <a className={styles.heroCtaButton} href={`/?scrollTo=${ctaTargetId}`} onClick={handleCtaClick}>
                 {ctaLabel}
-              </Link>
+              </a>
             </div>
             <div className={styles.heroMedia}>
               <picture>
