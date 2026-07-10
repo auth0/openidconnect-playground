@@ -2,9 +2,9 @@ import { describe, expect, test } from "vitest";
 import { linkPagesInfo } from "features/common/components/header/utils";
 
 describe("linkPagesInfo", () => {
-  test("exposes the four navigation links in order", () => {
+  test("exposes the three navigation links in order", () => {
     const ids = linkPagesInfo.map((link) => link.id);
-    expect(ids).toEqual(["debugger", "introduction", "community", "shop"]);
+    expect(ids).toEqual(["debugger", "introduction", "community"]);
   });
 
   test("internal links have no isExternal flag and use relative pathnames", () => {
@@ -22,8 +22,8 @@ describe("linkPagesInfo", () => {
   test("external links are flagged and use absolute URLs", () => {
     const externals = linkPagesInfo.filter((link) => link.isExternal === true);
 
-    expect(externals).toHaveLength(2);
-    expect(externals.map((link) => link.id)).toEqual(["community", "shop"]);
+    expect(externals).toHaveLength(1);
+    expect(externals.map((link) => link.id)).toEqual(["community"]);
     externals.forEach((link) => {
       expect(link.pathname.startsWith("https://")).toBe(true);
     });
