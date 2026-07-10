@@ -8,6 +8,13 @@ on:
       - master
       - production
       - development
+  pull_request:
+    types: [opened, reopened]
+
+concurrency:
+  group: preview-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   Deploy-Preview:
     runs-on:
@@ -50,42 +57,47 @@ jobs:
           DEPLOYMENT_URL: ${{ needs.Deploy-Preview.outputs.deploymentUrl }}
         with:
           script: |
-            // Get pull requests that are open for current ref.
-            const pullRequests = await github.rest.pulls.list({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open',
-                head: `${context.repo.owner}:${context.ref.replace('refs/heads/', '')}`
-            })
+            const { owner, repo } = context.repo
 
-            // Set issue number for following calls from context (if on pull request event) or from above variable.
-            const issueNumber = context.issue.number || pullRequests.data[0].number
+            // On push events context.issue.number is empty, so fall back to the
+            // head-branch lookup (fast on fresh pushes) then commit association
+            // (covers re-runs where the head-branch index lags).
+            const resolvePrNumber = async () => {
+                if (context.issue.number) return context.issue.number
 
-            // Retrieve existing bot comments for the PR
-            const {data: comments} = await github.rest.issues.listComments({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issueNumber,
-            })
-            const botComment = comments.find(comment => {
-                return comment.user.type === 'Bot' && comment.body.includes('Preview URL at')
-            })
-
-            const output = "Preview URL " + process.env.DEPLOYMENT_URL
-
-            // If we have a comment, update it, otherwise create a new one
-            if (botComment) {
-                github.rest.issues.updateComment({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    comment_id: botComment.id,
-                    body: output
+                const branch = context.ref.replace('refs/heads/', '')
+                const { data: openPrs } = await github.rest.pulls.list({
+                    owner, repo, state: 'open', head: `${owner}:${branch}`,
                 })
-            } else {
-                github.rest.issues.createComment({
-                    issue_number: issueNumber,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    body: output
+                if (openPrs[0]) return openPrs[0].number
+
+                const { data: associatedPrs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                    owner, repo, commit_sha: context.sha,
                 })
+                return associatedPrs.find((pr) => pr.state === 'open')?.number
             }
+
+            const issueNumber = await resolvePrNumber()
+
+            if (!issueNumber) {
+                console.log('No open PR found for this commit/branch - skipping preview-URL comment.')
+                return
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+                owner, repo, issue_number: issueNumber,
+            })
+            const previousComments = comments.filter(
+                (comment) => comment.user.type === 'Bot' && comment.body.includes('Preview URL ')
+            )
+
+            // Repost rather than edit in place, so the comment stays at the bottom
+            // and notifies; delete prior ones so stale URLs don't pile up.
+            await Promise.all(previousComments.map(
+                (comment) => github.rest.issues.deleteComment({ owner, repo, comment_id: comment.id })
+            ))
+
+            await github.rest.issues.createComment({
+                owner, repo, issue_number: issueNumber,
+                body: `Preview URL ${process.env.DEPLOYMENT_URL}`,
+            })

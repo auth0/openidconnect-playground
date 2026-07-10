@@ -1,0 +1,133 @@
+@use "libs/theme/styles/variables" as *;
+@use "libs/theme/styles/mixins" as *;
+
+.container {
+  @include Container;
+  margin-top: 60px;
+  margin-bottom: 120px;
+}
+
+.wrapper {
+  @include ExtendedGrid;
+  display: flex;
+  justify-content: center;
+
+  @media #{$breakpoint-dimension-sm} {
+    justify-content: flex-start;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    justify-content: center;
+  }
+}
+
+.content {
+  width: min(100%, 640px);
+  margin: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+
+  @media #{$breakpoint-dimension-sm} {
+    width: calc(100% - 4rem);
+    max-width: none;
+    margin: 0 2rem;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    width: calc(100% - 8rem);
+    max-width: none;
+    margin: 0 4rem;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    width: min(100%, 640px);
+    max-width: 640px;
+    margin: 0 2rem;
+  }
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.title {
+  color: var(--color_fg_bold);
+  font-family: var(--font-secondary);
+  font-size: 1.5rem;
+  line-height: 2rem;
+  letter-spacing: -0.03125rem;
+  font-weight: 500;
+}
+
+.paragraph {
+  color: var(--color_fg_default);
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: -0.003125rem;
+
+  @media #{$breakpoint-dimension-md} {
+    font-size: 1.125rem;
+    line-height: 1.6875rem;
+    letter-spacing: -0.003125rem;
+  }
+}
+
+.resourcesList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resourceCard {
+  width: 100%;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--color_border_modal_input);
+  background: var(--color_bg_light);
+  backdrop-filter: blur(40px);
+
+  color: var(--color_fg_bold);
+  font-family: var(--font-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.375rem;
+  letter-spacing: 0.02rem;
+  font-weight: 500;
+  transition: border-color 0.2s ease;
+
+  @media #{$breakpoint-dimension-sm} {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  &[data-featured="true"] {
+    border-color: var(--color_border_selected);
+    color: var(--color_fg_link_primary);
+  }
+
+  &:hover {
+    border-color: var(--color_border_selected);
+  }
+}
+
+.iconShell {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color_bg_modal);
+}
+
+.icon {
+  filter: saturate(1.2);
+}
