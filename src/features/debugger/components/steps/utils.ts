@@ -36,11 +36,11 @@ export type AppData = z.infer<typeof AppDataSchema>;
 
 export const InitialDebuggerStepsData: DebuggerStepsData = {
   server: "auth0",
-  domain: "samples.auth0.com",
-  authEndpoint: "https://samples.auth0.com/authorize",
-  tokenEndpoint: "https://samples.auth0.com/oauth/token",
-  tokenKeysEndpoint: "https://samples.auth0.com/.well-known/jwks.json",
-  userInfoEndpoint: "https://samples.auth0.com/userinfo",
+  domain: "dev-tdga8e7vnn68zum5.us.auth0.com",
+  authEndpoint: "https://dev-tdga8e7vnn68zum5.us.auth0.com/authorize",
+  tokenEndpoint: "https://dev-tdga8e7vnn68zum5.us.auth0.com/oauth/token",
+  tokenKeysEndpoint: "https://dev-tdga8e7vnn68zum5.us.auth0.com/.well-known/jwks.json",
+  userInfoEndpoint: "https://dev-tdga8e7vnn68zum5.us.auth0.com/userinfo",
   scopes: "openid profile email phone address",
   idTokenHeader: "",
   validated: false,
