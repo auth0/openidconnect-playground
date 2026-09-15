@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
 const ALLOWED_HOSTNAMES = new Set([
-  "samples.auth0.com",
+  "openidconnectnet.us.auth0.com",
   "oauth2.googleapis.com",
 ]);
 

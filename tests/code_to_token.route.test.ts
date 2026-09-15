@@ -86,7 +86,7 @@ describe("POST /api/code_to_token", () => {
     const response = await POST(
       postRequest({
         code: "auth-code",
-        tokenEndpoint: "https://samples.auth0.com/oauth/token",
+        tokenEndpoint: "https://openidconnectnet.us.auth0.com/oauth/token",
       }),
     );
 

@@ -25,7 +25,7 @@ const CODE_TO_TOKEN_RESPONSE = {
   },
 };
 
-const DECODED_PAYLOAD = { sub: "auth0|happy-path", iss: "https://samples.auth0.com/", aud: "client-123" };
+const DECODED_PAYLOAD = { sub: "auth0|happy-path", iss: "https://openidconnectnet.us.auth0.com/", aud: "client-123" };
 
 test.describe("debugger happy path", () => {
   test.beforeEach(async ({ page }) => {
