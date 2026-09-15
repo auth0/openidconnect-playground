@@ -41,6 +41,10 @@ jobs:
         if: ${{ steps.extract_branch.outputs.branch == 'remove-basepath-2' }}
         run: |
           vercel alias set --token=${{ secrets.VERCEL_ACCESS_TOKEN }} ${{ steps.deploy.outputs.deploymentUrl }} ab-test-next-jwt-io.vercel.app --scope=okta
+      - name: Assign Custom Domain (ui-redesign)
+        if: ${{ steps.extract_branch.outputs.branch == 'ui-redesign' }}
+        run: |
+          vercel alias set --token=${{ secrets.VERCEL_ACCESS_TOKEN }} ${{ steps.deploy.outputs.deploymentUrl }} openidconnect-dougchan-okta-okta.vercel.app --scope=okta
 
   Add-Comment:
     runs-on:
