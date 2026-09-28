@@ -17,6 +17,16 @@ export type InitialModalData = {
   audience: string;
 };
 
+export type TemplateCredentials = {
+  clientId: string;
+  clientSecret: string;
+};
+
+export const EMPTY_CREDENTIALS: TemplateCredentials = {
+  clientId: "",
+  clientSecret: "",
+};
+
 type ModalOptions = {
   name: keyof InitialModalData;
   title: string;
@@ -103,15 +113,15 @@ const validateForm = (values: Record<string, string>): Record<string, string> =>
       return errors;
     }, {});
 type ModalProps = {
-  isOpen: boolean;
   onClose: () => void;
   initialData: InitialModalData;
+  auth0Credentials: TemplateCredentials;
   onSaveData: (data: InitialModalData) => void;
 };
 export const ConfigurationModal = ({
-  isOpen,
   onClose,
   initialData,
+  auth0Credentials,
   onSaveData,
 }: ModalProps) => {
   const SERVER_URLS: Record<string, string> = {
@@ -128,9 +138,8 @@ export const ConfigurationModal = ({
     ),
     tokenKeysEndpoint: initialData.tokenKeysEndpoint ?? "",
   }));
-  const credentialsByTemplate = useRef<
-    Record<string, { clientId: string; clientSecret: string }>
-  >({
+  const credentialsByTemplate = useRef<Record<string, TemplateCredentials>>({
+    auth0: auth0Credentials,
     [initialData.serverTemplate]: {
       clientId: initialData.clientId ?? "",
       clientSecret: initialData.clientSecret ?? "",
@@ -179,7 +188,7 @@ export const ConfigurationModal = ({
       };
     }
     const restoredCredentials =
-      credentialsByTemplate.current[value] ?? { clientId: "", clientSecret: "" };
+      credentialsByTemplate.current[value] ?? EMPTY_CREDENTIALS;
     if (!value || value === "custom") {
       setFormValues((prev) => {
         return {
@@ -236,7 +245,6 @@ export const ConfigurationModal = ({
       });
     }
   };
-  if (!isOpen) return null;
   return (
     <div className={styles.backdrop} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>

@@ -13,7 +13,9 @@ import { RequestData } from "../codeblock/codeblock.component";
 import { DebuggerToolbar } from "../toolbar/debugger-toolbar.component";
 import {
   ConfigurationModal,
+  EMPTY_CREDENTIALS,
   InitialModalData,
+  TemplateCredentials,
 } from "../configuration-modal/configuration-modal.component";
 
 type Steps = {
@@ -33,6 +35,9 @@ export const DebuggerSteps = () => {
     error: string;
     error_description: string;
   } | null>(null);
+  const [auth0Credentials, setAuth0Credentials] =
+    useState<TemplateCredentials>(EMPTY_CREDENTIALS);
+  const [isHydrated, setIsHydrated] = useState(false);
   const requestDataStepOne = useMemo<RequestData>(() => {
     return {
       url: debuggerStepsData.authEndpoint ?? "",
@@ -273,6 +278,7 @@ export const DebuggerSteps = () => {
       setCurrentStepIndex(debuggerSteps.currentStep ?? 0);
     }
     if (auth) setAuthData(auth);
+    setIsHydrated(true);
     fetch("api/auth_data")
       .then((res) => {
         if (!res.ok) throw new Error(`auth_data responded with ${res.status}`);
@@ -281,6 +287,10 @@ export const DebuggerSteps = () => {
       .then((data) => {
         const isAuth0Template =
           (debuggerSteps?.server ?? InitialDebuggerStepsData.server) === "auth0";
+        setAuth0Credentials({
+          clientId: data.clientId ?? "",
+          clientSecret: data.clientSecret ?? "",
+        });
         setAuthData((prev) => ({
           clientID: prev?.clientID ?? (isAuth0Template ? data.clientId : ""),
           clientSecret:
@@ -300,6 +310,7 @@ export const DebuggerSteps = () => {
   }, []);
 
   useEffect(() => {
+    if (!isHydrated) return;
     localStorage.setItem(
       "app-state",
       JSON.stringify({
@@ -308,7 +319,7 @@ export const DebuggerSteps = () => {
         currentStep: currentStepIndex,
       }),
     );
-  }, [debuggerStepsData, authData, currentStepIndex]);
+  }, [isHydrated, debuggerStepsData, authData, currentStepIndex]);
 
   useEffect(() => {
     if (currentStepIndex === 0) return;
@@ -368,8 +379,8 @@ export const DebuggerSteps = () => {
       {isOpenModal && (
         <ConfigurationModal
           onClose={() => setIsOpenModal(false)}
-          isOpen
           initialData={initialModalData}
+          auth0Credentials={auth0Credentials}
           onSaveData={onSaveData}
         />
       )}
