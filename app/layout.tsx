@@ -10,6 +10,10 @@ import { MobileHeaderComponent } from "features/common/components/mobile-header/
 import { FooterComponent } from "features/common/components/footer/footer.component";
 import { enLayoutDictionary } from "features/common/components/cookie-consent-modal/dictionary.model";
 import { ShellComponent } from "features/common/components/shell/shell.component";
+import { OnetrustScriptComponent } from "features/analytics/components/onetrust-script.component";
+import AdobeAnalyticsScript from "features/analytics/components/adobe-analytics-script.component";
+import { GoogleTagManagerScriptComponent } from "features/analytics/components/google-tag-manager-script.component";
+import { CLIENT_CONFIG } from "features/analytics/services/config";
 import { Metadata } from "next";
 
 const title = "OpenID Connect Playground";
@@ -100,6 +104,12 @@ export default async function RootLayout({
           name="google-site-verification"
           content="tLAuc_2L4oGIS68FVPW-FvFdIxLNYkLBCAb-9PseeWY"
         />
+        {/* Analytics tags must stay in this order: OneTrust, then Adobe Tags, then GTM. */}
+        <OnetrustScriptComponent
+          id={CLIENT_CONFIG.DEVELOPERS_DATA_DOMAIN_ID_ONETRUST}
+        />
+        <AdobeAnalyticsScript />
+        <GoogleTagManagerScriptComponent id={CLIENT_CONFIG.GTM_ID} />
       </head>
       <ShellComponent theme={theme}>
         <HeaderComponent theme={theme} />

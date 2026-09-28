@@ -1,9 +1,15 @@
-import Script from "next/script";
+import { CLIENT_CONFIG } from "features/analytics/services/config";
 
 const AdobeAnalyticsScript = () => {
-  const source = process.env.NEXT_PUBLIC_ADOBE_ANALYTICS_URL;
+  const source = CLIENT_CONFIG.ADOBE_ANALYTICS_URL;
   return source ? (
-    <Script type="text/javascript" src={source} charSet="UTF-8" async />
+    <script
+      id="adobe-analytics-script"
+      type="text/javascript"
+      src={source}
+      charSet="UTF-8"
+      async
+    />
   ) : null;
 };
 
