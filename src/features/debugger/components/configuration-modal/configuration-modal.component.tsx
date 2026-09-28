@@ -3,7 +3,7 @@ import { CloseCircleIcon } from "features/common/icons/close-circle.icon";
 import { ErrorIcon } from "features/common/icons/error.icon";
 import styles from "./configuration-modal.module.scss";
 import { Button } from "features/common/components/button/button.component";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export type InitialModalData = {
   domain: string;
@@ -128,6 +128,14 @@ export const ConfigurationModal = ({
     ),
     tokenKeysEndpoint: initialData.tokenKeysEndpoint ?? "",
   }));
+  const credentialsByTemplate = useRef<
+    Record<string, { clientId: string; clientSecret: string }>
+  >({
+    [initialData.serverTemplate]: {
+      clientId: initialData.clientId ?? "",
+      clientSecret: initialData.clientSecret ?? "",
+    },
+  });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [discoverError, setDiscoverError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -141,6 +149,13 @@ export const ConfigurationModal = ({
         next.authEndpoint = `https://${value}/authorize`;
         next.tokenEndpoint = `https://${value}/oauth/token`;
         next.tokenKeysEndpoint = `https://${value}/.well-known/jwks.json`;
+      }
+      if (name === "clientId" || name === "clientSecret") {
+        const template = prev.serverTemplate;
+        credentialsByTemplate.current[template] = {
+          clientId: name === "clientId" ? value : prev.clientId,
+          clientSecret: name === "clientSecret" ? value : prev.clientSecret,
+        };
       }
       return next;
     });
@@ -156,10 +171,20 @@ export const ConfigurationModal = ({
     e: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     const { value } = e.target;
+    const previousTemplate = formValues.serverTemplate;
+    if (value !== previousTemplate) {
+      credentialsByTemplate.current[previousTemplate] = {
+        clientId: formValues.clientId,
+        clientSecret: formValues.clientSecret,
+      };
+    }
+    const restoredCredentials =
+      credentialsByTemplate.current[value] ?? { clientId: "", clientSecret: "" };
     if (!value || value === "custom") {
       setFormValues((prev) => {
         return {
           ...prev,
+          ...restoredCredentials,
           authEndpoint: "",
           tokenEndpoint: "",
           tokenKeysEndpoint: "",
@@ -186,6 +211,7 @@ export const ConfigurationModal = ({
       setFormValues((prev) => {
         return {
           ...prev,
+          ...restoredCredentials,
           authEndpoint: data.authorization_endpoint,
           tokenEndpoint: data.token_endpoint,
           tokenKeysEndpoint: data.jwks_uri,
@@ -202,6 +228,7 @@ export const ConfigurationModal = ({
       setFormValues((prev) => {
         return {
           ...prev,
+          ...restoredCredentials,
           authEndpoint: "",
           tokenEndpoint: "",
           tokenKeysEndpoint: "",

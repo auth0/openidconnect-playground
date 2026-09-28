@@ -279,9 +279,12 @@ export const DebuggerSteps = () => {
         return res.json();
       })
       .then((data) => {
+        const isAuth0Template =
+          (debuggerSteps?.server ?? InitialDebuggerStepsData.server) === "auth0";
         setAuthData((prev) => ({
-          clientID: prev?.clientID ?? data.clientId,
-          clientSecret: prev?.clientSecret ?? data.clientSecret,
+          clientID: prev?.clientID ?? (isAuth0Template ? data.clientId : ""),
+          clientSecret:
+            prev?.clientSecret ?? (isAuth0Template ? data.clientSecret : ""),
           stateToken: prev?.stateToken ?? data.state,
           redirectURI: data.redirect_uri,
           authCode: data.code ?? prev?.authCode ?? null,
@@ -362,13 +365,14 @@ export const DebuggerSteps = () => {
           </div>
         </div>
       </div>
-      <ConfigurationModal
-        onClose={() => setIsOpenModal(false)}
-        isOpen={isOpenModal}
-        initialData={initialModalData}
-        key={initialModalData.clientId}
-        onSaveData={onSaveData}
-      />
+      {isOpenModal && (
+        <ConfigurationModal
+          onClose={() => setIsOpenModal(false)}
+          isOpen
+          initialData={initialModalData}
+          onSaveData={onSaveData}
+        />
+      )}
     </>
   );
 };
