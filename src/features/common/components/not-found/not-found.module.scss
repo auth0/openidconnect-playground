@@ -1,0 +1,143 @@
+@use "libs/theme/styles/variables" as *;
+@use "libs/theme/styles/mixins" as *;
+
+.container {
+  @include Container;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - #{$main-nav-height-mobile} - 20rem);
+  padding: 4rem 0;
+  background: linear-gradient(
+    194deg,
+    #171717 -23.81%,
+    #191919 85.24%,
+    #4016a0 130.44%,
+    #3f59e4 161.16%
+  );
+  border-radius: 0 0 8px 8px;
+
+  @media #{$breakpoint-dimension-sm} {
+    border-radius: 0 0 16px 16px;
+    padding: 6rem 0;
+  }
+
+  @media #{$breakpoint-dimension-md} {
+    min-height: calc(100vh - #{$main-nav-height} - 20rem);
+    border-radius: 0 0 24px 24px;
+  }
+
+  :global(body[data-theme="light"]) & {
+    background: var(--functional-gray-150);
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: url("/images/bg-shape-mobile-dark.svg") center top / cover
+      no-repeat;
+
+    @media #{$breakpoint-dimension-md} {
+      background-image: url("/images/bg-shape-tablet-dark.svg");
+    }
+
+    @media #{$breakpoint-dimension-lg} {
+      background-image: url("/images/bg-shape-dark.svg");
+    }
+  }
+
+  :global(body[data-theme="light"]) &:before {
+    background: none;
+  }
+}
+
+.content {
+  @include InnerContentFlex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.code {
+  // Negative tracking also applies after the last digit, which shifts the ink
+  // to the right; the matching right padding re-centers it.
+  --code-tracking: -0.25rem;
+  font-family: var(--font-secondary);
+  font-size: 7rem;
+  line-height: 0.9;
+  letter-spacing: var(--code-tracking);
+  padding-right: calc(-1 * var(--code-tracking));
+  font-weight: 500;
+  background: $gradient-text;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  user-select: none;
+
+  @media #{$breakpoint-dimension-sm} {
+    --code-tracking: -0.5rem;
+    font-size: 10rem;
+  }
+
+  @media #{$breakpoint-dimension-lg} {
+    --code-tracking: -0.75rem;
+    font-size: 14rem;
+  }
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 32.5rem;
+}
+
+.title {
+  margin: 0;
+  color: var(--color_fg_bold);
+  font-size: 2rem;
+  line-height: 2.5rem;
+  letter-spacing: -0.03125rem;
+
+  @media #{$breakpoint-dimension-sm} {
+    font-size: 2.5rem;
+    line-height: 3rem;
+  }
+}
+
+.description {
+  color: var(--color_fg_default);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+
+  @media #{$breakpoint-dimension-sm} {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1rem;
+  width: 100%;
+  max-width: 20rem;
+
+  a {
+    margin: 0;
+  }
+
+  @media #{$breakpoint-dimension-sm} {
+    flex-direction: row;
+    justify-content: center;
+    max-width: none;
+  }
+}
