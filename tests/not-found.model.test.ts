@@ -23,7 +23,7 @@ describe("notFoundActions", () => {
   test("marks only the first action as the primary variant", () => {
     expect(notFoundActions.map((action) => action.variant)).toEqual([
       "default",
-      "transparent",
+      "gradient",
     ]);
   });
 

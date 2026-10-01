@@ -4,13 +4,13 @@ export type NotFoundAction = {
   id: string;
   label: string;
   href: string;
-  variant: "default" | "transparent";
+  variant: "default" | "gradient";
 };
 
 const ACTION_IDS = ["debugger", "introduction"] as const;
 
 const variantByIndex = (index: number): NotFoundAction["variant"] =>
-  index === 0 ? "default" : "transparent";
+  index === 0 ? "default" : "gradient";
 
 export const notFoundContent = {
   code: "404",

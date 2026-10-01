@@ -42,6 +42,18 @@
   }
 }
 
+.button_variant_gradient {
+  color: var(--color_fg_link);
+  background:
+    linear-gradient(
+        var(--color_bg_button_primary_hero),
+        var(--color_bg_button_primary_hero)
+      )
+      padding-box,
+    linear-gradient(90deg, #3f59e4, #92d7cc) border-box;
+  border: 1.5px solid transparent;
+}
+
 .button_arrow {
   flex-shrink: 0;
   display: flex;
