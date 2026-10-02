@@ -3,7 +3,7 @@ import { CloseCircleIcon } from "features/common/icons/close-circle.icon";
 import { ErrorIcon } from "features/common/icons/error.icon";
 import styles from "./configuration-modal.module.scss";
 import { Button } from "features/common/components/button/button.component";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export type InitialModalData = {
   domain: string;
@@ -15,6 +15,16 @@ export type InitialModalData = {
   clientSecret: string;
   scope: string;
   audience: string;
+};
+
+export type TemplateCredentials = {
+  clientId: string;
+  clientSecret: string;
+};
+
+export const EMPTY_CREDENTIALS: TemplateCredentials = {
+  clientId: "",
+  clientSecret: "",
 };
 
 type ModalOptions = {
@@ -103,15 +113,15 @@ const validateForm = (values: Record<string, string>): Record<string, string> =>
       return errors;
     }, {});
 type ModalProps = {
-  isOpen: boolean;
   onClose: () => void;
   initialData: InitialModalData;
+  auth0Credentials: TemplateCredentials;
   onSaveData: (data: InitialModalData) => void;
 };
 export const ConfigurationModal = ({
-  isOpen,
   onClose,
   initialData,
+  auth0Credentials,
   onSaveData,
 }: ModalProps) => {
   const SERVER_URLS: Record<string, string> = {
@@ -128,6 +138,13 @@ export const ConfigurationModal = ({
     ),
     tokenKeysEndpoint: initialData.tokenKeysEndpoint ?? "",
   }));
+  const credentialsByTemplate = useRef<Record<string, TemplateCredentials>>({
+    auth0: auth0Credentials,
+    [initialData.serverTemplate]: {
+      clientId: initialData.clientId ?? "",
+      clientSecret: initialData.clientSecret ?? "",
+    },
+  });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [discoverError, setDiscoverError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -141,6 +158,13 @@ export const ConfigurationModal = ({
         next.authEndpoint = `https://${value}/authorize`;
         next.tokenEndpoint = `https://${value}/oauth/token`;
         next.tokenKeysEndpoint = `https://${value}/.well-known/jwks.json`;
+      }
+      if (name === "clientId" || name === "clientSecret") {
+        const template = prev.serverTemplate;
+        credentialsByTemplate.current[template] = {
+          clientId: name === "clientId" ? value : prev.clientId,
+          clientSecret: name === "clientSecret" ? value : prev.clientSecret,
+        };
       }
       return next;
     });
@@ -156,10 +180,20 @@ export const ConfigurationModal = ({
     e: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     const { value } = e.target;
+    const previousTemplate = formValues.serverTemplate;
+    if (value !== previousTemplate) {
+      credentialsByTemplate.current[previousTemplate] = {
+        clientId: formValues.clientId,
+        clientSecret: formValues.clientSecret,
+      };
+    }
+    const restoredCredentials =
+      credentialsByTemplate.current[value] ?? EMPTY_CREDENTIALS;
     if (!value || value === "custom") {
       setFormValues((prev) => {
         return {
           ...prev,
+          ...restoredCredentials,
           authEndpoint: "",
           tokenEndpoint: "",
           tokenKeysEndpoint: "",
@@ -186,6 +220,7 @@ export const ConfigurationModal = ({
       setFormValues((prev) => {
         return {
           ...prev,
+          ...restoredCredentials,
           authEndpoint: data.authorization_endpoint,
           tokenEndpoint: data.token_endpoint,
           tokenKeysEndpoint: data.jwks_uri,
@@ -202,6 +237,7 @@ export const ConfigurationModal = ({
       setFormValues((prev) => {
         return {
           ...prev,
+          ...restoredCredentials,
           authEndpoint: "",
           tokenEndpoint: "",
           tokenKeysEndpoint: "",
@@ -209,7 +245,6 @@ export const ConfigurationModal = ({
       });
     }
   };
-  if (!isOpen) return null;
   return (
     <div className={styles.backdrop} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>

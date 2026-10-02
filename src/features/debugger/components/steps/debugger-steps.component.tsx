@@ -13,7 +13,9 @@ import { RequestData } from "../codeblock/codeblock.component";
 import { DebuggerToolbar } from "../toolbar/debugger-toolbar.component";
 import {
   ConfigurationModal,
+  EMPTY_CREDENTIALS,
   InitialModalData,
+  TemplateCredentials,
 } from "../configuration-modal/configuration-modal.component";
 
 type Steps = {
@@ -33,6 +35,9 @@ export const DebuggerSteps = () => {
     error: string;
     error_description: string;
   } | null>(null);
+  const [auth0Credentials, setAuth0Credentials] =
+    useState<TemplateCredentials>(EMPTY_CREDENTIALS);
+  const [isHydrated, setIsHydrated] = useState(false);
   const requestDataStepOne = useMemo<RequestData>(() => {
     return {
       url: debuggerStepsData.authEndpoint ?? "",
@@ -273,15 +278,23 @@ export const DebuggerSteps = () => {
       setCurrentStepIndex(debuggerSteps.currentStep ?? 0);
     }
     if (auth) setAuthData(auth);
+    setIsHydrated(true);
     fetch("api/auth_data")
       .then((res) => {
         if (!res.ok) throw new Error(`auth_data responded with ${res.status}`);
         return res.json();
       })
       .then((data) => {
+        const isAuth0Template =
+          (debuggerSteps?.server ?? InitialDebuggerStepsData.server) === "auth0";
+        setAuth0Credentials({
+          clientId: data.clientId ?? "",
+          clientSecret: data.clientSecret ?? "",
+        });
         setAuthData((prev) => ({
-          clientID: prev?.clientID ?? data.clientId,
-          clientSecret: prev?.clientSecret ?? data.clientSecret,
+          clientID: prev?.clientID ?? (isAuth0Template ? data.clientId : ""),
+          clientSecret:
+            prev?.clientSecret ?? (isAuth0Template ? data.clientSecret : ""),
           stateToken: prev?.stateToken ?? data.state,
           redirectURI: data.redirect_uri,
           authCode: data.code ?? prev?.authCode ?? null,
@@ -297,6 +310,7 @@ export const DebuggerSteps = () => {
   }, []);
 
   useEffect(() => {
+    if (!isHydrated) return;
     localStorage.setItem(
       "app-state",
       JSON.stringify({
@@ -305,7 +319,7 @@ export const DebuggerSteps = () => {
         currentStep: currentStepIndex,
       }),
     );
-  }, [debuggerStepsData, authData, currentStepIndex]);
+  }, [isHydrated, debuggerStepsData, authData, currentStepIndex]);
 
   useEffect(() => {
     if (currentStepIndex === 0) return;
@@ -362,13 +376,14 @@ export const DebuggerSteps = () => {
           </div>
         </div>
       </div>
-      <ConfigurationModal
-        onClose={() => setIsOpenModal(false)}
-        isOpen={isOpenModal}
-        initialData={initialModalData}
-        key={initialModalData.clientId}
-        onSaveData={onSaveData}
-      />
+      {isOpenModal && (
+        <ConfigurationModal
+          onClose={() => setIsOpenModal(false)}
+          initialData={initialModalData}
+          auth0Credentials={auth0Credentials}
+          onSaveData={onSaveData}
+        />
+      )}
     </>
   );
 };

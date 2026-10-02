@@ -50,3 +50,6 @@ next-env.d.ts
 # vercel
 .vercel
 .npmrc.oidc
+
+# typescript
+*.tsbuildinfo
