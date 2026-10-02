@@ -6,8 +6,16 @@ type BaseButtonProps = {
   label: string;
 };
 
+type ButtonVariant = "default" | "transparent" | "gradient";
+
+const VARIANT_CLASS: Record<ButtonVariant, string> = {
+  default: styles.button_variant_default,
+  transparent: styles.button_variant_transparent,
+  gradient: styles.button_variant_gradient,
+};
+
 type CommonButtonProps = {
-  variant?: "default" | "transparent";
+  variant?: ButtonVariant;
   showIcon?: boolean;
 } & BaseButtonProps;
 
@@ -29,12 +37,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={clsx(
-        styles.button,
-        variant === "default"
-          ? styles.button_variant_default
-          : styles.button_variant_transparent,
-      )}
+      className={clsx(styles.button, VARIANT_CLASS[variant])}
       onClick={onClick}
       disabled={isLoading}
     >
@@ -68,12 +71,7 @@ export const LinkButton = ({
 }: LinkButtonProps) => {
   return (
     <a
-      className={clsx(
-        styles.button,
-        variant === "default"
-          ? styles.button_variant_default
-          : styles.button_variant_transparent,
-      )}
+      className={clsx(styles.button, VARIANT_CLASS[variant])}
       href={href}
     >
       <ButtonBase label={label} />
