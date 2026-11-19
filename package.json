@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "engines": {
-        "node": ">=22.0.0",
+        "node": "24.x",
         "npm": ">=6.0.0"
     },
     "scripts": {
@@ -51,7 +51,7 @@
         "@playwright/test": "^1.61.0",
         "@types/cookie-signature": "^1.1.2",
         "@types/jsonwebtoken": "^9.0.10",
-        "@types/node": "24.9.2",
+        "@types/node": "^24",
         "@types/react": "^19.2.2",
         "@types/react-dom": "^19.2.2",
         "@vitest/coverage-istanbul": "^3.2.6",

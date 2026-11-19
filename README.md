@@ -83,7 +83,7 @@ First install the browsers (once):
 npx playwright install --with-deps
 ```
 
-Then run the suite (the `NODE_OPTIONS` flag is required on Node 22):
+Then run the suite (the `NODE_OPTIONS` flag is required on Node 22+ (including Node 24)):
 
 ```bash
 NODE_OPTIONS="--no-experimental-strip-types" npm run test:e2e
