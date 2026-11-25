@@ -98,6 +98,11 @@ npm run lint
 npm run lint:fix
 ```
 
+## AI-assisted development
+
+Project context and working rules for AI agents and contributors are in [`AGENTS.md`](AGENTS.md) (always loaded) and [`CLAUDE.md`](CLAUDE.md). For a full gated session (requirement, plan, design, implementation, QA, review, commit), say "Use ENTRY_POINT.md" and see [`ENTRY_POINT.md`](ENTRY_POINT.md).
+Engineering docs, specs and decisions live in [`docs/`](docs/README.md); local setup for the agent commands is described there.
+
 ## License
 
 This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
