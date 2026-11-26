@@ -7,7 +7,7 @@ This folder is the project's **single source of truth** for humans and AI agents
 | 0. Entry | `/AGENTS.md`, `/CLAUDE.md` | What is this, how do I run it, what are the golden rules? What working rules and CI security policies apply? | Rarely / when a mistake repeats |
 | 0. Session | `/ENTRY_POINT.md` | How does an interactive session run, phase by phase, with which gates? (read only when a session starts) | With the workflow |
 | 1. Engineering | `engineering/` | How do we build here, and what is the quality bar? | With an ADR |
-| 2. Specs | `specs/` | What exactly are we building now, and how will we know it works? | Every feature |
+| 2. Requirement template | `specs/` | How do we write a requirement (user story, INVEST) for a Jira ticket or a GitHub issue? Nothing per-change is committed. | Rarely |
 | 3. Decisions | `decisions/` | Why is it this way? | Append-only |
 | 4. Agents | `/.agents/` (`agents/`, `commands/`, `skills/`) | Which role, shared command or procedure should the AI follow? | With the workflow |
 ## Local setup (Claude Code)
@@ -25,7 +25,7 @@ If `.claude/commands`, `.claude/skills` or `.claude/agents` already exist, copy 
 
 1. Check: start a session and run `/qa-plan test`. Open `.agents/skills/` and confirm `new-spec`, `add-adr`, `redesign-microsite`, `maintenance-audit`, `pr-description`, `fix-vercel-npm-e401`, `fix-semgrep-findings`, `address-pr-review` and `local-browser-verify` are present.
 2. In Claude Code, check that the personal helper `~/.claude/tools/local-browser.mjs` exists (it is not part of the repo) and that `node ~/.claude/tools/local-browser.mjs http://localhost:3000/ text` works against the running app. Folders that start with a dot are hidden in Finder (Cmd+Shift+. shows them).
-3. Try it: start a session with **"Use ENTRY_POINT.md"** and a small requirement, and check that the agent creates the spec folder and stops at the first gate.
+3. Try it: start a session with **"Use ENTRY_POINT.md"** and a small requirement, and check that the agent asks about a Jira ticket, drafts the requirement as a user story in the chat (no files created), and stops at the first gate.
 4. `docs/specs/`, `docs/decisions/` and `docs/engineering/` are the project's records. The three ADRs in `docs/decisions/` are `proposed` until the owner (Auth0 DevRel team) approves them.
 5. `engineering/quality-gates.md` says which gates CI enforces (only unit and E2E tests today) and which are run locally.
 

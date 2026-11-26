@@ -1,6 +1,10 @@
 # Writing requirements (EARS + Given/When/Then)
 
-Specs (`docs/specs/<id>/spec.md`) hold requirements. Write them so an agent can implement and a test can verify them.
+Requirements are written from the template in `docs/specs/_template/spec.md`, as a user story with an INVEST check. They live in the Jira ticket or in a GitHub issue, not in the repo. Write them so an agent can implement and a test can verify them.
+
+## User story and INVEST
+
+`As a <role>, I want <capability>, so that <benefit>.` Then check it is **I**ndependent, **N**egotiable, **V**aluable, **E**stimable, **S**mall and **T**estable. A story that fails Small or Independent gets split before work starts.
 
 ## EARS patterns (Easy Approach to Requirements Syntax)
 
@@ -25,7 +29,7 @@ Then  <observable outcome>
 ## Rules of thumb
 
 - One requirement, one testable behavior. If you need "and", split it.
-- Describe **what and why**, not **how** (the how belongs in `plan.md`).
+- Describe **what and why**, not **how** (the how belongs in the plan and the design, which stay in the chat).
 - Mark unknowns `[NEEDS CLARIFICATION: question]`. An agent MUST NOT guess product decisions; it asks.
 - Reference the rule a requirement comes from (a constitution article, a section of `security.md`, an ADR).
-- The plan's **Done check** restates the acceptance scenarios as what the page shows or which QA checklist items pass.
+- The plan's **done check** restates the acceptance scenarios as what the page shows or which QA checklist items pass.

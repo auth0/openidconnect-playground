@@ -25,11 +25,11 @@ Local runs use dummy values set inline, never real secrets (names only, in `.env
 `CLIENT_ID=dummy CLIENT_SECRET=dummy JWT_SECRET=dummy REDIRECT_URI=http://localhost:3000/api/callback NEXT_PUBLIC_ONETRUST_DOMAIN_ID= NEXT_PUBLIC_ADOBE_ANALYTICS_URL= NEXT_PUBLIC_GTM_ID= npm run dev`
 (Next does not let `.env` override variables already set; the empty `NEXT_PUBLIC_*` keep analytics tags off.)
 
-"Done" means: lint, `tsc`, unit tests and build pass locally, **and** the done check from the plan passes with the QA output shown (browser check per `docs/engineering/browser-and-viewport-matrix.md` for UI changes). CI enforces only unit tests and E2E today (`docs/engineering/quality-gates.md`), so the other gates are on you. Never report a task complete without running them.
+"Done" means: no new lint errors (today `npm run lint` exits 1 with 52 pre-existing errors, 50 of them in legacy files), `tsc`, unit tests and build pass locally, **and** the done check from the plan passes with the QA output shown (browser check per `docs/engineering/browser-and-viewport-matrix.md` for UI changes). CI enforces only unit tests and E2E today (`docs/engineering/quality-gates.md`), so the other gates are on you. Never report a task complete without running them.
 
 ## Golden rules (summary; full text: docs/engineering/constitution.md)
 
-1. **Spec before code** for anything larger than a small fix. `ENTRY_POINT.md` gates each phase on human approval.
+1. **Requirement before code** for anything larger than a small fix: a user story in a Jira ticket or a draft GitHub issue. `ENTRY_POINT.md` gates each phase on human approval; nothing per-change is committed.
 2. **KISS and YAGNI.** No dependency, framework or abstraction without a written reason (ADR).
 3. **Tokens, not literals.** New CSS uses the `--color_*` custom properties and the `$breakpoint-dimension-*` variables. Existing hard-coded hex is legacy: do not copy it.
 4. **Ask first in sensitive areas.** If a change touches an ask-first zone (`CLAUDE.md`), stop and ask before editing.
@@ -44,14 +44,14 @@ Local runs use dummy values set inline, never real secrets (names only, in `.env
 | Task | Read |
 | --- | --- |
 | Start a session, run the full flow | `ENTRY_POINT.md` |
-| Write requirements for a spec | `docs/specs/requirements-guide.md` |
+| Write a requirement (user story, INVEST) | `docs/specs/requirements-guide.md`, `docs/specs/_template/spec.md` |
 | Any code change | `docs/engineering/constitution.md`, `docs/engineering/principles.md` |
 | Layout, folders, data flow, environments | `docs/engineering/architecture.md` |
 | Visual change, new component | `docs/engineering/design-system.md`, `docs/engineering/browser-and-viewport-matrix.md`, `docs/engineering/assets.md` |
 | Before a PR, the PR description | `docs/engineering/quality-gates.md`, `.agents/skills/pr-description/` |
 | API routes, cookies, analytics, dependencies | `docs/engineering/security.md` |
 | How to work with an agent | `docs/engineering/ai-workflow.md` |
-| Past decisions, in-flight features | `docs/decisions/`, `docs/specs/` |
+| Past decisions | `docs/decisions/` |
 
 ## Skills and agent roles
 
@@ -70,4 +70,4 @@ Local runs use dummy values set inline, never real secrets (names only, in `.env
 - **Install on Vercel:** `vercel.json` runs `scripts/oidc-install.mjs` (Vercel OIDC to JFrog). Do not change it; see `fix-vercel-npm-e401`.
 - **Legacy, not imported by the TypeScript app:** `public/bundle.js`, `src/app.js`, `src/components/*.js`, `src/utils.js`, `src/styles.styl`, and `public/cookie-consent.js`. Do not edit or delete without asking.
 - **Next-generated block:** `next dev` may write its own agent-rules block into `AGENTS.md`. Never commit that block.
-- **Known gaps** (not enforced today): no lint, type check or build in CI; no CSP or security headers configured; no WebKit in E2E; `public/images/sm-share.png` (referenced by metadata) is missing. See `docs/engineering/quality-gates.md`.
+- **Known gaps** (not enforced today): no lint, type check or build in CI, and lint already fails on legacy files (`.eslintignore` is not read by the flat config); no CSP or security headers configured; no WebKit in E2E; `public/images/sm-share.png` (referenced by metadata) is missing. See `docs/engineering/quality-gates.md`.

@@ -38,4 +38,4 @@ Re-run lint, types, tests and build, and the done check, and show the output. If
 
 ## 6. Hand over
 
-Report a table: comment, decision, change made or draft reply. Do not commit or push (the commit gate in `ENTRY_POINT.md` handles that after approval), and do not post replies or resolve conversations on GitHub unless I ask. The dev manager still approves.
+Report a table: comment, decision, change made or draft reply. Do not commit or push (at the commit gate in `ENTRY_POINT.md` you stage and suggest a message; I commit and push), and do not post replies or resolve conversations on GitHub unless I ask. The dev manager still approves.

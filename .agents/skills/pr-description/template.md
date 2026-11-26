@@ -5,6 +5,8 @@ DESCRIPTION GOES HERE. Try to describe both what is changing and why this is imp
 - This PR needs to be reviewed and approved by someone besides the commit author. 
 - What did you change from a design standpoint?
 - What did you change in the code itself?
+- If the change is architectural or touches deployment or endpoints, add a Mermaid diagram (a ```mermaid block) of what changed.
+- Keep it technical and concise.
 - If you are updating a dependency, explain why this is needed.
 -->
 

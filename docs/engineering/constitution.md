@@ -11,9 +11,9 @@ Each article: **Rule** → **Why** → **Enforced by**.
 - **Enforced by:** Review checklist item "could this be deleted?"; ADR required for any new dependency or framework.
 
 ## II. Spec before code
-- **Rule:** Work larger than a small fix starts from a spec (`docs/specs/`). Code that cannot be traced to a requirement or a bug report is out of scope.
+- **Rule:** Work larger than a small fix starts from a written requirement: a user story (INVEST) in a Jira ticket or a GitHub issue, drafted from `docs/specs/_template/spec.md`. Code that cannot be traced to a requirement or a bug report is out of scope. Per-change spec folders are not committed.
 - **Why:** Intent written once beats intent re-guessed per prompt. See `ai-workflow.md` for the size ladder.
-- **Enforced by:** the PR description (repo template, or the `pr-description` skill) links the spec; reviewer rejects unlinked feature PRs.
+- **Enforced by:** the PR description (repo template, or the `pr-description` skill) links the ticket or issue; reviewer rejects unlinked feature PRs.
 
 ## III. Clean code and SOLID
 - **Rule:** Follow `principles.md`. Names reveal intent, functions do one thing, modules have one reason to change, depend on abstractions at boundaries.
@@ -43,7 +43,7 @@ Each article: **Rule** → **Why** → **Enforced by**.
 ## VIII. Tests prove behavior
 - **Rule:** Every acceptance criterion maps to an automated check or an explicit manual step in the spec. Bugs get a failing test first.
 - **Why:** Agents are confident and sometimes wrong; tests are the independent judge.
-- **Enforced by:** CI runs the unit and E2E tests; lint, types and build are not in CI. Spec `tasks.md` lists the test for each task.
+- **Enforced by:** CI runs the unit and E2E tests; lint, types and build are not in CI. The task list agreed in phase 3 names the test for each task.
 
 ## IX. Small, reversible, reviewable
 - **Rule:** One concern per PR; no unrelated refactors; generated output is never hand-edited; destructive or irreversible actions need human confirmation.
@@ -56,6 +56,6 @@ Each article: **Rule** → **Why** → **Enforced by**.
 - **Enforced by:** Reviewer checks docs/ADR diff.
 
 ## XI. Human accountability
-- **Rule:** A human owns every merged change. AI output is a draft: the author must be able to explain every line. AI never merges, force-pushes, or changes secrets/infra without explicit instruction.
+- **Rule:** A human owns every merged change. AI output is a draft: the author must be able to explain every line. AI never commits, pushes, merges, force-pushes, or changes secrets/infra without explicit instruction.
 - **Why:** Accountability does not transfer to a tool.
 - **Enforced by:** required human review. Branch protection settings are not recorded in the repo.

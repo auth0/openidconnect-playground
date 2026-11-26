@@ -17,8 +17,8 @@ Look for, in this order (case-insensitive): `.github/PULL_REQUEST_TEMPLATE.md`, 
 ## 2. Gather the facts (don't invent them)
 
 - The change: the uncommitted diff (`git diff`, `git status`), or the commits on the branch if it is already committed.
-- The plan and its **done check**, the QA output (checklist results, screenshots, test output), and the second-agent review result, if they exist in the session.
-- Links: Jira ticket, spec folder (`docs/specs/<NNN>-<slug>/`), ADRs, Slack or RFC links the user gave you.
+- The plan and its **done check** (from the chat), the QA output (checklist results, screenshots, test output), and the second-agent review result, if they exist in the session.
+- Links: the Jira ticket, or the GitHub issue the human created from the draft requirement (if there is neither, say so: do not invent one), ADRs, Slack or RFC links the user gave you.
 
 ## 3. Fill the template
 
@@ -26,7 +26,9 @@ Look for, in this order (case-insensitive): `.github/PULL_REQUEST_TEMPLATE.md`, 
 - Map kit evidence into whichever sections exist: done check and QA output into the testing section, spec/ADR/Jira into references, docs updated into documentation, review findings that were not acted on (and why) into the changes or testing notes.
 - Tick a checkbox only when you can back it with evidence from this session. Otherwise leave it unticked and write what is missing, for example `[NEEDS INPUT: how this was tested]`.
 - Never invent links, screenshots, test results, rollout steps or rollback plans. If unknown, ask.
-- **Jira link:** required in `atko-*` GitHub organizations (not required in `atko-scratch`). If you do not have the ticket URL, ask for it.
+- **Ticket link:** Jira is required in `atko-*` GitHub organizations (not required in `atko-scratch`). In other organizations, such as `auth0`, it is optional: link the Jira ticket if there is one, otherwise the GitHub issue the human created from your draft. If you have neither, ask; do not create the issue yourself.
+- **Diagram:** when the change is architectural or touches deployment or endpoints, include a Mermaid diagram (sequence, flow or component) in the description that shows the change. Skip it for small changes. Keep the whole description technical and concise: what changed and why, with evidence, and no filler.
+- **Plan and design:** summarize the agreed plan, the design and the follow-ups in the description. They are not committed to the repo.
 - **Type of change** (Standard / Emergency / Significant), **deployment prerequisites** and **rollback**: propose a value from the diff, but mark it for the human to confirm; do not decide it for them.
 - For vulnerability fixes, mention the failing test that reproduced the issue and that it now passes.
 - If the change adds Artifactory auth to the Vercel deploy workflows, see "If this goes in a PR description" in the `fix-vercel-npm-e401` skill for what to explain (the E401 mechanism, OIDC-minted credentials, the leading `#` detail, `$RUNNER_TEMP`, `id-token: write`) and what to flag as unverified.

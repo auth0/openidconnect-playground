@@ -8,9 +8,9 @@
 
 | Gate | Command | Threshold | Enforced in CI? |
 | --- | --- | --- | --- |
-| Lint | `npm run lint` | 0 errors | No |
-| Types | `npx tsc --noEmit` (no script exists) | 0 errors, `strict` | No |
-| Unit tests | `npm run test:run` (Vitest, `tests/`) | pass; new logic covered; bug fixes include a regression test | Yes (`npx vitest run`) |
+| Lint | `npm run lint` | no new errors or warnings in files you touch. Baseline on 2026-11-25: exit 1, 52 errors and 876 warnings; 50 errors are in legacy files (`public/bundle.js`, `src/*.js`) and 2 in app code (`shell.component.tsx`, `mobile-header.component.tsx`) | No |
+| Types | `npx tsc --noEmit` (no script exists) | 0 errors, `strict` (passes today) | No |
+| Unit tests | `npm run test:run` (Vitest, `tests/`) | pass (69 tests in 12 files today); new logic covered; bug fixes include a regression test | Yes (`npx vitest run`) |
 | E2E | `NODE_OPTIONS="--no-experimental-strip-types" npm run test:e2e` | pass on Chromium and Firefox | Yes (`npx playwright test`) |
 | Build | `npm run build` with dummy env values (`AGENTS.md`) | success, no new warnings | Only indirectly, by the Vercel deploy |
 | Regression | `/qa-plan` in a production-like local run (`npm run build`, `npm start`, dummy values, no production services) | no new failures; each finding classified as caused by this change or pre-existing | No |
@@ -27,7 +27,7 @@
 - **Pyramid:** many unit tests on pure functions, fewer integration (route handlers), few E2E on key journeys.
 - **Test names** state behavior: `rejects an expired token`, not `test1`.
 - **Determinism:** no real network or clocks; fake time, mock fetch at the boundary.
-- **Specs:** every acceptance scenario in `spec.md` is traceable to a test or a listed manual step.
+- **Requirements:** every acceptance scenario in the requirement (ticket or issue) is traceable to a test or a listed manual step.
 
 ## Who runs what
 

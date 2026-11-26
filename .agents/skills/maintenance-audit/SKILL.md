@@ -18,4 +18,4 @@ Delegate to the `quality-auditor` role. Measure; do not fix inside the audit.
 | Docs drift | compare `AGENTS.md`/`docs/` claims with the code; list contradictions |
 | Complexity | duplicated code, files > 300 lines, unused exports, speculative abstractions |
 
-**Output:** table `Area | Finding | Evidence | Severity | Fix | Effort`, saved as `docs/specs/<NNN>-maintenance-<yyyy-mm>/audit.md`. The human picks what to do; each accepted item becomes a small spec or issue.
+**Output:** table `Area | Finding | Evidence | Severity | Fix | Effort`, shown in the chat (security findings stay in the chat only). The human picks what to do; each accepted item becomes a Jira ticket or a draft GitHub issue written as a user story. Do not commit the audit.
